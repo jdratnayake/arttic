@@ -1,0 +1,8 @@
+.trending-card{
+    max-width: 150px;
+    margin: 0 0 10px 0;
+}
+
+.trending-card > .card-body > .card-title{
+    font-size: 0.8rem;;
+}

@@ -1,11 +1,14 @@
 import React from "react";
 
+import "swiper/css/bundle";
+
+import HomePage from "./pages/HomePage/HomePage";
+
+
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Hello</h1>
-      </header>
+      <HomePage/>      
     </div>
   );
 }

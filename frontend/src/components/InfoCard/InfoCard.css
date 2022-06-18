@@ -1,0 +1,9 @@
+.col-md-4{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mb-3{
+    margin:20px 200px;
+}
