@@ -50,7 +50,7 @@ function NavBar() {
                         <input
                             className="form-control me-2"
                             type="search"
-                            placeholder="Search"
+                            placeholder="Find a creator"
                             aria-label="Search"
                         />
                         <button className="btn btn-secondary" type="submit">
