@@ -16,6 +16,7 @@ import user_6 from "../../images/users/pic6.png";
 import user_7 from "../../images/users/pic7.png";
 import user_8 from "../../images/users/pic8.png";
 
+import home_asset_1 from "../../images/home-assets.png"
 
 function HomePage() {
   return (
@@ -70,6 +71,11 @@ function HomePage() {
           <div className="row">
             <div class="col align-self-center trending-section">
               <h1>It's easier than you think</h1>
+              <img
+              src={home_asset_1}
+              className="img-fluid rounded home-card-image card-image card-image-end"
+              alt="..."
+            />
             </div>
           </div>
         </div>

@@ -1,15 +1,17 @@
 import "./NavBar.css";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
+import logo from '../../images/logo.png'
+
 function NavBar() {
     return (
         <nav className="navbar navbar-expand-lg bg-light">
             <div className="container-fluid">
                 <a className="navbar-brand" href="#">
                     <img
-                        src="https://bulma.io/images/bulma-logo.png"
-                        width="112"
-                        height="28"
+                        src={logo}
+                        width="200"
+                        height="45"
                     />
                 </a>
                 <button

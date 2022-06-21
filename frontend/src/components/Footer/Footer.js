@@ -62,13 +62,19 @@ function Footer() {
             </form>
             <div className="social-links">
               <a>
-                <i className="bi bi-twitter social-link"></i>
+                <div className="social-link-container">
+                  <i className="bi bi-twitter social-link"></i>
+                </div>
               </a>
               <a>
-                <i className="bi bi-linkedin social-link"></i>
+                <div className="social-link-container">
+                  <i className="bi bi-linkedin social-link"></i>
+                </div>
               </a>
               <a>
-                <i className="bi bi-facebook social-link"></i>
+                <div className="social-link-container">
+                  <i className="bi bi-facebook social-link"></i>
+                </div>
               </a>
             </div>
           </div>

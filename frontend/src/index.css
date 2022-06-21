@@ -49,6 +49,7 @@ code {
 
   /* blue */
   --blue-50: #72c9f8;
+  --blue-100:blue
 
   /* navbar size */
   --navbar-height: 74.14px;
@@ -79,7 +80,7 @@ code {
   width:200px;
   background: var(--green-50);
   border: 1px solid var(--green-50);
-  box-shadow: 5px 5px 1px rgba(100,100,100,0.3);
+  /* box-shadow: 5px 5px 1px rgba(100,100,100,0.3); */
 }
 
 .btn-main-secondary{
