@@ -1,0 +1,17 @@
+.about-section{
+    text-align: center;
+    margin: 20px 200px;
+}
+
+.trending-section{
+    text-align: center;
+    margin: 20px 190px;
+}
+
+.card-container{
+    padding:20px 0;
+}
+
+.home-card-image{
+   box-shadow: 0px 5px 20px 5px rgb(100 100 100 / 30%);
+}

@@ -1,0 +1,21 @@
+
+.active{
+    border-bottom: 2px solid var(--red-50);
+    font-weight: 600;
+}
+
+.nav-item :hover{
+    border-bottom: 2px solid var(--red-50);
+}
+
+.navbar-end{
+    margin: 10px 10px 10px 20px;
+}
+
+.btn{
+    margin-right:10px;
+}
+
+.bi-search{
+    font-weight: 2000;
+}
