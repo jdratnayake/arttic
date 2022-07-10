@@ -1,0 +1,134 @@
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+.wrapper {
+    display: flex;
+    padding-top: 25px;
+    padding-left: 30px;
+    padding-right: 30px;
+    width: 70%;
+    align-items: stretch;
+}
+
+#sidebar {
+    border-radius: 5px;
+    min-width: 250px;
+    max-width: 250px;
+    max-height: 360px;
+    min-height: 360px;
+    background: #fff;
+    color: #000;
+    transition: all 0.3s;
+}
+
+.premium{
+    margin-left: -15px;
+    border-radius: 5px;
+    width: 250px;
+    height: 120px;
+    background: #fff;
+    color: #000;
+    transition: all 0.3s;
+}
+
+.content{
+    padding-top: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.content-pre{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#sidebar.active {
+    background: #fff;
+}
+
+
+#sidebar ul p {
+    color: #fff;
+    padding: 10px;
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+
+#sidebar ul li a:hover {
+    color: #8427E2;
+    background: #fff;
+}
+
+#sidebar ul li.activesb>a,
+a[aria-expanded="true"] {
+    border-radius: 25px;
+    color: #000;
+    background: #E8E8E8;
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #6d7fcc;
+}
+
+.icon-theme {
+    padding-right: 15px;
+    color: #8427E2;
+}
+
+.icon-pre {
+    font-size: 1.5em;
+    padding-left: 15px;
+    color: #FFD233;
+}
+
+a.download {
+    background: #fff;
+    color: #7386D5;
+}
+
+a.article,
+a.article:hover {
+    background: #6d7fcc !important;
+    color: #fff !important;
+}
+
+
+
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+#content {
+    width: 100%;
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s;
+}
+
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -280px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+    #sidebarCollapse span {
+        display: none;
+    }
+}
