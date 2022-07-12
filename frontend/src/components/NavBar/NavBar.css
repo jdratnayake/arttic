@@ -1,10 +1,9 @@
-
-.active{
+.nav-link-active{
     border-bottom: 2px solid var(--red-50);
     font-weight: 600;
 }
 
-.nav-item :hover{
+.nav-bar-item :hover{
     border-bottom: 2px solid var(--red-50);
 }
 
@@ -12,10 +11,21 @@
     margin: 10px 10px 10px 20px;
 }
 
-.btn{
+.nav-bar-btn{
     margin-right:10px;
 }
 
 .bi-search{
     font-weight: 2000;
+}
+
+/*
+updated media 
+*/
+
+@media (min-width: 1011px){
+    .navbar-expand-lg {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+    }
 }
