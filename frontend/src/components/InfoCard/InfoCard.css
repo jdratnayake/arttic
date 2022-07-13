@@ -1,17 +1,9 @@
-.col-md-4{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.mb-3{
-    margin:20px 200px;
-}
 .card-info{
     border: none;
+     margin:20px 200px;
 }
 
-.card-title{
+.card-info-title{
     font-size:25px;
     font-weight: 600;
 }

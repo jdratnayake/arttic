@@ -5,12 +5,12 @@ import cardImage1 from "../../images/NFTs/monkey-removebg.png";
 function InfoCardRight(props) {
   return (
     <div classNameName="container-fluid">
-      <div className="card card-info mb-3">
+      <div className="card card-info">
         <div className="row g-0">
           
           <div className="col-md-7">
             <div className="card-body card-info-body">
-              <h5 className="card-title"> {props.title} </h5>
+              <h5 className="card-title card-info-title"> {props.title} </h5>
               <p className="card-text">{props.body}</p>
             </div>
           </div>

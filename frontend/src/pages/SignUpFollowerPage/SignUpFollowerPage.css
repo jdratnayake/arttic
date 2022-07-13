@@ -2,7 +2,7 @@ body{
     background-color: rgba(244, 242, 244, 1) !important;
 }
 
-.card{
+.card-update{
     border: rgba(244, 242, 244, 1);
     margin-top: 10%;
     margin-bottom: 10%;
@@ -15,7 +15,7 @@ body{
     padding-bottom: 5%;
 }
 
-.form-control{
+.form-control-update{
     margin-bottom: 5%;
     border-radius: 10px;
 }

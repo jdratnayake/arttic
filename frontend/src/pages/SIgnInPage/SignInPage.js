@@ -8,7 +8,7 @@ function SignInPage() {
 
             <div class="d-flex justify-content-center">
                 <div class="col-4">
-                    <div class="card">
+                    <div class="card card-update">
                         <div class="card-body">
                             <h4 class="title text-center theme">Log In</h4>
 
@@ -25,11 +25,11 @@ function SignInPage() {
                             
                             <div class="col-12">
                                 <label for="exampleFormControlInput1" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="" />
+                                <input type="email" class="form-control form-control-update" id="email" placeholder="" />
                             </div>
                             <div class="col-12">
                                 <label for="exampleFormControlInput1" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" />
+                                <input type="password" class="form-control form-control-update" id="password" />
                             </div>
                             <div class="col-12">
                                 <p class="text-end">
