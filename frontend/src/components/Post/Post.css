@@ -1,6 +1,56 @@
+.reactionSecrion{
+    background-color: var(--bs-card-cap-bg);
+    padding: 0 10px 0 10px;
+}
 .postCard{
     width:34rem;
 }
 .postUserImg{
-   font: 15px;
+    font-size: 1.8rem;
+}
+.postEdit{
+    font-size: 1.5rem;
+}
+.postEdit:hover{
+    cursor:pointer;
+}
+.postDate{
+    font-size:.7rem;
+    padding:0;
+    margin:0;
+}
+.postUser{
+    font-size:.9rem;
+    padding:0;
+    margin:0;
+    font-weight:600;
+}
+.reaction_1 > i ,.reaction_2 >i {
+    padding:5px 10px 5px 0;
+    font-size:1.3rem;
+}
+
+
+.reaction_1 > i:hover ,.reaction_2 >i:hover {
+    cursor:pointer;
+}
+
+.reaction_1 > .bi-hand-thumbs-up-fill{
+    color:blue;
+}
+
+.reaction_1 > .bi-suit-heart-fill{
+    color:red;
+}
+
+.reaction_1 > .bi-hand-thumbs-down-fill{
+    color:orange;
+}
+
+.reaction_2 > .bi-star-fill{
+    color:yellow;
+}
+
+.reaction_2 > .bi-chat-square-dots-fill{
+    color:gray;
 }

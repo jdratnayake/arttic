@@ -1,0 +1,18 @@
+.createPostInput{
+    display:flex;
+    justify-content:space-between;
+}
+
+.inputLablesCreate{
+    background-color:var(--primary-100);
+    color:var(--white);
+    border-radius:10px !important;
+    margin:0;
+}
+
+.inputLablesCreate:hover{
+   cursor:pointer;
+}
+.createPostLable{
+    padding-right:10px;
+}
