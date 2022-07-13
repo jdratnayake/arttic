@@ -1,3 +1,22 @@
 body {
     background-color: #F5F6F7;
-  }
+}
+
+/* .feedPage{
+  background-color: black;
+  padding: 0;
+} */
+
+.feedBody{
+  background-color: red;
+  height: 100vh;
+  /* padding: 0; */
+}
+
+.sideBar-col{
+  background-color: blue;
+}
+
+.add{
+  background-color: yellow;
+}

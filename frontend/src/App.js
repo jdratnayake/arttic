@@ -16,7 +16,7 @@ function App() {
   
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />}></Route>
+        <Route path="/" element={<FeedPage />}></Route>
       </Routes>
     </BrowserRouter>
 
