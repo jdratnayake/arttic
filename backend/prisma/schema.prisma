@@ -8,4 +8,18 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User{
+  @@map(name:"user")
+  userId Int @id @default(autoincrement())
+  type Int
+  firstName String @db.VarChar(50)
+  lastName String @db.VarChar(50)
+  email String @unique @db.VarChar(255)
+  accountStatus Int
+  joinedDate DateTime @default(now())
+  profilePhoto String? @db.VarChar(255)
+  password String @db.VarChar(72)
 }
