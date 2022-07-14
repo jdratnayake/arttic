@@ -23,7 +23,8 @@ function HomePage() {
     <>
       <NavBar />
       <Banner />
-      <div className="container-fluid">
+
+       <div className="container-fluid">
         <div class="container">
           <div className="row">
             <div class="col align-self-center about-section">
@@ -39,14 +40,16 @@ function HomePage() {
           </div>
         </div>
       </div>
+      
       <InfoCardLeft
         body="NFT creators can share their posts,videos and polls according to the relevant tiers. "
-        title="How NFT stories sharing ?"
+        title="How NFT stories sharing?"
       />
       <InfoCardRight
         body="We are focusing on people who have enthusiasm in NFT creating,selling and buying processes.This is a central based platform that develops and promotes for the NFT creators to fulfill their marketing purposes."
-        title="Why are we unique ?"
+        title="Why are we unique?"
       />
+
       <div className="container-fluid">
         <div class="container">
           <div className="row">

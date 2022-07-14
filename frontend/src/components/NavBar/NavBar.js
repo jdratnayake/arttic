@@ -60,8 +60,8 @@ function NavBar() {
                         </button>
                     </form>
                     <div className="navbar-end">
-                        <div className="navbar-item">
-                            <button type="button" className="btn btn-primary">
+                        <div className="navbar-item ">
+                            <button type="button" className="btn btn-primary nav-bar-btn">
                                 <strong>Sign up</strong>
                             </button>
                             <button type="button" className="btn btn-primary">

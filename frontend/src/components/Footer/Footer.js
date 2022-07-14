@@ -49,12 +49,6 @@ function Footer() {
                 <label for="exampleInputEmail1" className="form-label">
                   Subscribe to our newsletter
                 </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                />
               </div>
               <button type="submit" className="btn btn-primary">
                 Submit
