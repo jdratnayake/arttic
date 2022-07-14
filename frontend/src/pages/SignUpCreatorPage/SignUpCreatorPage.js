@@ -8,7 +8,7 @@ function SignUpCreatorPage() {
 
             <div class="d-flex justify-content-center">
                 <div class="col-4">
-                    <div class="card">
+                    <div class="card card-update">
                         <div class="card-body">
                             <h4 class="title text-center theme">Sign Up</h4>
 
@@ -26,23 +26,23 @@ function SignUpCreatorPage() {
 
                             <div class="col-12">
                                 <label for="exampleFormControlInput1" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="" required/>
+                                <input type="text" class="form-control fcup" id="name" placeholder="" required/>
                             </div>
                             <div class="col-12">
                                 <label for="exampleFormControlInput2" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="" required/>
+                                <input type="email" class="form-control fcup" id="email" placeholder="" required/>
                             </div>
                             <div class="col-12">
                                 <label for="exampleFormControlInput3" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" required/>
+                                <input type="password" class="form-control fcup" id="password" required/>
                             </div>
                             <div class="col-12">
                                 <label for="exampleFormControlInput4" class="form-label">Confirm Password</label>
-                                <input type="password" class="form-control" id="cnfpassword" required/>
+                                <input type="password" class="form-control fcup" id="cnfpassword" required/>
                             </div>
                             <div class="col-12">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required/>
-                                <label class="form-check-label chcklbl " for="flexCheckDefault">
+                                <label class="form-check-label chcklbl" for="flexCheckDefault">
                                     Agree to all terms and conditions
                                 </label>
                             </div>

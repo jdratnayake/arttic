@@ -7,7 +7,7 @@ function SignUpOptionPage() {
         <>
             <NavBar />
 
-            <div class="row d-flex justify-content-center">
+            <div class="row d-flex justify-content-center ptop">
                 <div class="col-3">
                     <SignUpOptionCard
                         title="Sign Up As Follower" btn="Sign Up As Follower" av="follower"

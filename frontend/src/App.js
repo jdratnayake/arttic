@@ -17,6 +17,12 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />}></Route>
+        <Route path="/login" element={<SignInPage />}></Route>
+        <Route path="/signupfollower" element={<SignUpFollowerPage />}></Route>
+        <Route path="/signupcreator" element={<SignUpCreatorPage />}></Route>
+        <Route path="/signupcreator2" element={<SignUpCreatorPage2 />}></Route>
+        <Route path="/signupoption" element={<SignUpOptionPage />}></Route>
+        <Route path="/feed" element={<FeedPage />}></Route>
       </Routes>
     </BrowserRouter>
 
