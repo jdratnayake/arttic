@@ -57,12 +57,14 @@ function Banner() {
           <div className="container">
             <div className="row align-items-center bannerRow">
               <div className="col-5 align-self-center temp">
+                <h2>Change the Way</h2>
+                <h2> NFT is Marketed</h2>
                 <h4>
                   Let's change NFT market with more collabaration between
                   creators and followers
                 </h4>
                 <div className="bannerButtons">
-                  <a className="btn btn-main-primary">Explore NFT creators</a>
+                  <a className="btn btn-main-primary">Get Started</a>
                 </div>
               </div>
               <div className="col-7 bannerImage ">
