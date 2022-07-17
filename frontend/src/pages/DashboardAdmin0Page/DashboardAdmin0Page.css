@@ -1,0 +1,21 @@
+.dashboardAdmin0Page .wrapper {
+  width: 100%;
+}
+
+.dashboardAdmin0Page .cardRow {
+  margin-bottom: 24px;
+}
+
+.dashboardAdmin0Page .title {
+  margin: 8px;
+}
+
+.dashboardAdmin0Page .lineChartStyle {
+  position: relative;
+}
+
+.dashboardAdmin0Page .lineChartStyle .lineChartVerticleStyle {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}

@@ -10,10 +10,10 @@ import SignUpCreatorPage2 from "./pages/SignUpCreatorPage/SignUpCreatorPage2";
 import SignUpFollowerPage from "./pages/SignUpFollowerPage/SignUpFollowerPage";
 import SignUpOptionPage from "./pages/SignUpOptionPage/SignUpOptionPage";
 import SignInPage from "./pages/SIgnInPage/SignInPage";
+import DashboardAdmin0Page from "./pages/DashboardAdmin0Page/DashboardAdmin0Page";
 
 function App() {
   return (
-  
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />}></Route>
@@ -23,9 +23,12 @@ function App() {
         <Route path="/signupcreator2" element={<SignUpCreatorPage2 />}></Route>
         <Route path="/signupoption" element={<SignUpOptionPage />}></Route>
         <Route path="/feed" element={<FeedPage />}></Route>
+        <Route
+          path="/admin0/dashboard"
+          element={<DashboardAdmin0Page />}
+        ></Route>
       </Routes>
     </BrowserRouter>
-
   );
 }
 
