@@ -11,6 +11,7 @@ import SignUpFollowerPage from "./pages/SignUpFollowerPage/SignUpFollowerPage";
 import SignUpOptionPage from "./pages/SignUpOptionPage/SignUpOptionPage";
 import SignInPage from "./pages/SIgnInPage/SignInPage";
 import DashboardAdmin0Page from "./pages/DashboardAdmin0Page/DashboardAdmin0Page";
+import TransactionAdmin0Page from "./pages/TransactionAdmin0Page/TransactionAdmin0Page";
 
 function App() {
   return (
@@ -26,6 +27,10 @@ function App() {
         <Route
           path="/admin0/dashboard"
           element={<DashboardAdmin0Page />}
+        ></Route>
+        <Route
+          path="/admin0/transactions"
+          element={<TransactionAdmin0Page />}
         ></Route>
       </Routes>
     </BrowserRouter>
