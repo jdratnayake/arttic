@@ -2,7 +2,7 @@ body{
     background-color: rgba(244, 242, 244, 1) !important;
 }
 
-.card-update{
+.SignUpFollowerPage .card-update{
     border: rgba(244, 242, 244, 1);
     margin-top: 10%;
     margin-bottom: 10%;
@@ -11,32 +11,32 @@ body{
     padding-left: 5%;
     padding-right: 5%;
 }
-.title{
+.SignUpFollowerPage .title{
     padding-bottom: 5%;
 }
 
-.form-control-update{
+.SignUpFollowerPage .form-control-update{
     margin-bottom: 5%;
     border-radius: 10px;
 }
 
-.theme{
+.SignUpFollowerPage .theme{
     color: rgba(132, 39, 226, 1);
 }
 
-.btnlog{
+.SignUpFollowerPage .btnlog{
     margin-bottom: 5%;
     border-radius: 10px;
 }
 
-.signup{
+.SignUpFollowerPage .signup{
     margin-top: 5%;
 }
 
-.icon{
+.SignUpFollowerPage .icon{
     padding-right: 15px;
 }
 
-.chcklbl{
+.SignUpFollowerPage .chcklbl{
     padding-left: 5%;
 }
