@@ -1,7 +1,14 @@
 body{
     background-color: rgba(244, 242, 244, 1) !important;
 }
-
+.SignInPage .col-4{
+    justify-content: center!important;
+    align-items: center;
+    /* margin-top: 10px; */
+}
+.SignInPage .col-12 .error-msg{
+    color:red;
+}
 .card-update{
     border: rgba(244, 242, 244, 1);
     margin-top: 10%;
