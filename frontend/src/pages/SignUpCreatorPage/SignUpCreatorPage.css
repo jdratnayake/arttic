@@ -1,3 +1,6 @@
+.SignUpCreatorPage .icon{
+    padding-right: 15px;
+}
 .SignUpCreatorPage .btnlog {
     margin-bottom: 5%;
     border-radius: 10px;
@@ -13,11 +16,6 @@
     padding-right: 5%;
 }
 
-.SignUpCreatorPage .fcup{
-    margin-bottom: 5%;
-    border-radius: 10px;
-}
-
 .SignUpCreatorPage .wallet {
     background-color: rgba(51, 255, 148, 1);
     color: rgb(0, 0, 0);
@@ -27,4 +25,21 @@
     background-color: rgba(255, 255, 255, 1);
     color: rgba(51, 255, 148, 1);
     border: 1px solid rgba(51, 255, 148, 1);
+}
+.SignUpCreatorPage2 .d-flex{
+    margin-top: 11%;
+}
+.SignUpCreatorPage2 .card-update{
+    border: rgba(244, 242, 244, 1);
+    margin-top: 10%;
+    margin-bottom: 10%;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    
+}
+.SignUpCreatorPage2 .col-12 .wallet{
+    background-color: var(--green-50);
+    color: black;
 }

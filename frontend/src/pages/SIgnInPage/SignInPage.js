@@ -44,20 +44,16 @@ function SignInPage() {
                                 <p class="error-msg">Incorrect password</p>
                             </div>
                             <div class="col-12 y Froget-password">
-                                <div class="row">
-                                    <div class="col form-check">
+                                <p class="text-end">
+                                    <a className="theme"><small>Forgot Password</small></a>
+                                </p>
+                            </div>
+                            <div class="col form-check">
                                         <input class="form-check-input" type="checkbox" id="remember-me"/>
                                         <label class="form-check-label" for="remember-me">
                                         Remember Me
                                         </label>
                                     </div>
-                                    <div class="col">
-                                        <p class="text-end">
-                                            <a className="theme"><small>Forgot Password</small></a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="text-center">
                                 <div class="col-12">
                                     <button type="submit" class="btn btn-primary col-12 btnlog">Sign In</button>

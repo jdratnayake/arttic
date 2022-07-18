@@ -1,7 +1,7 @@
 body{
     background-color: rgba(244, 242, 244, 1) !important;
 }
-.SignInPage .arttic-logo{
+.arttic-logo{
     justify-content: center!important;
   
     margin-bottom: 20px;
@@ -17,16 +17,16 @@ body{
     align-items: center;
     /* margin-top: 10px; */
 }
-.SignInPage .col-12 .form-label{
+.col-12 .form-label{
     margin: 0.2rem;
 }
-.SignInPage .col-12 .fcup{
+.col-12 .fcup{
     border-radius: 10px;
     font-weight: 100;
     color: #F4F2F4;
     font-size: small;
 }
-.SignInPage .col-12 .error-msg{
+.col-12 .error-msg{
     color:red;
     font-size: small;
 }
@@ -66,9 +66,9 @@ body{
 .SignInPage .mb-3{
     margin-bottom: 0.3rem!important;
 }
-.SignInPage .form-check{
+/* .SignInPage .form-check{
     margin-left: 0.8rem;
-}
+} */
 .x{
     background-color: yellow;
 }

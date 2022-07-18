@@ -1,5 +1,6 @@
-import NavBar from "../../components/NavBar/NavBar";
+// import NavBar from "../../components/NavBar/NavBar";
 import "./SignUpFollowerPage.css"
+import logo from '../../images/logo.png'
 
 function SignUpFollowerPage() {
     return (
@@ -10,14 +11,21 @@ function SignUpFollowerPage() {
                     <div class="col-sm-4">
                         <div class="card card-update">
                             <div class="card-body">
-                                <h4 class="title text-center theme">Sign Up</h4>
-
+                                <div class="d-grid gap-2 col-12 mx-auto text-center arttic-logo">
+                                    <a href="#">
+                                        <img
+                                            src={logo}
+                                            width="200"
+                                            height="45"
+                                        />
+                                    </a>
+                                </div>
                                 <div class="d-grid gap-2 col-12 mx-auto text-center">
                                     <button class="btn btn-outline-danger" type="button">
-                                        <i class="bi bi-google icon"></i>Continue with Google
+                                        <i class="bi bi-google icon"></i>Sign Up with Google
                                     </button>
-                                    <button class="btn btn-outline-primary" type="button">
-                                        <i class="bi bi-facebook icon"></i>Continue with Facebook
+                                    <button class="btn btn-outline-dark" type="button">
+                                        <i class="bi bi-facebook icon"></i>Sign Up with Apple
                                     </button>
 
                                     <br />

@@ -1,5 +1,7 @@
-import NavBar from "../../components/NavBar/NavBar";
+// import NavBar from "../../components/NavBar/NavBar";
 import "./SignUpCreatorPage.css"
+import logo from '../../images/logo.png'
+
 
 function SignUpCreatorPage2() {
     return (
@@ -10,6 +12,15 @@ function SignUpCreatorPage2() {
                     <div class="col-4">
                         <div class="card card-update">
                             <div class="card-body">
+                                <div class="d-grid gap-2 col-12 mx-auto text-center arttic-logo">
+                                    <a href="#">
+                                        <img
+                                            src={logo}
+                                            width="200"
+                                            height="45"
+                                        />
+                                    </a>
+                                </div>
                                 <h4 class="title text-center theme">Connect Wallet</h4>
 
                                 <div class="col-12">

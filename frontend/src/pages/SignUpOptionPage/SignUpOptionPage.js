@@ -1,12 +1,22 @@
 import "./SignUpOptionPage.css";
-import NavBar from "../../components/NavBar/NavBar";
+// import NavBar from "../../components/NavBar/NavBar";
 import SignUpOptionCard from "../../components/SignUpOptionCard/SignUpOptionCard";
+import logo from '../../images/logo.png'
 
 function SignUpOptionPage() {
     return (
         <>
             {/* <NavBar /> */}
             <span class="SignUpOptionPage">
+                <div class="d-grid gap-2 col-12 mx-auto text-center arttic-logo">
+                    <a href="#">
+                        <img
+                            src={logo}
+                            width="200"
+                            height="45"
+                        />
+                    </a>
+                </div>
                 <div class="row d-flex justify-content-center ptop">
                     <div class="col-3">
                         <SignUpOptionCard
