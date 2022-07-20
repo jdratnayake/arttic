@@ -53,7 +53,7 @@ function Feed() {
           </div>
         </div>
       </div>
-      <div class="col-sm-4 sidebar-col">
+      <div class="col-sm-4 col-xs-4 col-advertisment">
         <Ad />
       </div>
     </div>

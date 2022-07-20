@@ -4,11 +4,9 @@ import { useState } from "react";
 
 import NavBar from "../../components/NavBar/NavBar";
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
-import Post from "../../components/Post/Post";
 import Ad from "../../components/Ad/Ad";
-import CreatePost from "../../components/Post/CreatePost";
-import t from '../../images/NFTs/monkey-removebg.png';
 import Feed from "../../components/Feed/Feed";
+import Settings from "../../components/Settings/Settings";
 
 function FeedPage() {
     const [component, setComponent] = useState("Feed");
@@ -42,8 +40,8 @@ function FeedPage() {
         <>
             <NavBar />
             <div class="container mt-2 feedBack">
-                <div class="row">
-                    <div class="col-sm-3 sidebar-col">
+                <div class="row justify-content-center">
+                    <div class="col-md-3 sidebar-col">
                         <nav id="sidebar">
                             <div className="content">
                                 <ul class="list-unstyled">
@@ -86,8 +84,9 @@ function FeedPage() {
                         </nav>
                         {/* <SideNavBar /> */}
                     </div>
-                    <div className="col sm-9 col-xs-12">
+                    <div className="col-md-9 col-xs-12">
                         {component === 'Feed' && <Feed />}
+                        {component === 'Settings' && <Settings />}
                         {component === 'Advertisment' && <Ad />}
                     </div>
 

@@ -52,7 +52,7 @@
   
   .album-photos {
     display: flex;
-    margin-top: 20px;
+    /* margin-top: 20px; */
     max-height: 30vh;
   }
   
@@ -105,10 +105,9 @@
     padding: 10px 20px 10px 20px;
     display: flex;
     align-items: center;
-    box-shadow: 0px 5px 10px rgba(0,0,0,0.1);
-    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
     flex-wrap: wrap;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
   }
   .status-img {
     width: 50px;

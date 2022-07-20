@@ -13,7 +13,7 @@ function Post(props) {
         />
         <div className="album-detail">
           <div className="album-title">
-            <strong>{props.name}</strong><br/> {props.title}
+           <strong>{props.name}</strong>
           </div>
           <div className="album-date">{props.date}</div>
         </div>
@@ -63,7 +63,7 @@ function Post(props) {
           </a>
           <a href="#" className="album-action">
             <i className="bi bi-chat-square-dots-fill"></i>
-            Comment
+            10 Comments
           </a>
         </div>
       </div>
