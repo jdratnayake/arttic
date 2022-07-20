@@ -1,4 +1,139 @@
-.reactionSecrion{
+.postReactLeft{
+    display: block;
+    float: right;
+  }
+  
+  .album {
+    /* padding-top: 20px; */
+    margin-top: 20px;
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.3);
+
+  }
+
+  .album .status-main {
+    border: none;
+    display: flex;
+  }
+  .album .intro-menu {
+    margin-bottom: auto;
+    margin-top: 5px;
+  }
+  
+  .album-detail {
+    width: calc(100% - 110px);
+  }
+  
+  .album-title{
+    font-size:small;
+  }
+  .album-title span {
+    color: #1771d6;
+    cursor: pointer;
+  }
+  
+  .album-date {
+    font-size: 11px;
+    color: #595c6c;
+    margin-top: 2px;
+  }
+  
+  .album-content {
+    padding: 0 20px 20px;
+    font-size:small;
+  }
+  
+  .album-photo {
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+  
+  .album-photos {
+    display: flex;
+    margin-top: 20px;
+    max-height: 30vh;
+  }
+  
+  .album-photos > .album-photo {
+    width: 50%;
+  }
+  
+  .album-right {
+    width: 50%;
+    margin-left: 10px;
+    line-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .album-right .album-photo {
+    height: calc(50% - 10px);
+  }
+  
+  .album-actions {
+    padding: 0 20px 20px;
+  }
+  
+  .album-action {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #a2a4b4;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
+    font-size:small;
+  }
+
+  .album-action > .bi{
+    padding-right:5px;
+  }
+  .album-action:hover {
+    color: #fff;
+  }
+  .album-action svg {
+    width: 16px;
+    margin-right: 6px;
+  }
+  
+  .box {
+    background-color: var(--bs-white);
+    border-radius: 4px;
+  }
+
+  .post_status-main {
+    padding: 10px 20px 10px 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+  }
+  .status-img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+  .intro-menu {
+    background-color: #8f98a9;
+    box-shadow: -8px 0 0 0 #8f98a9, 8px 0 0 0 #8f98a9;
+    width: 5px;
+    height: 5px;
+    border: 0;
+    padding: 0;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: 8px;
+  }
+
+
+
+  
+  /* old css */
+  .reactionSecrion{
     background-color: var(--bs-card-cap-bg);
     padding: 0 10px 0 10px;
 }
@@ -31,26 +166,36 @@
 }
 
 
-.reaction_1 > i:hover ,.reaction_2 >i:hover {
+.album-action > i:hover ,.reaction_2 >i:hover {
     cursor:pointer;
 }
 
-.reaction_1 > .bi-hand-thumbs-up-fill{
+.album-action > .bi-hand-thumbs-up-fill{
     color:blue;
 }
 
-.reaction_1 > .bi-suit-heart-fill{
+.album-action > .bi-suit-heart-fill{
     color:red;
 }
 
-.reaction_1 > .bi-hand-thumbs-down-fill{
+.album-action > .bi-hand-thumbs-down-fill{
     color:orange;
 }
 
-.reaction_2 > .bi-star-fill{
+.album-action > .bi-star-fill{
     color:yellow;
 }
 
-.reaction_2 > .bi-chat-square-dots-fill{
+.album-action > .bi-chat-square-dots-fill{
     color:gray;
+}
+
+@media only screen and (max-width:1000px){
+
+.post_status-main{
+  padding: 8px;
+}
+.album-actions{
+  padding: 0 10px 10px;
+}
 }

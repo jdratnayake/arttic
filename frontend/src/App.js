@@ -11,6 +11,8 @@ import SignUpFollowerPage from "./pages/SignUpFollowerPage/SignUpFollowerPage";
 import SignUpOptionPage from "./pages/SignUpOptionPage/SignUpOptionPage";
 import SignInPage from "./pages/SIgnInPage/SignInPage";
 
+import Settings from "./components/Settings/Settings";
+
 function App() {
   return (
   
@@ -18,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/feed" element={<FeedPage />}></Route>
+        <Route path="/settings" element={<Settings />}></Route>
       </Routes>
     </BrowserRouter>
 

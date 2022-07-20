@@ -1,4 +1,6 @@
 import "./FeedPage.css";
+import { useState } from "react";
+
 
 import NavBar from "../../components/NavBar/NavBar";
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
@@ -6,40 +8,93 @@ import Post from "../../components/Post/Post";
 import Ad from "../../components/Ad/Ad";
 import CreatePost from "../../components/Post/CreatePost";
 import t from '../../images/NFTs/monkey-removebg.png';
+import Feed from "../../components/Feed/Feed";
 
 function FeedPage() {
+    const [component, setComponent] = useState("Feed");
+
+    const handleClick = (component) => {
+        switch (component) {
+            case "Feed":
+                setComponent("Feed")
+                break;
+            case "FindCreators":
+                setComponent("FindCreators")
+                break;
+            case "Favourites":
+                setComponent("Favourite")
+                break;
+            case "Chat":
+                setComponent("Chat")
+                break;
+            case "Statics":
+                setComponent("Statics")
+                break;
+            case "Settings":
+                setComponent("Settings")
+                break;
+            case "Advertisment":
+                setComponent("Advertisment")
+                break;
+        }
+    }
     return (
         <>
             <NavBar />
-            <div class="container mt-2">
+            <div class="container mt-2 feedBack">
                 <div class="row">
-                    <div class="col-3">
-                        <SideNavBar />
-                    </div>
-                    <div class="col-6 p-0 feedBody">
-                        <div class="container-fluid p-0 feedPage">
-                            <div class="container feed-container">
-                            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                <div class="toast-body">
-                                    Hello, world! This is a toast message.
-                                    <div class="mt-2 pt-2 border-top">
-                                    <button type="button" class="btn btn-primary btn-sm">Take action</button>
-                                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
+                    <div class="col-sm-3 sidebar-col">
+                        <nav id="sidebar">
+                            <div className="content">
+                                <ul class="list-unstyled">
+                                    <li class="activesb">
+                                        <a onClick={() => handleClick("Feed")}><i class="bi bi-rss icon-theme"></i>Feed</a>
+                                    </li>
+                                    <li>
+                                        <a onClick={() => handleClick("FindCreators")}><i class="bi bi-people-fill icon-theme"></i>Find Creators</a>
+                                    </li>
+                                    <li>
+                                        <a onClick={() => handleClick("Favourite")}><i class="bi bi-star icon-theme"></i>Favourits</a>
+                                    </li>
+                                    <li>
+                                        <a onClick={() => handleClick("Chat")}><i class="bi bi-chat-dots icon-theme"></i>Chat</a>
+                                    </li>
+                                    <li>
+                                        <a onClick={() => handleClick("Statics")}><i class="bi bi-graph-up icon-theme"></i>Statics</a>
+                                    </li>
+                                    <li>
+                                        <a onClick={() => handleClick("Settings")} ><i class="bi bi-gear icon-theme"></i>Settings</a>
+                                    </li>
+                                    <li>
+                                        <a onClick={() => handleClick("Advertisment")}><i class="bi bi-badge-ad-fill icon-theme"></i>Advertisment</a>
+                                    </li>
+                                </ul><br />
+
+                                <div className="premium">
+                                    <div className="content-pre">
+                                        <p>
+                                            Upgrade to premimum <i class="bi bi-gem icon-pre"></i>
+                                        </p>
+                                        <p>
+                                            small description on to have
+                                            interest on premium package
+                                        </p>
                                     </div>
                                 </div>
-                                </div>
-                                <CreatePost/>
-                                <Post image={t} name={"Peter Pan"} date={"2022-07-13"}/>
-                                <Post image={t} name={"Peter Pan"} date={"2022-07-13"}/>
+
                             </div>
-                        </div>
+                        </nav>
+                        {/* <SideNavBar /> */}
                     </div>
-                    <div class="col-3">
-                         <Ad/>
+                    <div className="col sm-9 col-xs-12">
+                        {component === 'Feed' && <Feed />}
+                        {component === 'Advertisment' && <Ad />}
                     </div>
+
+                    {/*  */}
                 </div>
             </div>
-            
+
         </>
     )
 }
