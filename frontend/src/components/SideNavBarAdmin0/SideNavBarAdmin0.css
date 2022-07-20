@@ -11,7 +11,7 @@
   align-items: stretch;
 }
 
-#sidebar {
+.sideNavBarAdmin0 #sidebar {
   border-radius: 5px;
   min-width: 250px;
   max-width: 250px;
