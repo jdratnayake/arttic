@@ -10,13 +10,15 @@ import SignUpCreatorPage2 from "./pages/SignUpCreatorPage/SignUpCreatorPage2";
 import SignUpFollowerPage from "./pages/SignUpFollowerPage/SignUpFollowerPage";
 import SignUpOptionPage from "./pages/SignUpOptionPage/SignUpOptionPage";
 import SignInPage from "./pages/SIgnInPage/SignInPage";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
+
 
 function App() {
   return (
   
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />}></Route>
+        <Route path="/" element={<ErrorPage />}></Route>
       </Routes>
     </BrowserRouter>
 
