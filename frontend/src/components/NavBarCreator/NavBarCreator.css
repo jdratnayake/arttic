@@ -37,10 +37,10 @@
 
 .searchTerm {
     width: 100%;
-    border: 1px solid #c2c2c2;
-    background: #c2c2c2;
+    border: 1px solid #8427E2;
+    background: #F4F2F4;
     border-left: none;
-    padding: 5px;
+    padding: 3px;
     border-radius: 0 5px 5px 0;
     outline: none;
 }
@@ -48,10 +48,11 @@
 .searchButton {
     width: 40px;
     height: 35px;
-    border: 1px solid #c2c2c2;
-    background: #c2c2c2;
+    border: 1px solid #8427E2;
+    background: #F4F2F4;
     text-align: center;
     color: #d6d6d6;
+    border-right: none;
     border-radius: 5px 0 0 5px;
     cursor: pointer;
     font-size: 15px;
