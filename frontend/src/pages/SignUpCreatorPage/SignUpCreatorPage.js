@@ -21,7 +21,7 @@ function SignUpCreatorPage() {
                                     </a>
                                 </div>
                                 <div class="d-grid gap-2 col-12 mx-auto text-center">
-                                    <button class="btn btn-outline-danger" type="button">
+                                    <button class="btn btn-outline-primary" type="button">
                                         <i class="bi bi-google icon"></i>Sign Up with Google
                                     </button>
                                     <button class="btn btn-outline-dark" type="button">
@@ -50,7 +50,7 @@ function SignUpCreatorPage() {
                                     <input type="password" class="form-control fcup" id="cnfpassword" required placeholder="Enter Password Again"/>
                                     <p class="error-msg">Password is not match</p>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12 terms-conditions">
                                     <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required/>
                                     <label class="form-check-label chcklbl" for="flexCheckDefault">
                                         Agree to all terms and conditions
