@@ -1,7 +1,15 @@
 body{
     background-color: rgba(244, 242, 244, 1) !important;
 }
-
+.SignUpFollowerPage .Or{
+    margin-bottom: 0.5rem;
+}
+.SignUpFollowerPage .col-12{
+    margin-bottom: 1rem;
+}
+.SignUpFollowerPage .col-12 .form-label{
+    margin: 0.2rem;
+}
 .SignUpFollowerPage .card-update{
     border: rgba(244, 242, 244, 1);
     margin-top: 10%;
@@ -10,6 +18,13 @@ body{
     margin-right: 5%;
     padding-left: 5%;
     padding-right: 5%;
+}
+.SignUpFollowerPage p{
+    margin-bottom: 0;
+}
+.SignUpFollowerPage .col-12 .error-msg{
+    color:red;
+    font-size: small;
 }
 .SignUpFollowerPage .title{
     padding-bottom: 5%;
@@ -41,4 +56,21 @@ body{
 
 .SignUpFollowerPage .chcklbl{
     padding-left: 5%;
+}
+@media only screen and (max-width:768px){
+    .SignUpFollowerPage .col-4{
+        width: 50%;
+    }
+}
+@media only screen and (max-width:514px){
+    .SignUpFollowerPage .col-4{
+        width: 83%;
+    }
+    .chcklbl{
+        font-size: 14px;
+    }
+    .terms-conditions{
+        display: flex;
+        flex-direction: row;
+    }
 }
