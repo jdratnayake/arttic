@@ -9,6 +9,7 @@ body{
 /* .SignInPage .arttic-logo a{
     margin-left: 70px;
 } */
+
 .SignInPage .Or{
     margin-bottom: 0.5rem;
 }
@@ -17,16 +18,22 @@ body{
     align-items: center;
     /* margin-top: 10px; */
 }
-.col-12 .form-label{
+.SignInPage .col-12{
+    margin-bottom: 1rem;
+}
+.SignInPage .col-12 .form-label{
     margin: 0.2rem;
 }
-.col-12 .fcup{
+.SignInPage .col-12 .fcup{
     border-radius: 10px;
     font-weight: 100;
     color: #F4F2F4;
     font-size: small;
 }
-.col-12 .error-msg{
+.SignInPage p{
+    margin-bottom: 0;
+}
+.SignInPage .col-12 .error-msg{
     color:red;
     font-size: small;
 }
@@ -69,10 +76,17 @@ body{
 /* .SignInPage .form-check{
     margin-left: 0.8rem;
 } */
-.x{
-    background-color: yellow;
+@media only screen and (max-width:768px){
+    .SignInPage .signup{
+        font-size: 10px;
+    } 
+    .SignInPage .col-4{
+        width: 50%;
+    }
 }
-.y{
-    background-color: red;
-    display: grid;
+@media only screen and (max-width:514px){
+    .SignInPage .col-4{
+        width: 80%;
+        margin-top: 30px;
+    }
 }

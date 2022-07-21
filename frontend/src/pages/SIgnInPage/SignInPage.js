@@ -1,11 +1,9 @@
 import "./SignInPage.css";
-// import NavBar from "../../components/NavBar/NavBar";
 import logo from '../../images/logo.png'
 
 function SignInPage() {
     return (
         <>
-            {/* <NavBar /> */}
         <span class="SignInPage">
             <div class="d-flex justify-content-center">
                 <div class="col-4">
@@ -20,16 +18,14 @@ function SignInPage() {
                                     />
                                 </a>
                             </div>
-                            {/* <h4 class="title text-center theme">Sign In</h4> */}
 
                             <div class="d-grid gap-2 col-12 mx-auto text-center">
-                                <button class="btn btn-outline-danger" type="button">
+                                <button class="btn btn-outline-primary" type="button">
                                     <i class="bi bi-google icon"></i>Sign In with Google
                                 </button>
                                 <button class="btn btn-outline-dark" type="button">
-                                    <i class="bi bi-apple icon"></i>Sign In with Facebook
+                                    <i class="bi bi-apple icon"></i>Sign In with Apple
                                 </button>
-                                {/* <br /> */}
                                 <p class="Or">Or</p>
                             </div>
                             
@@ -38,12 +34,12 @@ function SignInPage() {
                                 <input type="email" class="form-control form-control-update fcup" id="email" placeholder="Enter Username or Email" />
                                 <p class="error-msg">Incorrect Username or Email</p>
                             </div>
-                            <div class="col-12 x">
+                            <div class="col-12">
                                 <label for="exampleFormControlInput1" class="form-label">Password</label>
                                 <input type="password" class="form-control form-control-update fcup" id="password" placeholder="Enter Password" />
                                 <p class="error-msg">Incorrect password</p>
                             </div>
-                            <div class="col-12 y Froget-password">
+                            <div class="col-12 Froget-password">
                                 <p class="text-end">
                                     <a className="theme"><small>Forgot Password</small></a>
                                 </p>

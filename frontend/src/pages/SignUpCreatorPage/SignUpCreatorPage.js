@@ -27,7 +27,7 @@ function SignUpCreatorPage() {
                                     <button class="btn btn-outline-dark" type="button">
                                         <i class="bi bi-apple icon"></i>Sign Up with Apple
                                     </button>
-                                    <p>Or</p>
+                                    <p class="Or">Or</p>
                                 </div>
 
                                 <div class="col-12">

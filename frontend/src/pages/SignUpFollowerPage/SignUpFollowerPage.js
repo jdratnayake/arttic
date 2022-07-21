@@ -27,26 +27,24 @@ function SignUpFollowerPage() {
                                     <button class="btn btn-outline-dark" type="button">
                                         <i class="bi bi-facebook icon"></i>Sign Up with Apple
                                     </button>
-
-                                    <br />
-                                    <p>Or</p>
+                                    <p class="Or">Or</p>
                                 </div>
 
                                 <div class="col-12">
                                     <label for="exampleFormControlInput1" class="form-label">Name</label>
-                                    <input type="text" class="form-control form-control-update" id="name" placeholder="" required/>
+                                    <input type="text" class="form-control form-control-update" id="name" placeholder="Enter Name" required/>
                                 </div>
                                 <div class="col-12">
                                     <label for="exampleFormControlInput2" class="form-label">Email</label>
-                                    <input type="email" class="form-control form-control-update" id="email" placeholder="" required/>
+                                    <input type="email" class="form-control form-control-update" id="email" placeholder="Enter Email" required/>
                                 </div>
                                 <div class="col-12">
                                     <label for="exampleFormControlInput3" class="form-label">Password</label>
-                                    <input type="password" class="form-control form-control-update" id="password" required/>
+                                    <input type="password" class="form-control form-control-update" id="password" required placeholder="Enter Password"/>
                                 </div>
                                 <div class="col-12">
                                     <label for="exampleFormControlInput4" class="form-label">Confirm Password</label>
-                                    <input type="password" class="form-control form-control-update" id="cnfpassword" required/>
+                                    <input type="password" class="form-control form-control-update" id="cnfpassword" required placeholder="Enter Password Again"/>
                                 </div>
                                 <div class="col-12">
                                     <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required/>
