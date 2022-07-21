@@ -1,11 +1,9 @@
-// import NavBar from "../../components/NavBar/NavBar";
 import "./SignUpCreatorPage.css"
 import logo from '../../images/logo.png'
 
 function SignUpCreatorPage() {
     return (
         <>
-            {/* <NavBar /> */}
             <span class="SignUpCreatorPage">
                 <div class="d-flex justify-content-center">
                     <div class="col-4">

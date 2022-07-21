@@ -1,11 +1,9 @@
-// import NavBar from "../../components/NavBar/NavBar";
 import "./SignUpFollowerPage.css"
 import logo from '../../images/logo.png'
 
 function SignUpFollowerPage() {
     return (
         <>
-            {/* <NavBar /> */}
             <span class="SignUpFollowerPage">
                 <div class="d-flex justify-content-center">
                     <div class="col-4">
