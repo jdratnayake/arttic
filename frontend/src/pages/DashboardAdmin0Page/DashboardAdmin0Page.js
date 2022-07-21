@@ -17,16 +17,25 @@ function DashboardAdmin0Page() {
         categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
         title: {
           text: "Time",
+          style: {
+            fontFamily: "Poppins",
+          },
         },
       },
       yaxis: {
         title: {
           text: "Count",
+          style: {
+            fontFamily: "Poppins",
+          },
         },
       },
       title: {
         text: "Active Users",
         align: "left",
+        style: {
+          fontFamily: "Poppins",
+        },
       },
     },
     series: [
@@ -46,16 +55,25 @@ function DashboardAdmin0Page() {
         categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
         title: {
           text: "Time",
+          style: {
+            fontFamily: "Poppins",
+          },
         },
       },
       yaxis: {
         title: {
           text: "Cash($)",
+          style: {
+            fontFamily: "Poppins",
+          },
         },
       },
       title: {
         text: "Revenue",
         align: "left",
+        style: {
+          fontFamily: "Poppins",
+        },
       },
     },
     series: [
@@ -79,6 +97,9 @@ function DashboardAdmin0Page() {
       title: {
         text: "User Diversity",
         align: "left",
+        style: {
+          fontFamily: "Poppins",
+        },
       },
     },
   };
@@ -89,20 +110,18 @@ function DashboardAdmin0Page() {
       <div className="wrapper">
         <SideNavBarAdmin0 />
         <div id="content">
-          <h1 class="h3 mb-3">
-            <strong>Analytics</strong> Dashboard
-          </h1>
+          <h1 class="h3 mb-3">Dashboard</h1>
 
           <div class="row">
             <div class="col title">
               <div class="row cardRow">
-                <div class="col">
+                <div class="col cardCol">
                   <AnalyticsCard
                     cardHeading="New Accounts"
                     iconName="bi bi-person-plus-fill"
                   />
                 </div>
-                <div class="col">
+                <div class="col cardCol">
                   <AnalyticsCard
                     cardHeading="Advertisements"
                     iconName="bi bi-badge-ad-fill"
@@ -110,15 +129,15 @@ function DashboardAdmin0Page() {
                 </div>
               </div>
               <div class="row">
-                <div class="col">
+                <div class="col cardCol">
                   <AnalyticsCard
-                    cardHeading="Deleted Accounts"
+                    cardHeading="Del. Accounts"
                     iconName="bi bi-person-x-fill"
                   />
                 </div>
-                <div class="col">
+                <div class="col cardCol">
                   <AnalyticsCard
-                    cardHeading="No of Complaints"
+                    cardHeading="Complaints"
                     iconName="bi bi-clipboard-x-fill"
                   />
                 </div>

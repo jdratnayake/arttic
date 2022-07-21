@@ -1,7 +1,22 @@
+.analyticsCard .col-auto {
+  padding-left: 0;
+  padding-top: 0 !important;
+}
+.analyticsCard {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
 .analyticsCard .card {
   margin: 0px;
 }
 
 .analyticsCard .iconStyle {
   font-size: 25px;
+}
+
+.analyticsCard .text-muted {
+  font-size: 15px;
 }

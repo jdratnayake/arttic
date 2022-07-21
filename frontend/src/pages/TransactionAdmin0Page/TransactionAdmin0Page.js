@@ -16,42 +16,46 @@ function TransactionAdmin0Page() {
       <NavBar />
       <div className="wrapper">
         <SideNavBarAdmin0 />
+
         <div id="content">
-          <div class="row">
-            <h4 class="card-title float-left mt-2">Transactions History</h4>
+          <div class="card-body">
+            <div class="row">
+              <h4 class="card-title float-left mt-2">Transactions History</h4>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <label for="basic-url" class="form-label">
+                  Start Date:
+                </label>
+                <div class="input-group mb-3">
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    className="date-picker-date"
+                  />
+                </div>
+              </div>
+              <div class="col">
+                <label for="basic-url" class="form-label">
+                  End Date:
+                </label>
+                <div class="input-group mb-3">
+                  <DatePicker
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    className="date-picker-date"
+                  />
+                </div>
+              </div>
+              <div class="col column-container">
+                <button type="button" class="btn btn-primary">
+                  Search
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div class="row">
-            <div class="col">
-              <label for="basic-url" class="form-label">
-                Start Date:
-              </label>
-              <div class="input-group mb-3">
-                <DatePicker
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date)}
-                  className="date-picker-date"
-                />
-              </div>
-            </div>
-            <div class="col">
-              <label for="basic-url" class="form-label">
-                End Date:
-              </label>
-              <div class="input-group mb-3">
-                <DatePicker
-                  selected={endDate}
-                  onChange={(date) => setEndDate(date)}
-                  className="date-picker-date"
-                />
-              </div>
-            </div>
-            <div class="col column-container">
-              <button type="button" class="btn btn-primary">
-                Search
-              </button>
-            </div>
-          </div>
           <div class="row">
             <div className="tableSection">
               <table>

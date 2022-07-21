@@ -1,5 +1,11 @@
+.transactionAdmin0Page #content {
+  padding: 0;
+}
+
 .transactionAdmin0Page .wrapper {
   width: 100%;
+  padding-right: 3%;
+  padding-left: 3%;
 }
 
 .transactionAdmin0Page .date-picker-date {
@@ -82,4 +88,10 @@
 }
 .transactionAdmin0Page table tr:nth-child(even) {
   background-color: #f4f6fb;
+}
+
+.transactionAdmin0Page .card-body {
+  background-clip: content-box;
+  background-color: #fff;
+  padding: 15px;
 }

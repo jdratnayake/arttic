@@ -7,7 +7,7 @@ function AnalyticsCard({ cardHeading, iconName }) {
         <div class="card-body">
           <div class="row">
             <div class="col mt-0">
-              <h5 class="card-title">{cardHeading}</h5>
+              <p class="h6">{cardHeading}</p>
             </div>
 
             <div class="col-auto">

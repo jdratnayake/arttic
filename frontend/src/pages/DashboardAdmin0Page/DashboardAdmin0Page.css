@@ -1,9 +1,20 @@
+.dashboardAdmin0Page #content {
+  padding-top: 0;
+}
+
 .dashboardAdmin0Page .wrapper {
   width: 100%;
+  padding-right: 3%;
+  padding-left: 3%;
 }
 
 .dashboardAdmin0Page .cardRow {
-  margin-bottom: 24px;
+  margin-bottom: 12px;
+}
+
+.dashboardAdmin0Page .cardCol {
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
 .dashboardAdmin0Page .title {
