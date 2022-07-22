@@ -1,6 +1,6 @@
-import "./TransactionAnalyticsCard.css";
+import "./SummaryCard.css";
 
-function TransactionAnalyticsCard({ cardHeading, iconName }) {
+function SummaryCard({ cardHeading, numberValue }) {
   return (
     <span className="transactionAnalyticsCard">
       <div class="card">
@@ -16,11 +16,11 @@ function TransactionAnalyticsCard({ cardHeading, iconName }) {
               </div>
             </div> */}
           </div>
-          <h1 class="mt-1 mb-3">$ 300, 000</h1>
+          <h1 class="mt-1 mb-3">{numberValue}</h1>
         </div>
       </div>
     </span>
   );
 }
 
-export default TransactionAnalyticsCard;
+export default SummaryCard;

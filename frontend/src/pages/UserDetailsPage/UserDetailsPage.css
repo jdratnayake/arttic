@@ -70,3 +70,13 @@
   cursor: pointer;
   background-color: #eeebf1;
 }
+
+.userDetailsPage .row .col .btn-primary {
+  background: var(--green-50);
+  border-color: var(--green-50);
+  color: var(--black);
+}
+
+.userDetailsPage .date-card {
+  margin-bottom: 36px;
+}

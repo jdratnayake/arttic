@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import NavBar from "../../components/NavBar/NavBar";
 import SideNavBarAdmin0 from "../../components/SideNavBarAdmin0/SideNavBarAdmin0";
-import TransactionAnalyticsCard from "../../components/TransactionAnalyticsCard/TransactionAnalyticsCard";
+import SummaryCard from "../../components/SummaryCard/SummaryCard";
 
 function TransactionAdmin0Page() {
   const [startDate, setStartDate] = useState(new Date());
@@ -19,34 +19,33 @@ function TransactionAdmin0Page() {
         <SideNavBarAdmin0 />
 
         <div id="contentAdmin">
-          <div class="card-body admin-page-title">
+          <div class="card-body admin-page-title date-card">
             <div class="row">
               <h4>Transactions</h4>
             </div>
           </div>
 
-          <div class="card-body admin-page-title date-card">
+          <div class="card-body date-card">
             <div class="row">
               <div class="col">
-                <TransactionAnalyticsCard
-                  cardHeading="Total"
-                  iconName="bi bi-cash"
-                />
+                <SummaryCard cardHeading="Total" numberValue="$ 300, 000" />
               </div>
               <div class="col">
-                <TransactionAnalyticsCard
+                <SummaryCard
                   cardHeading="Subscription"
-                  iconName="bi bi-person-check-fill"
+                  numberValue="$ 100, 000"
                 />
               </div>
               <div class="col">
-                <TransactionAnalyticsCard
+                <SummaryCard
                   cardHeading="Avertisement"
-                  iconName="bi bi-badge-ad-fill"
+                  numberValue="$ 200, 000"
                 />
               </div>
             </div>
+          </div>
 
+          <div class="card-body admin-page-title date-card">
             <div class="row">
               <div class="col calander-card-col">
                 <div class="calander-card">
