@@ -3,9 +3,9 @@ CREATE TABLE "user" (
     "userId" SERIAL NOT NULL,
     "type" INTEGER NOT NULL,
     "name" VARCHAR(64) NOT NULL,
-    "email" VARCHAR(64) NOT NULL,
+    "email" VARCHAR(128) NOT NULL,
     "emailStatus" BOOLEAN NOT NULL DEFAULT false,
-    "username" VARCHAR(64) NOT NULL,
+    "username" VARCHAR(128) NOT NULL,
     "joinedDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "profilePhoto" VARCHAR(256) NOT NULL DEFAULT '0',
     "password" VARCHAR(128) NOT NULL,
@@ -31,8 +31,9 @@ CREATE TABLE "creator" (
     "pageName" VARCHAR(64) NOT NULL,
     "description" VARCHAR(512),
     "creatorJoinedDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "walletAddress" VARCHAR(64),
+    "walletAddress" VARCHAR(64) NOT NULL DEFAULT '0',
     "openSeaUsername" VARCHAR(64),
+    "openSeaStatus" BOOLEAN NOT NULL DEFAULT false,
     "followerCount" INTEGER NOT NULL DEFAULT 0,
     "isfollowerCountVisible" BOOLEAN NOT NULL DEFAULT true,
     "loyaltyCategory" INTEGER NOT NULL DEFAULT 1,
@@ -41,18 +42,18 @@ CREATE TABLE "creator" (
 );
 
 -- CreateTable
-CREATE TABLE "userBlock" (
-    "userBlockId" SERIAL NOT NULL,
+CREATE TABLE "userBlocked" (
+    "userBlockedId" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
-    "userBlockedId" INTEGER NOT NULL,
+    "blockedUserId" INTEGER NOT NULL,
     "userBlockedDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "userBlock_pkey" PRIMARY KEY ("userBlockId")
+    CONSTRAINT "userBlocked_pkey" PRIMARY KEY ("userBlockedId")
 );
 
 -- CreateTable
-CREATE TABLE "billingAddressFollowerCreator" (
-    "billingId" SERIAL NOT NULL,
+CREATE TABLE "billingAddress" (
+    "billingAddressId" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
     "country" VARCHAR(32) NOT NULL,
     "addressLine1" VARCHAR(64) NOT NULL,
@@ -62,24 +63,24 @@ CREATE TABLE "billingAddressFollowerCreator" (
     "zipCode" VARCHAR(16) NOT NULL,
     "isDefault" BOOLEAN NOT NULL DEFAULT false,
 
-    CONSTRAINT "billingAddressFollowerCreator_pkey" PRIMARY KEY ("billingId")
+    CONSTRAINT "billingAddress_pkey" PRIMARY KEY ("billingAddressId")
 );
 
 -- CreateTable
 CREATE TABLE "premiumPackage" (
-    "packageID" SERIAL NOT NULL,
+    "packageId" SERIAL NOT NULL,
     "name" VARCHAR(64) NOT NULL,
-    "description" VARCHAR(1024) NOT NULL,
+    "description" VARCHAR(1024),
     "price" DECIMAL(3,2) NOT NULL,
 
-    CONSTRAINT "premiumPackage_pkey" PRIMARY KEY ("packageID")
+    CONSTRAINT "premiumPackage_pkey" PRIMARY KEY ("packageId")
 );
 
 -- CreateTable
 CREATE TABLE "premiumPackageSubscribe" (
     "subscribeId" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
-    "packageID" INTEGER NOT NULL,
+    "packageId" INTEGER NOT NULL,
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
 
@@ -138,6 +139,7 @@ CREATE TABLE "comment" (
     "userId" INTEGER NOT NULL,
     "description" VARCHAR(512) NOT NULL,
     "commentedDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "blockedStatus" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "comment_pkey" PRIMARY KEY ("commentId")
 );
@@ -162,6 +164,7 @@ CREATE TABLE "advertisement" (
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
     "price" DECIMAL(3,2) NOT NULL,
+    "paymentStatus" BOOLEAN NOT NULL DEFAULT false,
     "blockedStatus" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "advertisement_pkey" PRIMARY KEY ("advertisementId")
@@ -239,6 +242,18 @@ CREATE TABLE "advertisementReport" (
     CONSTRAINT "advertisementReport_pkey" PRIMARY KEY ("advertisementReportId")
 );
 
+-- CreateTable
+CREATE TABLE "transactionLog" (
+    "transactionId" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "transactionType" INTEGER NOT NULL,
+    "otherTableUniqueId" INTEGER,
+    "amount" DECIMAL(3,2) NOT NULL,
+    "transactionDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "transactionLog_pkey" PRIMARY KEY ("transactionId")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
@@ -255,7 +270,7 @@ CREATE UNIQUE INDEX "creator_walletAddress_key" ON "creator"("walletAddress");
 CREATE UNIQUE INDEX "creator_openSeaUsername_key" ON "creator"("openSeaUsername");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "userBlock_userId_userBlockedId_key" ON "userBlock"("userId", "userBlockedId");
+CREATE UNIQUE INDEX "userBlocked_userId_blockedUserId_key" ON "userBlocked"("userId", "blockedUserId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "premiumPackage_name_key" ON "premiumPackage"("name");
@@ -282,19 +297,19 @@ ALTER TABLE "followerCreator" ADD CONSTRAINT "followerCreator_userId_fkey" FOREI
 ALTER TABLE "creator" ADD CONSTRAINT "creator_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "userBlock" ADD CONSTRAINT "userBlock_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "userBlocked" ADD CONSTRAINT "userBlocked_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "userBlock" ADD CONSTRAINT "userBlock_userBlockedId_fkey" FOREIGN KEY ("userBlockedId") REFERENCES "followerCreator"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "userBlocked" ADD CONSTRAINT "userBlocked_blockedUserId_fkey" FOREIGN KEY ("blockedUserId") REFERENCES "followerCreator"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "billingAddressFollowerCreator" ADD CONSTRAINT "billingAddressFollowerCreator_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "billingAddress" ADD CONSTRAINT "billingAddress_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "premiumPackageSubscribe" ADD CONSTRAINT "premiumPackageSubscribe_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "premiumPackageSubscribe" ADD CONSTRAINT "premiumPackageSubscribe_packageID_fkey" FOREIGN KEY ("packageID") REFERENCES "premiumPackage"("packageID") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "premiumPackageSubscribe" ADD CONSTRAINT "premiumPackageSubscribe_packageId_fkey" FOREIGN KEY ("packageId") REFERENCES "premiumPackage"("packageId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "userSubscribe" ADD CONSTRAINT "userSubscribe_followerId_fkey" FOREIGN KEY ("followerId") REFERENCES "followerCreator"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -376,3 +391,6 @@ ALTER TABLE "advertisementReport" ADD CONSTRAINT "advertisementReport_userId_fke
 
 -- AddForeignKey
 ALTER TABLE "advertisementReport" ADD CONSTRAINT "advertisementReport_advertisementId_fkey" FOREIGN KEY ("advertisementId") REFERENCES "advertisement"("advertisementId") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "transactionLog" ADD CONSTRAINT "transactionLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
