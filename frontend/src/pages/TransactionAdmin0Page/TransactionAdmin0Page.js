@@ -22,7 +22,8 @@ function TransactionAdmin0Page() {
             <div class="row">
               <h4 class="card-title float-left mt-2">Transactions History</h4>
             </div>
-
+          </div>
+          <div class="card-body">
             <div class="row">
               <div class="col">
                 <label for="basic-url" class="form-label">

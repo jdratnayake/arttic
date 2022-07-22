@@ -1,32 +1,39 @@
-.dashboardAdmin0Page #content {
-  padding-top: 0;
+/* DEFAULT STYLES START */
+.wrapperAdmin {
+  display: flex;
+  padding: 3%;
+  padding-bottom: 0;
 }
 
-.dashboardAdmin0Page .wrapper {
+#contentAdmin {
   width: 100%;
-  padding-right: 3%;
-  padding-left: 3%;
+  margin-left: 36px;
 }
 
-.dashboardAdmin0Page .cardRow {
-  margin-bottom: 12px;
+.admin-page-title {
+  background-color: #fff;
 }
 
-.dashboardAdmin0Page .cardCol {
-  padding-left: 6px;
-  padding-right: 6px;
+.admin-page-title .row {
+  padding: 18px;
 }
 
-.dashboardAdmin0Page .title {
-  margin: 8px;
+.admin-page-title .row h4 {
+  margin-bottom: 0;
 }
 
-.dashboardAdmin0Page .lineChartStyle {
-  position: relative;
+/* DEFAULT STYLES END */
+
+/* CUSTOM CSS */
+
+.dashboardAdmin0Page #contentAdmin .analyticsCardRow {
+  padding-top: 36px;
 }
 
-.dashboardAdmin0Page .lineChartStyle .lineChartVerticleStyle {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+.dashboardAdmin0Page #contentAdmin .lineChartStyle .card-body {
+  padding: 9px;
+}
+
+.dashboardAdmin0Page #contentAdmin .card-body .cardRow {
+  padding-bottom: 18px;
 }
