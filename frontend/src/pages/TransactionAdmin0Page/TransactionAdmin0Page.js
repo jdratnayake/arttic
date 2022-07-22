@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import NavBar from "../../components/NavBar/NavBar";
 import SideNavBarAdmin0 from "../../components/SideNavBarAdmin0/SideNavBarAdmin0";
+import TransactionAnalyticsCard from "../../components/TransactionAnalyticsCard/TransactionAnalyticsCard";
 
 function TransactionAdmin0Page() {
   const [startDate, setStartDate] = useState(new Date());
@@ -14,41 +15,67 @@ function TransactionAdmin0Page() {
   return (
     <span className="transactionAdmin0Page">
       <NavBar />
-      <div className="wrapper">
+      <div className="wrapperAdmin">
         <SideNavBarAdmin0 />
 
-        <div id="content">
-          <div class="card-body">
+        <div id="contentAdmin">
+          <div class="card-body admin-page-title">
             <div class="row">
-              <h4 class="card-title float-left mt-2">Transactions History</h4>
+              <h4>Transactions</h4>
             </div>
           </div>
-          <div class="card-body">
+
+          <div class="card-body admin-page-title date-card">
             <div class="row">
               <div class="col">
-                <label for="basic-url" class="form-label">
-                  Start Date:
-                </label>
-                <div class="input-group mb-3">
-                  <DatePicker
-                    selected={startDate}
-                    onChange={(date) => setStartDate(date)}
-                    className="date-picker-date"
-                  />
-                </div>
+                <TransactionAnalyticsCard
+                  cardHeading="Total"
+                  iconName="bi bi-cash"
+                />
               </div>
               <div class="col">
-                <label for="basic-url" class="form-label">
-                  End Date:
-                </label>
-                <div class="input-group mb-3">
-                  <DatePicker
-                    selected={endDate}
-                    onChange={(date) => setEndDate(date)}
-                    className="date-picker-date"
-                  />
+                <TransactionAnalyticsCard
+                  cardHeading="Subscription"
+                  iconName="bi bi-person-check-fill"
+                />
+              </div>
+              <div class="col">
+                <TransactionAnalyticsCard
+                  cardHeading="Avertisement"
+                  iconName="bi bi-badge-ad-fill"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col calander-card-col">
+                <div class="calander-card">
+                  <label for="basic-url" class="form-label">
+                    Start Date:
+                  </label>
+                  <div class="input-group mb-3">
+                    <DatePicker
+                      selected={startDate}
+                      onChange={(date) => setStartDate(date)}
+                      className="date-picker-date"
+                    />
+                  </div>
+                </div>
+
+                <div class="calander-card">
+                  <label for="basic-url" class="form-label">
+                    End Date:
+                  </label>
+                  <div class="input-group mb-3">
+                    <DatePicker
+                      selected={endDate}
+                      onChange={(date) => setEndDate(date)}
+                      className="date-picker-date"
+                    />
+                  </div>
                 </div>
               </div>
+
               <div class="col column-container">
                 <button type="button" class="btn btn-primary">
                   Search
