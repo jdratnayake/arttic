@@ -33,38 +33,45 @@ function SettingsSubscriptionPage() {
                             <span
                               class="d-block mb-3 text-dark fw-bold"
                             >
-                              0%
+                              <h4 className="subscription-0">0%</h4>
+                              <p className="purchase-p">of your portfolio in ARTTIC Tokens</p>
                             </span>
                           </div>
                           <div className="col-2 loyalty-col">
-                            <div className="star">
+                            <div className="star basicStar">
                               <i className="bi bi-star-fill"></i>
                             </div>
                             <span
                               class="d-block mb-3 text-dark fw-bold"
-                            >Base</span>
-                          </div>
-                          <div className="col-2 loyalty-col"><div className="star">
-                              <i className="bi bi-star-fill"></i>
-                            </div>
-                            <span
-                              class="d-block mb-3 text-dark fw-bold"
-                            >Silver</span>
+                            ><h4>Base</h4>
+                            <p className="purchase-p">Upto 1% ARTTIC in portfolio</p><button className="btn">Current</button></span>
                           </div>
                           <div className="col-2 loyalty-col">
-                            <div className="star">
+                          <div className="star silverStar">
                               <i className="bi bi-star-fill"></i>
                             </div>
                             <span
                               class="d-block mb-3 text-dark fw-bold"
-                            >Gold</span>
-                            </div>
-                          <div className="col-2 loyalty-col"><div className="star">
+                            ><h4>Silver</h4>
+                            <p className="purchase-p">1%-5% ARTTIC in portfolio</p><button className="btn subBtn">Upgrade</button></span>
+                          </div>
+                          <div className="col-2 loyalty-col">
+                            <div className="star goldStar">
                               <i className="bi bi-star-fill"></i>
                             </div>
                             <span
                               class="d-block mb-3 text-dark fw-bold"
-                            >Platinum</span></div>
+                            ><h4>Gold</h4>
+                            <p className="purchase-p">5%-10% ARTTIC in portfolio</p><button className="btn subBtn">Upgrade</button></span>
+                            </div>
+                          <div className="col-2 loyalty-col">
+                          <div className="star platinumStar">
+                              <i className="bi bi-star-fill"></i>
+                            </div>
+                            <span
+                              class="d-block mb-3 text-dark fw-bold"
+                            ><h4>Platinum</h4>
+                            <p className="purchase-p">5%-10% ARTTIC in portfolio</p><button className="btn subBtn">Upgrade</button></span></div>
                         </div>
                       </div>
                     </div>

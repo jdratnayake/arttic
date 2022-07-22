@@ -10,7 +10,7 @@ import SignUpCreatorPage2 from "./pages/SignUpCreatorPage/SignUpCreatorPage2";
 import SignUpFollowerPage from "./pages/SignUpFollowerPage/SignUpFollowerPage";
 import SignUpOptionPage from "./pages/SignUpOptionPage/SignUpOptionPage";
 import SignInPage from "./pages/SIgnInPage/SignInPage";
-
+import ReportUserPage from "./pages/ReportUserPage/ReportUserPage"
 import Settings from "./components/Settings/Settings";
 
 function App() {
@@ -21,6 +21,7 @@ function App() {
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/feed" element={<FeedPage />}></Route>
         <Route path="/settings" element={<Settings />}></Route>
+        <Route path="/report" element={<ReportUserPage />}></Route>
       </Routes>
     </BrowserRouter>
 
