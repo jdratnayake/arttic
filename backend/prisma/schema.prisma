@@ -22,19 +22,19 @@ model user{
   userId Int @id @default(autoincrement())
   type Int
   name String @db.VarChar(64)
-  email String @db.VarChar(64) @unique
+  email String @db.VarChar(128) @unique
   emailStatus Boolean @default(false)
-  username String @db.VarChar(64) @unique
+  username String @db.VarChar(128) @unique
   joinedDate DateTime @default(now())
   profilePhoto String @db.VarChar(256) @default("0")
   password String @db.VarChar(128)
   blockedStatus Boolean @default(false)
   blockedDate DateTime?
   blockedAdminID Int?
-  blockedAdmin user? @relation("adminBlockedFollowerCreator", fields: [blockedAdminID],references: [userId])
-  blockedUser user[] @relation("adminBlockedFollowerCreator")
+  blockedAdmin user? @relation("adminBlockFollowerCreator", fields: [blockedAdminID],references: [userId])
+  blockedUser user[] @relation("adminBlockFollowerCreator")
   followerCreator followerCreator?
-  userReportResolvedAdmins userReport[] @relation("userReportResolvedAdmin")
+  userReportResolvedAdmins userReport[] 
   postReports postReport[]
   advertisementReports advertisementReport[]
 }
@@ -46,7 +46,7 @@ model followerCreator{
   coverPhoto String @db.VarChar(256) @default("0")
   blockedStatus Boolean @default(false)
   creator creator?
-  billingAddresses billingAddressFollowerCreator[]
+  billingAddresses billingAddress[]
   packages premiumPackageSubscribe[]
   userSubscribes userSubscribe[]
   postReactions postReaction[]
@@ -55,13 +55,14 @@ model followerCreator{
   creatorViews creatorView[]
   postViews postView[]
   advertisementViews advertisementView[]
-  users userBlock[] @relation("user")
-  userBlocks userBlock[] @relation("userBlocked")
+  users userBlocked[] @relation("user")
+  userBlocks userBlocked[] @relation("blockedUser")
   sourceUsers userReport[] @relation("sourceReportedUser")
   reportedUsers userReport[] @relation("reportedUser")
   postReports postReport[]
   advertisementReports advertisementReport[]
   postSaves postSave[]
+  transactions transactionLog[]
 }
 
 // loyalty category
@@ -69,14 +70,18 @@ model followerCreator{
 //   2 = silver
 //   3 = gold
 //   4 = platinum
+
+// wallet address = 0 idicates user is not validated
+// openSea status = false indicates that he is not a verified user in openSea
 model creator{
   followerCreator followerCreator @relation(fields: [userId], references: [userId])
   userId Int @id
   pageName String @db.VarChar(64) @unique
   description String? @db.VarChar(512)
   creatorJoinedDate DateTime @default(now())
-  walletAddress String? @db.VarChar(64) @unique
+  walletAddress String @db.VarChar(64) @default("0") @unique
   openSeaUsername String? @db.VarChar(64) @unique
+  openSeaStatus Boolean @default(false)
   followerCount Int @default(0)
   isfollowerCountVisible Boolean @default(true)
   loyaltyCategory Int @default(1)
@@ -86,18 +91,19 @@ model creator{
   creatorViews creatorView[]
 }
 
-model userBlock{
-  userBlockId Int @id @default(autoincrement())
+// this table includes details about blocked users by other users
+model userBlocked{
+  userBlockedId Int @id @default(autoincrement())
   user followerCreator @relation("user", fields: [userId], references: [userId])
   userId Int
-  userBlock followerCreator @relation("userBlocked", fields: [userBlockedId], references: [userId])
-  userBlockedId Int
+  blockedUser followerCreator @relation("blockedUser", fields: [blockedUserId], references: [userId])
+  blockedUserId Int
   userBlockedDate DateTime @default(now())
-  @@unique([userId, userBlockedId])
+  @@unique([userId, blockedUserId])
 }
 
-model billingAddressFollowerCreator{
-  billingId Int @id @default(autoincrement())
+model billingAddress{
+  billingAddressId Int @id @default(autoincrement())
   user followerCreator @relation(fields: [userId], references: [userId])
   userId Int
   country String @db.VarChar(32)
@@ -110,9 +116,9 @@ model billingAddressFollowerCreator{
 }
 
 model premiumPackage{
-  packageID Int @id @default(autoincrement())
+  packageId Int @id @default(autoincrement())
   name String @db.VarChar(64) @unique
-  description String @db.VarChar(1024)
+  description String? @db.VarChar(1024)
   price Decimal @db.Decimal(3, 2)
   users premiumPackageSubscribe[]
 }
@@ -121,8 +127,8 @@ model premiumPackageSubscribe{
   subscribeId Int @id @default(autoincrement())
   user followerCreator @relation(fields: [userId], references: [userId])
   userId Int
-  package premiumPackage @relation(fields: [packageID], references: [packageID])
-  packageID Int
+  package premiumPackage @relation(fields: [packageId], references: [packageId])
+  packageId Int
   startDate DateTime
   endDate DateTime
 }
@@ -186,6 +192,7 @@ model comment{
   userId Int
   description String @db.VarChar(512)
   commentedDate DateTime @default(now())
+  blockedStatus Boolean @default(false)
   commentReactions commentReaction[]
 }
 
@@ -201,6 +208,10 @@ model commentReaction{
 
 // category
 //   1 = anime
+
+// payment status
+//   false = not paid
+//   true = paid
 model advertisement{
   advertisementId Int @id @default(autoincrement())
   creator creator @relation(fields: [creatorId], references: [userId])
@@ -211,6 +222,7 @@ model advertisement{
   startDate DateTime
   endDate DateTime
   price Decimal @db.Decimal(3, 2)
+  paymentStatus Boolean @default(false)
   blockedStatus Boolean @default(false)
   advertisementViews advertisementView[]
   advertisementReports advertisementReport[]
@@ -253,7 +265,7 @@ model userReport{
   reportCategory Int
   description String? @db.VarChar(512)
   resolveStatus Boolean @default(false)
-  resolvedAdmin user? @relation("userReportResolvedAdmin", fields: [resolvedAdminID], references: [userId])
+  resolvedAdmin user? @relation(fields: [resolvedAdminID], references: [userId])
   resolvedAdminID Int?
 }
 
@@ -283,4 +295,17 @@ model advertisementReport{
   resolveStatus Boolean @default(false)
   resolvedAdmin user? @relation(fields: [resolvedAdminID], references: [userId])
   resolvedAdminID Int?
+}
+
+// transactionType
+//   1 = advertisements
+//   2 = premium package subscription
+model transactionLog{
+  transactionId Int @id @default(autoincrement())
+  user followerCreator @relation(fields: [userId], references: [userId])
+  userId Int
+  transactionType Int
+  otherTableUniqueId Int?
+  amount Decimal @db.Decimal(3, 2)
+  transactionDate DateTime @default(now())
 }
