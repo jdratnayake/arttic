@@ -1,3 +1,41 @@
 body {
     background-color: #F5F6F7;
-  }
+}
+.sidebar-col{
+    background-color: blue;
+}
+
+@media only screen and (max-width:768px){
+    .feedBack{
+        max-width:700px;
+    }
+    .sidebar-col {
+        visibility: hidden;
+        width: 0;
+        padding: 0;
+    }
+
+    .feed-container{
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+
+@media only screen and (max-width:647px){
+    .col-advertisment{
+        visibility: hidden;
+        width: 0;
+        padding: 0;
+    }
+    .feed-container{
+        width: 400px;
+    }
+}
+
+/*@media only screen and (max-width:500px){
+    .feed-container{
+        width: 340px;
+        margin-left: calc( (100vw - 360px) / 2);
+        margin-right: calc( (100vw - 360px) / 2);
+    }
+}*/

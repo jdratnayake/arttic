@@ -14,9 +14,22 @@
 .nav-bar-btn{
     margin-right:10px;
 }
+.search-form{
+    display: flex;
+    flex-direction: row;
+    border: #8427E2;
+    
+}
+.search-bar {
+    height: 60px;
+    /* background-color: $bg-color; */
+    z-index: 3;
+    position: relative;
+}
 
 .bi-search{
     font-weight: 2000;
+    margin-right: 0;
 }
 
 /*
