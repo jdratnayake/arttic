@@ -23,7 +23,8 @@ function HomePage() {
     <>
       <NavBar />
       <Banner />
-      <div className="container-fluid">
+
+       <div className="container-fluid">
         <div class="container">
           <div className="row">
             <div class="col align-self-center about-section">
@@ -39,20 +40,21 @@ function HomePage() {
           </div>
         </div>
       </div>
+      
       <InfoCardLeft
         body="NFT creators can share their posts,videos and polls according to the relevant tiers. "
-        title="How NFT stories sharing ?"
+        title="How NFT stories sharing?"
       />
       <InfoCardRight
         body="We are focusing on people who have enthusiasm in NFT creating,selling and buying processes.This is a central based platform that develops and promotes for the NFT creators to fulfill their marketing purposes."
-        title="Why are we unique ?"
+        title="Why are we unique?"
       />
-      <div className="container-fluid">
-        <div class="container">
-          <div className="row">
+
+      <div className="container-fluid trending-container">
+          <div className="row trending-row">
             <div class="col align-self-center trending-section">
               <h1>Trending Creators</h1>
-              <div class="row row-cols-1 row-cols-md-4 g-8 card-container">
+              <div class="row row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-8 card-container">
                 <Card img={user_1} name="Alex Newton" />
                 <Card img={user_2} name="Alex Newton" />
                 <Card img={user_3} name="Alex Newton" />
@@ -64,29 +66,26 @@ function HomePage() {
               </div>
             </div>
           </div>
-        </div>
       </div>
       <div className="container-fluid">
-        <div class="container">
-          <div className="row">
-            <div class="col align-self-center trending-section">
+        {/* <div class="container"> */}
+          <div className="row  align-items-center">
+            <div class="col how-section m-3 align-self-center">
               <h1>It's easier than you think</h1>
               <img
               src={home_asset_1}
-              className="img-fluid rounded home-card-image card-image card-image-end"
+              className="img-fluid rounded home-card-image card-image"
               alt="..."
             />
-            </div>
+            {/* </div> */}
           </div>
         </div>
       </div>
       <div className="container-fluid">
-        <div class="container">
-          <div className="row">
-            <div class="col align-self-center trending-section">
+          <div className="row align-items-center">
+            <div class="col align-self-center get-start">
               <h1>Are you ready to surf on ARTTIC</h1>
               <a className="btn btn-main-primary">Get Started</a>
-            </div>
           </div>
         </div>
       </div>
