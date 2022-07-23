@@ -50,17 +50,17 @@ function NavBar() {
                             </a>
                         </li>
                     </ul>
-                    <form className="d-flex" role="search">
-                        <input
-                            className="form-control me-2"
-                            type="search"
-                            placeholder="Find a creator"
-                            aria-label="Search"
-                        />
-                        <button className="btn btn-secondary" type="submit">
-                            <i className="bi bi-search"></i>
-                        </button>
-                    </form>
+                    <form className="search-form" role="search">
+                            <input 
+                                className="form-control me-2"
+                                type="search"
+                                placeholder="Search..."
+                                aria-label="Search"
+                            />
+                            {/* <button className="btn btn-secondary" type="submit">
+                                <i className="bi bi-search"></i>
+                            </button> */}
+                    </form> 
                     <div className="navbar-end">
 
                         <div className="navbar-item">
