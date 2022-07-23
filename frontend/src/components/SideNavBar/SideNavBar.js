@@ -5,7 +5,7 @@ function SideNavBar() {
     return (
         <>
             <nav id="sidebar">
-                <div className="content">
+                <div className="content-top">
                     <ul class="list-unstyled">
                         <li class="activesb">
                             <a><i class="bi bi-rss icon-theme"></i>Feed</a>
