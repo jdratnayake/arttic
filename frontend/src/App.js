@@ -10,6 +10,8 @@ import SignUpCreatorPage2 from "./pages/SignUpCreatorPage/SignUpCreatorPage2";
 import SignUpFollowerPage from "./pages/SignUpFollowerPage/SignUpFollowerPage";
 import SignUpOptionPage from "./pages/SignUpOptionPage/SignUpOptionPage";
 import SignInPage from "./pages/SIgnInPage/SignInPage";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
+
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
         <Route path="/signupcreator2" element={<SignUpCreatorPage2 />}></Route>
         <Route path="/signupoption" element={<SignUpOptionPage />}></Route>
         <Route path="/feed" element={<FeedPage />}></Route>
+        <Route path="*" element={<ErrorPage />}></Route>
       </Routes>
     </BrowserRouter>
 
