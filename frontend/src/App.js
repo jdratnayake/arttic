@@ -10,6 +10,8 @@ import SignUpCreatorPage2 from "./pages/SignUpCreatorPage/SignUpCreatorPage2";
 import SignUpFollowerPage from "./pages/SignUpFollowerPage/SignUpFollowerPage";
 import SignUpOptionPage from "./pages/SignUpOptionPage/SignUpOptionPage";
 import SignInPage from "./pages/SIgnInPage/SignInPage";
+import FrogetPasswordPage1 from "./pages/FrogetPasswordPage/FrogetPasswordPage1";
+import FrogetPasswordPage2 from "./pages/FrogetPasswordPage/FrogetPasswordPage2";
 import ReportUserPage from "./pages/ReportUserPage/ReportUserPage"
 import Settings from "./components/Settings/Settings";
 import DashboardAdmin0Page from "./pages/DashboardAdmin0Page/DashboardAdmin0Page";
@@ -31,6 +33,8 @@ function App() {
         <Route path="/signupcreator2" element={<SignUpCreatorPage2 />}></Route>
         <Route path="/signupoption" element={<SignUpOptionPage />}></Route>
         <Route path="/feed" element={<FeedPage />}></Route>
+        <Route path="/frogetpassword1" element={<FrogetPasswordPage1 />}></Route>
+        <Route path="/frogetpassword2" element={<FrogetPasswordPage2 />}></Route>
         <Route
           path="/admin0/dashboard"
           element={<DashboardAdmin0Page />}
