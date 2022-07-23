@@ -7,10 +7,10 @@ function SignUpOptionCard(props) {
                 <h4 class="title text-center theme">{props.title}</h4>
                 <p class="text-center">who is {props.av} - description</p>
                 <ul>
-                    <li class="list">{props.p1}</li>
-                    <li class="list">{props.p2}</li>
-                    <li class="list">{props.p3}</li>
-                    <li class="list">{props.p4}</li>
+                    <li class="listcd">{props.p1}</li>
+                    <li class="listcd">{props.p2}</li>
+                    <li class="listcd">{props.p3}</li>
+                    <li class="listcd">{props.p4}</li>
                 </ul>
 
                 <div class="text-center">

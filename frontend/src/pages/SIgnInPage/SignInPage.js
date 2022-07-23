@@ -25,11 +25,11 @@ function SignInPage() {
                             
                             <div class="col-12">
                                 <label for="exampleFormControlInput1" class="form-label">Email</label>
-                                <input type="email" class="form-control form-control-update" id="email" placeholder="" />
+                                <input type="email" class="form-control form-control-update fcup" id="email" placeholder="" />
                             </div>
                             <div class="col-12">
                                 <label for="exampleFormControlInput1" class="form-label">Password</label>
-                                <input type="password" class="form-control form-control-update" id="password" />
+                                <input type="password" class="form-control form-control-update fcup" id="password" />
                             </div>
                             <div class="col-12">
                                 <p class="text-end">
