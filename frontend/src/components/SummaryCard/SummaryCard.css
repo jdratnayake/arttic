@@ -1,0 +1,32 @@
+.transactionAnalyticsCard .col-auto {
+  padding-left: 0;
+  padding-top: 0 !important;
+}
+.transactionAnalyticsCard {
+  display: block;
+  width: 100%;
+  height: 80%;
+  position: relative;
+}
+
+.transactionAnalyticsCard .card {
+  margin: 0px;
+}
+
+.transactionAnalyticsCard .iconStyle {
+  font-size: 35px;
+}
+
+.transactionAnalyticsCard .text-muted {
+  font-size: 15px;
+}
+
+.transactionAnalyticsCard .row {
+  padding: 0;
+  padding-top: 4.5px;
+  padding-bottom: 4.5px;
+}
+
+.transactionAnalyticsCard .card-body {
+  padding: 12px;
+}

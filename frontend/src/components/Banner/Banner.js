@@ -24,26 +24,26 @@ function Banner() {
         navigation
         loop={true}
         pagination={{ dynamicBullets: true }}
-      autoplay={{
-        delay: 5000,
-        disableOnInteraction: false,
-      }}
+      // autoplay={{
+      //   delay: 5000,
+      //   disableOnInteraction: false,
+      // }}
       >
         <SwiperSlide>
           <div className="container">
             <div className="row align-items-center bannerRow">
-              <div className="col-5 align-self-center temp">
+              <div className="col-sm-5 col-xs-12 bannerContent">
                 <h2>Change the Way</h2>
                 <h2> NFT is Marketed</h2>
                 <h4>
                   Let your most passionate fans support your creative work via
                   monthly membership.
                 </h4>
-                <div className="bannerButtons">
+                <div className="bannerButtons align-self-center ">
                   <a className="btn btn-main-primary">Get Started</a>
                 </div>
               </div>
-              <div className="col-7 bannerImage ">
+              <div className="col-sm-7 col-xs-12 bannerImage ">
                 <img
                   src={bannerImage1}
                   className="img-fluid mx-auto "
@@ -56,9 +56,11 @@ function Banner() {
         <SwiperSlide>
           <div className="container">
             <div className="row align-items-center bannerRow">
+
               <div className="col-5 align-self-center temp">
                 <h2>Change the Way</h2>
                 <h2> NFT is Marketed</h2>
+
                 <h4>
                   Let's change NFT market with more collabaration between
                   creators and followers
@@ -67,7 +69,7 @@ function Banner() {
                   <a className="btn btn-main-primary">Get Started</a>
                 </div>
               </div>
-              <div className="col-7 bannerImage ">
+              <div className="col-sm-7 col-xs-12 bannerImage ">
                 <img
                   src={bannerImage2}
                   className="img-fluid mx-auto "

@@ -166,6 +166,7 @@ function Footer() {
                 <label for="exampleInputEmail1" className="form-label">
                   Subscribe to our newsletter
                 </label>
+
                 <input
                   type="email"
                   className="form-control"
@@ -175,6 +176,7 @@ function Footer() {
                 <button type="submit" className="btn btn-primary">
                   Submit
                 </button>
+
               </div>
             </form>
             <div className="social-links">
