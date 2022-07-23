@@ -13,6 +13,7 @@ import SignInPage from "./pages/SIgnInPage/SignInPage";
 import DashboardAdmin0Page from "./pages/DashboardAdmin0Page/DashboardAdmin0Page";
 import TransactionAdmin0Page from "./pages/TransactionAdmin0Page/TransactionAdmin0Page";
 import UserDetailsPage from "./pages/UserDetailsPage/UserDetailsPage";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           element={<TransactionAdmin0Page />}
         ></Route>
         <Route path="/admin0/userdetails" element={<UserDetailsPage />}></Route>
+        <Route path="*" element={<ErrorPage />}></Route>
       </Routes>
     </BrowserRouter>
   );
