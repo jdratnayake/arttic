@@ -101,7 +101,7 @@ function AdvertismentPage() {
                                                     Duration
                                                 </label>
                                                 <div class="col-sm-4 mb-3 mb-lg-0">
-                                                    <label for="enDate" class="form-label">
+                                                    <label for="enDate">
                                                         Start Date:
                                                     </label>
                                                     <div class="input-group mb-3">
@@ -113,7 +113,7 @@ function AdvertismentPage() {
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-4">
-                                                    <label for="basic-url" class="form-label">
+                                                    <label for="basic-url">
                                                         End Date:
                                                     </label>
                                                     <div class="input-group mb-3">
@@ -152,7 +152,7 @@ function AdvertismentPage() {
 
                                             {/* row */}
                                             <div class="mb-3 row">
-                                                <div class="offset-md-4 col-md-8 mt-4">
+                                                <div class="offset-md-4 col-md-8 mt-4 algn-rght">
                                                     <button type="submit" class="btn btn-primary float-sm-right">
                                                         {" "}
                                                         Submit
