@@ -4,20 +4,15 @@ import profile from "../../images/users/pic4.png";
 
 function CreatorProfilePage() {
     return (
-        <>
+        <span className="creatorProfilePage">
             <NavBarCreator />
 
             <div class="main-container">
                 <div class="row align-items-center">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                    <div class="col-xl-12 col-lg-12 col-sm-12 col-12">
 
-                        <div class="profile">
-                            <img src="https://images.unsplash.com/photo-1508247967583-7d982ea01526?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80" alt="" class="profile-cover" />
-
-                        </div>
-
-
-
+                    <div class="pt-20 rounded-top" style={{background:"url(https://images.unsplash.com/photo-1508247967583-7d982ea01526?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80) no-repeat"}}>
+                    </div>
 
                         <div class="bg-white rounded-bottom smooth-shadow-sm profile-intro">
                             <div class="d-flex align-items-center justify-content-between
@@ -40,7 +35,7 @@ function CreatorProfilePage() {
 
                                 </div>
                                 <div class="d-flex">
-                                    <a href="#" class="btn btn-outline-primary  d-md-block"><i class="bi bi-bookmark-plus dinvit"></i>Follow</a>
+                                    <a href="#" class="btn btn-outline-primary  d-sm-block"><i class="bi bi-bookmark-plus dinvit"></i>Follow</a>
 
                                     <div class="dropdown d-inline-block drop-list-upper">
                                         <button className="dr-btn" id="page-header-notifications-dropdown"
@@ -108,7 +103,7 @@ function CreatorProfilePage() {
 
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <img src="../assets/images/avatar/avatar-1.jpg" alt="" class="avatar avatar-md rounded-circle" />
+                                                <img src={profile} alt="" class="avatar avatar-md rounded-circle" />
                                             </div>
                                             <div class="ms-3">
                                                 <h5 class="mb-0 fw-bold">Jitu Chauhan</h5>
@@ -133,7 +128,7 @@ function CreatorProfilePage() {
                                     <div class="mb-4">
 
                                         <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspen disse var ius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat.</p>
-                                        <img src="../assets/images/blog/blog-img-1.jpg" class="rounded-3 w-100" alt="" />
+                                        <img src={profile} class="rounded-3 w-100" alt="" />
                                     </div>
 
                                     <div class="mb-4">
@@ -152,19 +147,19 @@ function CreatorProfilePage() {
                                             <span class="avatar avatar-sm">
 
                                                 <img alt="avatar"
-                                                    src="../assets/images/avatar/avatar-9.jpg"
+                                                    src={profile}
                                                     class="rounded-circle" />
                                             </span>
                                             <span class="avatar avatar-sm">
 
                                                 <img alt="avatar"
-                                                    src="../assets/images/avatar/avatar-9.jpg"
+                                                    src={profile}
                                                     class="rounded-circle" />
                                             </span>
                                             <span class="avatar avatar-sm">
 
                                                 <img alt="avatar"
-                                                    src="../assets/images/avatar/avatar-9.jpg"
+                                                    src={profile}
                                                     class="rounded-circle" />
                                             </span>
                                         </div>
@@ -175,7 +170,7 @@ function CreatorProfilePage() {
                                 <div class="row">
                                     <div class="col-xl-1 col-lg-2 col-md-2 col-12 mb-3 mb-lg-0">
 
-                                        <img src="../assets/images/avatar/avatar-1.jpg" class="avatar avatar-md rounded-circle" alt="" />
+                                        <img src={profile} class="avatar avatar-md rounded-circle" alt="" />
                                     </div>
 
                                     <div class="col-xl-11 col-lg-10 col-md-9 col-12 ">
@@ -213,7 +208,7 @@ function CreatorProfilePage() {
                                         <div class="d-flex align-items-center">
 
                                             <div>
-                                                <img src="../assets/images/avatar/avatar-1.jpg" class="rounded-circle avatar-md" alt="" />
+                                                <img src={profile} class="rounded-circle avatar-md" alt="" />
                                             </div>
 
                                             <div class="ms-3 ">
@@ -303,7 +298,7 @@ function CreatorProfilePage() {
 
             </div>
 
-        </>
+        </span>
     )
 }
 
