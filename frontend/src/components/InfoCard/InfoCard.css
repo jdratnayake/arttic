@@ -1,6 +1,7 @@
 .card-info{
     border: none;
-     margin:20px 200px;
+    margin:20px 100px;
+    background-color: var(--bg);
 }
 
 .card-info-title{
@@ -15,4 +16,20 @@
 .card-info-image{
     border: var(--bs-card-border-width) solid var(--bs-card-border-color);
     box-shadow: 0px 3px 12px 1px rgb(100 100 100 / 30%);
+}
+
+@media only screen and (max-width:1000px){
+    .cardInfoRow{
+       font-size: 75%;
+    }
+}
+
+@media only screen and (max-width:991px){
+    .card-info-body > h5 , .card-info-body > p{
+        text-align: center;
+    }
+
+    .card-info{
+        margin:0 50px;
+    }
 }

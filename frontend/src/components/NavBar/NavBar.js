@@ -1,3 +1,5 @@
+import { BrowserRouter, Routes, Route , Link} from "react-router-dom";
+
 import "./NavBar.css";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
@@ -28,38 +30,39 @@ function NavBar() {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="#">
+                            <a className="nav-link nav-link-active" aria-current="page" href="#">
                                 Home
                             </a>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item nav-bar-item">
                             <a className="nav-link" href="#">
                                 Creators
                             </a>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item nav-bar-item">
                             <a className="nav-link" href="#">
                                 Resources
                             </a>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item nav-bar-item">
                             <a className="nav-link" href="#">
                                 Pricing
                             </a>
                         </li>
                     </ul>
-                    <form className="d-flex" role="search">
-                        <input
-                            className="form-control me-2"
-                            type="search"
-                            placeholder="Find a creator"
-                            aria-label="Search"
-                        />
-                        <button className="btn btn-secondary" type="submit">
-                            <i className="bi bi-search"></i>
-                        </button>
-                    </form>
+                    <form className="search-form" role="search">
+                            <input 
+                                className="form-control me-2"
+                                type="search"
+                                placeholder="Search..."
+                                aria-label="Search"
+                            />
+                            {/* <button className="btn btn-secondary" type="submit">
+                                <i className="bi bi-search"></i>
+                            </button> */}
+                    </form> 
                     <div className="navbar-end">
+
                         <div className="navbar-item">
                             <button type="button" className="btn btn-primary nav-bar-btn">
                                 <strong>Sign up</strong>
