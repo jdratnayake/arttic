@@ -7,6 +7,8 @@ import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import Ad from "../../components/Ad/Ad";
 import Feed from "../../components/Feed/Feed";
 import Settings from "../../components/Settings/Settings";
+import AdvertismentPage from "../AdvertisementPage/AdvertisementPage";
+
 
 function FeedPage() {
     const [component, setComponent] = useState("Feed");
@@ -87,7 +89,7 @@ function FeedPage() {
                     <div className="col-md-9 col-xs-12">
                         {component === 'Feed' && <Feed />}
                         {component === 'Settings' && <Settings />}
-                        {component === 'Advertisment' && <Ad />}
+                        {component === 'Advertisment' && <AdvertismentPage />}
                     </div>
 
                     {/*  */}

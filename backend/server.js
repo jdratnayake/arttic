@@ -4,6 +4,9 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 
+//middlewares
+const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+
 //routers
 const authRouter = require("./routes/authRoutes");
 
@@ -16,6 +19,9 @@ app.use(express.json());
 
 //define routes
 app.use("/api/v1/auth", authRouter);
+
+app.use(notFound);
+app.use(errorHandler);
 
 // set the port
 const port = process.env.PORT || 5000;
