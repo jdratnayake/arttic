@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import "./NavBar.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -11,9 +11,9 @@ function NavBar() {
   return (
     <nav className="navbar navbar-expand-lg bg-light">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">
+        <Link to="/" className="navbar-brand">
           <img src={logo} width="200" height="45" />
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"

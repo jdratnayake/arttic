@@ -1,76 +1,76 @@
-body{
-    background-color: rgba(244, 242, 244, 1) !important;
+body {
+  background-color: rgba(244, 242, 244, 1) !important;
 }
-.SignUpFollowerPage .Or{
-    margin-bottom: 0.5rem;
+.SignUpFollowerPage .Or {
+  margin-bottom: 0.5rem;
 }
-.SignUpFollowerPage .col-12{
-    margin-bottom: 1rem;
+.SignUpFollowerPage .col-12 {
+  margin-bottom: 1rem;
 }
-.SignUpFollowerPage .col-12 .form-label{
-    margin: 0.2rem;
+.SignUpFollowerPage .col-12 .form-label {
+  margin: 0.2rem;
 }
-.SignUpFollowerPage .card-update{
-    border: rgba(244, 242, 244, 1);
-    margin-top: 10%;
-    margin-bottom: 10%;
-    margin-left: 5%;
-    margin-right: 5%;
-    padding-left: 5%;
-    padding-right: 5%;
+.SignUpFollowerPage .card-update {
+  border: rgba(244, 242, 244, 1);
+  margin-top: 10%;
+  margin-bottom: 10%;
+  margin-left: 5%;
+  margin-right: 5%;
+  padding-left: 5%;
+  padding-right: 5%;
 }
-.SignUpFollowerPage p{
-    margin-bottom: 0;
+.SignUpFollowerPage p {
+  margin-bottom: 0;
 }
-.SignUpFollowerPage .col-12 .error-msg{
-    color:red;
-    font-size: small;
+.SignUpFollowerPage .col-12 .error-msg {
+  color: red;
+  font-size: small;
 }
-.SignUpFollowerPage .title{
-    padding-bottom: 5%;
-}
-
-.SignUpFollowerPage .form-control-update{
-    border-radius: 10px;
-    font-weight: 100;
-    color: #F4F2F4;
-    font-size: small;
+.SignUpFollowerPage .title {
+  padding-bottom: 5%;
 }
 
-.SignUpFollowerPage .theme{
-    color: rgba(132, 39, 226, 1);
+.SignUpFollowerPage .form-control-update {
+  border-radius: 10px;
+  font-weight: 100;
+  /* color: #F4F2F4; */
+  font-size: small;
 }
 
-.SignUpFollowerPage .btnlog{
-    margin-bottom: 5%;
-    border-radius: 10px;
+.SignUpFollowerPage .theme {
+  color: rgba(132, 39, 226, 1);
 }
 
-.SignUpFollowerPage .signup{
-    margin-top: 5%;
+.SignUpFollowerPage .btnlog {
+  margin-bottom: 5%;
+  border-radius: 10px;
 }
 
-.SignUpFollowerPage .icon{
-    padding-right: 15px;
+.SignUpFollowerPage .signup {
+  margin-top: 5%;
 }
 
-.SignUpFollowerPage .chcklbl{
-    padding-left: 5%;
+.SignUpFollowerPage .icon {
+  padding-right: 15px;
 }
-@media only screen and (max-width:768px){
-    .SignUpFollowerPage .col-4{
-        width: 50%;
-    }
+
+.SignUpFollowerPage .chcklbl {
+  padding-left: 5%;
 }
-@media only screen and (max-width:514px){
-    .SignUpFollowerPage .col-4{
-        width: 83%;
-    }
-    .chcklbl{
-        font-size: 14px;
-    }
-    .terms-conditions{
-        display: flex;
-        flex-direction: row;
-    }
+@media only screen and (max-width: 768px) {
+  .SignUpFollowerPage .col-4 {
+    width: 50%;
+  }
+}
+@media only screen and (max-width: 514px) {
+  .SignUpFollowerPage .col-4 {
+    width: 83%;
+  }
+  .chcklbl {
+    font-size: 14px;
+  }
+  .terms-conditions {
+    display: flex;
+    flex-direction: row;
+  }
 }
