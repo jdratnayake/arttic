@@ -1,50 +1,26 @@
+// libraries
 import React, { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
+// js files
+import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
+import { register } from "../../actions/userActions";
+import {
+  initialRegistrationValues,
+  registrationValidation,
+} from "./Validation";
+
+// css files
 import "./SignUpFollowerPage.css";
 
+// others
 import logo from "../../images/logo.png";
-
-import { register } from "../../actions/userActions";
 
 function SignUpFollowerPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // form validation start
-  const initialRegistrationValues = {
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    terms: false,
-  };
-
-  const registrationValidation = Yup.object().shape({
-    name: Yup.string().required("Name is Required"),
-    email: Yup.string()
-      .email("Email is not Valid")
-      .required("Email is Required"),
-    password: Yup.string()
-      .required("Password is Required")
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-      ),
-    confirmPassword: Yup.string()
-      .test("passwords-match", "Passwords must match", function (value) {
-        return this.parent.password === value;
-      })
-      .required("Confirm Password is Required"),
-    terms: Yup.boolean().oneOf(
-      [true],
-      "You must Accept the Terms and Conditions"
-    ),
-  });
-  // form validation end
 
   const userInfo = useSelector((state) => state.userInfo);
   const { user } = userInfo;
@@ -56,8 +32,6 @@ function SignUpFollowerPage() {
   }, [user]);
 
   const registerUser = (data) => {
-    // console.log(data.name);
-    // console.log("form front end");
     dispatch(register(4, data.name, data.email, data.password));
   };
 
@@ -90,79 +64,37 @@ function SignUpFollowerPage() {
                 >
                   {({ isSubmitting }) => (
                     <Form>
-                      <div className="col-12">
-                        <label htmlFor="name" className="form-label">
-                          Name
-                        </label>
-                        <Field
-                          type="text"
-                          className="form-control form-control-update"
-                          id="name"
-                          name="name"
-                          placeholder="Enter Name"
-                        />
+                      <AuthenticationField
+                        label="Name"
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter Name"
+                      />
 
-                        <ErrorMessage
-                          name="name"
-                          component="div"
-                          className="error-msg"
-                        />
-                      </div>
+                      <AuthenticationField
+                        label="Email"
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter Email"
+                      />
 
-                      <div className="col-12">
-                        <label htmlFor="email" className="form-label">
-                          Email
-                        </label>
-                        <Field
-                          type="email"
-                          className="form-control form-control-update"
-                          id="email"
-                          name="email"
-                          placeholder="Enter Email"
-                        />
+                      <AuthenticationField
+                        label="Password"
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter Password"
+                      />
 
-                        <ErrorMessage
-                          name="email"
-                          component="div"
-                          className="error-msg"
-                        />
-                      </div>
-
-                      <div className="col-12">
-                        <label htmlFor="password" className="form-label">
-                          Password
-                        </label>
-                        <Field
-                          type="password"
-                          className="form-control form-control-update"
-                          id="password"
-                          name="password"
-                          placeholder="Enter Password"
-                        />
-                        <ErrorMessage
-                          name="password"
-                          component="div"
-                          className="error-msg"
-                        />
-                      </div>
-
-                      <div className="col-12">
-                        <label htmlFor="confirmPassword" className="form-label">
-                          Confirm Password
-                        </label>
-                        <Field
-                          type="password"
-                          className="form-control form-control-update"
-                          id="confirmPassword"
-                          name="confirmPassword"
-                          placeholder="Enter Password Again"
-                        />
-                        <ErrorMessage
-                          name="confirmPassword"
-                          component="div"
-                          className="error-msg"
-                        />
-                      </div>
+                      <AuthenticationField
+                        label="Confirm Password"
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Enter Password Again"
+                      />
 
                       <div className="col-12 terms-conditions">
                         <Field

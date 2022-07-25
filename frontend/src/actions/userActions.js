@@ -15,9 +15,6 @@ import { API_URL } from "../constants/globalConstants";
 
 export const register =
   (userType, name, email, password) => async (dispatch) => {
-    // console.log("action");
-
-    // return 0;
     try {
       console.log("action");
       const config = {
