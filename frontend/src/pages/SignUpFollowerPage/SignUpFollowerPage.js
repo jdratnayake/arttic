@@ -1,77 +1,150 @@
-import "./SignUpFollowerPage.css"
-import logo from '../../images/logo.png'
+// libraries
+import React, { useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+
+// js files
+import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
+import { register } from "../../actions/userActions";
+import {
+  initialRegistrationValues,
+  registrationValidation,
+} from "./Validation";
+
+// css files
+import "./SignUpFollowerPage.css";
+
+// others
+import logo from "../../images/logo.png";
 
 function SignUpFollowerPage() {
-    return (
-        <>
-            <span class="SignUpFollowerPage">
-                <div class="d-flex justify-content-center">
-                    <div class="col-4">
-                        <div class="card card-update">
-                            <div class="card-body">
-                                <div class="d-grid gap-2 col-12 mx-auto text-center arttic-logo">
-                                    <a href="#">
-                                        <img
-                                            src={logo}
-                                            width="200"
-                                            height="45"
-                                        />
-                                    </a>
-                                </div>
-                                <div class="d-grid gap-2 col-12 mx-auto text-center">
-                                    <button class="btn btn-outline-primary" type="button">
-                                        <i class="bi bi-google icon"></i>Sign Up with Google
-                                    </button>
-                                    <button class="btn btn-outline-dark" type="button">
-                                        <i class="bi bi-facebook icon"></i>Sign Up with Apple
-                                    </button>
-                                    <p class="Or">Or</p>
-                                </div>
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-                                <div class="col-12">
-                                    <label for="exampleFormControlInput1" class="form-label">Name</label>
-                                    <input type="text" class="form-control form-control-update" id="name" placeholder="Enter Name" required/>
-                                    <p class="error-msg">This name is already used.Please enter another name</p>
-                                </div>
-                                <div class="col-12">
-                                    <label for="exampleFormControlInput2" class="form-label">Email</label>
-                                    <input type="email" class="form-control form-control-update" id="email" placeholder="Enter Email" required/>
-                                    <p class="error-msg">Email is invalid.Please enter vaild email address</p>
-                                </div>
-                                <div class="col-12">
-                                    <label for="exampleFormControlInput3" class="form-label">Password</label>
-                                    <input type="password" class="form-control form-control-update" id="password" required placeholder="Enter Password"/>
-                                    <p class="error-msg">Password must contain at least 8 characters</p>
-                                </div>
-                                <div class="col-12">
-                                    <label for="exampleFormControlInput4" class="form-label">Confirm Password</label>
-                                    <input type="password" class="form-control form-control-update" id="cnfpassword" required placeholder="Enter Password Again"/>
-                                    <p class="error-msg">Password is not match</p>
-                                </div>
-                                <div class="col-12 terms-conditions">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required/>
-                                    <label class="form-check-label chcklbl " for="flexCheckDefault">
-                                        Agree to all terms and conditions
-                                    </label>
-                                </div>
+  const userInfo = useSelector((state) => state.userInfo);
+  const { user } = userInfo;
 
-                                <div class="text-center">
-                                    <div class="col-12">
-                                        <br />
-                                        <button type="submit" class="btn btn-primary col-12 btnlog">Sign Up</button>
-                                    </div>
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
 
-                                    <div class="col-12">
-                                        <p class="signup">Already have an account ? <a class="theme">Log In</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+  const registerUser = (data) => {
+    dispatch(register(4, data.name, data.email, data.password));
+  };
+
+  return (
+    <>
+      <span className="SignUpFollowerPage">
+        <div className="d-flex justify-content-center">
+          <div className="col-4">
+            <div className="card card-update">
+              <div className="card-body">
+                <div className="d-grid gap-2 col-12 mx-auto text-center arttic-logo">
+                  <Link to="/">
+                    <img src={logo} width="200" height="45" />
+                  </Link>
                 </div>
-            </span>
-        </>
-    );
+                <div className="d-grid gap-2 col-12 mx-auto text-center">
+                  <button className="btn btn-outline-primary" type="button">
+                    <i className="bi bi-google icon"></i>Sign Up with Google
+                  </button>
+                  <button className="btn btn-outline-dark" type="button">
+                    <i className="bi bi-facebook icon"></i>Sign Up with Apple
+                  </button>
+                  <p className="Or">Or</p>
+                </div>
+
+                <Formik
+                  initialValues={initialRegistrationValues}
+                  validationSchema={registrationValidation}
+                  onSubmit={registerUser}
+                >
+                  {({ isSubmitting }) => (
+                    <Form>
+                      <AuthenticationField
+                        label="Name"
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter Name"
+                      />
+
+                      <AuthenticationField
+                        label="Email"
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter Email"
+                      />
+
+                      <AuthenticationField
+                        label="Password"
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter Password"
+                      />
+
+                      <AuthenticationField
+                        label="Confirm Password"
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Enter Password Again"
+                      />
+
+                      <div className="col-12 terms-conditions">
+                        <Field
+                          type="checkbox"
+                          className="form-check-input"
+                          id="terms"
+                          name="terms"
+                        />
+                        <label
+                          className="form-check-label chcklbl "
+                          htmlFor="terms"
+                        >
+                          Agree to all terms and conditions
+                        </label>
+                        <ErrorMessage
+                          name="terms"
+                          component="div"
+                          className="error-msg"
+                        />
+                      </div>
+
+                      <div className="text-center">
+                        <div className="col-12">
+                          <br />
+                          <button
+                            type="submit"
+                            className="btn btn-primary col-12 btnlog"
+                            disabled={isSubmitting}
+                          >
+                            Sign Up
+                          </button>
+                        </div>
+
+                        <div className="col-12">
+                          <p className="signup">
+                            Already have an account ?{" "}
+                            <Link to="/login">Log In</Link>
+                          </p>
+                        </div>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+            </div>
+          </div>
+        </div>
+      </span>
+    </>
+  );
 }
 
 export default SignUpFollowerPage;

@@ -1,12 +1,12 @@
 const { PrismaClient } = require("@prisma/client");
 const { StatusCodes } = require("http-status-codes");
 const bycrypt = require("bcrypt");
+const asyncHandler = require("express-async-handler");
 
 const { user } = new PrismaClient();
 
-const register = async (req, res) => {
-  const { type, firstName, lastName, email, accountStatus, password } =
-    req.body;
+const register = asyncHandler(async (req, res) => {
+  const { userType, name, email, password } = req.body;
 
   const emailStatus = await user.findUnique({
     where: {
@@ -23,21 +23,30 @@ const register = async (req, res) => {
     bycrypt.hash(password, 10).then(async (hash) => {
       const newUser = await user.create({
         data: {
-          type,
-          firstName,
-          lastName,
+          type: userType,
+          name,
           email,
-          accountStatus,
+          username: email,
           password: hash,
         },
       });
 
-      res.status(StatusCodes.CREATED).json(newUser);
+      const returnData = {
+        userId: newUser.userId,
+        type: newUser.type,
+        name: newUser.name,
+        email: newUser.email,
+        emailStatus: newUser.emailStatus,
+        username: newUser.username,
+        profilePhoto: newUser.profilePhoto,
+      };
+
+      res.status(StatusCodes.CREATED).json(returnData);
     });
   }
-};
+});
 
-const login = async (req, res) => {
+const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const existUser = await user.findUnique({
@@ -57,6 +66,6 @@ const login = async (req, res) => {
   } else {
     res.json({ error: "Email Doesn't Exist" });
   }
-};
+});
 
 module.exports = { register, login };

@@ -1,16 +1,13 @@
-body {
-  background-color: rgba(244, 242, 244, 1) !important;
-}
-.SignUpFollowerPage .Or {
+.authenticationField .Or {
   margin-bottom: 0.5rem;
 }
-.SignUpFollowerPage .col-12 {
+.authenticationField .col-12 {
   margin-bottom: 1rem;
 }
-.SignUpFollowerPage .col-12 .form-label {
+.authenticationField .col-12 .form-label {
   margin: 0.2rem;
 }
-.SignUpFollowerPage .card-update {
+.authenticationField .card-update {
   border: rgba(244, 242, 244, 1);
   margin-top: 10%;
   margin-bottom: 10%;
@@ -19,51 +16,51 @@ body {
   padding-left: 5%;
   padding-right: 5%;
 }
-.SignUpFollowerPage p {
+.authenticationField p {
   margin-bottom: 0;
 }
-.SignUpFollowerPage .col-12 .error-msg {
+.authenticationField .col-12 .error-msg {
   color: red;
   font-size: small;
 }
-.SignUpFollowerPage .title {
+.authenticationField .title {
   padding-bottom: 5%;
 }
 
-.SignUpFollowerPage .form-control-update {
+.authenticationField .form-control-update {
   border-radius: 10px;
   font-weight: 100;
   /* color: #F4F2F4; */
   font-size: small;
 }
 
-.SignUpFollowerPage .theme {
+.authenticationField .theme {
   color: rgba(132, 39, 226, 1);
 }
 
-.SignUpFollowerPage .btnlog {
+.authenticationField .btnlog {
   margin-bottom: 5%;
   border-radius: 10px;
 }
 
-.SignUpFollowerPage .signup {
+.authenticationField .signup {
   margin-top: 5%;
 }
 
-.SignUpFollowerPage .icon {
+.authenticationField .icon {
   padding-right: 15px;
 }
 
-.SignUpFollowerPage .chcklbl {
+.authenticationField .chcklbl {
   padding-left: 5%;
 }
 @media only screen and (max-width: 768px) {
-  .SignUpFollowerPage .col-4 {
+  .authenticationField .col-4 {
     width: 50%;
   }
 }
 @media only screen and (max-width: 514px) {
-  .SignUpFollowerPage .col-4 {
+  .authenticationField .col-4 {
     width: 83%;
   }
   .chcklbl {
