@@ -2,7 +2,7 @@
     SIDEBAR STYLE
 ----------------------------------------------------- */
 
-.wrapper {
+.sideNavBar .wrapper {
     display: flex;
     padding-top: 25px;
     padding-left: 30px;
@@ -11,7 +11,7 @@
     align-items: stretch;
 }
 
-#sidebar {
+.sideNavBar #sidebar {
     border-radius: 5px;
     min-width: 250px;
     max-width: 250px;
@@ -22,7 +22,7 @@
     transition: all 0.3s;
 }
 
-.premium{
+.sideNavBar .premium {
     margin-left: -15px;
     border-radius: 5px;
     width: 250px;
@@ -32,62 +32,60 @@
     transition: all 0.3s;
 }
 
-.content-top{
+.sideNavBar .content-top {
     padding-top: 20px;
     padding-left: 15px;
     padding-right: 15px;
 }
 
-.content-pre{
+.sideNavBar .content-pre {
     padding-left: 15px;
     padding-right: 15px;
 }
 
-#sidebar.active {
+.sideNavBar #sidebar.active {
     background: #fff;
 }
 
-
-#sidebar ul p {
+.sideNavBar #sidebar ul p {
     color: #fff;
     padding: 10px;
 }
 
-#sidebar ul li a {
+.sideNavBar #sidebar ul li a {
     padding: 10px;
     font-size: 1.1em;
     display: block;
 }
 
-#sidebar ul li a:hover {
+.sideNavBar #sidebar ul li a:hover {
     cursor: pointer;
     color: #8427E2;
     background: #fff;
 }
 
-#sidebar ul li.activesb>a,
-a[aria-expanded="true"] {
+.sideNavBar #sidebar ul li.activesb>a,
+.sideNavBar a[aria-expanded="true"] {
     border-radius: 25px;
     color: #000;
     background: #E8E8E8;
 }
 
-a[data-toggle="collapse"] {
+.sideNavBar a[data-toggle="collapse"] {
     position: relative;
 }
 
-
-
-.icon-theme {
+.sideNavBar .icon-theme {
     padding-right: 15px;
     color: #8427E2;
 }
 
-.icon-pre {
+.sideNavBar .icon-pre {
     font-size: 1.5em;
     padding-left: 15px;
     color: #FFD233;
 }
+
 
 /*
 a.download {
@@ -108,7 +106,7 @@ a.article:hover {
     CONTENT STYLE
 ----------------------------------------------------- */
 
-#content {
+.sideNavBar #content {
     width: 100%;
     padding: 20px;
     min-height: 100vh;
@@ -120,13 +118,16 @@ a.article:hover {
 ----------------------------------------------------- */
 
 @media (max-width: 768px) {
-    #sidebar {
+    .sideNavBar #sidebar {
         margin-left: -280px;
     }
-    #sidebar.active {
+
+    .sideNavBar #sidebar.active {
         margin-left: 0;
     }
-    #sidebarCollapse span {
+
+    .sideNavBar #sidebarCollapse span {
         display: none;
     }
+
 }
