@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
@@ -6,7 +8,12 @@ import "./SignUpFollowerPage.css";
 
 import logo from "../../images/logo.png";
 
+import { register } from "../../actions/userActions";
+
 function SignUpFollowerPage() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   // form validation start
   const initialRegistrationValues = {
     name: "",
@@ -39,9 +46,19 @@ function SignUpFollowerPage() {
   });
   // form validation end
 
-  const register = (data) => {
-    console.log("Hi");
-    console.log(data);
+  const userInfo = useSelector((state) => state.userInfo);
+  const { user } = userInfo;
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
+
+  const registerUser = (data) => {
+    // console.log(data.name);
+    // console.log("form front end");
+    dispatch(register(4, data.name, data.email, data.password));
   };
 
   return (
@@ -69,7 +86,7 @@ function SignUpFollowerPage() {
                 <Formik
                   initialValues={initialRegistrationValues}
                   validationSchema={registrationValidation}
-                  onSubmit={register}
+                  onSubmit={registerUser}
                 >
                   {({ isSubmitting }) => (
                     <Form>

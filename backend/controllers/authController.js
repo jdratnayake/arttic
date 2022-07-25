@@ -6,8 +6,7 @@ const asyncHandler = require("express-async-handler");
 const { user } = new PrismaClient();
 
 const register = asyncHandler(async (req, res) => {
-  const { type, firstName, lastName, email, accountStatus, password } =
-    req.body;
+  const { userType, name, email, password } = req.body;
 
   const emailStatus = await user.findUnique({
     where: {
@@ -24,16 +23,25 @@ const register = asyncHandler(async (req, res) => {
     bycrypt.hash(password, 10).then(async (hash) => {
       const newUser = await user.create({
         data: {
-          type,
-          firstName,
-          lastName,
+          type: userType,
+          name,
           email,
-          accountStatus,
+          username: email,
           password: hash,
         },
       });
 
-      res.status(StatusCodes.CREATED).json(newUser);
+      const returnData = {
+        userId: newUser.userId,
+        type: newUser.type,
+        name: newUser.name,
+        email: newUser.email,
+        emailStatus: newUser.emailStatus,
+        username: newUser.username,
+        profilePhoto: newUser.profilePhoto,
+      };
+
+      res.status(StatusCodes.CREATED).json(returnData);
     });
   }
 });
