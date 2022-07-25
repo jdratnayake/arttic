@@ -12,7 +12,7 @@ function AdvertismentPage() {
 
     const [cDate, setStartDate] = useState(new Date());
 
-    const changeHandler = (e) => {
+    const imgHandler = (e) => {
         const fileImage = document.querySelector('.input-preview__src');
         const filePreview = document.querySelector('.input-preview');
 
@@ -72,7 +72,7 @@ function AdvertismentPage() {
                                                 </label>
                                                 <div class="col-md-8 col-12">
                                                     <input type="file" class="form-control input-preview__src" name="addImg"
-                                                        onClick={changeHandler} required
+                                                        onClick={imgHandler} required
                                                     />
                                                 </div>
 
