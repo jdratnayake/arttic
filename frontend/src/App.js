@@ -18,6 +18,7 @@ import DashboardAdmin0Page from "./pages/DashboardAdmin0Page/DashboardAdmin0Page
 import TransactionAdmin0Page from "./pages/TransactionAdmin0Page/TransactionAdmin0Page";
 import UserDetailsPage from "./pages/UserDetailsPage/UserDetailsPage";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
+import AdvertismentPage from "./pages/AdvertisementPage/AdvertisementPage";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/signupcreator2" element={<SignUpCreatorPage2 />}></Route>
         <Route path="/signupoption" element={<SignUpOptionPage />}></Route>
         <Route path="/feed" element={<FeedPage />}></Route>
+        <Route path="/advertisment" element={<AdvertismentPage />}></Route>
         <Route path="/frogetpassword1" element={<FrogetPasswordPage1 />}></Route>
         <Route path="/frogetpassword2" element={<FrogetPasswordPage2 />}></Route>
         <Route
