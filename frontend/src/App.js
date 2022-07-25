@@ -19,6 +19,7 @@ import DashboardAdmin0Page from "./pages/DashboardAdmin0Page/DashboardAdmin0Page
 import TransactionAdmin0Page from "./pages/TransactionAdmin0Page/TransactionAdmin0Page";
 import UserDetailsPage from "./pages/UserDetailsPage/UserDetailsPage";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
+import ReportUserAdmin1Page from "./pages/ReportUserAdmin1Page/ReportUserAdmin1Page";
 import AdvertismentPage from "./pages/AdvertisementPage/AdvertisementPage";
 
 function App() {
@@ -49,6 +50,11 @@ function App() {
         ></Route>
         <Route path="/admin0/userdetails" element={<UserDetailsPage />}></Route>
         <Route path="*" element={<ErrorPage />}></Route>
+        {/* Admin 1 */}
+        <Route
+          path="/admin1/reportUser"
+          element={<ReportUserAdmin1Page />}
+        ></Route>
       </Routes>
     </BrowserRouter>
   );
