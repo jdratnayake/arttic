@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import MetaMaskOnboarding from "@metamask/onboarding";
 
 import { CLIENT_URL } from "../../constants/globalConstants";
@@ -7,6 +8,9 @@ import "./WalletConnectPage.css";
 import logo from "../../images/logo.png";
 
 function WalletConnectPage() {
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId } = userInfo.user;
+
   const [data, setData] = useState({
     username: "",
     metaMaskAddress: "",
@@ -36,6 +40,7 @@ function WalletConnectPage() {
 
     validateData();
 
+    console.log(userId);
     console.log(data.username);
     console.log(data.metaMaskAddress);
   };
