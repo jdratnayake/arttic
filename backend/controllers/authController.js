@@ -104,6 +104,7 @@ const creatorVerify = asyncHandler(async (req, res) => {
     res.json({
       error: "OpenSea Username Already Registered! Please Enter Another One",
     });
+    return 0;
   }
 
   const walletAddressStatus = await creator.findUnique({
@@ -116,6 +117,7 @@ const creatorVerify = asyncHandler(async (req, res) => {
     res.json({
       error: "Wallet Address Already Registered! Please Connect Another One",
     });
+    return 0;
   }
 
   const spawn = require("child_process").spawn;
@@ -136,6 +138,31 @@ const creatorVerify = asyncHandler(async (req, res) => {
     console.log(uint8arrayToString(data));
   });
 
+  const updateCreator = async (status) => {
+    const updateCreatorDetails = await creator.update({
+      where: {
+        userId: userId,
+      },
+      data: {
+        openSeaUsername: openSeaUsername,
+        walletAddress: walletAddress,
+        openSeaStatus: status,
+      },
+    });
+
+    if (status === 1) {
+      res.json({
+        statusCode: 1,
+        msg: "Verified account",
+      });
+    } else if (status === 2) {
+      res.json({
+        statusCode: 2,
+        msg: "Valid account",
+      });
+    }
+  };
+
   // 1 = verified account
   // 2 = valid account
   // 3 = details mismatched
@@ -144,15 +171,9 @@ const creatorVerify = asyncHandler(async (req, res) => {
     if (account !== undefined) {
       if (account.address === walletAddress) {
         if (account.config === "") {
-          res.json({
-            statusCode: 2,
-            msg: "Valid account",
-          });
+          updateCreator(2);
         } else {
-          res.json({
-            statusCode: 1,
-            msg: "Verified account",
-          });
+          updateCreator(1);
         }
       } else {
         res.json({

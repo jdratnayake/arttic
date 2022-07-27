@@ -72,7 +72,11 @@ model followerCreator{
 //   4 = platinum
 
 // wallet address = 0 idicates user is not validated
-// openSea status = false indicates that he is not a verified user in openSea
+
+// openSea status
+//   0 = verification is not done yet
+//   1 = verified account
+//   2 = valid account
 model creator{
   followerCreator followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int @id
@@ -81,7 +85,7 @@ model creator{
   creatorJoinedDate DateTime @default(now())
   walletAddress String @db.VarChar(64) @default("0") @unique
   openSeaUsername String? @db.VarChar(64) @unique
-  openSeaStatus Boolean @default(false)
+  openSeaStatus Int @default(0)
   followerCount Int @default(0)
   isfollowerCountVisible Boolean @default(true)
   loyaltyCategory Int @default(1)
