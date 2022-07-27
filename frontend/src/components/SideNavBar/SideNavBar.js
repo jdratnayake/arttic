@@ -3,7 +3,7 @@ import "./SideNavBar.css";
 
 function SideNavBar() {
     return (
-        <>
+        <span className="sideNavBar">
             <nav id="sidebar">
                 <div className="content-top">
                     <ul class="list-unstyled">
@@ -44,7 +44,7 @@ function SideNavBar() {
 
                 </div>
             </nav>
-        </>
+        </span>
     )
 }
 
