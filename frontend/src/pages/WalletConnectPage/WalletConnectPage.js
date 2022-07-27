@@ -17,12 +17,8 @@ function WalletConnectPage() {
 
   const [metaMaskAddressError, setMetaMaskAddressError] = useState("");
 
-  //We create a new MetaMask onboarding object to use in our app
-  const onboarding = new MetaMaskOnboarding({ CLIENT_URL });
-
   const validateData = () => {
     if (data.username === "") {
-      console.log(123);
       setUsernameError("Username is Required");
     } else {
       setUsernameError("");
@@ -43,6 +39,16 @@ function WalletConnectPage() {
     console.log(data.username);
     console.log(data.metaMaskAddress);
   };
+
+  useEffect(() => {
+    if (data.metaMaskAddress !== "") {
+      validateData();
+    }
+  }, [data]);
+
+  // METAMASK - START
+  //We create a new MetaMask onboarding object to use in our app
+  const onboarding = new MetaMaskOnboarding({ CLIENT_URL });
 
   const connectWallet = () => {
     // console.log("Hi");
@@ -79,12 +85,7 @@ function WalletConnectPage() {
         });
     }
   };
-
-  useEffect(() => {
-    if (data.metaMaskAddress !== "") {
-      validateData();
-    }
-  }, [data]);
+  // METAMASK - END
 
   return (
     <>
