@@ -3,7 +3,7 @@ const { StatusCodes } = require("http-status-codes");
 const bycrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 
-const { user } = new PrismaClient();
+const { user, followerCreator, creator } = new PrismaClient();
 
 const register = asyncHandler(async (req, res) => {
   const { userType, name, email, password } = req.body;
@@ -14,13 +14,13 @@ const register = asyncHandler(async (req, res) => {
     },
   });
 
-  //   res.json({ test: emailStatus });
-
-  //   return 0;
+  // 3 = creator
+  // 4 = follower
   if (emailStatus) {
     res.json({ error: "Email Already Registered! Please Login" });
   } else {
     bycrypt.hash(password, 10).then(async (hash) => {
+      // add data to the user table
       const newUser = await user.create({
         data: {
           type: userType,
@@ -30,6 +30,23 @@ const register = asyncHandler(async (req, res) => {
           password: hash,
         },
       });
+
+      // add data to the followerCreator table
+      const newFollower = await followerCreator.create({
+        data: {
+          userId: newUser.userId,
+        },
+      });
+
+      // add data to the creator table
+      if (userType === 3) {
+        const newCreator = await creator.create({
+          data: {
+            userId: newUser.userId,
+            pageName: newUser.username,
+          },
+        });
+      }
 
       const returnData = {
         userId: newUser.userId,

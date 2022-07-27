@@ -1,6 +1,6 @@
 // libraries
 import React, { useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
@@ -13,7 +13,7 @@ import {
 } from "./Validation";
 
 // css files
-import "./SignUpFollowerPage.css";
+import "./SignUpPage.css";
 
 // others
 import logo from "../../images/logo.png";
@@ -21,18 +21,27 @@ import logo from "../../images/logo.png";
 function SignUpFollowerPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const params = useParams();
+
+  // get user type from url
+  let { userType } = params;
+  userType === "creator" ? (userType = 3) : (userType = 4);
 
   const userInfo = useSelector((state) => state.userInfo);
   const { user } = userInfo;
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      if (userType === 3) {
+        navigate("/walletconnect");
+      } else if (userType === 4) {
+        navigate("/followerprofile");
+      }
     }
   }, [user]);
 
   const registerUser = (data) => {
-    dispatch(register(4, data.name, data.email, data.password));
+    dispatch(register(userType, data.name, data.email, data.password));
   };
 
   return (
