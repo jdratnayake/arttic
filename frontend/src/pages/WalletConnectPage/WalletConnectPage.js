@@ -1,9 +1,55 @@
+import { useState } from "react";
 import MetaMaskOnboarding from "@metamask/onboarding";
+
+import { CLIENT_URL } from "../../constants/globalConstants";
 
 import "./WalletConnectPage.css";
 import logo from "../../images/logo.png";
 
 function WalletConnectPage() {
+  const [data, setData] = useState({
+    connectButtonName: "Connect MetaMask",
+    metaMaskAddress: "",
+  });
+
+  //We create a new MetaMask onboarding object to use in our app
+  const onboarding = new MetaMaskOnboarding({ CLIENT_URL });
+
+  const connectWallet = () => {
+    // console.log("Hi");
+
+    // check whether the MetaMask is installed or not
+    // If it isn't installed we ask the user to click to install it
+    // check the ethereum binding on the window object to see if it's installed
+    if (!Boolean(window.ethereum && window.ethereum.isMetaMask)) {
+      setData({
+        ...data,
+        connectButtonName: "Install MetaMask",
+      });
+
+      if (window.confirm("Click OK to install MetaMask!")) {
+        onboarding.startOnboarding();
+      }
+    } else {
+      setData({
+        ...data,
+        connectButtonName: "Connect MetaMask",
+      });
+
+      window.ethereum
+        .request({ method: "eth_requestAccounts" })
+        .then((res) =>
+          setData({
+            metaMaskAddress: res[0],
+            connectButtonName: "MetaMask Connected",
+          })
+        )
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  };
+
   return (
     <>
       <span class="SignUpCreatorPage2">
@@ -33,8 +79,12 @@ function WalletConnectPage() {
 
                 <div class="col-12">
                   <br />
-                  <button type="submit" class="btn wallet col-12 btnlog">
-                    Connect Cryptowallet
+                  <button
+                    onClick={connectWallet}
+                    type="submit"
+                    class="btn wallet col-12 btnlog"
+                  >
+                    {data.connectButtonName}
                   </button>
                 </div>
 
