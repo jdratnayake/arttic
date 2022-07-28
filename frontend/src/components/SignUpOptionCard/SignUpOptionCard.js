@@ -9,7 +9,7 @@ function SignUpOptionCard({ title, btn, av, p1, p2, p3, p4, link }) {
     <div class="card">
       <div class="card-body">
         <h4 class="title text-center theme">{title}</h4>
-        <p class="text-center">who is {av} - description</p>
+        {/* <p class="text-center">who is {av} - description</p> */}
         <ul>
           <li class="listcd">{p1}</li>
           <li class="listcd">{p2}</li>

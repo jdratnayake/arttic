@@ -69,6 +69,11 @@ code {
   color: var(--primary-100);
   border: 1px solid var(--primary-100);
 }
+.btn-next{
+  background: var(--green-50);
+  border: 1px solid var(--green-50);
+}
+
 
 .btn-main-primary, .btn-main-secondary {
   margin: 5px;
@@ -98,6 +103,11 @@ code {
 .btn-secondary:hover{
   background: var(--primary-100);
   border: 1px solid var(--primary-100);
+}
+.btn-next:hover{
+  background: var(--white);
+  color: var(--green-50);
+  border: 1px solid var(--green-50);
 }
 
 .btn-main-primary:hover{

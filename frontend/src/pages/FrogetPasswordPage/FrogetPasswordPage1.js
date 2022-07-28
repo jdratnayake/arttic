@@ -30,7 +30,7 @@ function FrogetPasswordPage1() {
 
                                 <div class="col-12">
                                     <br />
-                                    <button type="submit" class="btn wallet col-12 btnlog">Next</button>
+                                    <button type="submit" class="btn btn-next wallet col-12 btnlog">Next</button>
                                 </div>
                             </div>
                         </div>
