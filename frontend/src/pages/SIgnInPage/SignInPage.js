@@ -78,11 +78,24 @@ function SignInPage() {
                   <div class="col-12">
                     <p class="signup">
                       Don’t have an account?{" "}
-                      <Link to="/signupoption">Sign Up</Link>
+                      <Link class="theme" to="/signupoption">Sign Up</Link>
                     </p>
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="help-privacy-terms">
+                <div class="row">
+                    <div class="col">
+                        <a class="link" href="#">Help</a>
+                    </div>
+                    <div class="col">
+                        <a class="link" href="#">Privacy</a>
+                    </div>
+                    <div class="col">
+                        <a class="link" href="#">Terms</a>
+                    </div>
+                </div>
             </div>
           </div>
         </div>
