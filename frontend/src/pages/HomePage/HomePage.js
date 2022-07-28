@@ -31,7 +31,7 @@ function HomePage() {
           <div class="container">
             <div className="row">
               <div class="col align-self-center about-section">
-                <h1>What is ARTTIC?</h1>
+                <h1>Welcome to ARTTIC</h1>
                 <h5>
                   On ARTTIC, you can let your fans become active participants in
                   the work they love by offering them a monthly membership. You
