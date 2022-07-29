@@ -6,12 +6,12 @@ function Footer() {
       <div class="container py-5">
         <div className="row g-5">
           {/* <div className="col-4 align-self-center "> */}
-          <div className="col-md-6 col-lg-3">
-            <h5 class="text-white mb-4">Get In Touch</h5>
-            <div className="links">
+          <div className="col-md-6 col-lg-3  footer-sub-section">
+            <h5 class="text-white mb-4 footer-section-head">Get In Touch</h5>
+            <div className="footer-links">
               <ul>
                 <li>
-                  <a><i class="bi bi-house-door me-3"></i>12,Marine Drvie,Colombo,Sri Lanka</a>
+                  <a><i class="bi bi-house-door me-3"></i>12,Marine Drvie,Sri Lanka</a>
                 </li>
                 <li>
                   <a><i class="bi bi-telephone me-3"></i>+94 77 123 4567</a>
@@ -40,12 +40,17 @@ function Footer() {
                   <i className="bi bi-facebook social-link"></i>
                 </div>
               </a>
+              <a>
+                <div className="social-link-container">
+                  <i className="bi bi-youtube social-link"></i>
+                </div>
+              </a>
             </div>
           </div>
           {/* <div className="col-2 align-self-center "> */}
-          <div className="col-md-6 col-lg-3">
-            <h5 class="text-white mb-4">Quick Link</h5>
-            <div className="links">
+          <div className="col-md-6 col-lg-3  footer-sub-section">
+            <h5 class="text-white mb-4 footer-section-head">Quick Links</h5>
+            <div className="footer-links">
               <ul>
                 <li>
                   <a>About Us</a>
@@ -63,9 +68,9 @@ function Footer() {
             </div>
           </div>
            {/* <div className="col-2 align-self-center "> */}
-           <div className="col-md-6 col-lg-3">
-            <h5 class="text-white mb-4">Quick Link</h5>
-            <div className="links">
+           <div className="col-md-6 col-lg-3  footer-sub-section">
+            <h5 class="text-white mb-4 footer-section-head">Popular Links</h5>
+            <div className="footer-links">
               <ul>
                 <li>
                   <a>About Us</a>
@@ -83,23 +88,28 @@ function Footer() {
             </div>
           </div>
           {/* <div className="col-6 align-self-center "> */}
-          <div className="col-md-6 col-lg-3">
+          <div className="col-md-6 col-lg-3  footer-sub-section">
             <form>
-              <div className="mb-3">
-                <label for="exampleInputEmail1" className="form-label">
-                  Subscribe to our newsletter
-                </label>
+              <div className="mb-3 d-flex newsletter">
+                <div>
+                  <h5 class="text-white mb-4  footer-section-head">Newsletter</h5>
+                  <p>Lorem ipsum dolor sit amet elit. Phasellus nec pretium mi. Curabitur facilisis ornare velit non vulpu</p>
 
-                <input
-                  type="email"
-                  className="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                />
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
-
+                  {/* <label for="exampleInputEmail1" className="form-label">
+                    Subscribe to our newsletter
+                  </label> */}
+                </div>
+                <div className="d-flex newsletter-input">
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                  />
+                  <button type="submit" className="btn btn-primary">
+                    <i class="bi bi-send"></i>
+                  </button>
+                </div>
               </div>
             </form>
           </div>
@@ -110,7 +120,7 @@ function Footer() {
         </div> */}
         <div class="container">
            <div class="copyright">
-              <div class="row">
+              <div class="row footer-last-row">
                   <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                     "©" 
                     <a class="border-bottom" href="#">Arttic</a>
