@@ -1,15 +1,20 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
 import MetaMaskOnboarding from "@metamask/onboarding";
+import axios from "axios";
 
-import { CLIENT_URL } from "../../constants/globalConstants";
+import { API_URL, CLIENT_URL } from "../../constants/globalConstants";
 
 import "./WalletConnectPage.css";
 import logo from "../../images/logo.png";
 
 function WalletConnectPage() {
+  const navigate = useNavigate();
   const userInfo = useSelector((state) => state.userInfo);
   const { userId } = userInfo.user;
+
+  const [firstRender, setFirstRender] = useState(true);
 
   const [data, setData] = useState({
     username: "",
@@ -22,34 +27,67 @@ function WalletConnectPage() {
   const [metaMaskAddressError, setMetaMaskAddressError] = useState("");
 
   const validateData = () => {
+    let output = true;
+
     if (data.username === "") {
       setUsernameError("Username is Required");
+      output = false;
     } else {
       setUsernameError("");
     }
 
     if (data.metaMaskAddress === "") {
       setMetaMaskAddressError("Connect the Wallet");
+      output = false;
     } else {
       setMetaMaskAddressError("");
     }
+
+    return output;
   };
 
   const submitData = (event) => {
     event.preventDefault();
 
-    validateData();
+    if (!validateData()) {
+      return 0;
+    }
 
-    console.log(userId);
-    console.log(data.username);
-    console.log(data.metaMaskAddress);
+    const inputData = {
+      userId: userId,
+      openSeaUsername: data.username,
+      walletAddress: data.metaMaskAddress.toString(),
+    };
+
+    // console.log("Hi");
+    // console.log(userId);
+    // console.log(data.username);
+    // console.log(data.metaMaskAddress);
+    axios.post(API_URL + "/auth/creatorverify", inputData).then((response) => {
+      // console.log(response.data);
+      if (response.data.error) {
+        setUsernameError(response.data.error.username);
+        setMetaMaskAddressError(response.data.error.walletAddress);
+      }
+
+      if (response.data.statusCode === 1 || response.data.statusCode === 2) {
+        navigate("/creatorprofile");
+      }
+
+      // if there is a error then put a popup message
+    });
   };
 
-  useEffect(() => {
-    if (data.metaMaskAddress !== "") {
-      validateData();
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (!firstRender) {
+  //     validateData();
+  //   }
+
+  //   setFirstRender(false);
+  //   // console.log("Hi");
+  //   // if (data.metaMaskAddress !== "") {
+  //   // }
+  // }, [data]);
 
   // METAMASK - START
   //We create a new MetaMask onboarding object to use in our app
@@ -101,9 +139,9 @@ function WalletConnectPage() {
               <div class="card card-update">
                 <div class="card-body">
                   <div class="d-grid gap-2 col-12 mx-auto text-center arttic-logo">
-                    <a href="#">
+                    <Link to="/">
                       <img src={logo} width="200" height="45" />
-                    </a>
+                    </Link>
                   </div>
                   <h4 class="title text-center theme">Connect Wallet</h4>
 

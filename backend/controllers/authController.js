@@ -102,8 +102,13 @@ const creatorVerify = asyncHandler(async (req, res) => {
 
   if (openSeaUsernameStatus) {
     res.json({
-      error: "OpenSea Username Already Registered! Please Enter Another One",
+      error: {
+        username:
+          "OpenSea Username Already Registered! Please Enter Another One",
+        walletAddress: "",
+      },
     });
+
     return 0;
   }
 
@@ -115,8 +120,13 @@ const creatorVerify = asyncHandler(async (req, res) => {
 
   if (walletAddressStatus) {
     res.json({
-      error: "Wallet Address Already Registered! Please Connect Another One",
+      error: {
+        username: "",
+        walletAddress:
+          "Wallet Address Already Registered! Please Connect Another One",
+      },
     });
+
     return 0;
   }
 

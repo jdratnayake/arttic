@@ -24,7 +24,7 @@ export const register =
       };
 
       const { data } = await axios.post(
-        API_URL + "/api/v1/auth/register",
+        API_URL + "/auth/register",
         { name, email, password, userType },
         config
       );
