@@ -25,7 +25,12 @@ function SignUpFollowerPage() {
 
   // get user type from url
   let { userType } = params;
-  userType === "creator" ? (userType = 3) : (userType = 4);
+
+  if (userType === "creator") {
+    userType = 3;
+  } else if (userType === "follower") {
+    userType = 4;
+  }
 
   const userInfo = useSelector((state) => state.userInfo);
   const { user } = userInfo;
