@@ -5,6 +5,22 @@ const asyncHandler = require("express-async-handler");
 
 const { user, followerCreator, creator } = new PrismaClient();
 
+const emailCheck = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  const emailStatus = await user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (emailStatus) {
+    res.json({ isUnique: false });
+  } else {
+    res.json({ isUnique: true });
+  }
+});
+
 const register = asyncHandler(async (req, res) => {
   const { userType, name, email, password } = req.body;
 
@@ -200,4 +216,4 @@ const creatorVerify = asyncHandler(async (req, res) => {
   };
 });
 
-module.exports = { register, login, creatorVerify };
+module.exports = { register, login, creatorVerify, emailCheck };

@@ -1,4 +1,7 @@
 import * as Yup from "yup";
+import axios from "axios";
+
+import { API_URL } from "../../constants/globalConstants";
 
 export const initialRegistrationValues = {
   name: "",
@@ -10,7 +13,20 @@ export const initialRegistrationValues = {
 
 export const registrationValidation = Yup.object().shape({
   name: Yup.string().required("Name is Required"),
-  email: Yup.string().email("Email is not Valid").required("Email is Required"),
+  email: Yup.string()
+    .email("Email is not Valid")
+    .test(
+      "email-unique",
+      "Email Already Registered! Please Login",
+      function (value) {
+        axios
+          .get(API_URL + "/auth/emailCheck", { email: value })
+          .then((response) => {
+            return !response.data.isUnique;
+          });
+      }
+    )
+    .required("Email is Required"),
   password: Yup.string()
     .required("Password is Required")
     .matches(
