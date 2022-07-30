@@ -18,12 +18,17 @@ export const registrationValidation = Yup.object().shape({
     .test(
       "email-unique",
       "Email Already Registered! Please Login",
-      function (value) {
-        axios
-          .get(API_URL + "/auth/emailCheck", { email: value })
+      async (value) => {
+        const inputData = {
+          email: value,
+        };
+
+        let response = await axios
+          .post(API_URL + "/auth/emailCheck/", inputData)
           .then((response) => {
-            return !response.data.isUnique;
+            return response.data.isUnique;
           });
+        return response;
       }
     )
     .required("Email is Required"),

@@ -13,7 +13,6 @@ const emailCheck = asyncHandler(async (req, res) => {
       email,
     },
   });
-
   if (emailStatus) {
     res.json({ isUnique: false });
   } else {

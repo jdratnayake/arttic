@@ -16,24 +16,17 @@ import { API_URL } from "../constants/globalConstants";
 export const register =
   (userType, name, email, password) => async (dispatch) => {
     try {
-      console.log("action");
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-        },
-      };
+      const inputData = { name, email, password, userType };
 
-      const { data } = await axios.post(
-        API_URL + "/auth/register",
-        { name, email, password, userType },
-        config
-      );
+      axios.post(API_URL + "/auth/register", inputData).then((response) => {
+        if (!response.data.error) {
+          //   dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
 
-      //   dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
+          dispatch({ type: USER_LOGIN_SUCCESS, payload: response.data });
 
-      dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-
-      localStorage.setItem("user", JSON.stringify(data));
+          localStorage.setItem("user", JSON.stringify(response.data));
+        }
+      });
     } catch (error) {
       dispatch({
         type: USER_REGISTER_FAIL,
