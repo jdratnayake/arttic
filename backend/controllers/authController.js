@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const { StatusCodes } = require("http-status-codes");
 const bycrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
+const { sign } = require("jsonwebtoken");
 
 const { user, followerCreator, creator } = new PrismaClient();
 
@@ -97,6 +98,13 @@ const login = asyncHandler(async (req, res) => {
   if (existUser) {
     bycrypt.compare(password, existUser.password).then((match) => {
       if (match) {
+        const accessToken = sign(
+          { email: existUser.email, userId: existUser.userId },
+          process.env.JWT_SECRET
+        );
+
+        // console.log(accessToken);
+
         const returnData = {
           userId: existUser.userId,
           type: existUser.type,
@@ -105,6 +113,7 @@ const login = asyncHandler(async (req, res) => {
           emailStatus: existUser.emailStatus,
           username: existUser.username,
           profilePhoto: existUser.profilePhoto,
+          accessToken: accessToken,
         };
 
         res.json(returnData);

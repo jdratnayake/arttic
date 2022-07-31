@@ -1,5 +1,7 @@
 const express = require("express");
 
+const { validateToken } = require("../middleware/AuthMiddleware");
+
 // import controllers
 const {
   register,
@@ -13,7 +15,7 @@ const router = express.Router();
 // define specific routes
 router.route("/emailCheck").post(emailCheck);
 router.route("/register").post(register);
-router.route("/login").post(login);
+router.post("/login", login);
 router.route("/creatorverify").post(creatorVerify);
 
 module.exports = router;
