@@ -109,6 +109,9 @@ const creatorVerify = asyncHandler(async (req, res) => {
 
   const { userId, openSeaUsername, walletAddress } = req.body;
 
+  const errorData = { username: "", walletAddress: "" };
+  let errorSignal = false;
+
   const openSeaUsernameStatus = await creator.findUnique({
     where: {
       openSeaUsername,
@@ -116,15 +119,10 @@ const creatorVerify = asyncHandler(async (req, res) => {
   });
 
   if (openSeaUsernameStatus) {
-    res.json({
-      error: {
-        username:
-          "OpenSea Username Already Registered! Please Enter Another One",
-        walletAddress: "",
-      },
-    });
+    errorData.username =
+      "OpenSea Username Already Registered! Please Enter Another One";
 
-    return 0;
+    errorSignal = true;
   }
 
   const walletAddressStatus = await creator.findUnique({
@@ -134,14 +132,15 @@ const creatorVerify = asyncHandler(async (req, res) => {
   });
 
   if (walletAddressStatus) {
-    res.json({
-      error: {
-        username: "",
-        walletAddress:
-          "Wallet Address Already Registered! Please Connect Another One",
-      },
-    });
+    errorData.walletAddress =
+      "Wallet Address Already Registered! Please Connect Another One";
+    errorSignal = true;
+  }
 
+  if (errorSignal) {
+    res.json({
+      error: errorData,
+    });
     return 0;
   }
 

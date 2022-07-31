@@ -53,24 +53,37 @@ function WalletConnectPage() {
       return 0;
     }
 
+    // console.log("Hi");
+    // console.log(userId);
+    // console.log(typeof userId);
+    // console.log(data.username);
+    // console.log(typeof data.username);
+    // console.log(data.metaMaskAddress);
+    // console.log(typeof data.metaMaskAddress);
+
     const inputData = {
       userId: userId,
       openSeaUsername: data.username,
-      walletAddress: data.metaMaskAddress.toString(),
+      walletAddress: data.metaMaskAddress,
     };
 
-    // console.log("Hi");
-    // console.log(userId);
-    // console.log(data.username);
-    // console.log(data.metaMaskAddress);
+    // console.log("\n\nHi2");
+    // console.log(inputData.userId);
+    // console.log(typeof inputData.userId);
+    // console.log(inputData.openSeaUsername);
+    // console.log(typeof inputData.openSeaUsername);
+    // console.log(inputData.walletAddress);
+    // console.log(typeof inputData.walletAddress);
     axios.post(API_URL + "/auth/creatorverify", inputData).then((response) => {
       // console.log(response.data);
       if (response.data.error) {
         setUsernameError(response.data.error.username);
         setMetaMaskAddressError(response.data.error.walletAddress);
       }
-
+      // console.log("Hi2");
+      console.log(response.data);
       if (response.data.statusCode === 1 || response.data.statusCode === 2) {
+        console.log("Hi3");
         navigate("/creatorprofile");
       }
 
@@ -93,7 +106,7 @@ function WalletConnectPage() {
   //We create a new MetaMask onboarding object to use in our app
   const onboarding = new MetaMaskOnboarding({ CLIENT_URL });
 
-  const connectWallet = () => {
+  const connectWallet = async () => {
     // console.log("Hi");
 
     // check whether the MetaMask is installed or not
@@ -114,7 +127,7 @@ function WalletConnectPage() {
         connectButtonName: "Connect MetaMask",
       });
 
-      window.ethereum
+      await window.ethereum
         .request({ method: "eth_requestAccounts" })
         .then((res) =>
           setData({
@@ -156,7 +169,6 @@ function WalletConnectPage() {
                       placeholder="Enter OpenSea Username"
                       onChange={(event) => {
                         setData({ ...data, username: event.target.value });
-                        validateData();
                       }}
                     />
                     <div>{usernameError}</div>
@@ -166,7 +178,7 @@ function WalletConnectPage() {
                     <br />
                     <button
                       onClick={connectWallet}
-                      type="submit"
+                      type="button"
                       class="btn wallet col-12 btnlog"
                     >
                       {data.connectButtonName}
