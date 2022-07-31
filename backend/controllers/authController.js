@@ -64,6 +64,11 @@ const register = asyncHandler(async (req, res) => {
         });
       }
 
+      const accessToken = sign(
+        { email: newUser.email, userId: newUser.userId },
+        process.env.JWT_SECRET
+      );
+
       const returnData = {
         userId: newUser.userId,
         type: newUser.type,
@@ -72,6 +77,7 @@ const register = asyncHandler(async (req, res) => {
         emailStatus: newUser.emailStatus,
         username: newUser.username,
         profilePhoto: newUser.profilePhoto,
+        accessToken: accessToken,
       };
 
       res.status(StatusCodes.CREATED).json(returnData);

@@ -5,6 +5,7 @@ import MetaMaskOnboarding from "@metamask/onboarding";
 import axios from "axios";
 
 import { API_URL, CLIENT_URL } from "../../constants/globalConstants";
+import { getAccessToken } from "../../constants/globalFunctions";
 
 import "./WalletConnectPage.css";
 import logo from "../../images/logo.png";
@@ -52,10 +53,13 @@ function WalletConnectPage() {
       return 0;
     }
 
+    const accessToken = getAccessToken();
+
     const inputData = {
       userId: userId,
       openSeaUsername: data.username,
       walletAddress: data.metaMaskAddress,
+      accessToken,
     };
 
     await axios

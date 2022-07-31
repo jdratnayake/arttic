@@ -11,7 +11,6 @@ import { API_URL } from "../constants/globalConstants";
 
 export const login = (username, password) => async (dispatch) => {
   try {
-    // const { accessToken } = JSON.parse(localStorage.getItem("user"));
     const inputData = { username, password };
 
     await axios.post(API_URL + "/auth/login", inputData).then((response) => {
