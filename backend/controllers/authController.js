@@ -79,24 +79,45 @@ const register = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
-  const existUser = await user.findUnique({
+  const existUser = await user.findFirst({
     where: {
-      email,
+      OR: [
+        {
+          email: username,
+        },
+        {
+          username: username,
+        },
+      ],
     },
   });
 
   if (existUser) {
     bycrypt.compare(password, existUser.password).then((match) => {
       if (match) {
-        res.json(existUser);
+        const returnData = {
+          userId: existUser.userId,
+          type: existUser.type,
+          name: existUser.name,
+          email: existUser.email,
+          emailStatus: existUser.emailStatus,
+          username: existUser.username,
+          profilePhoto: existUser.profilePhoto,
+        };
+
+        res.json(returnData);
       } else {
-        res.json({ error: "Wrong Password Entered" });
+        res.json({
+          error: { username: "", password: "Wrong Password Entered" },
+        });
       }
     });
   } else {
-    res.json({ error: "Email Doesn't Exist" });
+    res.json({
+      error: { username: "Email or Username Doesn't Exist", password: "" },
+    });
   }
 });
 
