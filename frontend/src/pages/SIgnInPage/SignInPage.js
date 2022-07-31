@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
 
@@ -17,26 +17,28 @@ function SignInPage() {
   const [passwordError, setPasswordError] = useState("");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const loginUser = (data) => {
-    // console.log(data.username);
-    // console.log(data.password);
-    // return 0;
     dispatch(login(data.username, data.password));
 
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log("hi");
-
     if (user.error) {
-      console.log("hi");
       setUsernameError(user.error.username);
       setPasswordError(user.error.password);
-      console.log(user.error.username);
-      console.log(user.error.password);
     } else {
       setUsernameError("");
       setPasswordError("");
-      console.log("hi");
+
+      if (user.type === 3) {
+        if (user.openSeaStatus === 1 || user.openSeaStatus === 2) {
+          navigate("/creatorprofile");
+        } else if (user.openSeaStatus === 0) {
+          navigate("/walletconnect");
+        }
+      } else if (user.type === 4) {
+        //redirect to the follower page
+      }
     }
   };
 

@@ -101,6 +101,19 @@ const login = asyncHandler(async (req, res) => {
     },
   });
 
+  let creatorStatus;
+  if (existUser && existUser.type === 3) {
+    creatorStatus = await creator.findUnique({
+      where: {
+        userId: existUser.userId,
+      },
+      select: {
+        openSeaStatus: true,
+      },
+    });
+  }
+  // console.log(existUser);
+
   if (existUser) {
     bycrypt.compare(password, existUser.password).then((match) => {
       if (match) {
@@ -109,9 +122,7 @@ const login = asyncHandler(async (req, res) => {
           process.env.JWT_SECRET
         );
 
-        // console.log(accessToken);
-
-        const returnData = {
+        let returnData = {
           userId: existUser.userId,
           type: existUser.type,
           name: existUser.name,
@@ -121,6 +132,13 @@ const login = asyncHandler(async (req, res) => {
           profilePhoto: existUser.profilePhoto,
           accessToken: accessToken,
         };
+
+        if (existUser.type === 3) {
+          returnData = {
+            ...returnData,
+            openSeaStatus: creatorStatus.openSeaStatus,
+          };
+        }
 
         res.json(returnData);
       } else {
