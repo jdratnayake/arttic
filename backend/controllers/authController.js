@@ -192,43 +192,31 @@ const creatorVerify = asyncHandler(async (req, res) => {
     console.log(uint8arrayToString(data));
   });
 
-  const updateCreator = async (status) => {
-    const updateCreatorDetails = await creator.update({
-      where: {
-        userId: userId,
-      },
-      data: {
-        openSeaUsername: openSeaUsername,
-        walletAddress: walletAddress,
-        openSeaStatus: status,
-      },
-    });
-
-    if (status === 1) {
-      res.json({
-        statusCode: 1,
-        msg: "Verified account",
-      });
-    } else if (status === 2) {
-      res.json({
-        statusCode: 2,
-        msg: "Valid account",
-      });
-    }
-  };
+  let creatorStatus = 0;
 
   // 1 = verified account
   // 2 = valid account
   // 3 = details mismatched
   // 4 = unable to find the user account
-  const accValidator = (account) => {
+  const accValidator = async (account) => {
     if (account !== undefined) {
       if (account.address === walletAddress) {
         if (account.config === "") {
-          updateCreator(2);
+          creatorStatus = 2;
         } else {
-          updateCreator(1);
+          creatorStatus = 1;
         }
+
+        await creator.update({
+          where: {
+            userId: userId,
+          },
+          data: {
+            openSeaUsername: openSeaUsername,
+            walletAddress: walletAddress,
+            openSeaStatus: creatorStatus,
+          },
+        });
       } else {
         res.json({
           statusCode: 3,
@@ -239,6 +227,18 @@ const creatorVerify = asyncHandler(async (req, res) => {
       res.json({
         statusCode: 4,
         msg: "Unable to find the user account",
+      });
+    }
+
+    if (creatorStatus === 1) {
+      res.json({
+        statusCode: 1,
+        msg: "Verified account",
+      });
+    } else if (creatorStatus === 2) {
+      res.json({
+        statusCode: 2,
+        msg: "Valid account",
       });
     }
   };
