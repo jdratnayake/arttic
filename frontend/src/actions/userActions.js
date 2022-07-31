@@ -43,15 +43,15 @@ export const register =
     try {
       const inputData = { name, email, password, userType };
 
-      axios.post(API_URL + "/auth/register", inputData).then((response) => {
-        if (!response.data.error) {
-          //   dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
+      await axios
+        .post(API_URL + "/auth/register", inputData)
+        .then((response) => {
+          if (!response.data.error) {
+            dispatch({ type: USER_REGISTER_SUCCESS, payload: response.data });
 
-          dispatch({ type: USER_LOGIN_SUCCESS, payload: response.data });
-
-          localStorage.setItem("user", JSON.stringify(response.data));
-        }
-      });
+            localStorage.setItem("user", JSON.stringify(response.data));
+          }
+        });
     } catch (error) {
       dispatch({
         type: USER_REGISTER_FAIL,

@@ -13,9 +13,9 @@ const {
 const router = express.Router();
 
 // define specific routes
-router.route("/emailCheck").post(emailCheck);
-router.route("/register").post(register);
+router.post("/emailCheck", emailCheck);
+router.post("/register", register);
 router.post("/login", login);
-router.route("/creatorverify").post(creatorVerify);
+router.post("/creatorverify", creatorVerify);
 
 module.exports = router;

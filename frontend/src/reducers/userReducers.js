@@ -11,11 +11,11 @@ export const userReducer = (state = {}, action) => {
     case USER_LOGIN_SUCCESS:
       return { user: action.payload };
     case USER_LOGIN_FAIL:
-      return { user: action.payload };
+      return { error: action.payload };
     case USER_LOGOUT:
       return {};
-    // case USER_REGISTER_SUCCESS:
-    //   return { user: action.payload };
+    case USER_REGISTER_SUCCESS:
+      return { user: action.payload };
     case USER_REGISTER_FAIL:
       return { error: action.payload };
     default:

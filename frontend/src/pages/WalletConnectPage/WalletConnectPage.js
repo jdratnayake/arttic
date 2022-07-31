@@ -11,10 +11,9 @@ import logo from "../../images/logo.png";
 
 function WalletConnectPage() {
   const navigate = useNavigate();
+
   const userInfo = useSelector((state) => state.userInfo);
   const { userId } = userInfo.user;
-
-  const [firstRender, setFirstRender] = useState(true);
 
   const [data, setData] = useState({
     username: "",
@@ -46,20 +45,12 @@ function WalletConnectPage() {
     return output;
   };
 
-  const submitData = (event) => {
+  const submitData = async (event) => {
     event.preventDefault();
 
     if (!validateData()) {
       return 0;
     }
-
-    // console.log("Hi");
-    // console.log(userId);
-    // console.log(typeof userId);
-    // console.log(data.username);
-    // console.log(typeof data.username);
-    // console.log(data.metaMaskAddress);
-    // console.log(typeof data.metaMaskAddress);
 
     const inputData = {
       userId: userId,
@@ -67,28 +58,20 @@ function WalletConnectPage() {
       walletAddress: data.metaMaskAddress,
     };
 
-    // console.log("\n\nHi2");
-    // console.log(inputData.userId);
-    // console.log(typeof inputData.userId);
-    // console.log(inputData.openSeaUsername);
-    // console.log(typeof inputData.openSeaUsername);
-    // console.log(inputData.walletAddress);
-    // console.log(typeof inputData.walletAddress);
-    axios.post(API_URL + "/auth/creatorverify", inputData).then((response) => {
-      // console.log(response.data);
-      if (response.data.error) {
-        setUsernameError(response.data.error.username);
-        setMetaMaskAddressError(response.data.error.walletAddress);
-      }
-      // console.log("Hi2");
-      console.log(response.data);
-      if (response.data.statusCode === 1 || response.data.statusCode === 2) {
-        console.log("Hi3");
-        navigate("/creatorprofile");
-      }
+    await axios
+      .post(API_URL + "/auth/creatorverify", inputData)
+      .then((response) => {
+        if (response.data.error) {
+          setUsernameError(response.data.error.username);
+          setMetaMaskAddressError(response.data.error.walletAddress);
+        }
 
-      // if there is a error then put a popup message
-    });
+        if (response.data.statusCode === 1 || response.data.statusCode === 2) {
+          navigate("/creatorprofile");
+        }
+
+        // if there is a error then put a popup message
+      });
   };
 
   // useEffect(() => {
