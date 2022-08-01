@@ -43,47 +43,49 @@ function FeedPage() {
             <NavBar />
             <div class="container mt-2 feedBack">
                 <div class="row justify-content-center">
-                    <div class="col-md-3 sidebar-col">
-                        <nav id="sidebar">
-                            <div className="content">
-                                <ul class="list-unstyled">
-                                    <li class="activesb">
-                                        <a onClick={() => handleClick("Feed")}><i class="bi bi-rss icon-theme"></i>Feed</a>
-                                    </li>
-                                    <li>
-                                        <a onClick={() => handleClick("FindCreators")}><i class="bi bi-people-fill icon-theme"></i>Find Creators</a>
-                                    </li>
-                                    <li>
-                                        <a onClick={() => handleClick("Favourite")}><i class="bi bi-star icon-theme"></i>Favourits</a>
-                                    </li>
-                                    <li>
-                                        <a onClick={() => handleClick("Chat")}><i class="bi bi-chat-dots icon-theme"></i>Chat</a>
-                                    </li>
-                                    <li>
-                                        <a onClick={() => handleClick("Statics")}><i class="bi bi-graph-up icon-theme"></i>Statics</a>
-                                    </li>
-                                    <li>
-                                        <a onClick={() => handleClick("Settings")} ><i class="bi bi-gear icon-theme"></i>Settings</a>
-                                    </li>
-                                    <li>
-                                        <a onClick={() => handleClick("Advertisment")}><i class="bi bi-badge-ad-fill icon-theme"></i>Advertisment</a>
-                                    </li>
-                                </ul><br />
+                    <div class="col-md-3">
+                        <span className="sideNavBar">
+                            <nav id="sidebar">
+                                <div className="content">
+                                    <ul class="list-unstyled">
+                                        <li class="activesb">
+                                            <a onClick={() => handleClick("Feed")}><i class="bi bi-rss icon-theme"></i>Feed</a>
+                                        </li>
+                                        <li>
+                                            <a onClick={() => handleClick("FindCreators")}><i class="bi bi-people-fill icon-theme"></i>Find Creators</a>
+                                        </li>
+                                        <li>
+                                            <a onClick={() => handleClick("Favourite")}><i class="bi bi-star icon-theme"></i>Favourits</a>
+                                        </li>
+                                        <li>
+                                            <a onClick={() => handleClick("Chat")}><i class="bi bi-chat-dots icon-theme"></i>Chat</a>
+                                        </li>
+                                        <li>
+                                            <a onClick={() => handleClick("Statics")}><i class="bi bi-graph-up icon-theme"></i>Statics</a>
+                                        </li>
+                                        <li>
+                                            <a onClick={() => handleClick("Settings")} ><i class="bi bi-gear icon-theme"></i>Settings</a>
+                                        </li>
+                                        <li>
+                                            <a onClick={() => handleClick("Advertisment")}><i class="bi bi-badge-ad-fill icon-theme"></i>Advertisment</a>
+                                        </li>
+                                    </ul><br />
 
-                                <div className="premium">
-                                    <div className="content-pre">
-                                        <p>
-                                            Upgrade to premimum <i class="bi bi-gem icon-pre"></i>
-                                        </p>
-                                        <p>
-                                            small description on to have
-                                            interest on premium package
-                                        </p>
+                                    <div className="premium">
+                                        <div className="content-pre">
+                                            <p>
+                                                Upgrade to premimum <i class="bi bi-gem icon-pre"></i>
+                                            </p>
+                                            <p>
+                                                small description on to have
+                                                interest on premium package
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
 
-                            </div>
-                        </nav>
+                                </div>
+                            </nav>
+                        </span>
                         {/* <SideNavBar /> */}
                     </div>
                     <div className="col-md-9 col-xs-12">

@@ -7,7 +7,7 @@ import SideNavBarAdmin0 from "../../components/SideNavBarAdmin0/SideNavBarAdmin0
 
 function ReportUserPage() {
 	return (
-		<div className="ReportUserPage">
+		<span className="ReportUserPage">
 			{/* <div class="container-fluid px-5 py-5"> */}
 			<NavBar />
 			<div className="wrapperAdmin">
@@ -21,7 +21,7 @@ function ReportUserPage() {
 								<div class="d-flex align-items-center justify-content-between pt-4 pb-6 px-4">
 									<div class="d-flex align-items-center">
 										{/* avatar */}
-										<div class="avatar-xxl avatar-indicators avatar-online me-2 position-relative d-flex justify-content-end align-items-end mt-n10">
+										<div class="avatar-xxl me-2 position-relative d-flex justify-content-end align-items-end mt-n10">
 											<img
 												src={avatar}
 												class="avatar-xxl rounded-circle border border-4 border-white-color-40"
@@ -59,7 +59,7 @@ function ReportUserPage() {
 							<div class="card reportBio">
 								{/* card body */}
 								<div class="card-body reportBioBody">
-									<span class="text-uppercase fw-medium text-dark fs-5 ls-2">
+									<span class="text-uppercase fw-medium text-dark fs-4 ls-2">
 										Bio
 									</span>
 									{/* text */}
@@ -73,23 +73,23 @@ function ReportUserPage() {
 									<div class="row">
 										<div class="col-12 mb-1">
 											{/* text */}
-											<h6 class="text-uppercase fs-5 ls-2">Username</h6>
+											<h6 class="text-uppercase fs-4 ls-2">Username</h6>
 											<p class="mb-0">Mahesh</p>
 										</div>
 										<div class="col-6 mb-1">
-											<h6 class="text-uppercase fs-5 ls-2">Phone </h6>
+											<h6 class="text-uppercase fs-4 ls-2">Phone </h6>
 											<p class="mb-0">+32112345689</p>
 										</div>
 										<div class="col-6 mb-1">
-											<h6 class="text-uppercase fs-5 ls-2">Joined date </h6>
+											<h6 class="text-uppercase fs-4 ls-2">Joined date </h6>
 											<p class="mb-0">01.10.2020</p>
 										</div>
 										<div class="col-6">
-											<h6 class="text-uppercase fs-5 ls-2">Email </h6>
+											<h6 class="text-uppercase fs-4 ls-2">Email </h6>
 											<p class="mb-0">Arttic@gmail.com</p>
 										</div>
 										<div class="col-6">
-											<h6 class="text-uppercase fs-5 ls-2">Accounnt status</h6>
+											<h6 class="text-uppercase fs-4 ls-2">Accounnt status</h6>
 											<p class="mb-0">Premium</p>
 										</div>
 									</div>
@@ -621,7 +621,7 @@ function ReportUserPage() {
 					</div>
 				</div>
 			</div>
-		</div>
+		</span>
 	);
 }
 
