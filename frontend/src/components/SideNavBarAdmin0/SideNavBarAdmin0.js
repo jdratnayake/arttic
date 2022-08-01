@@ -1,5 +1,4 @@
 import React from "react";
-import "./SideNavBarAdmin0.css"
 
 function SideNavBarAdmin0() {
   return (

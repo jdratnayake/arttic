@@ -26,11 +26,16 @@
 .SignUpCreatorPage p{
     margin-bottom: 0;
 }
-.SignUpCreatorPage .col-12 .error-msg{
+.SignUpCreatorPage .col-12 .error-msg,.SignUpCreatorPage2 .col-12 .error-msg{
     color:red;
     font-size: small;
 }
-
+.SignUpCreatorPage .col-12 .fcup,.SignUpCreatorPage2 .col-12 .fcup{
+    border-radius: 10px;
+    font-weight: 100;
+    color: #F4F2F4;
+    font-size: small;
+}
 .SignUpCreatorPage .wallet {
     background-color: rgba(51, 255, 148, 1);
     color: rgb(0, 0, 0);
@@ -58,6 +63,7 @@
     background-color: var(--green-50);
     color: black;
 }
+
 @media only screen and (max-width:768px){
     .SignUpCreatorPage .col-4, .SignUpCreatorPage2 .col-4{
         width: 50%;
@@ -67,7 +73,7 @@
     .SignUpCreatorPage .col-4, .SignUpCreatorPage2 .col-4{
         width: 83%;
     }
-    .chcklbl{
+    .checklbl{
         font-size: 14px;
     }
     .terms-conditions{

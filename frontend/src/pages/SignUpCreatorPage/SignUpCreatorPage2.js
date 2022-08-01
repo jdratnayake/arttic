@@ -1,11 +1,11 @@
-import "./FrogetPasswordPage.css"
+import "./SignUpCreatorPage.css"
 import logo from '../../images/logo.png'
 
 
-function FrogetPasswordPage2() {
+function SignUpCreatorPage2() {
     return (
         <>
-            <span class="FrogetPasswordPage FrogetPasswordPage2">    
+            <span class="SignUpCreatorPage2">    
                 <div class="d-flex justify-content-center">
                     <div class="col-4">
                         <div class="card card-update">
@@ -19,23 +19,24 @@ function FrogetPasswordPage2() {
                                         />
                                     </a>
                                 </div>
-                                <h4 class="title text-center theme">Reset Password</h4>
+                                <h4 class="title text-center theme">Connect Wallet</h4>
 
                                 <div class="col-12">
-                                    <label for="exampleFormControlInput3" class="form-label">New  Password</label>
-                                    <input type="password" class="form-control fcup" id="password" required placeholder="Enter New Password"/>
-                                    <p class="error-msg">Password must contain at least 8 characters</p>
-                                </div>
-                                <div class="col-12">
-                                    <label for="exampleFormControlInput4" class="form-label">Confirm Password</label>
-                                    <input type="password" class="form-control fcup" id="cnfpassword" required placeholder="Confirm New Password"/>
-                                    <p class="error-msg">Password is not match</p>
+                                    <label for="exampleFormControlInput1" class="form-label">OpenSea Username</label>
+                                    <input type="text" class="form-control fcup" id="name" placeholder="" required />
                                 </div>
 
                                 <div class="col-12">
                                     <br />
-                                    <button type="submit" class="btn btn-primary  col-12 btnlog">Reset Password</button>
+                                    <button type="submit" class="btn wallet col-12 btnlog">Connect Cryptowallet </button>
                                 </div>
+
+
+                                <div class="col-12">
+                                    <br />
+                                    <button type="submit" class="btn btn-primary col-12 btnlog">Sign Up</button>
+                                </div>
+
                             </div>
                         </div>
                         <div class="help-privacy-terms">
@@ -52,11 +53,10 @@ function FrogetPasswordPage2() {
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </span> 
         </>
     );
 }
 
-export default FrogetPasswordPage2;
+export default SignUpCreatorPage2;

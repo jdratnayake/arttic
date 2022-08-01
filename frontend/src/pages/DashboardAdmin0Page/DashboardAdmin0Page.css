@@ -1,17 +1,39 @@
+/* DEFAULT STYLES START */
+.wrapperAdmin {
+  display: flex;
+  padding: 3%;
+  padding-bottom: 0;
+}
+
+#contentAdmin {
+  width: 100%;
+  margin-left: 36px;
+}
+
+.admin-page-title {
+  background-color: #fff;
+}
+
+.admin-page-title .row {
+  padding: 18px;
+}
+
+.admin-page-title .row h4 {
+  margin-bottom: 0;
+}
+
+/* DEFAULT STYLES END */
+
 /* CUSTOM CSS */
 
-.dashboardAdmin0Page .analyticsCardRow {
+.dashboardAdmin0Page #contentAdmin .analyticsCardRow {
   padding-top: 36px;
 }
 
-/* .dashboardAdmin0Page .lineChartStyle .card-body {
+.dashboardAdmin0Page #contentAdmin .lineChartStyle .card-body {
   padding: 9px;
-} */
-
-.dashboardAdmin0Page .second-row {
-  margin-top: 36px;
 }
 
-.dashboardAdmin0Page .card-body .cardRow {
+.dashboardAdmin0Page #contentAdmin .card-body .cardRow {
   padding-bottom: 18px;
 }
