@@ -3,6 +3,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "swiper/css/bundle";
 
+// templates
+import Admin0Template from "./templates/Admin0Template/Admin0Template";
+
+// pages
 import FeedPage from "./pages/FeedPage/FeedPage";
 import HomePage from "./pages/HomePage/HomePage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
@@ -15,7 +19,7 @@ import FrogetPasswordPage2 from "./pages/FrogetPasswordPage/FrogetPasswordPage2"
 import ReportUserPage from "./pages/ReportUserPage/ReportUserPage";
 import Settings from "./components/Settings/Settings";
 import DashboardAdmin0Page from "./pages/DashboardAdmin0Page/DashboardAdmin0Page";
-import TransactionAdmin0Page from "./pages/TransactionAdmin0Page/TransactionAdmin0Page";
+import SystemTransactionDetailsPage from "./pages/SystemTransactionDetailsPage/SystemTransactionDetailsPage";
 import UserDetailsPage from "./pages/UserDetailsPage/UserDetailsPage";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import ReportUserAdmin1Page from "./pages/ReportUserAdmin1Page/ReportUserAdmin1Page";
@@ -46,13 +50,18 @@ function App() {
         ></Route>
         <Route
           path="/admin0/dashboard"
-          element={<DashboardAdmin0Page />}
+          element={<Admin0Template children={<DashboardAdmin0Page />} />}
         ></Route>
         <Route
           path="/admin0/transactions"
-          element={<TransactionAdmin0Page />}
+          element={
+            <Admin0Template children={<SystemTransactionDetailsPage />} />
+          }
         ></Route>
-        <Route path="/admin0/userdetails" element={<UserDetailsPage />}></Route>
+        <Route
+          path="/admin0/userdetails"
+          element={<Admin0Template children={<UserDetailsPage />} />}
+        ></Route>
         <Route path="*" element={<ErrorPage />}></Route>
         {/* Admin 1 */}
         <Route
