@@ -22,31 +22,31 @@ model user{
   userId Int @id @default(autoincrement())
   type Int
   name String @db.VarChar(64)
-  email String @db.VarChar(64) @unique
+  email String @db.VarChar(128) @unique
   emailStatus Boolean @default(false)
-  username String @db.VarChar(64) @unique
+  username String @db.VarChar(128) @unique
   joinedDate DateTime @default(now())
   profilePhoto String @db.VarChar(256) @default("0")
   password String @db.VarChar(128)
   blockedStatus Boolean @default(false)
   blockedDate DateTime?
   blockedAdminID Int?
-  blockedAdmin user? @relation("adminBlockedFollowerCreator", fields: [blockedAdminID],references: [userId])
-  blockedUser user[] @relation("adminBlockedFollowerCreator")
+  blockedAdmin user? @relation("adminBlockFollowerCreator", fields: [blockedAdminID],references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  blockedUser user[] @relation("adminBlockFollowerCreator")
   followerCreator followerCreator?
-  userReportResolvedAdmins userReport[] @relation("userReportResolvedAdmin")
+  userReportResolvedAdmins userReport[] 
   postReports postReport[]
   advertisementReports advertisementReport[]
 }
 
 // coverPhoto = 0 indicates there is no cover photo
 model followerCreator{
-  user user @relation(fields: [userId], references: [userId])
+  user user @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int @id
   coverPhoto String @db.VarChar(256) @default("0")
-  blockedStatus Boolean @default(false)
+  // blockedStatus Boolean @default(false)
   creator creator?
-  billingAddresses billingAddressFollowerCreator[]
+  billingAddresses billingAddress[]
   packages premiumPackageSubscribe[]
   userSubscribes userSubscribe[]
   postReactions postReaction[]
@@ -55,13 +55,14 @@ model followerCreator{
   creatorViews creatorView[]
   postViews postView[]
   advertisementViews advertisementView[]
-  users userBlock[] @relation("user")
-  userBlocks userBlock[] @relation("userBlocked")
+  users userBlocked[] @relation("user")
+  userBlocks userBlocked[] @relation("blockedUser")
   sourceUsers userReport[] @relation("sourceReportedUser")
   reportedUsers userReport[] @relation("reportedUser")
   postReports postReport[]
   advertisementReports advertisementReport[]
   postSaves postSave[]
+  transactions transactionLog[]
 }
 
 // loyalty category
@@ -69,14 +70,22 @@ model followerCreator{
 //   2 = silver
 //   3 = gold
 //   4 = platinum
+
+// wallet address = 0 idicates user is not validated
+
+// openSea status
+//   0 = verification is not done yet
+//   1 = verified account
+//   2 = valid account
 model creator{
-  followerCreator followerCreator @relation(fields: [userId], references: [userId])
+  followerCreator followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int @id
   pageName String @db.VarChar(64) @unique
   description String? @db.VarChar(512)
   creatorJoinedDate DateTime @default(now())
-  walletAddress String? @db.VarChar(64) @unique
+  walletAddress String @db.VarChar(64) @default("0") @unique
   openSeaUsername String? @db.VarChar(64) @unique
+  openSeaStatus Int @default(0)
   followerCount Int @default(0)
   isfollowerCountVisible Boolean @default(true)
   loyaltyCategory Int @default(1)
@@ -86,19 +95,20 @@ model creator{
   creatorViews creatorView[]
 }
 
-model userBlock{
-  userBlockId Int @id @default(autoincrement())
-  user followerCreator @relation("user", fields: [userId], references: [userId])
+// this table includes details about blocked users by other users
+model userBlocked{
+  userBlockedId Int @id @default(autoincrement())
+  user followerCreator @relation("user", fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int
-  userBlock followerCreator @relation("userBlocked", fields: [userBlockedId], references: [userId])
-  userBlockedId Int
+  blockedUser followerCreator @relation("blockedUser", fields: [blockedUserId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  blockedUserId Int
   userBlockedDate DateTime @default(now())
-  @@unique([userId, userBlockedId])
+  @@unique([userId, blockedUserId])
 }
 
-model billingAddressFollowerCreator{
-  billingId Int @id @default(autoincrement())
-  user followerCreator @relation(fields: [userId], references: [userId])
+model billingAddress{
+  billingAddressId Int @id @default(autoincrement())
+  user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int
   country String @db.VarChar(32)
   addressLine1 String @db.VarChar(64)
@@ -110,28 +120,28 @@ model billingAddressFollowerCreator{
 }
 
 model premiumPackage{
-  packageID Int @id @default(autoincrement())
+  packageId Int @id @default(autoincrement())
   name String @db.VarChar(64) @unique
-  description String @db.VarChar(1024)
+  description String? @db.VarChar(1024)
   price Decimal @db.Decimal(3, 2)
   users premiumPackageSubscribe[]
 }
 
 model premiumPackageSubscribe{
   subscribeId Int @id @default(autoincrement())
-  user followerCreator @relation(fields: [userId], references: [userId])
+  user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int
-  package premiumPackage @relation(fields: [packageID], references: [packageID])
-  packageID Int
+  package premiumPackage @relation(fields: [packageId], references: [packageId], onUpdate: Cascade, onDelete: Cascade)
+  packageId Int
   startDate DateTime
   endDate DateTime
 }
 
 model userSubscribe{
   userSubscribeId Int @id @default(autoincrement())
-  follower followerCreator @relation(fields: [followerId], references: [userId])
+  follower followerCreator @relation(fields: [followerId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   followerId Int
-  creator creator @relation(fields: [creatorId], references: [userId])
+  creator creator @relation(fields: [creatorId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   creatorId Int
   subscribedDate DateTime @default(now())
   @@unique([followerId, creatorId])
@@ -140,7 +150,7 @@ model userSubscribe{
 // imagevideo = 0 indicates there is no photo OR video
 model post{
   postId Int @id @default(autoincrement())
-  creator creator @relation(fields: [creatorId], references: [userId])
+  creator creator @relation(fields: [creatorId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   creatorId Int
   description String? @db.VarChar(512)
   imagevideo String? @db.VarChar(256) @default("0")
@@ -157,9 +167,9 @@ model post{
 
 model postSave{
   postSaveId Int @id @default(autoincrement())
-  post post @relation(fields: [postId], references: [postId])
+  post post @relation(fields: [postId], references: [postId], onUpdate: Cascade, onDelete: Cascade)
   postId Int
-  user followerCreator @relation(fields: [userId], references: [userId])
+  user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int
   postSavedDate DateTime @default(now())
   @@unique([postId, userId])
@@ -169,9 +179,9 @@ model postSave{
 //   1 = like
 model postReaction{
   postReactionId Int @id @default(autoincrement())
-  post post @relation(fields: [postId], references: [postId])
+  post post @relation(fields: [postId], references: [postId], onUpdate: Cascade, onDelete: Cascade)
   postId Int
-  user followerCreator @relation(fields: [userId], references: [userId])
+  user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int
   reactType Int @default(1)
   reacteddate DateTime @default(now())
@@ -180,20 +190,21 @@ model postReaction{
 
 model comment{
   commentId Int @id @default(autoincrement())
-  post post @relation(fields: [postId], references: [postId])
+  post post @relation(fields: [postId], references: [postId], onUpdate: Cascade, onDelete: Cascade)
   postId Int
-  user followerCreator @relation(fields: [userId], references: [userId])
+  user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int
   description String @db.VarChar(512)
   commentedDate DateTime @default(now())
+  blockedStatus Boolean @default(false)
   commentReactions commentReaction[]
 }
 
 model commentReaction{
   commentReactionId Int @id @default(autoincrement())
-  comment comment @relation(fields: [commentId], references: [commentId])
+  comment comment @relation(fields: [commentId], references: [commentId], onUpdate: Cascade, onDelete: Cascade)
   commentId Int
-  user followerCreator @relation(fields: [userId], references: [userId])
+  user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int
   commentReactedDate DateTime @default(now())
   @@unique([commentId, userId])
@@ -201,9 +212,13 @@ model commentReaction{
 
 // category
 //   1 = anime
+
+// payment status
+//   false = not paid
+//   true = paid
 model advertisement{
   advertisementId Int @id @default(autoincrement())
-  creator creator @relation(fields: [creatorId], references: [userId])
+  creator creator @relation(fields: [creatorId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   creatorId Int
   category Int 
   description String? @db.VarChar(256)
@@ -211,6 +226,7 @@ model advertisement{
   startDate DateTime
   endDate DateTime
   price Decimal @db.Decimal(3, 2)
+  paymentStatus Boolean @default(false)
   blockedStatus Boolean @default(false)
   advertisementViews advertisementView[]
   advertisementReports advertisementReport[]
@@ -218,69 +234,82 @@ model advertisement{
 
 model creatorView{
   creatorProfileViewID Int @id @default(autoincrement())
-  creator creator @relation(fields: [creatorId], references: [userId])
+  creator creator @relation(fields: [creatorId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   creatorId Int
-  followerCreator followerCreator @relation(fields: [followerCreatorId], references: [userId])
+  followerCreator followerCreator @relation(fields: [followerCreatorId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   followerCreatorId Int
   creatorViewedDate DateTime @default(now())
 }
 
 model postView{
   postViewId Int @id @default(autoincrement())
-  post post @relation(fields: [postId], references: [postId])
+  post post @relation(fields: [postId], references: [postId], onUpdate: Cascade, onDelete: Cascade)
   postId Int
-  followerCreator followerCreator @relation(fields: [followerCreatorId], references: [userId])
+  followerCreator followerCreator @relation(fields: [followerCreatorId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   followerCreatorId Int
   postViewedDate DateTime @default(now())
 }
 
 model advertisementView{
   advertisementViewId Int @id @default(autoincrement())
-  advertisement advertisement @relation(fields: [advertisementId], references: [advertisementId])
+  advertisement advertisement @relation(fields: [advertisementId], references: [advertisementId], onUpdate: Cascade, onDelete: Cascade)
   advertisementId Int
-  followerCreator followerCreator @relation(fields: [followerCreatorId], references: [userId])
+  followerCreator followerCreator @relation(fields: [followerCreatorId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   followerCreatorId Int
   advertisementViewedDate DateTime @default(now())
 }
 
 model userReport{
   userReportedId Int @id @default(autoincrement())
-  user followerCreator @relation("sourceReportedUser", fields: [userId], references: [userId])
+  user followerCreator @relation("sourceReportedUser", fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int
-  reportedUser followerCreator @relation("reportedUser", fields: [reportedUserId], references: [userId])
+  reportedUser followerCreator @relation("reportedUser", fields: [reportedUserId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   reportedUserId Int
   userReportedDate DateTime @default(now())
   reportCategory Int
   description String? @db.VarChar(512)
   resolveStatus Boolean @default(false)
-  resolvedAdmin user? @relation("userReportResolvedAdmin", fields: [resolvedAdminID], references: [userId])
+  resolvedAdmin user? @relation(fields: [resolvedAdminID], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   resolvedAdminID Int?
 }
 
 model postReport{
   postReportId Int @id @default(autoincrement())
-  user followerCreator @relation(fields: [userId], references: [userId])
+  user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int
-  post post @relation(fields: [reportedPostId], references: [postId])
+  post post @relation(fields: [reportedPostId], references: [postId], onUpdate: Cascade, onDelete: Cascade)
   reportedPostId Int
   postReportedDate DateTime @default(now())
   reportCategory Int
   description String? @db.VarChar(512)
   resolveStatus Boolean @default(false)
-  resolvedAdmin user? @relation(fields: [resolvedAdminID], references: [userId])
+  resolvedAdmin user? @relation(fields: [resolvedAdminID], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   resolvedAdminID Int?
 }
 
 model advertisementReport{
   advertisementReportId Int @id @default(autoincrement())
-  user followerCreator @relation(fields: [userId], references: [userId])
+  user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int
-  advertisement advertisement @relation(fields: [advertisementId], references: [advertisementId])
+  advertisement advertisement @relation(fields: [advertisementId], references: [advertisementId], onUpdate: Cascade, onDelete: Cascade)
   advertisementId Int
   postReportedDate DateTime @default(now())
   reportCategory Int
   description String? @db.VarChar(512)
   resolveStatus Boolean @default(false)
-  resolvedAdmin user? @relation(fields: [resolvedAdminID], references: [userId])
+  resolvedAdmin user? @relation(fields: [resolvedAdminID], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   resolvedAdminID Int?
+}
+
+// transactionType
+//   1 = advertisements
+//   2 = premium package subscription
+model transactionLog{
+  transactionId Int @id @default(autoincrement())
+  user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  userId Int
+  transactionType Int
+  otherTableUniqueId Int?
+  amount Decimal @db.Decimal(3, 2)
+  transactionDate DateTime @default(now())
 }

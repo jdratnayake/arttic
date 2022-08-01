@@ -1,0 +1,135 @@
+.reportUserAdmin1Page .Nudity {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-success-rgb),var(--bs-bg-opacity))!important;
+}
+
+.reportUserAdmin1Page .Violence {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-danger-rgb),var(--bs-bg-opacity))!important;
+}
+
+.reportUserAdmin1Page .reportCategory{
+    letter-spacing: 1.5px;
+}
+
+.reportUserAdmin1Page .userComplaintDescription{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 330px;
+    margin:0;
+}
+
+.reportUserAdmin1Page .date-picker-date {
+    width: 12rem;
+    height: 2.5rem;
+    font-size: 16px;
+    border-radius: 10px;
+    padding: 10px 15px;
+    padding-right: 50px;
+    /* margin: 10px; */
+    cursor: pointer;
+    border-style: solid;
+    background: url("https://image.freepik.com/free-icon/calendar-icon-in-black_318-9776.jpg");
+    background-repeat: no-repeat;
+    background-size: 24px;
+    background-position: 9.6rem 0.4rem;
+  }
+  
+  .reportUserAdmin1Page #contentAdmin .date-card {
+    /* margin-top: 36px; */
+    margin-bottom: 36px;
+  }
+  /* .reportUserAdmin1Page .row {
+    padding: 15px;
+  } */
+  
+  .reportUserAdmin1Page .column-container {
+    position: relative;
+  }
+  
+  .reportUserAdmin1Page .column-container button {
+    margin-top: 6px;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  
+  .reportUserAdmin1Page table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 5px 10px #e1e5ee;
+    background-color: white;
+    text-align: left;
+    overflow: hidden;
+  }
+  .reportUserAdmin1Page table thead {
+    box-shadow: 0 5px 10px #e1e5ee;
+  }
+  .reportUserAdmin1Page table th {
+    padding: 1rem 2rem;
+    letter-spacing: 0.1rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .reportUserAdmin1Page table td {
+    padding: 1rem 2rem;
+  }
+  
+  .reportUserAdmin1Page table .idStyle {
+    text-decoration: none;
+    color: #2962ff;
+  }
+  .reportUserAdmin1Page table .status {
+    border-radius: 0.2rem;
+    background-color: red;
+    padding: 0.2rem 1rem;
+    text-align: center;
+  }
+  .reportUserAdmin1Page table .status-pending {
+    background-color: #fff0c2;
+    color: #a68b00;
+  }
+  .reportUserAdmin1Page table .status-paid {
+    background-color: #c8e6c9;
+    color: #388e3c;
+  }
+  .reportUserAdmin1Page table .status-unpaid {
+    background-color: #ffcdd2;
+    color: #c62828;
+  }
+  .reportUserAdmin1Page table .amount {
+    text-align: right;
+  }
+  .reportUserAdmin1Page table tr:nth-child(even) {
+    background-color: #f4f6fb;
+  }
+  
+  .reportUserAdmin1Page .date-card .row {
+    padding-bottom: 10px;
+  }
+  
+  .reportUserAdmin1Page .calander-card {
+    display: inline;
+  }
+  
+  /* .reportUserAdmin1Page .input-group {
+    width: 40%;
+  } */
+  
+  .reportUserAdmin1Page .calander-card-col {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .reportUserAdmin1Page .calander-card-col .calander-card {
+    margin-right: 36px;
+  }
+  
+  .reportUserAdmin1Page .column-container .btn-primary {
+    background: var(--green-50);
+    border-color: var(--green-50);
+    color: var(--black);
+  }
+  

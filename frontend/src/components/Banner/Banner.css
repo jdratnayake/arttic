@@ -13,3 +13,28 @@
 .bannerRow{
     height: calc(100vh - var(--navbar-height));
 }
+
+@media only screen and (max-width:991px){
+    .bannerRow{
+        height: 400px;
+    }
+}
+
+@media only screen and (max-width:575px){
+    .bannerRow{
+        padding-top:30px;
+    }
+    .bannerRow{
+        height: 600px;
+        font-size:75%;
+    }
+    .bannerContent >h2 , .bannerContent >.bannerButtons{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .bannerContent > h4{
+        text-align:center;
+        font-size: 17px;
+    }
+}
