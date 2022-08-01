@@ -25,7 +25,7 @@ function SignUpOptionPage() {
               p2="sample text here"
               p3="sample text here"
               p4="sample text here"
-              link="/signupfollower"
+              link="/signup/follower"
             />
           </div>
           <div class="col-3">
@@ -37,7 +37,7 @@ function SignUpOptionPage() {
               p2="sample text here"
               p3="sample text here"
               p4="sample text here"
-              link="/signupcreator"
+              link="/signup/creator"
             />
           </div>
         </div>
