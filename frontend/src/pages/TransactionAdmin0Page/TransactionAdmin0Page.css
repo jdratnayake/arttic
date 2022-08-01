@@ -1,4 +1,4 @@
-.systemTransactionDetailsPage .date-picker-date {
+.transactionAdmin0Page .date-picker-date {
   width: 12rem;
   height: 2.5rem;
   font-size: 16px;
@@ -14,19 +14,19 @@
   background-position: 9.6rem 0.4rem;
 }
 
-.systemTransactionDetailsPage .date-card {
+.transactionAdmin0Page #contentAdmin .date-card {
   /* margin-top: 36px; */
   margin-bottom: 36px;
 }
-/* .systemTransactionDetailsPage .row {
+/* .transactionAdmin0Page .row {
   padding: 15px;
 } */
 
-.systemTransactionDetailsPage .column-container {
+.transactionAdmin0Page .column-container {
   position: relative;
 }
 
-.systemTransactionDetailsPage .column-container button {
+.transactionAdmin0Page .column-container button {
   margin-top: 6px;
   position: absolute;
   top: 50%;
@@ -34,7 +34,7 @@
   transform: translateY(-50%);
 }
 
-.systemTransactionDetailsPage table {
+.transactionAdmin0Page table {
   width: 100%;
   border-collapse: collapse;
   box-shadow: 0 5px 10px #e1e5ee;
@@ -42,70 +42,70 @@
   text-align: left;
   overflow: hidden;
 }
-.systemTransactionDetailsPage table thead {
+.transactionAdmin0Page table thead {
   box-shadow: 0 5px 10px #e1e5ee;
 }
-.systemTransactionDetailsPage table th {
+.transactionAdmin0Page table th {
   padding: 1rem 2rem;
   letter-spacing: 0.1rem;
   font-size: 1rem;
   font-weight: 600;
 }
-.systemTransactionDetailsPage table td {
+.transactionAdmin0Page table td {
   padding: 1rem 2rem;
 }
 
-.systemTransactionDetailsPage table .idStyle {
+.transactionAdmin0Page table .idStyle {
   text-decoration: none;
   color: #2962ff;
 }
-.systemTransactionDetailsPage table .status {
+.transactionAdmin0Page table .status {
   border-radius: 0.2rem;
   background-color: red;
   padding: 0.2rem 1rem;
   text-align: center;
 }
-.systemTransactionDetailsPage table .status-pending {
+.transactionAdmin0Page table .status-pending {
   background-color: #fff0c2;
   color: #a68b00;
 }
-.systemTransactionDetailsPage table .status-paid {
+.transactionAdmin0Page table .status-paid {
   background-color: #c8e6c9;
   color: #388e3c;
 }
-.systemTransactionDetailsPage table .status-unpaid {
+.transactionAdmin0Page table .status-unpaid {
   background-color: #ffcdd2;
   color: #c62828;
 }
-.systemTransactionDetailsPage table .amount {
+.transactionAdmin0Page table .amount {
   text-align: right;
 }
-.systemTransactionDetailsPage table tr:nth-child(even) {
+.transactionAdmin0Page table tr:nth-child(even) {
   background-color: #f4f6fb;
 }
 
-/* .systemTransactionDetailsPage .date-card .row {
+.transactionAdmin0Page .date-card .row {
   padding-bottom: 10px;
-} */
+}
 
-.systemTransactionDetailsPage .calander-card {
+.transactionAdmin0Page .calander-card {
   display: inline;
 }
 
-/* .systemTransactionDetailsPage .input-group {
+/* .transactionAdmin0Page .input-group {
   width: 40%;
 } */
 
-.systemTransactionDetailsPage .calander-card-col {
+.transactionAdmin0Page .calander-card-col {
   display: flex;
   flex-direction: row;
 }
 
-.systemTransactionDetailsPage .calander-card-col .calander-card {
+.transactionAdmin0Page .calander-card-col .calander-card {
   margin-right: 36px;
 }
 
-.systemTransactionDetailsPage .column-container .btn-primary {
+.transactionAdmin0Page .column-container .btn-primary {
   background: var(--green-50);
   border-color: var(--green-50);
   color: var(--black);

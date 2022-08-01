@@ -456,7 +456,7 @@ color: white;}
 .ReportUserPage  label {
   display: inline-block;
 }
-/* .ReportUserPage  button {
+.ReportUserPage  button {
   border-radius: 0;
 }
 .ReportUserPage  button:focus:not(:focus-visible) {
@@ -473,7 +473,7 @@ color: white;}
 }
 .ReportUserPage  [role="button"] {
   cursor: pointer;
-} */
+}
 .ReportUserPage  select {
   word-wrap: normal;
 }
@@ -3024,13 +3024,13 @@ color: white;}
 .ReportUserPage  .input-group > .form-control:focus, .ReportUserPage  .input-group > .form-select:focus {
   z-index: 3;
 }
-/* .ReportUserPage  .input-group .btn {
+.ReportUserPage  .input-group .btn {
   position: relative;
   z-index: 2;
 }
 .ReportUserPage  .input-group .btn:focus {
   z-index: 3;
-} */
+}
 .ReportUserPage  .input-group-text {
   display: flex;
   align-items: center;
@@ -3217,7 +3217,7 @@ color: white;}
 .ReportUserPage  .was-validated .input-group .form-control:invalid:focus, .ReportUserPage  .input-group .form-control.is-invalid:focus, .ReportUserPage  .was-validated .input-group .form-select:invalid:focus, .ReportUserPage  .input-group .form-select.is-invalid:focus {
   z-index: 3;
 }
-/* .ReportUserPage  .btn {
+.ReportUserPage  .btn {
   display: inline-block;
   font-weight: 500;
   line-height: 1.5;
@@ -4442,7 +4442,7 @@ color: white;}
   padding: 0.25rem 0.5rem;
   font-size: 0.82031rem;
   border-radius: 0.2rem;
-} */
+}
 .ReportUserPage  .fade {
   transition: opacity 0.15s linear;
 }
@@ -4750,7 +4750,7 @@ color: white;}
 .ReportUserPage  .dropdown-menu-dark .dropdown-header {
   color: #adb5bd;
 }
-/* .ReportUserPage  .btn-group, .ReportUserPage  .btn-group-vertical {
+.ReportUserPage  .btn-group, .ReportUserPage  .btn-group-vertical {
   position: relative;
   display: inline-flex;
   vertical-align: middle;
@@ -4817,8 +4817,8 @@ color: white;}
 .ReportUserPage  .btn-group-vertical > .btn ~ .btn, .ReportUserPage  .btn-group-vertical > .btn-group:not(:first-child) > .btn {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-} */
-/* .ReportUserPage  .nav {
+}
+.ReportUserPage  .nav {
   display: flex;
   flex-wrap: wrap;
   padding-left: 0;
@@ -4893,14 +4893,14 @@ color: white;}
 }
 .ReportUserPage  .nav-fill .nav-item .nav-link, .ReportUserPage  .nav-justified .nav-item .nav-link {
   width: 100%;
-} */
+}
 .ReportUserPage  .tab-content > .tab-pane {
   display: none;
 }
 .ReportUserPage  .tab-content > .active {
   display: block;
 }
-/* .ReportUserPage  .navbar {
+.ReportUserPage  .navbar {
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -5195,7 +5195,7 @@ color: white;}
 }
 .ReportUserPage  .navbar-dark .navbar-text a, .ReportUserPage  .navbar-dark .navbar-text a:hover, .ReportUserPage  .navbar-dark .navbar-text a:focus {
   color: #fff;
-} */
+}
 .ReportUserPage  .card {
   position: relative;
   display: flex;
