@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 
-import "./SignInPage.css";
+import "./SignUpCreatorPage.css";
 
 import logo from "../../images/logo.png";
 
-function SignInPage() {
+function SignUpCreatorPage() {
   return (
     <>
-      <span class="SignInPage">
+      <span class="SignUpCreatorPage">
         <div class="d-flex justify-content-center">
           <div class="col-4">
             <div class="card card-update">
@@ -17,68 +17,101 @@ function SignInPage() {
                     <img src={logo} width="200" height="45" />
                   </Link>
                 </div>
-
                 <div class="d-grid gap-2 col-12 mx-auto text-center">
                   <button class="btn btn-outline-primary" type="button">
-                    <i class="bi bi-google icon"></i>Sign In with Google
+                    <i class="bi bi-google icon"></i>Sign Up with Google
                   </button>
                   <button class="btn btn-outline-dark" type="button">
-                    <i class="bi bi-apple icon"></i>Sign In with Apple
+                    <i class="bi bi-apple icon"></i>Sign Up with Apple
                   </button>
                   <p class="Or">Or</p>
                 </div>
 
                 <div class="col-12">
                   <label for="exampleFormControlInput1" class="form-label">
-                    Username or Email
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control fcup"
+                    id="name"
+                    placeholder="Enter Name"
+                    required
+                  />
+                  <p class="error-msg">
+                    This name is already used.Please enter another name
+                  </p>
+                </div>
+                <div class="col-12">
+                  <label for="exampleFormControlInput2" class="form-label">
+                    Email
                   </label>
                   <input
                     type="email"
-                    class="form-control form-control-update fcup"
+                    class="form-control fcup"
                     id="email"
-                    placeholder="Enter Username or Email"
+                    placeholder="Enter Email"
+                    required
                   />
-                  <p class="error-msg">Incorrect Username or Email</p>
+                  <p class="error-msg">
+                    Email is invalid.Please enter vaild email address
+                  </p>
                 </div>
                 <div class="col-12">
-                  <label for="exampleFormControlInput1" class="form-label">
+                  <label for="exampleFormControlInput3" class="form-label">
                     Password
                   </label>
                   <input
                     type="password"
-                    class="form-control form-control-update fcup"
+                    class="form-control fcup"
                     id="password"
+                    required
                     placeholder="Enter Password"
                   />
-                  <p class="error-msg">Incorrect password</p>
-                </div>
-                <div class="col-12 Froget-password">
-                  <p class="text-end">
-                    <a className="theme">
-                      <small>Forgot Password</small>
-                    </a>
+                  <p class="error-msg">
+                    Password must contain at least 8 characters
                   </p>
                 </div>
-                <div class="col form-check">
+                <div class="col-12">
+                  <label for="exampleFormControlInput4" class="form-label">
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    class="form-control fcup"
+                    id="cnfpassword"
+                    required
+                    placeholder="Enter Password Again"
+                  />
+                  <p class="error-msg">Password is not match</p>
+                </div>
+                <div class="col-12 terms-conditions">
                   <input
                     class="form-check-input"
                     type="checkbox"
-                    id="remember-me"
+                    value=""
+                    id="flexCheckDefault"
+                    required
                   />
-                  <label class="form-check-label" for="remember-me">
-                    Remember Me
+                  <label
+                    class="form-check-label chcklbl"
+                    for="flexCheckDefault"
+                  >
+                    Agree to all terms and conditions
                   </label>
                 </div>
+
                 <div class="text-center">
                   <div class="col-12">
+                    <br />
                     <button type="submit" class="btn btn-primary col-12 btnlog">
-                      Sign In
+                      Connect Wallet
                     </button>
                   </div>
+
                   <div class="col-12">
                     <p class="signup">
-                      Don’t have an account?{" "}
-                      <Link class="theme" to="/signupoption">Sign Up</Link>
+                      Already have an account ? <a class="theme">Log In</a>
                     </p>
                   </div>
                 </div>
@@ -104,4 +137,4 @@ function SignInPage() {
   );
 }
 
-export default SignInPage;
+export default SignUpCreatorPage;
