@@ -14,8 +14,8 @@ export const userReducer = (state = {}, action) => {
       return { error: action.payload };
     case USER_LOGOUT:
       return {};
-    // case USER_REGISTER_SUCCESS:
-    //   return { user: action.payload };
+    case USER_REGISTER_SUCCESS:
+      return { user: action.payload };
     case USER_REGISTER_FAIL:
       return { error: action.payload };
     default:
