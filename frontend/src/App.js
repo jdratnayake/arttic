@@ -12,6 +12,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import SignUpOptionPage from "./pages/SignUpOptionPage/SignUpOptionPage";
 import SignInPage from "./pages/SIgnInPage/SignInPage";
+import ForgotPasswordOTP from "./pages/ForgotPasswordOTP/ForgotPasswordOTP";
 import WalletConnectPage from "./pages/WalletConnectPage/WalletConnectPage";
 import CreatorProfilePage from "./pages/CreatorProfilePage/CreatorProfilePage";
 import FrogetPasswordPage1 from "./pages/FrogetPasswordPage/FrogetPasswordPage1";
@@ -38,6 +39,7 @@ function App() {
         <Route path="/walletconnect" element={<WalletConnectPage />}></Route>
         <Route path="/login" element={<SignInPage />}></Route>
         <Route path="/feed" element={<FeedPage />}></Route>
+        <Route path="/ForgotPasswordOTP" element={<ForgotPasswordOTP />}></Route>
         <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
         <Route path="/advertisment" element={<AdvertismentPage />}></Route>
         <Route
