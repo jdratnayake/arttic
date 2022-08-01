@@ -1,0 +1,73 @@
+.authenticationField .Or {
+  margin-bottom: 0.5rem;
+}
+.authenticationField .col-12 {
+  margin-bottom: 1rem;
+}
+.authenticationField .col-12 .form-label {
+  margin: 0.2rem;
+}
+.authenticationField .card-update {
+  border: rgba(244, 242, 244, 1);
+  margin-top: 10%;
+  margin-bottom: 10%;
+  margin-left: 5%;
+  margin-right: 5%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+.authenticationField p {
+  margin-bottom: 0;
+}
+.authenticationField .col-12 .error-msg {
+  color: red;
+  font-size: small;
+}
+.authenticationField .title {
+  padding-bottom: 5%;
+}
+
+.authenticationField .form-control-update {
+  border-radius: 10px;
+  font-weight: 100;
+  /* color: #F4F2F4; */
+  font-size: small;
+}
+
+.authenticationField .theme {
+  color: rgba(132, 39, 226, 1);
+}
+
+.authenticationField .btnlog {
+  margin-bottom: 5%;
+  border-radius: 10px;
+}
+
+.authenticationField .signup {
+  margin-top: 5%;
+}
+
+.authenticationField .icon {
+  padding-right: 15px;
+}
+
+.authenticationField .chcklbl {
+  padding-left: 5%;
+}
+@media only screen and (max-width: 768px) {
+  .authenticationField .col-4 {
+    width: 50%;
+  }
+}
+@media only screen and (max-width: 514px) {
+  .authenticationField .col-4 {
+    width: 83%;
+  }
+  .chcklbl {
+    font-size: 14px;
+  }
+  .terms-conditions {
+    display: flex;
+    flex-direction: row;
+  }
+}
