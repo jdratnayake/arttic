@@ -53,12 +53,25 @@ function NavBar() {
             </li>
           </ul>
           <form className="search-form" role="search">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search..."
-              aria-label="Search"
-            />
+            {/* <div>
+              <i class="bi bi-search"></i>
+              <input
+                className="form-control me-2"
+                type="search"
+                placeholder="Search..."
+                aria-label="Search"
+              />
+            </div>
+            */}
+            <div class="wrap-sb">
+              <div class="search">
+                  <button class="searchButton">
+                      <i class="bi bi-search"></i>
+                  </button>
+                  <input type="text" class="searchTerm" placeholder="Search" />
+
+              </div>
+            </div>
             {/* <button className="btn btn-secondary" type="submit">
                                 <i className="bi bi-search"></i>
                             </button> */}

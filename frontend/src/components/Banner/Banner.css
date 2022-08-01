@@ -1,9 +1,10 @@
 .banner{
     /* background-image: linear-gradient(var(--primary-100),var(--green-50)); */
     /* background-color: var(--primary-100); */
-    background-color: var(--primary-200);
+    /* background-color: var(--primary-200); */
     height: calc(100vh - var(--navbar-height));
     color: aliceblue;
+    background: url(../../images/background/background-image.jpg) center bottom no-repeat;
 }
 
 .bannerButtons{
