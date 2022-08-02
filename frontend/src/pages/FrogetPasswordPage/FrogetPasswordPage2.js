@@ -34,20 +34,20 @@ function FrogetPasswordPage2() {
 
                                 <div class="col-12">
                                     <br />
-                                    <button type="submit" class="btn wallet col-12 btnlog">Reset Password</button>
+                                    <button type="submit" class="btn btn-primary  col-12 btnlog">Reset Password</button>
                                 </div>
                             </div>
                         </div>
                         <div class="help-privacy-terms">
                             <div class="row">
                                 <div class="col">
-                                    <a href="#">Help</a>
+                                    <a class="link" href="#">Help</a>
                                 </div>
                                 <div class="col">
-                                    <a href="#">Privacy</a>
+                                    <a class="link" href="#">Privacy</a>
                                 </div>
                                 <div class="col">
-                                    <a href="#">Terms</a>
+                                    <a class="link" href="#">Terms</a>
                                 </div>
                             </div>
                         </div>

@@ -1,11 +1,16 @@
 .listcd{
     padding: 10px;
+    cursor:default;
+}
+.listcd .bi-check{
+    font-weight: 300;
+    font-size: 14px;
 }
 
 .btn-signup{
     margin-top: 5%;
 }
 
-.theme{
+.theme-title{
     color: rgba(132, 39, 226, 1);
 }
