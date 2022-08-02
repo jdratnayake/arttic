@@ -1,6 +1,6 @@
 // libraries
 import React, { useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
@@ -13,7 +13,7 @@ import {
 } from "./Validation";
 
 // css files
-import "./SignUpFollowerPage.css";
+import "./SignUpPage.css";
 
 // others
 import logo from "../../images/logo.png";
@@ -21,18 +21,32 @@ import logo from "../../images/logo.png";
 function SignUpFollowerPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const params = useParams();
+
+  // get user type from url
+  let { userType } = params;
+
+  if (userType === "creator") {
+    userType = 3;
+  } else if (userType === "follower") {
+    userType = 4;
+  }
 
   const userInfo = useSelector((state) => state.userInfo);
   const { user } = userInfo;
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      if (userType === 3) {
+        navigate("/walletconnect");
+      } else if (userType === 4) {
+        navigate("/followerprofile");
+      }
     }
   }, [user]);
 
   const registerUser = (data) => {
-    dispatch(register(4, data.name, data.email, data.password));
+    dispatch(register(userType, data.name, data.email, data.password));
   };
 
   return (
@@ -131,7 +145,7 @@ function SignUpFollowerPage() {
                         <div className="col-12">
                           <p className="signup">
                             Already have an account ?{" "}
-                            <Link class="theme" to="/login">Log In</Link>
+                            <Link to="/login">Log In</Link>
                           </p>
                         </div>
                       </div>
@@ -139,19 +153,6 @@ function SignUpFollowerPage() {
                   )}
                 </Formik>
               </div>
-            </div>
-            <div class="help-privacy-terms">
-                <div class="row">
-                    <div class="col">
-                        <a class="link" href="#">Help</a>
-                    </div>
-                    <div class="col">
-                        <a class="link" href="#">Privacy</a>
-                    </div>
-                    <div class="col">
-                        <a class="link" href="#">Terms</a>
-                    </div>
-                </div>
             </div>
           </div>
         </div>

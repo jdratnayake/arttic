@@ -57,18 +57,25 @@ function SignUpOptionPage() {
               </div>
             </div>
             <div class="help-privacy-terms">
-                <div class="row">
-                    <div class="col">
-                        <a class="link" href="#">Help</a>
-                    </div>
-                    <div class="col">
-                        <a class="link" href="#">Privacy</a>
-                    </div>
-                    <div class="col">
-                        <a class="link" href="#">Terms</a>
-                    </div>
+              <div class="row">
+                <div class="col">
+                  <a class="link" href="#">
+                    Help
+                  </a>
                 </div>
+                <div class="col">
+                  <a class="link" href="#">
+                    Privacy
+                  </a>
+                </div>
+                <div class="col">
+                  <a class="link" href="#">
+                    Terms
+                  </a>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
       </span>
     </>

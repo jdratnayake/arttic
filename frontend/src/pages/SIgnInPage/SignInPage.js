@@ -1,10 +1,47 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useDispatch } from "react-redux";
+
+import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
+import { initialLoginValues, loginValidation } from "./Validation";
+import { login } from "../../actions/userActions";
 
 import "./SignInPage.css";
+import "../../components/AuthenticationField/AuthenticationField.css";
 
 import logo from "../../images/logo.png";
 
 function SignInPage() {
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const loginUser = (data) => {
+    dispatch(login(data.username, data.password));
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user.error) {
+      setUsernameError(user.error.username);
+      setPasswordError(user.error.password);
+    } else {
+      setUsernameError("");
+      setPasswordError("");
+
+      if (user.type === 3) {
+        if (user.openSeaStatus === 1 || user.openSeaStatus === 2) {
+          navigate("/creatorprofile");
+        } else if (user.openSeaStatus === 0) {
+          navigate("/walletconnect");
+        }
+      } else if (user.type === 4) {
+        //redirect to the follower page
+      }
+    }
+  };
+
   return (
     <>
       <span class="SignInPage">
@@ -115,25 +152,6 @@ function SignInPage() {
                     </Form>
                   )}
                 </Formik>
-              </div>
-            </div>
-            <div class="help-privacy-terms">
-              <div class="row">
-                <div class="col">
-                  <a class="link" href="#">
-                    Help
-                  </a>
-                </div>
-                <div class="col">
-                  <a class="link" href="#">
-                    Privacy
-                  </a>
-                </div>
-                <div class="col">
-                  <a class="link" href="#">
-                    Terms
-                  </a>
-                </div>
               </div>
             </div>
           </div>
