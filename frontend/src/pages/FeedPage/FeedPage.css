@@ -1,9 +1,15 @@
 body {
     background-color: #F5F6F7;
 }
-.sidebar-col{
-    background-color: blue;
+
+@media only screen and (max-width:991px){
+    .sidebar-col {
+        visibility: hidden;
+        width: 0;
+        padding: 0;
+    }
 }
+
 
 @media only screen and (max-width:768px){
     .feedBack{
@@ -28,14 +34,6 @@ body {
         padding: 0;
     }
     .feed-container{
-        width: 400px;
+        width: 335px;
     }
 }
-
-/*@media only screen and (max-width:500px){
-    .feed-container{
-        width: 340px;
-        margin-left: calc( (100vw - 360px) / 2);
-        margin-right: calc( (100vw - 360px) / 2);
-    }
-}*/

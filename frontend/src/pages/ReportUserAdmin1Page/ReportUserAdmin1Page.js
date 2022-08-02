@@ -1,10 +1,29 @@
-import { Link } from 'react-router-dom';
+import { BrowserRouter as Router,
+  Route,
+  Link,
+  useParams } from 'react-router-dom';
+import { useState } from "react";
 
 import './ReportUserAdmin1Page.css'
 import NavBar from "../../components/NavBar/NavBar";
 import SideNavBarAdmin0 from "../../components/SideNavBarAdmin0/SideNavBarAdmin0";
 
 function ReportUserAdmin1Page() {
+    const [complain, setComplain] = useState("");
+    const [username, setUsername] = useState("");
+    const [date, setDate] = useState("");
+    const [category, setCategory] = useState("");
+    const [path, setPath] = useState("");
+
+    const handleClick = ( obj ) =>{
+        setComplain("You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the")
+        setUsername("Tony stark");
+        setDate("07/30/2022");
+        setCategory("Violence");
+        setPath("/admin1/report"+ obj.type + "/" + obj.id );
+        console.log(obj , path)
+    }
+
     return (
         <span className="reportUserAdmin1Page">
             <NavBar />
@@ -59,6 +78,7 @@ function ReportUserAdmin1Page() {
                                                 </td>
                                                 <td>Nudity</td>
                                                 <td><a
+                                                    onClick={ () => handleClick({id:100,type:"User"})}
                                                     href="#"
                                                     class="btn btn-dark d-grid mb-2 openComplaintDialog"
                                                     data-bs-toggle="modal"
@@ -74,6 +94,7 @@ function ReportUserAdmin1Page() {
                                                 <td>Pradeep Ratnayake</td>
                                                 <td>Violence</td>
                                                 <td><a
+                                                    onClick={ () => handleClick({id:100,type:"User"})}
                                                     href="#"
                                                     class="btn btn-dark d-grid mb-2"
                                                     data-bs-toggle="modal"
@@ -89,6 +110,7 @@ function ReportUserAdmin1Page() {
                                                 <td>Dulitha Ratnayake</td>
                                                 <td>Advertisment</td>
                                                 <td><a
+                                                    onClick={ () => handleClick({id:100,type:"User"})}
                                                     href="#"
                                                     class="btn btn-dark d-grid mb-2"
                                                     data-bs-toggle="modal"
@@ -133,6 +155,7 @@ function ReportUserAdmin1Page() {
                                                 </td>
                                                 <td>Nudity</td>
                                                 <td><a
+                                                    onClick={ () => handleClick({id:100,type:"Post"})}
                                                     href="#"
                                                     class="btn btn-dark d-grid mb-2 openComplaintDialog"
                                                     data-bs-toggle="modal"
@@ -148,6 +171,7 @@ function ReportUserAdmin1Page() {
                                                 <td>Pradeep Ratnayake</td>
                                                 <td>Violence</td>
                                                 <td><a
+                                                    onClick={ () => handleClick({id:100,type:"Post"})}
                                                     href="#"
                                                     class="btn btn-dark d-grid mb-2"
                                                     data-bs-toggle="modal"
@@ -164,6 +188,7 @@ function ReportUserAdmin1Page() {
                                                 <td>Advertisment</td>
                                                 <td>
                                                 <a
+                                                    onClick={ () => handleClick({id:100,type:"Post"})}
                                                     href="#"
                                                     class="btn btn-dark d-grid mb-2"
                                                     data-bs-toggle="modal"
@@ -209,6 +234,7 @@ function ReportUserAdmin1Page() {
                                                 </td>
                                                 <td>Nudity</td>
                                                 <td><a
+                                                    onClick={ () => handleClick({id:90,type:"Comment"})}
                                                     href="#"
                                                     class="btn btn-dark d-grid mb-2 openComplaintDialog"
                                                     data-bs-toggle="modal"
@@ -224,6 +250,7 @@ function ReportUserAdmin1Page() {
                                                 <td>Pradeep Ratnayake</td>
                                                 <td>Violence</td>
                                                 <td><a
+                                                    onClick={ () => handleClick({id:80,type:"Comment"})}
                                                     href="#"
                                                     class="btn btn-dark d-grid mb-2"
                                                     data-bs-toggle="modal"
@@ -240,6 +267,7 @@ function ReportUserAdmin1Page() {
                                                 <td>Advertisment</td>
                                                 <td>
                                                 <a
+                                                    onClick={ () => handleClick({id:70,type:"Comment"})}
                                                     href="#"
                                                     class="btn btn-dark d-grid mb-2"
                                                     data-bs-toggle="modal"
@@ -284,6 +312,7 @@ function ReportUserAdmin1Page() {
                                                 </td>
                                                 <td>Nudity</td>
                                                 <td><a
+                                                    onClick={ () => handleClick({id:1,type:"Advertisment"})}
                                                     href="#"
                                                     class="btn btn-dark d-grid mb-2 openComplaintDialog"
                                                     data-bs-toggle="modal"
@@ -299,6 +328,7 @@ function ReportUserAdmin1Page() {
                                                 <td>Pradeep Ratnayake</td>
                                                 <td>Violence</td>
                                                 <td><a
+                                                    onClick={ () => handleClick({id:2,type:"Advertisment"})}
                                                     href="#"
                                                     class="btn btn-dark d-grid mb-2"
                                                     data-bs-toggle="modal"
@@ -315,6 +345,7 @@ function ReportUserAdmin1Page() {
                                                 <td>Nudity</td>
                                                 <td>
                                                 <a
+                                                    onClick={ () => handleClick({id:7,type:"Advertisment"})}
                                                     href="#"
                                                     class="btn btn-dark d-grid mb-2"
                                                     data-bs-toggle="modal"
@@ -360,37 +391,30 @@ function ReportUserAdmin1Page() {
                                 <div class="row">
                                     <div class="col-12 mb-3">
                                         <h6 class="text-uppercase fs-6 ls-2">Username</h6>
-                                        <p class="mb-1 fs-8">Mahesh</p>
+                                        <p class="mb-1 fs-8">{ username }</p>
                                     </div>
                                     <div class="col-6 mb-3">
                                         <h6 class="text-uppercase fs-6 ls-2">Date </h6>
-                                        <p class="mb-1 fs-8">2022/07/25</p>
+                                        <p class="mb-1 fs-8">{ date }</p>
                                     </div>
                                     <div class="col-6 mb-3">
                                         <h6 class="text-uppercase fs-6 ls-2">Category </h6>
-                                        <p class="mb-1 fs-8">Nudity</p>
+                                        <p class="mb-1 fs-8">{ category }</p>
                                     </div>
                                     <div class="col-12 mb-3">
                                         <h6 class="text-uppercase fs-6 ls-2">Description</h6>
                                         <p class="mb-1 fs-8">
-                                            It is hidden by default, until the collapse plugin
-                                            adds the appropriate classes that we use to style
-                                            each element. These classes control the overall
-                                            appearance, as well as the showing and hiding via
-                                            CSS transitions. You can modify any of this with
-                                            custom CSS or overriding our default variables. It's
-                                            also worth noting that just about any HTML can go
-                                            within the
+                                            { complain }
                                         </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer justify-content-start p-4 pt-2">
-                            <button type="button" class="btn btn-primary">
+                            <button type="button" class="btn btn-danger">
                                 Resolve
                             </button>
-                            <Link className="btn btn-primary" to="/report" target="_blank" >View Profile</Link>
+                            <Link className="btn btn-primary" to={ path } target="_blank" > View </Link> 
                             <button
                                 type="button"
                                 class="btn btn-secondary"
@@ -406,4 +430,7 @@ function ReportUserAdmin1Page() {
     )
 }
 
+
+
 export default ReportUserAdmin1Page
+

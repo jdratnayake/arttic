@@ -1,17 +1,17 @@
 import { useParams } from 'react-router-dom'
 
-import "./ReportUserPage.css";
+import "../ReportUserPage/ReportUserPage.css";
 import avatar from "../../images/users/avatar-1.jpg";
 import checkedMark from "../../images/svg/checked-mark.svg";
 
 import NavBar from "../../components/NavBar/NavBar";
 import SideNavBarAdmin0 from "../../components/SideNavBarAdmin0/SideNavBarAdmin0";
+import Post from "../../components/Post/Post"
 
-function ReportUserPage() {
+function ReportAdvertismentPage() {
 	let { id } = useParams();
 	return(
 		<span className="ReportUserPage">
-			{/* <div class="container-fluid px-5 py-5"> */}
 			<NavBar />
 			<div className="wrapperAdmin">
 				<SideNavBarAdmin0 />
@@ -56,9 +56,6 @@ function ReportUserPage() {
 											</h2>
 											<p class="mb-0 d-block">@imjituchauhan</p>
 										</div>
-										<div>
-											<button type="button" class="btn btn-danger banButton">Temporary Hold</button>
-										</div>
 									</div>
 								</div>
 							</div>
@@ -77,12 +74,6 @@ function ReportUserPage() {
 									</p>
 									{/* row */}
 									<div class="row">
-									
-										<div class="col-12 mb-1">
-											{/* text */}
-											<h6 class="text-uppercase fs-4 ls-2">User id</h6>
-											<p class="mb-0 px-2">{id}</p>
-										</div>
 										<div class="col-12 mb-1">
 											{/* text */}
 											<h6 class="text-uppercase fs-4 ls-2">Username</h6>
@@ -105,6 +96,29 @@ function ReportUserPage() {
 											<p class="mb-0 px-2">Premium</p>
 										</div>
 									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="pt-5">
+						{/* row */}
+						<div class="row justify-content-center">
+							<div class="col-xl-6 col-lg-6 col-md-12 col-12 mb-5 ">
+								
+								<div class="card mt-2">
+									  <div class="card-header">
+									    Post Complain
+									  </div>
+									  <Post />
+									  <div class="card-body">
+									    <h5 class="card-title">Special title treatment</h5>
+									    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+									    <a href="#" class="btn btn-danger mx-2">Hold</a>
+									    <a href="#" class="btn btn-secondary">Cancel</a>
+									  </div>
+									  <div class="card-footer text-center text-muted">
+								    	2 days ago
+								  	  </div>
 								</div>
 							</div>
 						</div>
@@ -638,4 +652,4 @@ function ReportUserPage() {
 }
 
 
-export default ReportUserPage;
+export default ReportAdvertismentPage;

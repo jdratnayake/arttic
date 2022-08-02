@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route , useParams} from "react-router-dom";
 
 import "swiper/css/bundle";
 
@@ -13,7 +13,10 @@ import SignInPage from "./pages/SIgnInPage/SignInPage";
 import CreatorProfilePage from "./pages/CreatorProfilePage/CreatorProfilePage";
 import FrogetPasswordPage1 from "./pages/FrogetPasswordPage/FrogetPasswordPage1";
 import FrogetPasswordPage2 from "./pages/FrogetPasswordPage/FrogetPasswordPage2";
-import ReportUserPage from "./pages/ReportUserPage/ReportUserPage"
+import ReportUserPage from "./pages/ReportUserPage/ReportUserPage";
+import ReportPostPage from "./pages/ReportPostPage/ReportPostPage";
+import ReportAdvertismentPage from "./pages/ReportAdvertismentPage/ReportAdvertismentPage";
+import ReportCommentPage from "./pages/ReportCommentPage/ReportCommentPage";
 import Settings from "./components/Settings/Settings";
 import DashboardAdmin0Page from "./pages/DashboardAdmin0Page/DashboardAdmin0Page";
 import TransactionAdmin0Page from "./pages/TransactionAdmin0Page/TransactionAdmin0Page";
@@ -21,6 +24,7 @@ import UserDetailsPage from "./pages/UserDetailsPage/UserDetailsPage";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import ReportUserAdmin1Page from "./pages/ReportUserAdmin1Page/ReportUserAdmin1Page";
 import AdvertismentPage from "./pages/AdvertisementPage/AdvertisementPage";
+// import Test from './pages/Test/Test';
 
 function App() {
   return (
@@ -29,7 +33,7 @@ function App() {
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/feed" element={<FeedPage />}></Route>
         <Route path="/settings" element={<Settings />}></Route>
-        <Route path="/report" element={<ReportUserPage />}></Route>
+
         <Route path="/login" element={<SignInPage />}></Route>
         <Route path="/signupfollower" element={<SignUpFollowerPage />}></Route>
         <Route path="/signupcreator" element={<SignUpCreatorPage />}></Route>
@@ -55,6 +59,12 @@ function App() {
           path="/admin1/reportUser"
           element={<ReportUserAdmin1Page />}
         ></Route>
+
+        <Route path="/admin1/reportUser/:id" element={<ReportUserPage />}></Route>
+        <Route path="/admin1/reportPost/:id" element={<ReportPostPage />}></Route>
+        <Route path="/admin1/reportComment/:id" element={<ReportCommentPage />}></Route>
+        <Route path="/admin1/reportAdvertisment/:id" element={<ReportAdvertismentPage />}></Route>
+        {/* <Route path="/test" element={<Test/>}></Route> */}
       </Routes>
     </BrowserRouter>
   );

@@ -43,7 +43,7 @@ function FeedPage() {
             <NavBar />
             <div class="container mt-2 feedBack">
                 <div class="row justify-content-center">
-                    <div class="col-md-3">
+                    <div class="col-md-3 sidebar-col ">
                         <span className="sideNavBar">
                             <nav id="sidebar">
                                 <div className="content">
