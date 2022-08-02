@@ -20,6 +20,7 @@ function SignInPage() {
   const navigate = useNavigate();
 
   const loginUser = (data) => {
+    console.log("Hi submit");
     dispatch(login(data.username, data.password));
 
     const user = JSON.parse(localStorage.getItem("user"));

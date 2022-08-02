@@ -20,7 +20,7 @@ export const registrationValidation = Yup.object().shape({
       "Email Already Registered! Please Login",
       async (value) => {
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
-          console.log("Hi");
+          // console.log("Hi");
           const inputData = {
             email: value,
           };
@@ -32,6 +32,8 @@ export const registrationValidation = Yup.object().shape({
             });
           return response;
         }
+
+        return true;
       }
     )
     .required("Email is Required"),
