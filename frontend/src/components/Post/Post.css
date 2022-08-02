@@ -81,7 +81,7 @@
     color: #a2a4b4;
     display: inline-flex;
     align-items: center;
-    font-weight: 600;
+    font-weight: 500;
     font-size:small;
   }
 
@@ -197,4 +197,14 @@
 .album-actions{
   padding: 0 10px 10px;
 }
+.album-action {
+      font-size:small;
+    }
+}
+
+@media only screen and (max-width:674px){
+
+  .album-action {
+      font-size:x-small;
+  }
 }

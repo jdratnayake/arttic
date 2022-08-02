@@ -2,10 +2,10 @@ import React from "react";
 import { useState } from "react";
 
 import "./Settings.css";
-import Basic from '../../pages/SettingsBasicPage/SettingsBasicPage';
-import Billing from '../../pages/SettingsBillingPage/SettingsBillingPage';
-import Sub from '../../pages/SettingsSubscriptionPage/SettingsSubscriptionPage';
-import Purchase from '../../pages/SettingsPurchasePage/SettingsPurchasePage';
+import Basic from "../../pages/SettingsBasicPage/SettingsBasicPage";
+import Billing from "../../pages/SettingsBillingPage/SettingsBillingPage";
+import Sub from "../../pages/SettingsSubscriptionPage/SettingsSubscriptionPage";
+import Purchase from "../../pages/SettingsPurchasePage/SettingsPurchasePage";
 
 function Settings() {
   const [component, setComponent] = useState("Basic");
@@ -29,42 +29,101 @@ function Settings() {
 
   return (
     <div>
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <a
-            class="nav-link active settings-nav-link"
-            aria-current="page"
-            onClick={() => handleClick("Basic")}
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link settings-nav-link active"
+            id="basic-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#basic-tab-pane"
+            type="button"
+            role="tab"
+            aria-controls="basic-tab-pane"
+            aria-selected="true"
           >
             Basic
-          </a>
+          </button>
         </li>
-        <li class="nav-item">
-          <a
+        <li class="nav-item" role="presentation">
+          <button
             class="nav-link settings-nav-link"
-            onClick={() => handleClick("Sub")}
+            id="sub-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#sub-tab-pane"
+            type="button"
+            role="tab"
+            aria-controls="sub-tab-pane"
+            aria-selected="false"
           >
-            Subscription and Loyalty
-          </a>
+            Subscription & Loyalty
+          </button>
         </li>
-        <li class="nav-item">
-          <a
+        <li class="nav-item" role="presentation">
+          <button
             class="nav-link settings-nav-link"
-            onClick={() => handleClick("Billing")}
+            id="bill-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#bill-tab-pane"
+            type="button"
+            role="tab"
+            aria-controls="bill-tab-pane"
+            aria-selected="false"
           >
-            Billing Details
-          </a>
+            Billing Info
+          </button>
         </li>
-        <li class="nav-item" onClick={() => handleClick("Purchase")}>
-          <a class="nav-link settings-nav-link">Purchase History</a>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link settings-nav-link"
+            id="purchase-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#purchase-tab-pane"
+            type="button"
+            role="tab"
+            aria-controls="purchase-tab-pane"
+            aria-selected="false"
+          >
+            Purchase History
+          </button>
         </li>
       </ul>
-
-      <div className="container p-2 settingBody">
-        {component === "Basic" && <Basic />}
-        {component === "Sub" && <Sub />}
-        {component === "Billing" && <Billing />}
-        {component === "Purchase" && <Purchase />}
+      <div class="tab-content" id="myTabContent">
+        <div
+          class="tab-pane settingBody fade show p-2 active"
+          id="basic-tab-pane"
+          role="tabpanel"
+          aria-labelledby="basic-tab"
+          tabindex="0"
+        >
+          <Basic />
+        </div>
+        <div
+          class="tab-pane settingBody fade p-2 "
+          id="sub-tab-pane"
+          role="tabpanel"
+          aria-labelledby="sub-tab"
+          tabindex="0"
+        >
+          <Sub />
+        </div>
+        <div
+          class="tab-pane settingBody fade p-2 "
+          id="bill-tab-pane"
+          role="tabpanel"
+          aria-labelledby="bill-tab"
+          tabindex="0"
+        >
+          <Billing />
+        </div>
+        <div
+          class="tab-pane settingBody fade p-2 "
+          id="purchase-tab-pane"
+          role="tabpanel"
+          aria-labelledby="purchase-tab"
+          tabindex="0"
+        >
+          <Purchase />
+        </div>
       </div>
     </div>
   );
