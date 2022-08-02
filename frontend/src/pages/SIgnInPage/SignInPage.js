@@ -28,74 +28,113 @@ function SignInPage() {
                   <p class="Or">Or</p>
                 </div>
 
-                <div class="col-12">
-                  <label for="exampleFormControlInput1" class="form-label">
-                    Username or Email
-                  </label>
-                  <input
-                    type="email"
-                    class="form-control form-control-update fcup"
-                    id="email"
-                    placeholder="Enter Username or Email"
-                  />
-                  <p class="error-msg">Incorrect Username or Email</p>
-                </div>
-                <div class="col-12">
-                  <label for="exampleFormControlInput1" class="form-label">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    class="form-control form-control-update fcup"
-                    id="password"
-                    placeholder="Enter Password"
-                  />
-                  <p class="error-msg">Incorrect password</p>
-                </div>
-                <div class="col-12 Froget-password">
-                  <p class="text-end">
-                    <a className="theme">
-                      <small>Forgot Password</small>
-                    </a>
-                  </p>
-                </div>
-                <div class="col form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="remember-me"
-                  />
-                  <label class="form-check-label" for="remember-me">
-                    Remember Me
-                  </label>
-                </div>
-                <div class="text-center">
-                  <div class="col-12">
-                    <button type="submit" class="btn btn-primary col-12 btnlog">
-                      Sign In
-                    </button>
-                  </div>
-                  <div class="col-12">
-                    <p class="signup">
-                      Don’t have an account?{" "}
-                      <Link class="theme" to="/signupoption">Sign Up</Link>
-                    </p>
-                  </div>
-                </div>
+                <Formik
+                  initialValues={initialLoginValues}
+                  validationSchema={loginValidation}
+                  onSubmit={loginUser}
+                >
+                  {({ isSubmitting }) => (
+                    <Form>
+                      <span className="authenticationField">
+                        <div className="col-12">
+                          <label htmlFor="username" className="form-label">
+                            Email or Username
+                          </label>
+                          <Field
+                            type="text"
+                            className="form-control form-control-update"
+                            id="username"
+                            name="username"
+                            placeholder="Enter Email or Username"
+                          />
+
+                          <ErrorMessage
+                            name="username"
+                            component="div"
+                            className="error-msg"
+                          />
+                          <p class="error-msg">{usernameError}</p>
+                        </div>
+                      </span>
+
+                      <span className="authenticationField">
+                        <div className="col-12">
+                          <label htmlFor="password" className="form-label">
+                            Password
+                          </label>
+                          <Field
+                            type="password"
+                            className="form-control form-control-update"
+                            id="password"
+                            name="password"
+                            placeholder="Enter Email or Username"
+                          />
+
+                          <ErrorMessage
+                            name="password"
+                            component="div"
+                            className="error-msg"
+                          />
+                          <p class="error-msg">{passwordError}</p>
+                        </div>
+                      </span>
+
+                      <div class="col-12 Froget-password">
+                        <p class="text-end">
+                          <a className="theme">
+                            <small>Forgot Password</small>
+                          </a>
+                        </p>
+                      </div>
+                      <div class="col form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="remember-me"
+                        />
+                        <label class="form-check-label" for="remember-me">
+                          Remember Me
+                        </label>
+                      </div>
+                      <div class="text-center">
+                        <div class="col-12">
+                          <button
+                            type="submit"
+                            class="btn btn-primary col-12 btnlog"
+                          >
+                            Sign In
+                          </button>
+                        </div>
+                        <div class="col-12">
+                          <p class="signup">
+                            Don’t have an account?{" "}
+                            <Link to="/signupoption">Sign Up</Link>
+                          </p>
+                        </div>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
               </div>
             </div>
             <div class="help-privacy-terms">
-                <div class="row">
-                    <div class="col">
-                        <a class="link" href="#">Help</a>
-                    </div>
-                    <div class="col">
-                        <a class="link" href="#">Privacy</a>
-                    </div>
-                    <div class="col">
-                        <a class="link" href="#">Terms</a>
-                    </div>
+              <div class="row">
+                <div class="col">
+                  <a class="link" href="#">
+                    Help
+                  </a>
                 </div>
+                <div class="col">
+                  <a class="link" href="#">
+                    Privacy
+                  </a>
+                </div>
+                <div class="col">
+                  <a class="link" href="#">
+                    Terms
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
