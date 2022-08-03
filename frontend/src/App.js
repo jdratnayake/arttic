@@ -5,6 +5,7 @@ import "swiper/css/bundle";
 
 // templates
 import Admin0Template from "./templates/Admin0Template/Admin0Template";
+import CreatorTemplate from "./templates/CreatorTemplate/CreatorTemplate";
 
 // pages
 import FeedPage from "./pages/FeedPage/FeedPage";
@@ -27,6 +28,7 @@ import UserDetailsPage from "./pages/UserDetailsPage/UserDetailsPage";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import ReportUserAdmin1Page from "./pages/ReportUserAdmin1Page/ReportUserAdmin1Page";
 import AdvertismentPage from "./pages/AdvertisementPage/AdvertisementPage";
+import Feed from "./components/Feed/Feed";
 // import Test from './pages/Test/Test';
 
 function App() {
@@ -43,6 +45,22 @@ function App() {
         <Route path="/feed" element={<FeedPage />}></Route>
         <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
         <Route path="/advertisment" element={<AdvertismentPage />}></Route>
+
+{/* ----------------------Test Routes---------------------- */}
+        <Route
+          path="/advr"
+          element={<CreatorTemplate children={<AdvertismentPage />} />}
+        ></Route>
+        <Route
+          path="/sett"
+          element={<CreatorTemplate children={<Settings />} />}
+        ></Route>
+        <Route
+          path="/fed"
+          element={<CreatorTemplate children={<Feed />} />}
+        ></Route>
+{/* ------------------End of Test Routes------------------ */}
+
         <Route
           path="/frogetpassword1"
           element={<FrogetPasswordPage1 />}
