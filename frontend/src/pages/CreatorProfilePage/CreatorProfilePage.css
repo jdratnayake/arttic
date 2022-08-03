@@ -61,10 +61,11 @@
   padding-top: 15px;
   padding-bottom: 15px;
 }
-.creatorProfilePage .profile-intro {
-  padding-bottom: 15px;
-}
 
+.creatorProfilePage .bannerImage{
+  background:url(../../images/background/profile-cover.jpg) no-repeat;
+  background-size: cover;
+  }
 
 
 /*------------------------------------------------------------*/
@@ -21403,5 +21404,3 @@
 .creatorProfilePage pre[class*="language-"].line-numbers {
   position: initial;
 }
-
-
