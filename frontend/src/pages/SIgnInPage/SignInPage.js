@@ -145,7 +145,7 @@ function SignInPage() {
                         <div class="col-12">
                           <p class="signup">
                             Don’t have an account?{" "}
-                            <Link to="/signupoption">Sign Up</Link>
+                            <Link class="theme" to="/signupoption">Sign Up</Link>
                           </p>
                         </div>
                       </div>
