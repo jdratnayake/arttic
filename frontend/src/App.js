@@ -11,7 +11,7 @@ import FeedPage from "./pages/FeedPage/FeedPage";
 import HomePage from "./pages/HomePage/HomePage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import SignUpOptionPage from "./pages/SignUpOptionPage/SignUpOptionPage";
-import SignInPage from "./pages/SIgnInPage/SignInPage";
+import LogInPage from "./pages/LoginPage/LogInPage";
 import WalletConnectPage from "./pages/WalletConnectPage/WalletConnectPage";
 import CreatorProfilePage from "./pages/CreatorProfilePage/CreatorProfilePage";
 import FrogetPasswordPage1 from "./pages/FrogetPasswordPage/FrogetPasswordPage1";
@@ -36,7 +36,7 @@ function App() {
         <Route path="/signupoption" element={<SignUpOptionPage />}></Route>
         <Route path="/signup/:userType" element={<SignUpPage />}></Route>
         <Route path="/walletconnect" element={<WalletConnectPage />}></Route>
-        <Route path="/login" element={<SignInPage />}></Route>
+        <Route path="/login" element={<LogInPage />}></Route>
         <Route path="/feed" element={<FeedPage />}></Route>
         <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
         <Route path="/advertisment" element={<AdvertismentPage />}></Route>

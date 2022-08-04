@@ -7,12 +7,12 @@ import AuthenticationField from "../../components/AuthenticationField/Authentica
 import { initialLoginValues, loginValidation } from "./Validation";
 import { login } from "../../actions/userActions";
 
-import "./SignInPage.css";
+import "./LogInPage.css";
 import "../../components/AuthenticationField/AuthenticationField.css";
 
 import logo from "../../images/logo.png";
 
-function SignInPage() {
+function LogInPage() {
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
@@ -44,7 +44,7 @@ function SignInPage() {
 
   return (
     <>
-      <span class="SignInPage">
+      <span class="LogInPage">
         <div class="d-flex justify-content-center">
           <div class="col-4">
             <div class="card card-update">
@@ -174,4 +174,4 @@ function SignInPage() {
   );
 }
 
-export default SignInPage;
+export default LogInPage;
