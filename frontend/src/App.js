@@ -29,20 +29,25 @@ import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import ReportUserAdmin1Page from "./pages/ReportUserAdmin1Page/ReportUserAdmin1Page";
 import AdvertismentPage from "./pages/AdvertisementPage/AdvertisementPage";
 import Feed from "./components/Feed/Feed";
-// import Test from './pages/Test/Test';
+import Test from './pages/Test/Test';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />}></Route>
-        <Route path="/feed" element={<FeedPage />}></Route>
-        <Route path="/settings" element={<Settings />}></Route>
+        <Route 
+          path="/feed" 
+          element={<CreatorTemplate children={<Feed />} />}
+        ></Route>
+        <Route 
+          path="/settings" 
+          element={<CreatorTemplate children={<Settings/>} />}
+        ></Route>
         <Route path="/signupoption" element={<SignUpOptionPage />}></Route>
         <Route path="/signup/:userType" element={<SignUpPage />}></Route>
         <Route path="/walletconnect" element={<WalletConnectPage />}></Route>
         <Route path="/login" element={<SignInPage />}></Route>
-        <Route path="/feed" element={<FeedPage />}></Route>
         <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
         <Route path="/advertisment" element={<AdvertismentPage />}></Route>
 
@@ -84,29 +89,37 @@ function App() {
           element={<Admin0Template children={<UserDetailsPage />} />}
         ></Route>
         <Route path="*" element={<ErrorPage />}></Route>
-        {/* Admin 1 */}
+
+{/* ------------------End of Admin 1 Routes------------------ */}
         <Route
           path="/admin1/reportUser"
-          element={<ReportUserAdmin1Page />}
+          element={<Admin0Template children={<ReportUserAdmin1Page/>}/>}
         ></Route>
 
         <Route
           path="/admin1/reportUser/:id"
-          element={<ReportUserPage />}
+          element={<Admin0Template children={<ReportUserPage />}/>}
         ></Route>
         <Route
           path="/admin1/reportPost/:id"
-          element={<ReportPostPage />}
+          element={<Admin0Template children={<ReportPostPage />}/>}
         ></Route>
         <Route
           path="/admin1/reportComment/:id"
-          element={<ReportCommentPage />}
+          element={<Admin0Template children={<ReportCommentPage />}/>}
         ></Route>
         <Route
           path="/admin1/reportAdvertisment/:id"
-          element={<ReportAdvertismentPage />}
+          element={<Admin0Template children={<ReportAdvertismentPage />}/>}
         ></Route>
-        {/* <Route path="/test" element={<Test/>}></Route> */}
+{/* ------------------End of Admin 1 Routes------------------ */}
+
+        <Route 
+          path="/test" 
+          element={<Admin0Template children={<Test/>} />}
+        ></Route>
+
+
       </Routes>
     </BrowserRouter>
   );

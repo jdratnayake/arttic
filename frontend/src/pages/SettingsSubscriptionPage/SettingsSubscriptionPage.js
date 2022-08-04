@@ -1,6 +1,4 @@
-import React from "react";
-
-import "../FeedPage/settings.css";
+import "../SettingsBasicPage/settings.css";
 import "./SettingsSubscriptionPage.css";
 
 function SettingsSubscriptionPage() {
@@ -45,17 +43,17 @@ function SettingsSubscriptionPage() {
                             <span
                               class="d-block pt-2 mb-3 text-dark fw-bold"
                             ><h4>Base</h4>
-                            <p className="purchase-p">Upto 1% ARTTIC in portfolio</p><button className="btn btn-secondary">Current</button></span>
+                              <p className="purchase-p">Upto 1% ARTTIC in portfolio</p><button className="btn btn-secondary">Current</button></span>
                           </div>
                           <div className="col-xl-2 col-md-12 col-sm-12 pt-2 loyalty-col">
                             <div className="star silverStar">
-                                <i className="bi bi-star-fill"></i>
-                              </div>
-                              <span
-                                class="d-block pt-2 mb-3 text-dark fw-bold"
-                              ><h4>Silver</h4>
-                              <p className="purchase-p">1%-5% ARTTIC in portfolio</p><button className="btn subBtn">Upgrade</button></span>
+                              <i className="bi bi-star-fill"></i>
                             </div>
+                            <span
+                              class="d-block pt-2 mb-3 text-dark fw-bold"
+                            ><h4>Silver</h4>
+                              <p className="purchase-p">1%-5% ARTTIC in portfolio</p><button className="btn subBtn">Upgrade</button></span>
+                          </div>
                           <div className="col-xl-2 col-md-12 col-sm-12 pt-2 loyalty-col">
                             <div className="star goldStar">
                               <i className="bi bi-star-fill"></i>
@@ -63,8 +61,8 @@ function SettingsSubscriptionPage() {
                             <span
                               class="d-block pt-2 mb-3 text-dark fw-bold"
                             ><h4>Gold</h4>
-                            <p className="purchase-p">5%-10% ARTTIC in portfolio</p><button className="btn subBtn">Upgrade</button></span>
-                            </div>
+                              <p className="purchase-p">5%-10% ARTTIC in portfolio</p><button className="btn subBtn">Upgrade</button></span>
+                          </div>
                           <div className="col-xl-2 col-md-12 col-sm-12 pt-2 loyalty-col">
                             <div className="star platinumStar">
                               <i className="bi bi-star-fill"></i>
@@ -72,8 +70,7 @@ function SettingsSubscriptionPage() {
                             <span
                               class="d-block pt-2 mb-3 text-dark fw-bold"
                             ><h4>Platinum</h4>
-                            <p className="purchase-p">5%-10% ARTTIC in portfolio</p><button className="btn subBtn">Upgrade</button></span></div>
-                          </div>
+                              <p className="purchase-p">5%-10% ARTTIC in portfolio</p><button className="btn subBtn">Upgrade</button></span></div>
                         </div>
                       </div>
                     </div>
@@ -84,6 +81,7 @@ function SettingsSubscriptionPage() {
           </div>
         </div>
       </div>
+    </div>
   );
 }
 
