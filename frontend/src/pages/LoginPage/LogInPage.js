@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
 import { initialLoginValues, loginValidation } from "./Validation";
@@ -19,27 +19,33 @@ function LogInPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const loginUser = (data) => {
-    dispatch(login(data.username, data.password));
+  const userInfo = useSelector((state) => state.userInfo);
+  const { user } = userInfo;
 
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user.error) {
-      setUsernameError(user.error.username);
-      setPasswordError(user.error.password);
-    } else {
-      setUsernameError("");
-      setPasswordError("");
+  useEffect(() => {
+    if (user) {
+      if (user.error) {
+        setUsernameError(user.error.username);
+        setPasswordError(user.error.password);
+      } else {
+        setUsernameError("");
+        setPasswordError("");
 
-      if (user.type === 3) {
-        if (user.openSeaStatus === 1 || user.openSeaStatus === 2) {
-          navigate("/creatorprofile");
-        } else if (user.openSeaStatus === 0) {
-          navigate("/walletconnect");
+        if (user.type === 3) {
+          if (user.openSeaStatus === 1 || user.openSeaStatus === 2) {
+            navigate("/creatorprofile");
+          } else if (user.openSeaStatus === 0) {
+            navigate("/walletconnect");
+          }
+        } else if (user.type === 4) {
+          //redirect to the follower page
         }
-      } else if (user.type === 4) {
-        //redirect to the follower page
       }
     }
+  }, [user]);
+
+  const loginUser = (data) => {
+    dispatch(login(data.username, data.password));
   };
 
   return (

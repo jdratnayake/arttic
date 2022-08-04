@@ -34,7 +34,7 @@ function AdvertismentPage() {
     return (
         <span className="AdvertismentPage">
 
-            <div className="col-md-9 col-xs-12">
+            <div className="col-md-12 col-xs-12">
                 <div className="settingsPage">
                     <div class="row mb-8">
                         <div class="col">

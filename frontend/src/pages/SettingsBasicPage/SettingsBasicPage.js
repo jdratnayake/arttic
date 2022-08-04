@@ -1,5 +1,6 @@
-import "../FeedPage/settings.css";
+import "./settings.css";
 import t from "../../images/users/pic1.png";
+
 function SettingsBasicPage() {
   return (
     <div className="settingsPage">
@@ -341,36 +342,36 @@ function SettingsBasicPage() {
             {/* card body */}
             <div class="card-body">
               <div class="mb-6">
-                <h4 class="mb-1">Notification for email, mobile & Slack</h4>
+                <h4 class="mb-1">Notification for email</h4>
               </div>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col">
-            {/*  card  */}
+      </div>
+      <div class="row">
+        <div class="col-12">
+          {/*  card  */}
 
-            <div class="card mb-6">
-              {/*  card body  */}
-              <div class="card-body">
-                <div class="mb-6">
-                  <h4 class="mb-1">Danger Zone </h4>
-                </div>
-                <div>
-                  {/*  text  */}
-                  <p>
-                    Delete any and all content you have, such as articles,
-                    comments, your reading list or chat messages. Allow your
-                    username to become available to anyone.
-                  </p>
-                  <a href="#" class="btn btn-danger">
-                    Delete Account
-                  </a>
-                  <p class="small mb-0 mt-3">
-                    Feel free to contact with any{" "}
-                    <a href="#">arttic@gmail.com</a> questions.
-                  </p>
-                </div>
+          <div class="card mb-6">
+            {/*  card body  */}
+            <div class="card-body">
+              <div class="mb-6">
+                <h4 class="mb-1">Danger Zone </h4>
+              </div>
+              <div>
+                {/*  text  */}
+                <p>
+                  Delete any and all content you have, such as articles,
+                  comments, your reading list or chat messages. Allow your
+                  username to become available to anyone.
+                </p>
+                <a href="#" class="btn btn-danger">
+                  Delete Account
+                </a>
+                <p class="small mb-0 mt-3">
+                  Feel free to contact with any{" "}
+                  <a href="#">arttic@gmail.com</a> questions.
+                </p>
               </div>
             </div>
           </div>

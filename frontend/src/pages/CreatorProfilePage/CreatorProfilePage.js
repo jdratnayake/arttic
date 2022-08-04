@@ -1,6 +1,10 @@
-import NavBarCreator from "../../components/NavBarCreator/NavBarCreator";
 import "./CreatorProfilePage.css";
+
+import NavBarCreator from "../../components/NavBarCreator/NavBarCreator";
 import profile from "../../images/users/pic4.png";
+import t from '../../images/NFTs/monkey-removebg.png';
+import Post from "../../components/Post/Post";
+import checkedMark from "../../images/svg/checked-mark.svg";
 
 function CreatorProfilePage() {
     return (
@@ -9,27 +13,33 @@ function CreatorProfilePage() {
 
             <div class="main-container">
                 <div class="row align-items-center">
-                    <div class="col-xl-12 col-lg-12 col-sm-12 col-12">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-                    <div class="pt-20 rounded-top" style={{background:"url(https://images.unsplash.com/photo-1508247967583-7d982ea01526?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80) no-repeat"}}>
-                    </div>
-
-                        <div class="bg-white rounded-bottom smooth-shadow-sm profile-intro">
-                            <div class="d-flex align-items-center justify-content-between
-                  pt-4 pb-6 px-4">
-
+                        {/* Bg */}
+                        <div class="pt-20 rounded-top bannerImage">
+                        </div>
+                        <div class="bg-white smooth-shadow-sm">
+                            <div class="d-flex align-items-center justify-content-between pt-4 pb-6 px-4">
                                 <div class="d-flex align-items-center">
-                                    <div class="cr-avatar-xxl position-relative d-flex justify-content-end
-                      align-items-end mt-n10">
 
-                                        <img src={profile} class="cr-avatar-xxl
-                        rounded-circle border border-4 border-white-color-40" alt="" />
+                                    {/* avatar */}
+                                    <div class="me-2 position-relative d-flex 
+                                        justify-content-end align-items-end mt-n10">
 
+                                        <img src={profile} class="avatar-xxl rounded-circle border border-4 
+                                            border-white-color-40" alt="" />
+
+                                        <a class="position-absolute top-0 right-0 me-2" data-placement="top"
+                                            data-original-title="Verified"
+                                        >
+                                            <img src={checkedMark} alt="" height="30" width="30" />
+                                        </a>
 
                                     </div>
 
-                                    <div class="lh-3">
-                                        <h2 class="mb-0">User Name</h2>
+                                    {/* text */}
+                                    <div class="lh-1">
+                                        <h2 class="mb-0"> Peter Pan </h2>
                                         <p class="mb-0 d-block">101 following</p>
                                     </div>
 
@@ -54,6 +64,46 @@ function CreatorProfilePage() {
                             </div>
                         </div>
 
+                        <div class="card reportBio">
+                            {/* card body */}
+                            <div class="card-body reportBioBody">
+                                <span class="text-uppercase fw-medium text-dark fs-5 ls-2">
+                                    Bio
+                                </span>
+                                {/* text */}
+                                <p class="mt-1 mb-1">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Suspen disse var ius enim in eros elementum tristique. Duis
+                                    cursus, mi quis viverra ornare, eros dolor interdum nulla, ut
+                                    commodo diam libero vitae erat.
+                                </p>
+                                {/* row */}
+                                <div class="row">
+                                    <div class="col-12 mb-1">
+                                        {/* text */}
+                                        <h6 class="text-uppercase fs-5 ls-2">Username</h6>
+                                        <p class="mb-0">Mahesh</p>
+                                    </div>
+                                    <div class="col-6 mb-1">
+                                        <h6 class="text-uppercase fs-5 ls-2">Phone </h6>
+                                        <p class="mb-0">+32112345689</p>
+                                    </div>
+                                    <div class="col-6 mb-1">
+                                        <h6 class="text-uppercase fs-5 ls-2">Joined date </h6>
+                                        <p class="mb-0">01.10.2020</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <h6 class="text-uppercase fs-5 ls-2">Email </h6>
+                                        <p class="mb-0">Arttic@gmail.com</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <h6 class="text-uppercase fs-5 ls-2">Accounnt status</h6>
+                                        <p class="mb-0">Premium</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -61,136 +111,19 @@ function CreatorProfilePage() {
                     <div class="row">
                         <div class="col-xl-8 col-lg-12 col-md-12 col-12 mb-8">
 
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title mb-4">About Me</h4>
-                                    <span class="text-uppercase fw-medium text-dark
-                      fs-5 ls-2">Bio</span>
-
-                                    <p class="mt-2 mb-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspen disse var ius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat.
-                                    </p>
-
-                                    <div class="row">
-                                        <div class="col-6 mb-5">
-                                            <h6 class="text-uppercase fs-5 ls-2">Phone </h6>
-                                            <p class="mb-0">+32112345689</p>
-                                        </div>
-                                        <div class="col-6 mb-5">
-                                            <h6 class="text-uppercase fs-5 ls-2">Date of Birth </h6>
-                                            <p class="mb-0">01.10.1997</p>
-                                        </div>
-                                        <div class="col-6">
-                                            <h6 class="text-uppercase fs-5 ls-2">Email </h6>
-                                            <p class="mb-0">Dashui@gmail.com</p>
-                                        </div>
-                                        <div class="col-6">
-                                            <h6 class="text-uppercase fs-5 ls-2">Location
-                                            </h6>
-                                            <p class="mb-0">Ahmedabad, India</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
+                            {/* Posts */}
+                            <Post
+                                image={t}
+                                name={"Peter Pan"}
+                                date={"2022-07-13"}
+                                title={"Happy Holiday"}
+                                desc={
+                                    "When the bass drops, so do my problems.When the bass drops, so do my problems."
+                                }
+                            />
 
                             <br />
-                            {/* Posts */}
-                            <div class="card">
 
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between mb-5
-                      align-items-center">
-
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <img src={profile} alt="" class="avatar avatar-md rounded-circle" />
-                                            </div>
-                                            <div class="ms-3">
-                                                <h5 class="mb-0 fw-bold">Jitu Chauhan</h5>
-                                                <p class="mb-0">19 minutes ago</p>
-                                            </div>
-                                        </div>
-                                        <div>
-
-                                            <div class="dropdown dropstart">
-                                                <a href="#" class="text-muted text-primary-hover" id="dropdownprojectFive" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i data-feather="more-vertical" class="icon-xxs"></i>
-                                                </a>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownprojectFive">
-                                                    <a class="dropdown-item" href="#">Action</a>
-                                                    <a class="dropdown-item" href="#">Another action</a>
-                                                    <a class="dropdown-item" href="#">Something else
-                                                        here</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-4">
-
-                                        <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspen disse var ius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat.</p>
-                                        <img src={profile} class="rounded-3 w-100" alt="" />
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <span class="me-1 me-md-4"><i data-feather="heart"
-                                            class="icon-xxs text-muted me-2"></i><span>20 Like</span></span>
-                                        <span class="me-1 me-md-4"><i
-                                            data-feather="message-square" class="icon-xxs
-                          text-muted me-2"></i><span>12 Comment</span></span>
-                                        <span><i data-feather="share-2" class="icon-xxs
-                          text-muted me-2"></i><span>Share</span></span>
-                                    </div>
-                                    <div class="border-bottom border-top py-5 d-flex
-                      align-items-center mb-4">
-
-                                        <div class="avatar-group me-2 me-md-3">
-                                            <span class="avatar avatar-sm">
-
-                                                <img alt="avatar"
-                                                    src={profile}
-                                                    class="rounded-circle" />
-                                            </span>
-                                            <span class="avatar avatar-sm">
-
-                                                <img alt="avatar"
-                                                    src={profile}
-                                                    class="rounded-circle" />
-                                            </span>
-                                            <span class="avatar avatar-sm">
-
-                                                <img alt="avatar"
-                                                    src={profile}
-                                                    class="rounded-circle" />
-                                            </span>
-                                        </div>
-                                        <div><span>You and 20 more liked this</span></div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-xl-1 col-lg-2 col-md-2 col-12 mb-3 mb-lg-0">
-
-                                        <img src={profile} class="avatar avatar-md rounded-circle" alt="" />
-                                    </div>
-
-                                    <div class="col-xl-11 col-lg-10 col-md-9 col-12 ">
-
-                                        <div class="row g-3 align-items-center">
-                                            <div class="col-md-2 col-xxl-1">
-                                                <label for="name" class="col-form-label ">Name</label>
-                                            </div>
-                                            <div class="col-md-8 col-xxl-9  mt-0 mt-md-3">
-                                                <input type="password" id="name" class="form-control" aria-describedby="name" />
-                                            </div>
-                                            <div class="col-md-2 col-xxl-2">
-                                                <button type="submit" class="btn btn-primary">Post</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </div>
                         </div>
 
                         <br />
