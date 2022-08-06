@@ -48,23 +48,10 @@ function App() {
         <Route path="/walletconnect" element={<WalletConnectPage />}></Route>
         <Route path="/login" element={<LogInPage />}></Route>
         <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
-        <Route path="/advertisment" element={<AdvertismentPage />}></Route>
-
-        {/* ----------------------Test Routes---------------------- */}
         <Route
-          path="/advr"
+          path="/advertisment"
           element={<CreatorTemplate children={<AdvertismentPage />} />}
         ></Route>
-        <Route
-          path="/sett"
-          element={<CreatorTemplate children={<Settings />} />}
-        ></Route>
-        <Route
-          path="/fed"
-          element={<CreatorTemplate children={<Feed />} />}
-        ></Route>
-        {/* ------------------End of Test Routes------------------ */}
-
         <Route
           path="/frogetpassword1"
           element={<FrogetPasswordPage1 />}
@@ -88,13 +75,10 @@ function App() {
           element={<Admin0Template children={<UserDetailsPage />} />}
         ></Route>
         <Route path="*" element={<ErrorPage />}></Route>
-
-        {/* ------------------End of Admin 1 Routes------------------ */}
         <Route
           path="/admin1/reportUser"
           element={<Admin0Template children={<ReportUserAdmin1Page />} />}
         ></Route>
-
         <Route
           path="/admin1/reportUser/:id"
           element={<Admin0Template children={<ReportUserPage />} />}
@@ -111,8 +95,6 @@ function App() {
           path="/admin1/reportAdvertisment/:id"
           element={<Admin0Template children={<ReportAdvertismentPage />} />}
         ></Route>
-        {/* ------------------End of Admin 1 Routes------------------ */}
-
         <Route
           path="/test"
           element={<Admin0Template children={<Test />} />}
