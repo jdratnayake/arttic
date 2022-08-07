@@ -32,7 +32,7 @@ CREATE TABLE "creator" (
     "creatorJoinedDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "walletAddress" VARCHAR(64) NOT NULL DEFAULT '0',
     "openSeaUsername" VARCHAR(64),
-    "openSeaStatus" BOOLEAN NOT NULL DEFAULT false,
+    "openSeaStatus" INTEGER NOT NULL DEFAULT 0,
     "followerCount" INTEGER NOT NULL DEFAULT 0,
     "isfollowerCountVisible" BOOLEAN NOT NULL DEFAULT true,
     "loyaltyCategory" INTEGER NOT NULL DEFAULT 1,
@@ -320,52 +320,49 @@ ALTER TABLE "userSubscribe" ADD CONSTRAINT "userSubscribe_creatorId_fkey" FOREIG
 ALTER TABLE "post" ADD CONSTRAINT "post_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "creator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "postSave" ADD CONSTRAINT "postSave_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "postSave" ADD CONSTRAINT "postSave_postId_fkey" FOREIGN KEY ("postId") REFERENCES "post"("postId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "postReaction" ADD CONSTRAINT "postReaction_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "postSave" ADD CONSTRAINT "postSave_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "postReaction" ADD CONSTRAINT "postReaction_postId_fkey" FOREIGN KEY ("postId") REFERENCES "post"("postId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "comment" ADD CONSTRAINT "comment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "postReaction" ADD CONSTRAINT "postReaction_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "comment" ADD CONSTRAINT "comment_postId_fkey" FOREIGN KEY ("postId") REFERENCES "post"("postId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "commentReaction" ADD CONSTRAINT "commentReaction_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "comment" ADD CONSTRAINT "comment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "commentReaction" ADD CONSTRAINT "commentReaction_commentId_fkey" FOREIGN KEY ("commentId") REFERENCES "comment"("commentId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "advertisement" ADD CONSTRAINT "advertisement_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "creator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "commentReaction" ADD CONSTRAINT "commentReaction_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "creatorView" ADD CONSTRAINT "creatorView_followerCreatorId_fkey" FOREIGN KEY ("followerCreatorId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "advertisement" ADD CONSTRAINT "advertisement_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "creator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "creatorView" ADD CONSTRAINT "creatorView_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "creator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "postView" ADD CONSTRAINT "postView_followerCreatorId_fkey" FOREIGN KEY ("followerCreatorId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "creatorView" ADD CONSTRAINT "creatorView_followerCreatorId_fkey" FOREIGN KEY ("followerCreatorId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "postView" ADD CONSTRAINT "postView_postId_fkey" FOREIGN KEY ("postId") REFERENCES "post"("postId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "advertisementView" ADD CONSTRAINT "advertisementView_followerCreatorId_fkey" FOREIGN KEY ("followerCreatorId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "postView" ADD CONSTRAINT "postView_followerCreatorId_fkey" FOREIGN KEY ("followerCreatorId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "advertisementView" ADD CONSTRAINT "advertisementView_advertisementId_fkey" FOREIGN KEY ("advertisementId") REFERENCES "advertisement"("advertisementId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "userReport" ADD CONSTRAINT "userReport_resolvedAdminID_fkey" FOREIGN KEY ("resolvedAdminID") REFERENCES "user"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "advertisementView" ADD CONSTRAINT "advertisementView_followerCreatorId_fkey" FOREIGN KEY ("followerCreatorId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "userReport" ADD CONSTRAINT "userReport_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -374,7 +371,7 @@ ALTER TABLE "userReport" ADD CONSTRAINT "userReport_userId_fkey" FOREIGN KEY ("u
 ALTER TABLE "userReport" ADD CONSTRAINT "userReport_reportedUserId_fkey" FOREIGN KEY ("reportedUserId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "postReport" ADD CONSTRAINT "postReport_resolvedAdminID_fkey" FOREIGN KEY ("resolvedAdminID") REFERENCES "user"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "userReport" ADD CONSTRAINT "userReport_resolvedAdminID_fkey" FOREIGN KEY ("resolvedAdminID") REFERENCES "user"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "postReport" ADD CONSTRAINT "postReport_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -383,13 +380,16 @@ ALTER TABLE "postReport" ADD CONSTRAINT "postReport_userId_fkey" FOREIGN KEY ("u
 ALTER TABLE "postReport" ADD CONSTRAINT "postReport_reportedPostId_fkey" FOREIGN KEY ("reportedPostId") REFERENCES "post"("postId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "advertisementReport" ADD CONSTRAINT "advertisementReport_resolvedAdminID_fkey" FOREIGN KEY ("resolvedAdminID") REFERENCES "user"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "postReport" ADD CONSTRAINT "postReport_resolvedAdminID_fkey" FOREIGN KEY ("resolvedAdminID") REFERENCES "user"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "advertisementReport" ADD CONSTRAINT "advertisementReport_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "advertisementReport" ADD CONSTRAINT "advertisementReport_advertisementId_fkey" FOREIGN KEY ("advertisementId") REFERENCES "advertisement"("advertisementId") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "advertisementReport" ADD CONSTRAINT "advertisementReport_resolvedAdminID_fkey" FOREIGN KEY ("resolvedAdminID") REFERENCES "user"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "transactionLog" ADD CONSTRAINT "transactionLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;

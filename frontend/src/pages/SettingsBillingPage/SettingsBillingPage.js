@@ -1,6 +1,4 @@
-import React from "react";
-
-import "../FeedPage/settings.css";
+import "../SettingsBasicPage/settings.css";
 
 function SettingsBillingPage() {
   return (

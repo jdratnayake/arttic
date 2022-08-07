@@ -4,7 +4,7 @@ import "./Post.css";
 
 function Post(props) {
   return (
-    <div className="container">
+    <div className="container p-0">
     <div className="album box">
       <div className="post_status-main">
         <img

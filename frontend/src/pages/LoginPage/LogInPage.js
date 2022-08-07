@@ -1,50 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
 import { initialLoginValues, loginValidation } from "./Validation";
 import { login } from "../../actions/userActions";
 
-import "./SignInPage.css";
+import "./LogInPage.css";
 import "../../components/AuthenticationField/AuthenticationField.css";
 
 import logo from "../../images/logo.png";
 
-function SignInPage() {
+function LogInPage() {
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const loginUser = (data) => {
-    dispatch(login(data.username, data.password));
+  const userInfo = useSelector((state) => state.userInfo);
+  const { user } = userInfo;
 
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user.error) {
-      setUsernameError(user.error.username);
-      setPasswordError(user.error.password);
-    } else {
-      setUsernameError("");
-      setPasswordError("");
+  useEffect(() => {
+    if (user) {
+      if (user.error) {
+        setUsernameError(user.error.username);
+        setPasswordError(user.error.password);
+      } else {
+        setUsernameError("");
+        setPasswordError("");
 
-      if (user.type === 3) {
-        if (user.openSeaStatus === 1 || user.openSeaStatus === 2) {
-          navigate("/creatorprofile");
-        } else if (user.openSeaStatus === 0) {
-          navigate("/walletconnect");
+        if (user.type === 3) {
+          if (user.openSeaStatus === 1 || user.openSeaStatus === 2) {
+            navigate("/creatorprofile");
+          } else if (user.openSeaStatus === 0) {
+            navigate("/walletconnect");
+          }
+        } else if (user.type === 4) {
+          //redirect to the follower page
         }
-      } else if (user.type === 4) {
-        //redirect to the follower page
       }
     }
+  }, [user]);
+
+  const loginUser = (data) => {
+    dispatch(login(data.username, data.password));
   };
 
   return (
     <>
-      <span class="SignInPage">
+      <span class="LogInPage">
         <div class="d-flex justify-content-center">
           <div class="col-4">
             <div class="card card-update">
@@ -79,7 +85,7 @@ function SignInPage() {
                           </label>
                           <Field
                             type="text"
-                            className="form-control form-control-update"
+                            className="form-control form-control-update fcup"
                             id="username"
                             name="username"
                             placeholder="Enter Email or Username"
@@ -101,10 +107,10 @@ function SignInPage() {
                           </label>
                           <Field
                             type="password"
-                            className="form-control form-control-update"
+                            className="form-control form-control-update fcup"
                             id="password"
                             name="password"
-                            placeholder="Enter Email or Username"
+                            placeholder="Enter Password"
                           />
 
                           <ErrorMessage
@@ -145,7 +151,7 @@ function SignInPage() {
                         <div class="col-12">
                           <p class="signup">
                             Don’t have an account?{" "}
-                            <Link to="/signupoption">Sign Up</Link>
+                            <Link class="theme" to="/signupoption">Sign Up</Link>
                           </p>
                         </div>
                       </div>
@@ -154,6 +160,19 @@ function SignInPage() {
                 </Formik>
               </div>
             </div>
+            <div class="help-privacy-terms">
+                <div class="row">
+                    <div class="col">
+                        <a class="link" href="#">Help</a>
+                    </div>
+                    <div class="col">
+                        <a class="link" href="#">Privacy</a>
+                    </div>
+                    <div class="col">
+                        <a class="link" href="#">Terms</a>
+                    </div>
+                </div>
+            </div>
           </div>
         </div>
       </span>
@@ -161,4 +180,4 @@ function SignInPage() {
   );
 }
 
-export default SignInPage;
+export default LogInPage;

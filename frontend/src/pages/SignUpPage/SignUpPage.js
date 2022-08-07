@@ -18,7 +18,7 @@ import "./SignUpPage.css";
 // others
 import logo from "../../images/logo.png";
 
-function SignUpFollowerPage() {
+function SignUpPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
@@ -51,7 +51,7 @@ function SignUpFollowerPage() {
 
   return (
     <>
-      <span className="SignUpFollowerPage">
+      <span className="SignUpPage">
         <div className="d-flex justify-content-center">
           <div className="col-4">
             <div className="card card-update">
@@ -66,7 +66,7 @@ function SignUpFollowerPage() {
                     <i className="bi bi-google icon"></i>Sign Up with Google
                   </button>
                   <button className="btn btn-outline-dark" type="button">
-                    <i className="bi bi-facebook icon"></i>Sign Up with Apple
+                    <i className="bi bi-apple icon"></i>Sign Up with Apple
                   </button>
                   <p className="Or">Or</p>
                 </div>
@@ -145,7 +145,7 @@ function SignUpFollowerPage() {
                         <div className="col-12">
                           <p className="signup">
                             Already have an account ?{" "}
-                            <Link to="/login">Log In</Link>
+                            <Link class="theme" to="/login">Log In</Link>
                           </p>
                         </div>
                       </div>
@@ -154,6 +154,19 @@ function SignUpFollowerPage() {
                 </Formik>
               </div>
             </div>
+            <div class="help-privacy-terms">
+                <div class="row">
+                    <div class="col">
+                        <a class="link" href="#">Help</a>
+                    </div>
+                    <div class="col">
+                        <a class="link" href="#">Privacy</a>
+                    </div>
+                    <div class="col">
+                        <a class="link" href="#">Terms</a>
+                    </div>
+                </div>
+            </div>
           </div>
         </div>
       </span>
@@ -161,4 +174,4 @@ function SignUpFollowerPage() {
   );
 }
 
-export default SignUpFollowerPage;
+export default SignUpPage;

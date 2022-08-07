@@ -1,16 +1,16 @@
 body {
   background-color: rgba(244, 242, 244, 1) !important;
 }
-.SignUpFollowerPage .Or {
+.SignUpPage .Or {
   margin-bottom: 0.5rem;
 }
-.SignUpFollowerPage .col-12 {
+.SignUpPage .col-12 {
   margin-bottom: 1rem;
 }
-.SignUpFollowerPage .col-12 .form-label {
+.SignUpPage .col-12 .form-label {
   margin: 0.2rem;
 }
-.SignUpFollowerPage .card-update {
+.SignUpPage .card-update {
   border: rgba(244, 242, 244, 1);
   margin-top: 10%;
   margin-bottom: 10%;
@@ -19,51 +19,52 @@ body {
   padding-left: 5%;
   padding-right: 5%;
 }
-.SignUpFollowerPage p {
+.SignUpPage p {
   margin-bottom: 0;
 }
-.SignUpFollowerPage .col-12 .error-msg {
+.SignUpPage .col-12 .error-msg {
   color: red;
   font-size: small;
 }
-.SignUpFollowerPage .title {
+.SignUpPage .title {
   padding-bottom: 5%;
 }
 
-.SignUpFollowerPage .form-control-update {
+.SignUpPage .form-control-update {
   border-radius: 10px;
   font-weight: 100;
   /* color: #F4F2F4; */
   font-size: small;
 }
 
-.SignUpFollowerPage .theme {
+.SignUpPage .theme {
   color: rgba(132, 39, 226, 1);
+  text-decoration: none;
 }
 
-.SignUpFollowerPage .btnlog {
+.SignUpPage .btnlog {
   margin-bottom: 5%;
   border-radius: 10px;
 }
 
-.SignUpFollowerPage .signup {
+.SignUpPage .signup {
   margin-top: 5%;
 }
 
-.SignUpFollowerPage .icon {
+.SignUpPage .icon {
   padding-right: 15px;
 }
 
-.SignUpFollowerPage .chcklbl {
+.SignUpPage .chcklbl {
   padding-left: 5%;
 }
 @media only screen and (max-width: 768px) {
-  .SignUpFollowerPage .col-4 {
+  .SignUpPage .col-4 {
     width: 50%;
   }
 }
 @media only screen and (max-width: 514px) {
-  .SignUpFollowerPage .col-4 {
+  .SignUpPage .col-4 {
     width: 83%;
   }
   .chcklbl {

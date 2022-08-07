@@ -1,0 +1,12 @@
+@media only screen and (max-width:1200px){
+    .settingsPage .subscriptionContainer .loyalty-col-1,.settingsPage .subscriptionContainer .loyalty-col{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        border-top: 1px solid #dee2e6 !important;
+        text-align: center;
+        border-left: none;
+    }
+
+}
