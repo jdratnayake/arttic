@@ -30,6 +30,7 @@
     background: #fff;
     color: #000;
     transition: all 0.3s;
+    font-size: 1em;
 }
 
 .sideNavBar .content-top {
@@ -85,6 +86,10 @@
     font-size: 1.5em;
     padding-left: 15px;
     color: #FFD233;
+}
+
+.sideNavBar .para {
+    font-size: 0.9em;
 }
 
 

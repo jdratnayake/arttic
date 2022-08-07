@@ -6,36 +6,36 @@ function SideNavBar() {
         <span className="sideNavBar">
             <nav id="sidebar">
                 <div className="content-top">
-                    <ul class="list-unstyled">
-                        <li class="activesb">
-                            <a><i class="bi bi-rss icon-theme"></i>Feed</a>
+                    <ul className="list-unstyled">
+                        <li className="activesb">
+                            <a><i className="bi bi-rss icon-theme"></i>Feed</a>
                         </li>
                         <li>
-                            <a><i class="bi bi-people-fill icon-theme"></i>Find Creators</a>
+                            <a><i className="bi bi-people-fill icon-theme"></i>Find Creators</a>
                         </li>
                         <li>
-                            <a><i class="bi bi-star icon-theme"></i>Favourits</a>
+                            <a><i className="bi bi-star icon-theme"></i>Favourits</a>
                         </li>
                         <li>
-                            <a><i class="bi bi-chat-dots icon-theme"></i>Chat</a>
+                            <a><i className="bi bi-chat-dots icon-theme"></i>Chat</a>
                         </li>
                         <li>
-                            <a><i class="bi bi-graph-up icon-theme"></i>Statics</a>
+                            <a><i className="bi bi-graph-up icon-theme"></i>Statics</a>
                         </li>
                         <li>
-                            <a><i class="bi bi-gear icon-theme"></i>Settings</a>
+                            <a><i className="bi bi-gear icon-theme"></i>Settings</a>
                         </li>
                         <li>
-                            <a><i class="bi bi-badge-ad-fill icon-theme"></i>Advertisment</a>
+                            <a><i className="bi bi-badge-ad-fill icon-theme"></i>Advertisment</a>
                         </li>
                     </ul><br />
 
                     <div className="premium">
                         <div className="content-pre">
-                            <p>
-                                Upgrade to premimum <i class="bi bi-gem icon-pre"></i>
+                            <p className="para">
+                                Upgrade to premimum <i className="bi bi-gem icon-pre"></i>
                             </p>
-                            <p>
+                            <p className="para">
                                 small description on to have
                                 interest on premium package
                             </p>

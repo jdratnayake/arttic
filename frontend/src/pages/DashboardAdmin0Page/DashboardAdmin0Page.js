@@ -4,8 +4,6 @@ import Chart from "react-apexcharts";
 import "./DashboardAdmin0Page.css";
 import "react-datepicker/dist/react-datepicker.css";
 
-import NavBar from "../../components/NavBar/NavBar";
-import SideNavBarAdmin0 from "../../components/SideNavBarAdmin0/SideNavBarAdmin0";
 import AnalyticsCard from "../../components/AnalyticsCard/AnalyticsCard";
 
 function DashboardAdmin0Page() {
@@ -107,80 +105,73 @@ function DashboardAdmin0Page() {
 
   return (
     <span className="dashboardAdmin0Page">
-      <NavBar />
-      <div className="wrapperAdmin">
-        <SideNavBarAdmin0 />
+      <div class="card-body admin-page-title">
+        <div class="row">
+          <h4>Dashboard</h4>
+        </div>
+      </div>
 
-        <div id="contentAdmin">
-          <div class="card-body admin-page-title">
-            <div class="row">
-              <h4>Dashboard</h4>
+      <div class="row analyticsCardRow card-body">
+        <div class="col title">
+          <div class="row cardRow">
+            <div class="col cardCol">
+              <AnalyticsCard
+                cardHeading="New Accounts"
+                iconName="bi bi-person-plus-fill"
+              />
             </div>
-          </div>
-
-          <div class="row analyticsCardRow card-body">
-            <div class="col title">
-              <div class="row cardRow">
-                <div class="col cardCol">
-                  <AnalyticsCard
-                    cardHeading="New Accounts"
-                    iconName="bi bi-person-plus-fill"
-                  />
-                </div>
-                <div class="col cardCol">
-                  <AnalyticsCard
-                    cardHeading="Advertisements"
-                    iconName="bi bi-badge-ad-fill"
-                  />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col cardCol">
-                  <AnalyticsCard
-                    cardHeading="Del. Accounts"
-                    iconName="bi bi-person-x-fill"
-                  />
-                </div>
-                <div class="col cardCol">
-                  <AnalyticsCard
-                    cardHeading="Complaints"
-                    iconName="bi bi-clipboard-x-fill"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="col lineChartStyle title">
-              <div class="card-body admin-page-title">
-                <Chart
-                  options={lineChartValues.options}
-                  series={lineChartValues.series}
-                  type="line"
-                  className="lineChartVerticleStyle"
-                />
-              </div>
+            <div class="col cardCol">
+              <AnalyticsCard
+                cardHeading="Advertisements"
+                iconName="bi bi-badge-ad-fill"
+              />
             </div>
           </div>
           <div class="row">
-            <div class="col lineChartStyle title">
-              <div class="card-body admin-page-title">
-                <Chart
-                  options={barChartValues.options}
-                  series={barChartValues.series}
-                  type="bar"
-                  className="lineChartVerticleStyle"
-                />
-              </div>
+            <div class="col cardCol">
+              <AnalyticsCard
+                cardHeading="Del. Accounts"
+                iconName="bi bi-person-x-fill"
+              />
             </div>
-            <div class="col lineChartStyle title">
-              <div class="card-body admin-page-title">
-                <Chart
-                  options={pieChartValues.chartOptions}
-                  series={pieChartValues.series}
-                  type="pie"
-                  className="lineChartVerticleStyle"
-                />
-              </div>
+            <div class="col cardCol">
+              <AnalyticsCard
+                cardHeading="Complaints"
+                iconName="bi bi-clipboard-x-fill"
+              />
             </div>
+          </div>
+        </div>
+        <div class="col lineChartStyle title">
+          <div class="card-body admin-page-title">
+            <Chart
+              options={lineChartValues.options}
+              series={lineChartValues.series}
+              type="line"
+              className="lineChartVerticleStyle"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row second-row">
+        <div class="col lineChartStyle title">
+          <div class="card-body admin-page-title">
+            <Chart
+              options={barChartValues.options}
+              series={barChartValues.series}
+              type="bar"
+              className="lineChartVerticleStyle"
+            />
+          </div>
+        </div>
+        <div class="col lineChartStyle title">
+          <div class="card-body admin-page-title">
+            <Chart
+              options={pieChartValues.chartOptions}
+              series={pieChartValues.series}
+              type="pie"
+              className="lineChartVerticleStyle"
+            />
           </div>
         </div>
       </div>

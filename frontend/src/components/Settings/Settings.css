@@ -1,3 +1,40 @@
+@media only screen and (max-width:995px){
+    body{
+      font-size: 90%;
+    }
+}
+
+@media only screen and (max-width:991px){
+    body{
+      font-size: 85%;
+    }
+}
+
+@media only screen and (max-width:548px){
+    body{
+      font-size: 75%;
+    }
+}
+@media only screen and (max-width:482px){
+    body{
+      font-size: 65%;
+    }
+}
+@media only screen and (max-width:440px){
+    body{
+      font-size: 60%;
+    }
+}
+@media only screen and (max-width:419px){
+    body{
+      font-size: 55%;
+    }
+}
+@media only screen and (max-width:400px){
+    body{
+      font-size: 50%;
+    }
+}
 .settingBody{
   background-color: var(--bs-white);
   border-radius: 0 5px;

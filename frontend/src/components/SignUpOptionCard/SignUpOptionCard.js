@@ -7,7 +7,7 @@ function SignUpOptionCard({ title, btn, av, p1, p2, p3, p4,p5, link }) {
 
   return (
     <div class="card">
-      <div class="card-body">
+      <div class="card-body desktop-view">
         <h4 class="title text-center theme-title">{title}</h4>
         {/* <p class="text-center">who is {av} - description</p> */}
         <ul>
