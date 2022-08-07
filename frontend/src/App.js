@@ -14,8 +14,8 @@ import SignUpOptionPage from "./pages/SignUpOptionPage/SignUpOptionPage";
 import LogInPage from "./pages/LoginPage/LogInPage";
 import WalletConnectPage from "./pages/WalletConnectPage/WalletConnectPage";
 import CreatorProfilePage from "./pages/CreatorProfilePage/CreatorProfilePage";
-import FrogetPasswordPage1 from "./pages/FrogetPasswordPage/FrogetPasswordPage1";
-import FrogetPasswordPage2 from "./pages/FrogetPasswordPage/FrogetPasswordPage2";
+import FrogotPasswordUsernamePage from "./pages/FrogotPasswordUsernamePage/FrogotPasswordUsernamePage";
+import FrogotPasswordResetPasswordPage from "./pages/FrogotPasswordResetPasswordPage/FrogotPasswordResetPasswordPage";
 import ReportUserPage from "./pages/ReportUserPage/ReportUserPage";
 import ReportPostPage from "./pages/ReportPostPage/ReportPostPage";
 import ReportAdvertismentPage from "./pages/ReportAdvertismentPage/ReportAdvertismentPage";
@@ -53,12 +53,12 @@ function App() {
           element={<CreatorTemplate children={<AdvertismentPage />} />}
         ></Route>
         <Route
-          path="/frogetpassword1"
-          element={<FrogetPasswordPage1 />}
+          path="/frogotpassword/username"
+          element={<FrogotPasswordUsernamePage />}
         ></Route>
         <Route
-          path="/frogetpassword2"
-          element={<FrogetPasswordPage2 />}
+          path="/frogotpassword/passwordreset"
+          element={<FrogotPasswordResetPasswordPage />}
         ></Route>
         <Route
           path="/admin0/dashboard"

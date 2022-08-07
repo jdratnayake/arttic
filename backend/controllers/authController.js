@@ -6,6 +6,7 @@ const { sign } = require("jsonwebtoken");
 
 const { user, followerCreator, creator } = new PrismaClient();
 
+// this API is used in the SignUpPage
 const emailCheck = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
@@ -268,4 +269,31 @@ const creatorVerify = asyncHandler(async (req, res) => {
   };
 });
 
-module.exports = { register, login, creatorVerify, emailCheck };
+// password recovery - START
+
+const usernameCheck = asyncHandler(async (req, res) => {
+  const { username } = req.body;
+
+  const existUser = await user.findFirst({
+    where: {
+      OR: [
+        {
+          email: username,
+        },
+        {
+          username: username,
+        },
+      ],
+    },
+  });
+
+  if (existUser) {
+    res.json({ isExist: true });
+  } else {
+    res.json({ isExist: false });
+  }
+});
+
+// password recovery - END
+
+module.exports = { register, login, creatorVerify, emailCheck, usernameCheck };
