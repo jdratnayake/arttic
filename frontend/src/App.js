@@ -29,6 +29,7 @@ import ReportUserAdmin1Page from "./pages/ReportUserAdmin1Page/ReportUserAdmin1P
 import AdvertismentPage from "./pages/AdvertisementPage/AdvertisementPage";
 import Feed from "./components/Feed/Feed";
 import Test from "./pages/Test/Test";
+import SubscribedCreatorsPage from "./pages/SubscribedCreatorsPage/SubscribedCreatorsPage";
 
 function App() {
   return (
@@ -38,6 +39,10 @@ function App() {
         <Route
           path="/feed"
           element={<CreatorTemplate children={<Feed />} />}
+        ></Route>
+        <Route
+          path="/subscribedcreatorspage"
+          element={<CreatorTemplate children={<SubscribedCreatorsPage />} />}
         ></Route>
         <Route
           path="/settings"
