@@ -21,6 +21,7 @@ import ReportPostPage from "./pages/ReportPostPage/ReportPostPage";
 import ReportAdvertismentPage from "./pages/ReportAdvertismentPage/ReportAdvertismentPage";
 import ReportCommentPage from "./pages/ReportCommentPage/ReportCommentPage";
 import Settings from "./components/Settings/Settings";
+import AccountManagementAdmin0Page from './pages/AccountManageAdmin0Page/AccountManageAdmin0Page';
 import DashboardAdmin0Page from "./pages/DashboardAdmin0Page/DashboardAdmin0Page";
 import SystemTransactionDetailsPage from "./pages/SystemTransactionDetailsPage/SystemTransactionDetailsPage";
 import UserDetailsPage from "./pages/UserDetailsPage/UserDetailsPage";
@@ -29,6 +30,7 @@ import ReportUserAdmin1Page from "./pages/ReportUserAdmin1Page/ReportUserAdmin1P
 import AdvertismentPage from "./pages/AdvertisementPage/AdvertisementPage";
 import Feed from "./components/Feed/Feed";
 import Test from "./pages/Test/Test";
+
 
 function App() {
   return (
@@ -73,6 +75,10 @@ function App() {
         <Route
           path="/admin0/userdetails"
           element={<Admin0Template children={<UserDetailsPage />} />}
+        ></Route>
+         <Route
+          path="/admin0/accountmanage"
+          element={<Admin0Template children={<AccountManagementAdmin0Page />} />}
         ></Route>
         <Route path="*" element={<ErrorPage />}></Route>
         <Route
