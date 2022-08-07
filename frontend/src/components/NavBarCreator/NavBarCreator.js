@@ -3,7 +3,7 @@ import logo from '../../images/logo.png'
 
 function NavBarCreator() {
     return (
-        <>
+        <span className="NavBarCreator">
             <nav className="navbar navbar-expand-lg bg-light">
                 <div className="container-fluid">
                     <a className="navbar-brand" href="#">
@@ -96,7 +96,7 @@ function NavBarCreator() {
                     </div>
                 </div>
             </nav>
-        </>
+        </span>
     );
 }
 
