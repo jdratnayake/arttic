@@ -1,11 +1,9 @@
-import React from 'react'
-
-import "../FeedPage/settings.css";
+import "../SettingsBasicPage/settings.css";
 import './SettingsPurchasePage.css'
 
 function SettingsPurchasePage() {
   return (
-   <div className="settingsPage">
+    <div className="settingsPage">
       {/* row  --> */}
       <div class="row">
         <div class="col">

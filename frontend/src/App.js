@@ -8,11 +8,10 @@ import Admin0Template from "./templates/Admin0Template/Admin0Template";
 import CreatorTemplate from "./templates/CreatorTemplate/CreatorTemplate";
 
 // pages
-import FeedPage from "./pages/FeedPage/FeedPage";
 import HomePage from "./pages/HomePage/HomePage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import SignUpOptionPage from "./pages/SignUpOptionPage/SignUpOptionPage";
-import SignInPage from "./pages/SIgnInPage/SignInPage";
+import LogInPage from "./pages/LoginPage/LogInPage";
 import WalletConnectPage from "./pages/WalletConnectPage/WalletConnectPage";
 import CreatorProfilePage from "./pages/CreatorProfilePage/CreatorProfilePage";
 import FrogetPasswordPage1 from "./pages/FrogetPasswordPage/FrogetPasswordPage1";
@@ -29,38 +28,30 @@ import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import ReportUserAdmin1Page from "./pages/ReportUserAdmin1Page/ReportUserAdmin1Page";
 import AdvertismentPage from "./pages/AdvertisementPage/AdvertisementPage";
 import Feed from "./components/Feed/Feed";
-// import Test from './pages/Test/Test';
+import Test from "./pages/Test/Test";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />}></Route>
-        <Route path="/feed" element={<FeedPage />}></Route>
-        <Route path="/settings" element={<Settings />}></Route>
+        <Route
+          path="/feed"
+          element={<CreatorTemplate children={<Feed />} />}
+        ></Route>
+        <Route
+          path="/settings"
+          element={<CreatorTemplate children={<Settings />} />}
+        ></Route>
         <Route path="/signupoption" element={<SignUpOptionPage />}></Route>
         <Route path="/signup/:userType" element={<SignUpPage />}></Route>
         <Route path="/walletconnect" element={<WalletConnectPage />}></Route>
-        <Route path="/login" element={<SignInPage />}></Route>
-        <Route path="/feed" element={<FeedPage />}></Route>
+        <Route path="/login" element={<LogInPage />}></Route>
         <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
-        <Route path="/advertisment" element={<AdvertismentPage />}></Route>
-
-{/* ----------------------Test Routes---------------------- */}
         <Route
-          path="/advr"
+          path="/advertisment"
           element={<CreatorTemplate children={<AdvertismentPage />} />}
         ></Route>
-        <Route
-          path="/sett"
-          element={<CreatorTemplate children={<Settings />} />}
-        ></Route>
-        <Route
-          path="/fed"
-          element={<CreatorTemplate children={<Feed />} />}
-        ></Route>
-{/* ------------------End of Test Routes------------------ */}
-
         <Route
           path="/frogetpassword1"
           element={<FrogetPasswordPage1 />}
@@ -84,29 +75,30 @@ function App() {
           element={<Admin0Template children={<UserDetailsPage />} />}
         ></Route>
         <Route path="*" element={<ErrorPage />}></Route>
-        {/* Admin 1 */}
         <Route
           path="/admin1/reportUser"
-          element={<ReportUserAdmin1Page />}
+          element={<Admin0Template children={<ReportUserAdmin1Page />} />}
         ></Route>
-
         <Route
           path="/admin1/reportUser/:id"
-          element={<ReportUserPage />}
+          element={<Admin0Template children={<ReportUserPage />} />}
         ></Route>
         <Route
           path="/admin1/reportPost/:id"
-          element={<ReportPostPage />}
+          element={<Admin0Template children={<ReportPostPage />} />}
         ></Route>
         <Route
           path="/admin1/reportComment/:id"
-          element={<ReportCommentPage />}
+          element={<Admin0Template children={<ReportCommentPage />} />}
         ></Route>
         <Route
           path="/admin1/reportAdvertisment/:id"
-          element={<ReportAdvertismentPage />}
+          element={<Admin0Template children={<ReportAdvertismentPage />} />}
         ></Route>
-        {/* <Route path="/test" element={<Test/>}></Route> */}
+        <Route
+          path="/test"
+          element={<Admin0Template children={<Test />} />}
+        ></Route>
       </Routes>
     </BrowserRouter>
   );

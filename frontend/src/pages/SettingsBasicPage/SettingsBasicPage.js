@@ -1,5 +1,6 @@
-import "../FeedPage/settings.css";
+import "./settings.css";
 import t from "../../images/users/pic1.png";
+
 function SettingsBasicPage() {
   return (
     <div className="settingsPage">
