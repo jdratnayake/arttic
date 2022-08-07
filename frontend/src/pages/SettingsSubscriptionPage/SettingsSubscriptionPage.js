@@ -7,7 +7,7 @@ function SettingsSubscriptionPage() {
       <div class="row">
         <div class="col">
           <div class="row">
-            <div class="col-12 mb-6">
+            <div class="col-12">
               {/* card  --> */}
               <div class="card">
                 {/* card header  --> */}
