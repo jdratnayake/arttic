@@ -29,6 +29,7 @@ import ReportUserAdmin1Page from "./pages/ReportUserAdmin1Page/ReportUserAdmin1P
 import AdvertismentPage from "./pages/AdvertisementPage/AdvertisementPage";
 import Feed from "./components/Feed/Feed";
 import Test from "./pages/Test/Test";
+import ExternalSignUpPasswordPage from "./pages/ExternalSignUpPasswordPage/ExternalSignUpPasswordPage";
 
 function App() {
   return (
@@ -99,6 +100,8 @@ function App() {
           path="/test"
           element={<Admin0Template children={<Test />} />}
         ></Route>
+        <Route path="/ExternalSignUpPasswordPage" element={<ExternalSignUpPasswordPage />}></Route>
+
       </Routes>
     </BrowserRouter>
   );
