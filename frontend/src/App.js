@@ -16,6 +16,7 @@ import WalletConnectPage from "./pages/WalletConnectPage/WalletConnectPage";
 import CreatorProfilePage from "./pages/CreatorProfilePage/CreatorProfilePage";
 import FrogetPasswordPage1 from "./pages/FrogetPasswordPage/FrogetPasswordPage1";
 import FrogetPasswordPage2 from "./pages/FrogetPasswordPage/FrogetPasswordPage2";
+import ForgotPasswordOTP from "./pages/ForgotPasswordOTP/ForgotPasswordOTP";
 import ReportUserPage from "./pages/ReportUserPage/ReportUserPage";
 import ReportPostPage from "./pages/ReportPostPage/ReportPostPage";
 import ReportAdvertismentPage from "./pages/ReportAdvertismentPage/ReportAdvertismentPage";
@@ -64,6 +65,10 @@ function App() {
         <Route
           path="/frogetpassword2"
           element={<FrogetPasswordPage2 />}
+        ></Route>
+        <Route
+          path="/forgotpasswordotp"
+          element={<ForgotPasswordOTP />}
         ></Route>
         <Route
           path="/admin0/dashboard"
