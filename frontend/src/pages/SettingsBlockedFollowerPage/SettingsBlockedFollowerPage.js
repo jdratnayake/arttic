@@ -15,6 +15,23 @@ function SettingsBlockedFollowerPage() {
                 <div class="card-header p-4 bg-white">
                   <h4 class="mb-0">Blocked Followers</h4>
                 </div>
+                <div class="card-body mx-3 pt-4 pb-4">
+                  <div class="row pt-2">
+                    <div class="col">
+                      <form className="search-form" role="search">
+                        <input
+                          className="form-control me-2"
+                          type="search"
+                          placeholder="Search..."
+                          aria-label="Search"
+                        />
+                        <button className="btn btn-secondary" type="submit">
+                          <i className="bi bi-search"></i>
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
                 <div class="card-body">
                   <div class="row">
                     <div className="tableSection">
