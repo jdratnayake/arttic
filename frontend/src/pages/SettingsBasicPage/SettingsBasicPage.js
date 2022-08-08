@@ -4,7 +4,7 @@ import t from "../../images/users/pic1.png";
 function SettingsBasicPage() {
   return (
     <div className="settingsPage">
-      <div class="row mb-8">
+      <div class="row mb-6">
         <div class="col">
           {/* card */}
           <div class="card">
@@ -42,7 +42,7 @@ function SettingsBasicPage() {
                 </div>
               </div>
               {/* col */}
-              <div class="row mb-8">
+              <div class="row mb-6">
                 <div class="col-md-3 mb-3 mb-md-0">
                   {/* heading */}
                   <h5 class="mb-0">Cover photo</h5>
@@ -215,7 +215,7 @@ function SettingsBasicPage() {
           </div>
         </div>
       </div>
-      <div class="row mb-8">
+      <div class="row mb-6">
         <div class="col-md-12 col-12">
           {/* card */}
           <div class="card" id="edit">
@@ -352,7 +352,7 @@ function SettingsBasicPage() {
         <div class="col-12">
           {/*  card  */}
 
-          <div class="card mb-6">
+          <div class="card">
             {/*  card body  */}
             <div class="card-body">
               <div class="mb-6">
