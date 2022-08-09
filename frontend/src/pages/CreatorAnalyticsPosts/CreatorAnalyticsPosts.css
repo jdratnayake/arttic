@@ -1,0 +1,81 @@
+.CreatorAnalytics table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 5px 10px #e1e5ee;
+  background-color: white;
+  text-align: left;
+  overflow: hidden;
+}
+
+.CreatorAnalytics table thead {
+  box-shadow: 0 5px 10px #e1e5ee;
+}
+
+.CreatorAnalytics table th {
+  padding: 1rem 2rem;
+  letter-spacing: 0.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.CreatorAnalytics table td {
+  padding: 1rem 2rem;
+}
+
+.CreatorAnalytics table td img {
+  height: 100px;
+  width: 100px;
+  border: 5px solid #e6e7e8;
+}
+
+.CreatorAnalytics table .idStyle {
+  text-decoration: none;
+  color: #2962ff;
+}
+
+.CreatorAnalytics table .status {
+  display: inline-block;
+  width: 90px;
+  border-radius: 0.2rem;
+  padding: 0.2rem 1rem;
+  text-align: center;
+}
+
+.CreatorAnalytics table .status-pending {
+  background-color: #f14668;
+  color: #fff;
+}
+
+.CreatorAnalytics table .status-paid {
+  background-color: #48c78e;
+  color: #fff;
+}
+
+.CreatorAnalytics table .status-unpaid {
+  background-color: #ffcdd2;
+  color: #c62828;
+}
+
+.CreatorAnalytics table .amount {
+  text-align: right;
+}
+
+.CreatorAnalytics table tr:nth-child(even) {
+  background-color: #f4f6fb;
+}
+
+.CreatorAnalytics table tr:hover td {
+  color: #000000;
+  cursor: pointer;
+  background-color: #eeebf1;
+}
+
+.CreatorAnalytics .mb-6 {
+  margin-bottom: 1rem !important;
+  padding-left: 20px;
+  padding-top: 10px;
+}
+
+.CreatorAnalytics .mb-1 {
+  margin-bottom: 0.25rem !important;
+}

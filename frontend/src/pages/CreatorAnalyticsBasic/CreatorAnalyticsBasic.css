@@ -1,0 +1,25 @@
+.CreatorAnalytics .analyticsCardRow {
+    padding-top: 36px;
+}
+
+.CreatorAnalytics .second-row {
+    margin-top: 36px;
+}
+
+.CreatorAnalytics .card-second{
+    border: none;
+}
+
+.CreatorAnalytics .card-align {
+    padding-bottom: 18px;
+}
+
+.CreatorAnalytics .mb-6 {
+    margin-bottom: 1rem !important;
+    padding-left: 20px;
+    padding-top: 10px;
+}
+
+.CreatorAnalytics .mb-1 {
+    margin-bottom: 0.25rem !important;
+}

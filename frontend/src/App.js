@@ -14,6 +14,7 @@ import SignUpOptionPage from "./pages/SignUpOptionPage/SignUpOptionPage";
 import LogInPage from "./pages/LoginPage/LogInPage";
 import WalletConnectPage from "./pages/WalletConnectPage/WalletConnectPage";
 import CreatorProfilePage from "./pages/CreatorProfilePage/CreatorProfilePage";
+import CreatorAnalyticsCom from "./components/CreatorAnalyticsCom/CreatorAnalyticsCom";
 import FrogetPasswordPage1 from "./pages/FrogetPasswordPage/FrogetPasswordPage1";
 import FrogetPasswordPage2 from "./pages/FrogetPasswordPage/FrogetPasswordPage2";
 import ReportUserPage from "./pages/ReportUserPage/ReportUserPage";
@@ -52,6 +53,10 @@ function App() {
           path="/advertisment"
           element={<CreatorTemplate children={<AdvertismentPage />} />}
         ></Route>
+        <Route
+          path="/creator/analytics"
+          element={<CreatorTemplate children={<CreatorAnalyticsCom />} />}>
+        </Route>
         <Route
           path="/frogetpassword1"
           element={<FrogetPasswordPage1 />}
