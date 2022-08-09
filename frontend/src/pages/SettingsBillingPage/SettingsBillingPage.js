@@ -69,7 +69,7 @@ function SettingsBillingPage() {
                 </div>
               </div>
             </div>
-            <div class="col-12 mb-6">
+            <div class="col-12">
               {/* card  --> */}
               <div class="card">
                 {/* card header  --> */}
