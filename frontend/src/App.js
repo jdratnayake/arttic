@@ -114,7 +114,7 @@ function App() {
         ></Route>
         <Route
           path="/test"
-          element={<Admin0Template children={<Test />} />}
+          element={<CreatorTemplate children={<Test />} />}
         ></Route>
       </Routes>
     </BrowserRouter>

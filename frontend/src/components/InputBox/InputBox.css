@@ -1,0 +1,79 @@
+.post-preview {
+  display: flex;
+  transition-property: background-color, border-color, color, fill, stroke,
+    opacity, box-shadow, transform;
+  transition-duration: 150ms;
+  flex-direction: column;
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast)
+    var(--tw-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-invert)
+    var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+  brightness: brightness(1.1);
+}
+
+.post-preview:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.post-preview-image {
+  height: 35px;
+  object-fit: contain;
+}
+.post-preview-p {
+  color: #ef4444;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-align: center;
+}
+.inputBox-inputIcon:hover {
+  background-color: #f3f4f6;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+.inputBox-icon {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+@media (min-width: 640px) {
+  .inputBox-icon {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .inputBox-icon {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+}
+
+.inputBox {
+  background-color: #ffffff;
+  font-weight: 500;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+.inputBox-body {
+  display: flex;
+  padding: 5px;
+  gap: 10px;
+  align-items: center;
+}
+
+.inputBox-form {
+  display: flex;
+  flex: 1 1 0%;
+}
+
+.inputBox-input {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  flex-grow: 1;
+  height: 40px;
+  border-radius: 9999px;
+  border: none;
+  background-color: #f3f4f6;
+}

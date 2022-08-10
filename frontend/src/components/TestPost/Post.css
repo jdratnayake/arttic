@@ -1,0 +1,151 @@
+ .Post .intro-menu {
+    background-color: #8f98a9;
+    box-shadow: -8px 0 0 0 #8f98a9, 8px 0 0 0 #8f98a9;
+    width: 5px;
+    height: 5px;
+    border: 0;
+    padding: 0;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: 8px;
+    margin-bottom: auto;
+    margin-top: 5px;
+  }
+.Post .comment{
+	background-color: #f3f4f6;
+}
+.Post .post-preview {
+  display: flex;
+  transition-property: background-color, border-color, color, fill, stroke,
+    opacity, box-shadow, transform;
+  transition-duration: 150ms;
+  flex-direction: column;
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast)
+    var(--tw-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-invert)
+    var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+  brightness: brightness(1.1);
+}
+
+.Post .post-preview:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.Post .post-preview-image {
+  height: 35px;
+  object-fit: contain;
+}
+.Post .post-preview-p {
+  color: #ef4444;
+  font-size: 0.65rem;
+  line-height: 1rem;
+  text-align: center;
+}
+.Post .inputBox-icon {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+@media (min-width: 640px) {
+  .Post .inputBox-icon {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .Post .inputBox-icon {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+}
+
+.Post .inputBox {
+  background-color: #ffffff;
+  font-weight: 500;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+.Post .inputBox-body {
+  display: flex;
+  padding: 5px;
+  gap: 10px;
+  align-items: center;
+}
+
+.Post.inputBox-form {
+  display: flex;
+  flex: 1 1 0%;
+}
+
+.Post.inputBox-input {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  flex-grow: 1;
+  height: 40px;
+  border-radius: 9999px;
+  border: none;
+  background-color: #f3f4f6;
+}
+
+.Post .post{
+	flex-direction: column; 
+}
+.Post .post-timestamp{
+	color: #9CA3AF; 
+	font-size: 0.75rem;
+	line-height: 1rem; 
+}
+.Post .post-name{
+	font-weight: 500;
+}
+.Post .post-header{
+	background-color: #ffffff; 
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); 
+}
+.Post .post-image{
+	width: 100%;
+    object-fit: cover;
+    object-position: center;
+    max-height: 12rem;
+}
+.Post .post-image-container{
+	background-color: #ffffff; 
+	height: 12rem; 
+
+	
+}
+.Post .post-footer{
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
+	color: #9CA3AF; 
+}
+.Post .post-react{
+	font-size: 0.70rem;
+	line-height: 1rem; 
+}
+
+.Post .post-inputIcon:hover {
+  background-color: #f3f4f6;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+
+
+@media (min-width: 640px) { 
+	.Post .post-react{
+		font-size: 0.85rem;
+		line-height: 1.5rem; 
+	}
+}
+
+
+
+@media (min-width: 768px) { 
+	.Post .post-image-container{
+		height:20rem;
+	}
+	.Post .post-image{
+    	max-height: 20rem;
+	}
+}
