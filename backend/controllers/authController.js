@@ -6,6 +6,8 @@ const { sign } = require("jsonwebtoken");
 
 const { user, followerCreator, creator } = new PrismaClient();
 
+const { generateOtp } = require("./authControllerHelper");
+
 // this API is used in the SignUpPage
 const emailCheck = asyncHandler(async (req, res) => {
   const { email } = req.body;
@@ -294,6 +296,79 @@ const usernameCheck = asyncHandler(async (req, res) => {
   }
 });
 
+const forgotPasswordOtp = asyncHandler(async (req, res) => {
+  const { username } = req.body;
+  const otp = generateOtp();
+
+  const status = await user.updateMany({
+    where: {
+      OR: [
+        {
+          email: username,
+        },
+        {
+          username: username,
+        },
+      ],
+    },
+    data: {
+      forgotPasswordOtp: otp,
+    },
+  });
+
+  if (status) {
+    res.json({
+      statusCode: 1,
+      msg: "OTP generated",
+    });
+  } else {
+    res.json({
+      statusCode: 2,
+      msg: "Error in OTP",
+    });
+  }
+});
+
+const forgotPasswordOtpCheck = asyncHandler(async (req, res) => {
+  const { username, otp } = req.body;
+
+  const existUser = await user.findFirst({
+    where: {
+      OR: [
+        {
+          email: username,
+        },
+        {
+          username: username,
+        },
+      ],
+    },
+    select: {
+      forgotPasswordOtp: true,
+    },
+  });
+
+  if (otp === existUser.forgotPasswordOtp) {
+    res.json({
+      statusCode: 1,
+      msg: "Valid Access",
+    });
+  } else {
+    res.json({
+      statusCode: 2,
+      msg: "Invalid Access",
+    });
+  }
+});
+
 // password recovery - END
 
-module.exports = { register, login, creatorVerify, emailCheck, usernameCheck };
+module.exports = {
+  register,
+  login,
+  creatorVerify,
+  emailCheck,
+  usernameCheck,
+  forgotPasswordOtp,
+  forgotPasswordOtpCheck,
+};

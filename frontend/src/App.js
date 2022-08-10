@@ -64,12 +64,12 @@ function App() {
           element={<FrogotPasswordUsernamePage />}
         ></Route>
         <Route
-          path="/frogotpassword/passwordreset"
-          element={<FrogotPasswordResetPasswordPage />}
+          path="/frogotpassword/otp"
+          element={<ForgotPasswordOTP />}
         ></Route>
         <Route
-          path="/forgotpasswordotp"
-          element={<ForgotPasswordOTP />}
+          path="/frogotpassword/passwordreset"
+          element={<FrogotPasswordResetPasswordPage />}
         ></Route>
         <Route
           path="/admin0/dashboard"

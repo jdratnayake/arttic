@@ -28,6 +28,8 @@ model user{
   joinedDate DateTime @default(now())
   profilePhoto String @db.VarChar(256) @default("0")
   password String @db.VarChar(128)
+  forgotPasswordOtp String? @db.VarChar(5)
+  emailVerificationOtp String? @db.VarChar(5)
   blockedStatus Boolean @default(false)
   blockedDate DateTime?
   blockedAdminID Int?

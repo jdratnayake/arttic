@@ -1,18 +1,64 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import OtpInput from "react-otp-input";
+import axios from "axios";
+
+import { API_URL } from "../../constants/globalConstants";
 
 import "./ForgotPasswordOTP.css";
 import logo from "../../images/logo.png";
 
 function ForgotPasswordOTP() {
-  const [code, setCode] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const submitOtp = () => {
-    console.log(code);
-    console.log(typeof code);
+  const [code, setCode] = useState("");
+  const [optError, setOtpError] = useState("");
+
+  const generateOtp = async () => {
+    const inputData = { username: location.state.username };
+    await axios
+      .post(API_URL + "/auth/forgotpasswordotp", inputData)
+      .catch((error) => console.log(error));
+  };
+
+  const submitOtp = async () => {
+    if (code && code.length === 5) {
+      setOtpError("");
+      // console.log(code);
+      // console.log(typeof code);
+
+      const inputData = { username: location.state.username, otp: code };
+
+      await axios
+        .post(API_URL + "/auth/forgotpasswordotpcheck", inputData)
+        .then((response) => {
+          if (response.data.statusCode === 1) {
+            setOtpError("");
+            navigate("/frogotpassword/passwordreset", {
+              state: { username: location.state.username },
+            });
+          } else {
+            setOtpError("Invalid OTP entered");
+          }
+        })
+        .catch((error) => console.log(error));
+    } else if (code.length > 0) {
+      setOtpError("OTP is not complete");
+    } else {
+      setOtpError("OTP is required");
+    }
   };
 
   const handleChange = (code) => setCode(code);
+
+  useEffect(() => {
+    if (!location.state) {
+      navigate("/frogotpassword/username");
+    } else {
+      generateOtp();
+    }
+  }, []);
 
   return (
     <span className="forgotPasswordOTP">
@@ -55,7 +101,7 @@ function ForgotPasswordOTP() {
                     outline: "none",
                   }}
                 />
-                <p class="error-msg">dd</p>
+                <p class="error-msg">{optError}</p>
               </div>
 
               <div className="d-grid gap-2 col-12 mx-auto text-center arttic-logo">
@@ -69,7 +115,7 @@ function ForgotPasswordOTP() {
               </div>
 
               <div className="container">
-                <button className="resend">
+                <button className="resend" onClick={generateOtp}>
                   Resend OTP
                   <i className="fa fa-caret-right"></i>
                 </button>
