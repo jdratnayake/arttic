@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import OtpInput from "react-otp-input";
 import axios from "axios";
 
@@ -68,9 +68,9 @@ function ForgotPasswordOTP() {
           <div className="card card-update">
             <div className="card-body">
               <div className="d-grid gap-2 col-12 mx-auto text-center arttic-logo">
-                <a href="#">
+                <Link to="/">
                   <img src={logo} width="200" height="45" />
-                </a>
+                </Link>
               </div>
 
               <h3 className="title">OTP Verification</h3>
