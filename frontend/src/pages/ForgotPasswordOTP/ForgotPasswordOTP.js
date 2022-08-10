@@ -14,6 +14,7 @@ function ForgotPasswordOTP() {
 
   const [code, setCode] = useState("");
   const [optError, setOtpError] = useState("");
+  const [username, setUsername] = useState(location.state.username);
 
   const generateOtp = async () => {
     const inputData = { username: location.state.username };
@@ -75,7 +76,7 @@ function ForgotPasswordOTP() {
               <h3 className="title">OTP Verification</h3>
               <p className="sub-title">
                 Enter the OTP you received to
-                <span className="phone-number">janithadevin@gmail.com</span>
+                <span className="phone-number">{username}</span>
               </p>
 
               <div className="d-grid gap-2 col-12 mx-auto text-center arttic-logo">

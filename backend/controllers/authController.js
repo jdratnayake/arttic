@@ -3,10 +3,11 @@ const { StatusCodes } = require("http-status-codes");
 const bycrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const { sign } = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 
 const { user, followerCreator, creator } = new PrismaClient();
 
-const { generateOtp } = require("./authControllerHelper");
+const { generateOtp, otpEmail } = require("./authControllerHelper");
 
 // this API is used in the SignUpPage
 const emailCheck = asyncHandler(async (req, res) => {
@@ -315,6 +316,51 @@ const forgotPasswordOtp = asyncHandler(async (req, res) => {
       forgotPasswordOtp: otp,
     },
   });
+
+  const existUser = await user.findFirst({
+    where: {
+      OR: [
+        {
+          email: username,
+        },
+        {
+          username: username,
+        },
+      ],
+    },
+  });
+
+  //email test - START
+  const htmlEmail = otpEmail(existUser.name, otp);
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+
+    auth: {
+      user: "alec.software.cooperation@gmail.com",
+      pass: "lbwzzqktlqaicniu",
+    },
+  });
+
+  const mailOptions = {
+    from: "alec.software.cooperation@gmail.com",
+    to: existUser.email,
+    replyTo: existUser.email,
+    subject: "Password reset - ARTTIC",
+    html: htmlEmail,
+  };
+
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      console.log("error in sending mail", err);
+      return res.status(400).json({
+        message: `error in sending the mail${err}`,
+      });
+    } else {
+      return res.json({ message: "Successfully sent Email." });
+    }
+  });
+  //email test - END
 
   if (status) {
     res.json({
