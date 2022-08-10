@@ -361,6 +361,40 @@ const forgotPasswordOtpCheck = asyncHandler(async (req, res) => {
   }
 });
 
+const resetPassword = asyncHandler(async (req, res) => {
+  const { username, password } = req.body;
+
+  bycrypt.hash(password, 10).then(async (hash) => {
+    const status = await user.updateMany({
+      where: {
+        OR: [
+          {
+            email: username,
+          },
+          {
+            username: username,
+          },
+        ],
+      },
+      data: {
+        password: hash,
+      },
+    });
+
+    if (status) {
+      res.json({
+        statusCode: 1,
+        msg: "Password Changed",
+      });
+    } else {
+      res.json({
+        statusCode: 2,
+        msg: "Error in Password Changed",
+      });
+    }
+  });
+});
+
 // password recovery - END
 
 module.exports = {
@@ -371,4 +405,5 @@ module.exports = {
   usernameCheck,
   forgotPasswordOtp,
   forgotPasswordOtpCheck,
+  resetPassword,
 };
