@@ -19,8 +19,19 @@ function ExternalSignUpPasswordPage() {
                                         />
                                     </a>
                                 </div>
-                                <h4 class="title text-center theme">Enter Password</h4>
+                                <h4 class="title text-center theme">Continue on Join Arttic</h4>
 
+                                <div class="join-with-google-apple_third-party-card">
+                                    <div class="join-with-google-apple_content">
+                                       <img class="join-with-google-apple_photo" alt src="https://lh3.googleusercontent.com/a/AItbvmmYAnBTUG_vqEEJUX0VJP9rAGXu73HSBux-Bk9P=s96-c"/>
+                                       <div class="join-with-google-apple_info">
+                                          <p class="join-with-google-apple_info-name">user name</p>
+                                          <p class="join-with-google-apple_info-email">Email@gmail.com</p>
+                                       </div>
+                                       <a class="theme">Not you ?</a>
+                                    </div>
+                                </div>
+                      
                                 <div class="col-12">
                                     <label for="exampleFormControlInput1" class="form-label">Enter password</label>
                                     <input type="text" class="form-control fcup" id="name" placeholder="Enter password" required />

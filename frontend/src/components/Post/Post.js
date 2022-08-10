@@ -1,16 +1,19 @@
 import React from "react";
 
 import "./Post.css";
+import profile from "../../images/users/pic4.png";
+
 
 function Post(props) {
   return (
     <div className="container p-0">
     <div className="album box">
       <div className="post_status-main">
-        <img
+        {/* <img
           src="https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg"
           className="status-img"
-        />
+        /> */}
+        <img src={profile}  className="status-img" alt="" />
         <div className="album-detail">
           <div className="album-title">
            <strong>{props.name}</strong>

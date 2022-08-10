@@ -1,4 +1,5 @@
 import "./SideNavBar.css";
+import { FaBeer } from 'react-icons/fa';
 
 
 function SideNavBar() {
@@ -8,7 +9,11 @@ function SideNavBar() {
                 <div className="content-top">
                     <ul className="list-unstyled">
                         <li className="activesb">
-                            <a><i className="bi bi-rss icon-theme"></i>Feed</a>
+                            {/* <a><i className="bi bi-rss icon-theme"></i>Feed</a> */}
+                            {/* <a><FontAwesomeIcon icon="fal fa-rss" />Feed</a> */}
+                            {/* <FontAwesomeIcon icon={["fal", "coffee"]} /> */}
+                            <FaBeer />
+
                         </li>
                         <li>
                             <a><i className="bi bi-people-fill icon-theme"></i>Find Creators</a>

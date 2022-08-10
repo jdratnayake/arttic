@@ -13,7 +13,7 @@ import "./Banner.css";
 
 import bannerImage1 from "../../images/banner/1.svg";
 import bannerImage2 from "../../images/banner/2.svg";
-import backgroundImage from "../../images/background/background-image.jpg";
+// import backgroundImage from "../../images/background/2.jpg";
 
 function Banner() {
   return (

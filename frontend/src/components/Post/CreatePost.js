@@ -1,6 +1,8 @@
 import React from 'react'
 
 import './CreatePost.css'
+import profile from "../../images/users/pic4.png";
+
 
 function CreatePost( props ) {
   return (
@@ -8,7 +10,7 @@ function CreatePost( props ) {
       <div className="container p-0">
         <div className="status box createPost-box">
           <div className="create-status-main">
-           <img src="https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg" className="status-img"/>
+          <img src={profile}  className="status-img" alt="" />
            
             <a
               href="#"
