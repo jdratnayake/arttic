@@ -63,7 +63,23 @@ const registerBillingAddress = asyncHandler(async (req, res) => {
   res.json(newBillingAddress);
 });
 
+const getBillingAddresses = asyncHandler(async (req, res) => {
+  const userId = parseInt(req.params.id);
+
+  const address = await billingAddress.findMany({
+    where: {
+      userId: userId,
+    },
+    orderBy: {
+      isDefault: "desc",
+    },
+  });
+
+  res.json(address);
+});
+
 module.exports = {
   getPurchaseHistory,
   registerBillingAddress,
+  getBillingAddresses,
 };

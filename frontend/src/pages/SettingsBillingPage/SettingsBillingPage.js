@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
@@ -11,6 +12,30 @@ import { registerBillingAddress } from "./Helper";
 import "../SettingsBasicPage/settings.css";
 
 function SettingsBillingPage() {
+  const [billingAddressList, setBillingAddressList] = useState([]);
+
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
+
+  const getBillingAddresses = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    // await axios
+    //   .get(API_URL + "/settings/getPurchaseHistory/" + userId, config)
+    //   .then((response) => {
+    //     // setPurchaseData(response.data);
+    //     console.log(response.data);
+    //   });
+  };
+
+  useEffect(() => {
+    getBillingAddresses();
+  }, []);
+
   return (
     <div className="settingsPage">
       {/* row  --> */}
