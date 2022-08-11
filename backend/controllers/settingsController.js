@@ -47,7 +47,18 @@ const registerBillingAddress = asyncHandler(async (req, res) => {
     isDefault = true;
   }
 
-  const newBillingAddress = await billingAddress.create({
+  if (isDefault) {
+    await billingAddress.updateMany({
+      where: {
+        userId,
+      },
+      data: {
+        isDefault: false,
+      },
+    });
+  }
+
+  let newBillingAddress = await billingAddress.create({
     data: {
       userId,
       country,
@@ -59,6 +70,22 @@ const registerBillingAddress = asyncHandler(async (req, res) => {
       isDefault,
     },
   });
+
+  const existUser = await user.findUnique({
+    where: {
+      userId,
+    },
+    select: {
+      email: true,
+      phone: true,
+    },
+  });
+
+  newBillingAddress = {
+    ...newBillingAddress,
+    email: existUser.email,
+    phone: existUser.phone,
+  };
 
   res.json(newBillingAddress);
 });

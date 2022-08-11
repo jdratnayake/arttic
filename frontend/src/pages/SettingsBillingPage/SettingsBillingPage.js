@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
+import $ from "jquery";
 
 import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
 import {
   initialBillingAddressValues,
   billingAddressValidation,
 } from "./Validation";
-import { registerBillingAddress } from "./Helper";
 import { API_URL } from "../../constants/globalConstants";
 
 import "../SettingsBasicPage/settings.css";
@@ -29,7 +29,7 @@ function SettingsBillingPage() {
     await axios
       .get(API_URL + "/settings/getbillingaddresses/" + userId, config)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setBillingAddressList(response.data);
       });
   };
@@ -37,6 +37,47 @@ function SettingsBillingPage() {
   useEffect(() => {
     getBillingAddresses();
   }, []);
+
+  const registerBillingAddress = async (data, { resetForm }) => {
+    const inputData = {
+      userId: userId,
+      country: data.country,
+      addressLine1: data.address1,
+      addressLine2: data.address2,
+      city: data.city,
+      state: data.state,
+      zipCode: data.zip,
+      isDefault: data.default,
+    };
+    // console.log(inputData);
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .post(API_URL + "/settings/registerbillingaddress/", inputData, config)
+      .then((response) => {
+        if (response.data.isDefault) {
+          setBillingAddressList((current) => [response.data, ...current]);
+        } else {
+          // let newList = billingAddressList.map((x) => x);
+          // newList = newList.push(response.data);
+          // console.log(newList);
+          // setBillingAddressList(newList);
+
+          setBillingAddressList((current) => [...current, response.data]);
+        }
+        // console.log(response.data);
+        // forceUpdate();
+        $("#btn-close-form").click();
+      });
+
+    resetForm();
+    // window.location.reload(false);
+  };
 
   return (
     <div className="settingsPage">
@@ -116,8 +157,7 @@ function SettingsBillingPage() {
                 {/* card body  --> */}
                 <div class="card-body">
                   <div class="row align-items-center">
-                    {/* {console.log(billingAddressList)} */}
-                    {billingAddressList.map((item) => (
+                    {billingAddressList.map((item, index) => (
                       <div
                         key={item.billingAddressId}
                         style={{ display: "contents" }}
@@ -125,13 +165,23 @@ function SettingsBillingPage() {
                         <div class="col-lg-6 col-md-12 col-12 mb-4 mb-lg-0">
                           <div class="mb-3 mb-lg-0">
                             <div class="form-check ">
-                              <input
-                                type="radio"
-                                id="shippingBillingAddress"
-                                name="customRadio"
-                                class="form-check-input"
-                                checked
-                              />
+                              {index === 0 ? (
+                                <input
+                                  type="radio"
+                                  id="shippingBillingAddress"
+                                  name="customRadio"
+                                  class="form-check-input"
+                                  checked
+                                />
+                              ) : (
+                                <input
+                                  type="radio"
+                                  id="shippingBillingAddress"
+                                  name="customRadio"
+                                  class="form-check-input"
+                                />
+                              )}
+
                               <label
                                 class="form-check-label"
                                 for="shippingBillingAddress"
@@ -342,6 +392,7 @@ function SettingsBillingPage() {
               <button
                 type="button"
                 class="btn-close"
+                id="btn-close-form"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
