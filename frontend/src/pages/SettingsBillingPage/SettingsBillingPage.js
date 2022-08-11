@@ -1,3 +1,13 @@
+import { useRef } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+
+import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
+import {
+  initialBillingAddressValues,
+  billingAddressValidation,
+} from "./Validation";
+import { registerBillingAddress } from "./Helper";
+
 import "../SettingsBasicPage/settings.css";
 
 function SettingsBillingPage() {
@@ -368,95 +378,87 @@ function SettingsBillingPage() {
               ></button>
             </div>
             <div class="modal-body p-5">
-              <form class="row">
-                <div class="mb-3 col-12">
-                  <label for="country" class="form-label">
-                    Country
-                  </label>
-                  <select class="form-select" id="country">
-                    <option selected>India</option>
-                    <option value="US">US</option>
-                    <option value="UK">UK</option>
-                    <option value="UAE">UAE</option>
-                  </select>
-                </div>
-                <div class="mb-3 col-12">
-                  <label for="addressOne" class="form-label">
-                    Address line 1
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="123 Ocean Ave"
-                    id="addressOne"
-                    required
-                  />
-                </div>
-                <div class="mb-3 col-12">
-                  <label for="addressTwo" class="form-label">
-                    Address line 2
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="123 Ocean Ave"
-                    id="addressTwo"
-                    required
-                  />
-                </div>
-                <div class="mb-3 col-12">
-                  <label for="city" class="form-label">
-                    City
-                  </label>
-                  <select class="form-select" id="city">
-                    <option selected>Ahmedabad</option>
-                    <option value="New York">New York</option>
-                    <option value="Los Angeles">Los Angeles</option>
-                    <option value="Chicago">Chicago</option>
-                  </select>
-                </div>
-                <div class="mb-3 col-md-6 col-12">
-                  <label for="state" class="form-label">
-                    State
-                  </label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    placeholder="Gujarat"
-                    id="state"
-                    required
-                  />
-                </div>
-                <div class="mb-3 col-md-6 col-12">
-                  <label for="zipCode" class="form-label">
-                    Zip/Postal Code
-                  </label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    placeholder="000000"
-                    id="zipCode"
-                    required
-                  />
-                </div>
-                <div class="col-12 mb-3">
-                  <div class="form-check custom-checkbox">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      id="customCheckAddress"
+              <Formik
+                initialValues={initialBillingAddressValues}
+                validationSchema={billingAddressValidation}
+                onSubmit={registerBillingAddress}
+              >
+                {({ isSubmitting }) => (
+                  <Form>
+                    <AuthenticationField
+                      label="Country"
+                      type="text"
+                      id="country"
+                      name="country"
+                      placeholder="Enter Country"
                     />
-                    <label class="form-check-label" for="customCheckAddress">
-                      Make this my default payment method.
-                    </label>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <button type="submit" class="btn btn-primary d-grid">
-                    Save Address
-                  </button>
-                </div>
-              </form>
+
+                    <AuthenticationField
+                      label="Address Line 1"
+                      type="text"
+                      id="address1"
+                      name="address1"
+                      placeholder="Enter Address Line 1"
+                    />
+
+                    <AuthenticationField
+                      label="Address Line 2"
+                      type="text"
+                      id="address2"
+                      name="address2"
+                      placeholder="Enter Address Line 2"
+                    />
+
+                    <AuthenticationField
+                      label="City"
+                      type="text"
+                      id="city"
+                      name="city"
+                      placeholder="Enter City"
+                    />
+
+                    <AuthenticationField
+                      label="State"
+                      type="text"
+                      id="state"
+                      name="state"
+                      placeholder="Enter State"
+                    />
+
+                    <AuthenticationField
+                      label="Zip/Postal Code"
+                      type="text"
+                      id="zip"
+                      name="zip"
+                      placeholder="Enter Zip/Postal Code"
+                    />
+
+                    <div class="col-12 mb-3">
+                      <div class="form-check custom-checkbox">
+                        <Field
+                          type="checkbox"
+                          className="form-check-input"
+                          id="default"
+                          name="default"
+                        />
+                        <label class="form-check-label" for="default">
+                          Make this my default payment method.
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <button
+                        type="submit"
+                        class="btn btn-primary d-grid"
+                        disabled={isSubmitting}
+                      >
+                        Save Address
+                      </button>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
             </div>
           </div>
         </div>

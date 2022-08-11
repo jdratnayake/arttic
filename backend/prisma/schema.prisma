@@ -114,7 +114,7 @@ model billingAddress{
   userId Int
   country String @db.VarChar(32)
   addressLine1 String @db.VarChar(64)
-  addressLine2 String @db.VarChar(64)
+  addressLine2 String? @db.VarChar(64)
   city String @db.VarChar(32)
   state String @db.VarChar(32)
   zipCode String @db.VarChar(16)

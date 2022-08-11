@@ -1,7 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const asyncHandler = require("express-async-handler");
 
-const { transactionLog } = new PrismaClient();
+const { transactionLog, billingAddress } = new PrismaClient();
 
 const getPurchaseHistory = asyncHandler(async (req, res) => {
   const userId = parseInt(req.params.id);
@@ -30,6 +30,40 @@ const getPurchaseHistory = asyncHandler(async (req, res) => {
   res.json(newHistory);
 });
 
+const registerBillingAddress = asyncHandler(async (req, res) => {
+  const { userId, country, addressLine1, addressLine2, city, state, zipCode } =
+    req.body;
+
+  let { isDefault } = req.body;
+
+  // check there exist any address, if not this one will be default address
+  const addressStatus = await billingAddress.findFirst({
+    where: {
+      userId,
+    },
+  });
+
+  if (!addressStatus) {
+    isDefault = true;
+  }
+
+  const newBillingAddress = await billingAddress.create({
+    data: {
+      userId,
+      country,
+      addressLine1,
+      addressLine2,
+      city,
+      state,
+      zipCode,
+      isDefault,
+    },
+  });
+
+  res.json(newBillingAddress);
+});
+
 module.exports = {
   getPurchaseHistory,
+  registerBillingAddress,
 };
