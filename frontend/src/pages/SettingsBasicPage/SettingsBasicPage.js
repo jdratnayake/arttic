@@ -1,7 +1,21 @@
+import { useState, useRef } from "react";
+
 import "./settings.css";
 import t from "../../images/users/pic1.png";
 
 function SettingsBasicPage() {
+  const [file, setFile] = useState();
+  const profilePicInput = useRef(null);
+
+  const handleClick = (event) => {
+    profilePicInput.current.click();
+  };
+
+  const handleChange = (e) => {
+    console.log(e.target.files);
+    setFile(URL.createObjectURL(e.target.files[0]));
+  };
+
   return (
     <div className="settingsPage">
       <div class="row mb-6">
@@ -21,16 +35,23 @@ function SettingsBasicPage() {
                   <div class="d-flex align-items-center">
                     <div class="me-3">
                       <img
-                        src={t}
+                        src={file}
                         class="rounded-circle avatar avatar-lg"
                         alt=""
                       />
                     </div>
                     <div>
+                      <input
+                        type="file"
+                        ref={profilePicInput}
+                        onChange={handleChange}
+                        style={{ display: "none" }}
+                      />
                       <button
                         type="submit"
                         class="btn btn-outline-white
                             me-1"
+                        onClick={handleClick}
                       >
                         Change
                       </button>
@@ -50,10 +71,15 @@ function SettingsBasicPage() {
                 <div class="col-md-9">
                   {/* dropzone input */}
                   <div>
-                    <form action="#" class="dropzone mb-3 border-dashed dz-clickable">
+                    <form
+                      action="#"
+                      class="dropzone mb-3 border-dashed dz-clickable"
+                    >
                       <div class="dz-default dz-message">
                         {/*<input class="dz-button" name="file" type="file" multiple />*/}
-                        <button className="dz-button" type="button">Drop files here to upload </button>
+                        <button className="dz-button" type="button">
+                          Drop files here to upload{" "}
+                        </button>
                       </div>
                     </form>
                     <button type="submit" class="btn btn-outline-white">
@@ -369,8 +395,8 @@ function SettingsBasicPage() {
                   Delete Account
                 </a>
                 <p class="small mb-0 mt-3">
-                  Feel free to contact with any{" "}
-                  <a href="#">arttic@gmail.com</a> questions.
+                  Feel free to contact with any <a href="#">arttic@gmail.com</a>{" "}
+                  questions.
                 </p>
               </div>
             </div>

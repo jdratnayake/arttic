@@ -9,6 +9,7 @@ const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 //routers
 const authRouter = require("./routes/authRoutes");
+const settingsRouter = require("./routes/settingsRoutes");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 
 //define routes
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/settings", settingsRouter);
 
 app.use(notFound);
 app.use(errorHandler);

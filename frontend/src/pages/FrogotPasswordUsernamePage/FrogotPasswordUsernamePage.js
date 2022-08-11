@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
@@ -13,6 +14,7 @@ import "./FrogetPasswordPage.css";
 import logo from "../../images/logo.png";
 
 function FrogotPasswordUsernamePage() {
+  const navigate = useNavigate();
   const [usernameError, setUsernameError] = useState("");
 
   const submitUsername = async (data) => {
@@ -24,6 +26,7 @@ function FrogotPasswordUsernamePage() {
       .then((response) => {
         if (response.data.isExist) {
           setUsernameError("");
+          navigate("/frogotpassword/otp", { state: inputData });
         } else {
           setUsernameError("Email or Username Doesn't Exist");
         }
