@@ -1,63 +1,29 @@
-import React from "react";
-
-import Post from "../../components/Post/Post";
+import InputBox from "../../components/InputBox/InputBox";
+import Posts from "../../components/Posts/Posts";
 import Ad from "../../components/Ad/Ad";
-import CreatePost from "../../components/Post/CreatePost";
-import t from "../../images/NFTs/monkey-removebg.png";
 
 function Feed() {
+  const ads = [
+  { id: 1,
+    url:"https://cached.imagescaler.hbpl.co.uk/resize/scaleWidth/820/cached.offlinehbpl.hbpl.co.uk/news/SUC/nft-unlock.jpg"},
+  { id: 2,
+    url:"https://press.farm/wp-content/uploads/2022/02/nft-pomotion-advertise-your-nfts-755x466.jpg"}];
   return (
     <div className="row p-0 m-0">
       <div class="col-sm-8 col-xs-12 p-0 feedBody">
         <div class="container-fluid p-0 feedPage">
           <div class="container p-0 feed-container">
-            <div
-              class="toast"
-              role="alert"
-              aria-live="assertive"
-              aria-atomic="true"
-            >
-              <div class="toast-body">
-                Hello, world! This is a toast message.
-                <div class="mt-2 pt-2 border-top">
-                  <button type="button" class="btn btn-primary btn-sm">
-                    Take action
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-secondary btn-sm"
-                    data-bs-dismiss="toast"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
-            <CreatePost />
-            <Post
-              image={t}
-              name={"Peter Pan"}
-              date={"19 minutes ago"}
-              title={"New album"}
-              desc={"When the bass drops, so do my problems."}
-            />
-            <Post
-              image={t}
-              name={"Peter Pan"}
-              date={"1 year ago"}
-              title={"Happy Holiday"}
-              desc={
-                "When the bass drops, so do my problems.When the bass drops, so do my problems."
-              }
-            />
+            <InputBox />
+            <Posts />
           </div>
         </div>
       </div>
       <div class="col-sm-4 col-xs-4 col-advertisment">
-        <Ad />
+        {ads.map(ad => {return(<Ad key={ad.id} image={ad.url}/>)})}
       </div>
     </div>
   );
 }
-
 export default Feed;
+
+

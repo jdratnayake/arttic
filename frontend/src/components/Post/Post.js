@@ -1,112 +1,103 @@
-import React from "react";
+import './Post.css';
+import { useState,useRef } from 'react';
 
-import "./Post.css";
+function Post(props){
+	const commentRef = useRef(null); 
+	const [comment,setComment] = useState("comment here");
+	const [iscommentBoxOpen,setCommentBoxOpen] = useState(false);
+	const addComment = (e) => {
+		setCommentBoxOpen(true);
+		console.log("button click",iscommentBoxOpen);
+	}
+	const sendComment = e => {
+    	e.preventDefault();
+    	setCommentBoxOpen(false);
+    	if (e.target.files[0]){
+			setComment(comment);
+		}
+		const temp = props.comments;
+		console.log("button click",iscommentBoxOpen,temp);
+  	}
+	return(
+		<span className="Post">
+		<div className="d-flex post">
+			<div className="p-3 pb-2 mt-3 post-header rounded-top">
+				<div className="d-flex justify-content-between gap-2">
+				<div className="d-flex justify-items-center gap-2">
+					<img className="rounded-circle" src={props.userImage} width={40} height={40} />
+					<div>
+						<p className="m-0 post-name">{props.name}</p>
+						<p className="m-0 post-timestamp">
+							{/* {new Date(props.timestamp.toDate()).toLocaleString()} */}
+							{props.timestamp}
+						</p>
+					</div>
+					</div>
+					<div class="dropdown d-inline-block drop-list-upper">
+                        <button className="dr-btn" id="page-header-notifications-dropdown"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="bi bi-three-dots"></i>
+                        </button>
 
-function Post(props) {
-  return (
-    <div className="container p-0">
-    <div className="album box">
-      <div className="post_status-main">
-        <img
-          src="https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg"
-          className="status-img"
-        />
-        <div className="album-detail">
-          <div className="album-title">
-           <strong>{props.name}</strong>
-          </div>
-          <div className="album-date">{props.date}</div>
-        </div>
-        <button className="intro-menu"></button>
-      </div>
-      <div className="album-content">
-        {props.desc}
-        <div className="album-photos">
-          <img
-            src="https://images.unsplash.com/photo-1508179719682-dbc62681c355?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2378&q=80"
-            alt=""
-            className="album-photo"
-          />
-          <div className="album-right">
-            <img
-              src="https://images.unsplash.com/photo-1502872364588-894d7d6ddfab?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80"
-              alt=""
-              className="album-photo"
-            />
-            <img
-              src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
-              alt=""
-              className="album-photo"
-            />
-          </div>
-        </div>
-      </div>
-      <div className="album-actions">
-        <a href="#" className="album-action">
-          <i className="bi bi-hand-thumbs-up-fill"></i>
-          87
-        </a>
-        <a href="#" className="album-action">
-          <i className="bi bi-suit-heart-fill"></i>
-          20
-        </a>
-        <a href="#" className="album-action">
-          <i className="bi bi-hand-thumbs-down-fill"></i>
-          13
-        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
+                            aria-labelledby="page-header-notifications-dropdown">
+                            <a class="dropdown-item dinv"><i class="bi bi-flag-fill dinvit icon-theme"></i> <span class="align-middle">Report</span></a>
+                        </div>
 
-        {/*  sepate from here */}
-        <div className="postReactLeft">
-          <a href="#" className="album-action">
-            <i className="bi bi-star-fill"></i>
-            Favourite
-          </a>
-          <a href="#" className="album-action">
-            <i className="bi bi-chat-square-dots-fill"></i>
-            10 Comments
-          </a>
-        </div>
-      </div>
-    </div>
-    </div>
-    
-    // <div className="card postCard mt-2">
-    //     <div className="card-header">
-    //       <div class="container">
-    //         <div class="row">
-    //           <div class="col-1 align-self-center">
-    //             <i className="bi bi-person-circle postUserImg"></i>
-    //             </div>
-    //             <div class="col-10 align-self-center">
-    //               <p className="postUser">{props.name}</p>
-    //               <p className="postDate">{props.date}</p>
-    //             </div>
-    //           <div class="col-1 align-self-center">
-    //             <i className="bi bi-pencil-square postEdit"></i>
-    //           </div>
-    //         </div>
-    //         </div>
-    //     </div>
-    //     <div className="card-body">
-    //         <p className="card-text">up the bulk of the card's content.</p>
-    //     </div>
-    //     <img src={props.image} className="card-img-top" alt="..."/>
-    //     <hr className="mb-0 mt-1 p-0"/>
-    //     <div class="container pb-1 mt-0 reactionSecrion">
-    //         <div class="row justify-content-between">
-    //           <div class="col-3 align-self-center reaction_1">
-    //             <i class="bi bi-hand-thumbs-up-fill"></i>
-    //             <i class="bi bi-suit-heart-fill"></i>
-    //             <i class="bi bi-hand-thumbs-down-fill"></i>
-    //           </div>
-    //           <div class="col-2 align-self-center reaction_2">
-    //             <i class="bi bi-star-fill"></i>
-    //             <i class="bi bi-chat-square-dots-fill"></i>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-  );
+                    </div>
+				</div>
+				<p className="pt-3 m-0 fs-8">{props.message}</p>
+			</div>
+			{props.image && (
+				<div className="post-image-container">
+					<img src={props.image} className="m-0 post-image"/>
+				</div>)}
+			<div className="bg-white d-flex justify-content-between">
+				<div className="d-flex fs-8 align-items-center gap-1 flex-grow justify-content-center p-1 px-4 post-inputIcon"><i className="bi bi-hand-thumbs-up-fill"></i><p className="m-0 post-react-count">{props.likes}</p></div>
+				<div className="d-flex align-items-center gap-1 flex-grow justify-content-center p-1 px-4 post-inputIcon"><p className="m-0  post-react-count">30 Comments</p></div>
+			</div>
+			<div className="p-1 border-top post-footer d-flex justify-content-between align-items-center rounded-bottom bg-white">
+   				<div className="d-flex align-items-center gap-1 flex-grow justify-content-center p-1 px-4 post-inputIcon"><i className="bi bi-hand-thumbs-up-fill"></i><p className="m-0 post-react">Like</p></div>
+				<div onClick={addComment} className="d-flex align-items-center gap-1 flex-grow justify-content-center p-1 px-4 post-inputIcon"><i className="bi bi-chat-square-dots-fill"></i><p className="m-0  post-react">Comment</p></div>
+				<div className="d-flex align-items-center gap-1 flex-grow justify-content-center p-1 px-4 post-inputIcon"><i className="bi bi-star-fill"></i><p className="m-0 post-react">Favourite</p></div>
+			</div>
+		{/* comment */}
+		{ iscommentBoxOpen && (
+			<div className="mt-6 p-2 inputBox">
+				{ comment && (
+					<div>
+						<div className="p-3 pt-0 pb-2 d-flex justify-items-center gap-2">
+							<img className="rounded-circle" src={props.userImage} width={30} height={30} />
+							<div>
+								<p className="px-3 rounded pt-1 pb-1 m-0 fs-9 comment text-muted">{comment}</p>
+								<p className="m-0 comment-like">Like</p>
+							</div>
+							<div class="dropdown d-inline-block drop-list-upper">
+		                        <button className="dr-btn" id="page-header-notifications-dropdown"
+		                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		                            <i class="bi bi-three-dots"></i>
+		                        </button>
+
+		                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
+		                            aria-labelledby="page-header-notifications-dropdown">
+		                            <a class="dropdown-item dinv"><i class="bi bi-flag-fill dinvit icon-theme"></i> <span class="align-middle">Report</span></a>
+		                        </div>
+                    		</div>
+                    		
+						</div>
+					</div>
+					) }
+			    <div className="inputBox-body">
+			    	<img src={props.userImage} width={40} height={40} className="rounded-circle"/>
+			        <form className="inputBox-form">
+			          <input ref={commentRef} className="inputBox-input text-muted" type="text" placeholder={`what's on your mind ${"mahesh"} ?`}  />
+			          <button className="btn btn-primary" onClick={sendComment} hidden>Send</button>
+			        </form>
+			    </div>
+    		</div> )}
+		</div>
+		</span>
+	)
 }
 
 export default Post;
