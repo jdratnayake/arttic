@@ -1,13 +1,21 @@
+import {
+    useNavigate,
+} from "react-router-dom";
+
 import "./SideNavBar.css";
 
 
 function SideNavBar() {
+
+    const navigate = useNavigate();
+
     return (
         <span className="sideNavBar">
             <nav id="sidebar">
                 <div className="content-top">
                     <ul className="list-unstyled">
-                        <li className="activesb">
+                        <li className="activesb" onClick={() => { navigate("/feed"); }}
+                        >
                             <a><i className="bi bi-rss icon-theme"></i>Feed</a>
                         </li>
                         <li>
@@ -19,13 +27,16 @@ function SideNavBar() {
                         <li>
                             <a><i className="bi bi-chat-dots icon-theme"></i>Chat</a>
                         </li>
-                        <li>
+                        <li onClick={() => { navigate("/creator/analytics"); }}
+                        >
                             <a><i className="bi bi-graph-up icon-theme"></i>Statics</a>
                         </li>
-                        <li>
+                        <li onClick={() => { navigate("/settings"); }}
+                        >
                             <a><i className="bi bi-gear icon-theme"></i>Settings</a>
                         </li>
-                        <li>
+                        <li onClick={() => { navigate("/Advertisment"); }}
+                        >
                             <a><i className="bi bi-badge-ad-fill icon-theme"></i>Advertisment</a>
                         </li>
                     </ul><br />

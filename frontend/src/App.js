@@ -30,6 +30,7 @@ import ReportUserAdmin1Page from "./pages/ReportUserAdmin1Page/ReportUserAdmin1P
 import AdvertismentPage from "./pages/AdvertisementPage/AdvertisementPage";
 import Feed from "./components/Feed/Feed";
 import Test from "./pages/Test/Test";
+import AdvertismentTablePage from "./pages/AdvertismentTablePage/AdvertismentTablePage";
 
 function App() {
   return (
@@ -51,6 +52,10 @@ function App() {
         <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
         <Route
           path="/advertisment"
+          element={<CreatorTemplate children={<AdvertismentTablePage />} />}
+        ></Route>
+        <Route
+          path="/advertisment/form"
           element={<CreatorTemplate children={<AdvertismentPage />} />}
         ></Route>
         <Route

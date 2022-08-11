@@ -94,9 +94,11 @@ function CreatorAnalyticsPosts() {
                 <div class="col">
                     {/* card */}
                     {/* card body */}
-                    <div class="mb-6">
-                        <h5 class="mb-1"></h5>
+                    <div class="card-header p-4 bg-white">
+                        <h4 class="mb-0">Post Analysis</h4>
                     </div>
+
+                    <br />
 
                     {/* Analytics Cards */}
                     <div class="row d-flex justify-content-center">
