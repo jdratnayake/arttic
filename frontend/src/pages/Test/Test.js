@@ -1,12 +1,15 @@
 import React from "react";
 
 import InputBox from "../../components/InputBox/InputBox";
-import Posts from "../../components/TestPosts/Posts";
+import Posts from "../../components/Posts/Posts";
 import Ad from "../../components/Ad/Ad";
-import CreatePost from "../../components/Post/CreatePost";
-import t from "../../images/NFTs/monkey-removebg.png";
 
 function Test() {
+  const ads = [
+  { id: 1,
+    url:"https://cached.imagescaler.hbpl.co.uk/resize/scaleWidth/820/cached.offlinehbpl.hbpl.co.uk/news/SUC/nft-unlock.jpg"},
+  { id: 2,
+    url:"https://press.farm/wp-content/uploads/2022/02/nft-pomotion-advertise-your-nfts-755x466.jpg"}];
   return (
     <div className="row p-0 m-0">
       <div class="col-sm-8 col-xs-12 p-0 feedBody">
@@ -18,7 +21,7 @@ function Test() {
         </div>
       </div>
       <div class="col-sm-4 col-xs-4 col-advertisment">
-        <Ad />
+        {ads.map(ad => {return(<Ad key={ad.id} image={ad.url}/>)})}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import './Posts.css';
-import Post from '../TestPost/Post';
+import Post from '../Post/Post';
 
 function Posts(){
 	const posts = [

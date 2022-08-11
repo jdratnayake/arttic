@@ -8,6 +8,31 @@ import Post from "../../components/Post/Post"
 
 function ReportPostPage() {
 	let { id } = useParams();
+	const post = {
+			id:1,
+			name:"Mahesh Lakshan",
+			message:"owasfbgbaeufbv jubfubauifg jasdguawrbfuawrg",
+			timestamp:"August 8,2022 at 08:22 PM",
+			image:"https://images.unsplash.com/photo-1508179719682-dbc62681c355?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2378&q=80",
+			userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
+			comments:[
+				{
+					id:5,
+					name:"Roman Reigns",
+					message:"hi,how you doing?",
+					userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
+					timestamp:"August 8,2022 at 08:22 PM",
+				},
+				{
+					id:6,
+					name:"Dwaine Johnson",
+					message:"whatsup?",
+					userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
+					timestamp:"August 8,2022 at 08:22 PM",
+				}
+				],
+			likes:20
+		};
 	return (
 		<span className="ReportUserPage">
 			<div class="row align-items-center">
@@ -73,18 +98,12 @@ function ReportPostPage() {
 									<h6 class="text-uppercase fs-4 ls-2">Username</h6>
 									<p class="mb-0 px-2">Mahesh</p>
 								</div>
-								<div class="col-6 mb-1">
-									<h6 class="text-uppercase fs-4 ls-2">Phone </h6>
-									<p class="mb-0 px-2">+32112345689</p>
-								</div>
+				
 								<div class="col-6 mb-1">
 									<h6 class="text-uppercase fs-4 ls-2">Joined date </h6>
 									<p class="mb-0 px-2">01.10.2020</p>
 								</div>
-								<div class="col-6">
-									<h6 class="text-uppercase fs-4 ls-2">Email </h6>
-									<p class="mb-0 px-2">Arttic@gmail.com</p>
-								</div>
+								
 								<div class="col-6">
 									<h6 class="text-uppercase fs-4 ls-2">Accounnt status</h6>
 									<p class="mb-0 px-2">Premium</p>
@@ -97,13 +116,21 @@ function ReportPostPage() {
 			<div class="pt-5">
 				{/* row */}
 				<div class="row justify-content-center">
-					<div class="col-xl-6 col-lg-6 col-md-12 col-12 mb-5 ">
-
+					<div class="col-xl-7 col-lg-7 col-md-12 col-12 mb-5 ">
 						<div class="card mt-2">
 							<div class="card-header">
 								Post Complain
 							</div>
-							<Post />
+							<Post
+								key={post.id}
+								name={post.name}
+								message={post.message}
+								timestamp={post.timestamp}
+								image={post.image}
+								userImage = {post.userImage}
+								comments = {post.comments}
+								likes= {post.likes} 
+							/>
 							<div class="card-body">
 								<h5 class="card-title">Special title treatment</h5>
 								<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
