@@ -1,7 +1,28 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+import { API_URL } from "../../constants/globalConstants";
+
 import "../SettingsBasicPage/settings.css";
-import './SettingsPurchasePage.css'
+import "./SettingsPurchasePage.css";
 
 function SettingsPurchasePage() {
+  const [purchaseData, setPurchaseData] = useState([]);
+
+  const getPurchaseData = async () => {
+    const id = 1;
+
+    await axios
+      .get(API_URL + "/settings/getPurchaseHistory/" + id)
+      .then((response) => {
+        setPurchaseData(response.data);
+      });
+  };
+
+  useEffect(() => {
+    getPurchaseData();
+  }, []);
+
   return (
     <div className="settingsPage">
       {/* row  --> */}
@@ -23,35 +44,25 @@ function SettingsPurchasePage() {
                           <tr>
                             <th>ID</th>
                             <th>Date</th>
-                            <th>User</th>
+
                             <th>Type</th>
                             <th>Amount</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td className="idStyle">INV__1001</td>
-                            <td>2008/11/28</td>
-                            <td>Janitha Ratnayake</td>
-                            <td>Advertisment</td>
-                            <td class="amount">$520.18</td>
-                          </tr>
+                          {purchaseData.map((data) => (
+                            <tr key={data.transactionId}>
+                              <td className="idStyle">{data.transactionId}</td>
+                              <td>{data.transactionDate}</td>
+                              <td>
+                                {data.transactionType === 1
+                                  ? "Advertisement"
+                                  : "Premium Package Subscription"}
+                              </td>
 
-                          <tr>
-                            <td className="idStyle">INV__1002</td>
-                            <td>2008/11/29</td>
-                            <td>Pradeep Ratnayake</td>
-                            <td>Premium</td>
-                            <td class="amount">$520.18</td>
-                          </tr>
-
-                          <tr>
-                            <td className="idStyle">INV__1003</td>
-                            <td>2008/11/30</td>
-                            <td>Dulitha Ratnayake</td>
-                            <td>Advertisment</td>
-                            <td class="amount">$520.18</td>
-                          </tr>
+                              <td class="amount">{data.amount}</td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     </div>
@@ -63,7 +74,7 @@ function SettingsPurchasePage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default SettingsPurchasePage
+export default SettingsPurchasePage;
