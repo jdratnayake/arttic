@@ -4,10 +4,14 @@ import './InputBox.css';
 import {useRef,useState} from 'react';
 
 function InputBox() {
+  const inputRef = useRef(null);
   const filepickerRef = useRef(null); 
   const [imageToPost, setImageToPost] = useState(null);
   const sendPost = e => {
     e.preventDefault();
+
+    if(!inputRef.current.value) return ;
+    
   }
   const addimageToPost= e => {
     const reader =  new FileReader();
@@ -29,7 +33,7 @@ function InputBox() {
         <div className="inputBox-body">
             <img src={userImg} width={40} height={40} className="rounded-circle"/>
             <form className="inputBox-form">
-              <input className="inputBox-input text-muted" type="text" placeholder={`what's on your mind ${"mahesh"} ?`}  />
+              <input ref={inputRef} className="inputBox-input text-muted" type="text" placeholder={`what's on your mind ${"mahesh"} ?`}  />
               <button hidden type="submit" onClick={sendPost}>Submit</button>
             </form>
             {imageToPost && (
