@@ -15,8 +15,8 @@
   border-radius: 5px;
   min-width: 250px;
   max-width: 250px;
-  max-height: 360px;
-  min-height: 360px;
+  max-height: 320px;
+  min-height: 320px;
   background: #fff;
   color: #000;
   transition: all 0.3s;
@@ -59,6 +59,7 @@
 }
 
 #sidebar ul li a:hover {
+  cursor: pointer;
   color: #8427e2;
   background: #fff;
 }

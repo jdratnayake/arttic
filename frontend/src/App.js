@@ -14,6 +14,7 @@ import SignUpOptionPage from "./pages/SignUpOptionPage/SignUpOptionPage";
 import LogInPage from "./pages/LoginPage/LogInPage";
 import WalletConnectPage from "./pages/WalletConnectPage/WalletConnectPage";
 import CreatorProfilePage from "./pages/CreatorProfilePage/CreatorProfilePage";
+import CreatorAnalyticsCom from "./components/CreatorAnalyticsCom/CreatorAnalyticsCom";
 import FrogotPasswordUsernamePage from "./pages/FrogotPasswordUsernamePage/FrogotPasswordUsernamePage";
 import FrogotPasswordResetPasswordPage from "./pages/FrogotPasswordResetPasswordPage/FrogotPasswordResetPasswordPage";
 import ForgotPasswordOTP from "./pages/ForgotPasswordOTP/ForgotPasswordOTP";
@@ -31,6 +32,8 @@ import ReportUserAdmin1Page from "./pages/ReportUserAdmin1Page/ReportUserAdmin1P
 import AdvertismentPage from "./pages/AdvertisementPage/AdvertisementPage";
 import Feed from "./components/Feed/Feed";
 import Test from "./pages/Test/Test";
+import AdvertismentTablePage from "./pages/AdvertismentTablePage/AdvertismentTablePage";
+import AdvertismentReviewAdminPage from "./pages/AdvertismentReviewAdminPage/AdvertismentReviewAdminPage";
 import SubscribedCreatorsPage from "./pages/SubscribedCreatorsPage/SubscribedCreatorsPage";
 
 function App() {
@@ -57,8 +60,16 @@ function App() {
         <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
         <Route
           path="/advertisment"
+          element={<CreatorTemplate children={<AdvertismentTablePage />} />}
+        ></Route>
+        <Route
+          path="/advertisment/form"
           element={<CreatorTemplate children={<AdvertismentPage />} />}
         ></Route>
+        <Route
+          path="/creator/analytics"
+          element={<CreatorTemplate children={<CreatorAnalyticsCom />} />}>
+        </Route>
         <Route
           path="/frogotpassword/username"
           element={<FrogotPasswordUsernamePage />}
@@ -79,6 +90,12 @@ function App() {
           path="/admin0/transactions"
           element={
             <Admin0Template children={<SystemTransactionDetailsPage />} />
+          }
+        ></Route>
+         <Route
+          path="/admin0/reviewadvertisment"
+          element={
+            <Admin0Template children={<AdvertismentReviewAdminPage />} />
           }
         ></Route>
         <Route
