@@ -124,21 +124,12 @@ function LogInPage() {
 
                       <div class="col-12 Froget-password">
                         <p class="text-end">
-                          <a className="theme">
+                          <Link to="/frogotpassword/username" className="theme">
                             <small>Forgot Password</small>
-                          </a>
+                          </Link>
                         </p>
                       </div>
-                      <div class="col form-check">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          id="remember-me"
-                        />
-                        <label class="form-check-label" for="remember-me">
-                          Remember Me
-                        </label>
-                      </div>
+
                       <div class="text-center">
                         <div class="col-12">
                           <button
@@ -151,7 +142,9 @@ function LogInPage() {
                         <div class="col-12">
                           <p class="signup">
                             Don’t have an account?{" "}
-                            <Link class="theme" to="/signupoption">Sign Up</Link>
+                            <Link class="theme" to="/signupoption">
+                              Sign Up
+                            </Link>
                           </p>
                         </div>
                       </div>
@@ -161,17 +154,23 @@ function LogInPage() {
               </div>
             </div>
             <div class="help-privacy-terms">
-                <div class="row">
-                    <div class="col">
-                        <a class="link" href="#">Help</a>
-                    </div>
-                    <div class="col">
-                        <a class="link" href="#">Privacy</a>
-                    </div>
-                    <div class="col">
-                        <a class="link" href="#">Terms</a>
-                    </div>
+              <div class="row">
+                <div class="col">
+                  <a class="link" href="#">
+                    Help
+                  </a>
                 </div>
+                <div class="col">
+                  <a class="link" href="#">
+                    Privacy
+                  </a>
+                </div>
+                <div class="col">
+                  <a class="link" href="#">
+                    Terms
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

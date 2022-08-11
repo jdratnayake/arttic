@@ -59,9 +59,9 @@ function NavBar() {
               placeholder="Search..."
               aria-label="Search"
             />
-            {/* <button className="btn btn-secondary" type="submit">
-                                <i className="bi bi-search"></i>
-                            </button> */}
+            <button className="btn btn-secondary" type="submit">
+             <i className="bi bi-search"></i>
+            </button>
           </form>
           <div className="navbar-end">
             <div className="navbar-item">

@@ -8,10 +8,10 @@ function CreatorTemplate({ children = "" }) {
         <span className="CreatorTemplate">
 
             <NavBarCreator />
-            <div class="container mt-2 feedBack wrapperCreator">
-                <div class="row justify-content-center">
+            <div className="container mt-2 feedBack wrapperCreator">
+                <div className="row justify-content-center">
 
-                    <div class="col-md-3 sidebar-col ">
+                    <div className="col-md-3 sidebar-col ">
                         <SideNavBar />
                     </div>
                     <div className="col-md-9 col-xs-12">

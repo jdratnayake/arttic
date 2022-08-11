@@ -8,6 +8,7 @@ const {
   login,
   creatorVerify,
   emailCheck,
+  usernameCheck,
 } = require("../controllers/authController");
 
 const router = express.Router();
@@ -17,5 +18,6 @@ router.post("/emailCheck", emailCheck);
 router.post("/register", register);
 router.post("/login", login);
 router.post("/creatorverify", validateToken, creatorVerify);
+router.post("/usernameCheck", usernameCheck);
 
 module.exports = router;

@@ -8,10 +8,11 @@
   }
 
 @media only screen and (max-width:991px){
-    .CreatorTemplate.sidebar-col {
+    .CreatorTemplate .sidebar-col {
         visibility: hidden;
         width: 0;
         padding: 0;
+        background-color: red;
     }
 }
 
@@ -19,12 +20,6 @@
     .CreatorTemplate.feedBack{
         max-width:700px;
     }
-    .CreatorTemplate.sidebar-col {
-        visibility: hidden;
-        width: 0;
-        padding: 0;
-    }
-
     .CreatorTemplate.feed-container{
         width: 100%;
         margin: 0 auto;

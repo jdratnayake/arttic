@@ -1,0 +1,91 @@
+.margin-right-5{
+    margin-right: 5px;
+  }
+.AccountManageAdmin0Page .tab-pane {
+    background-color: white;
+    border-bottom: 1px solid #dee2e6;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+}
+.AccountManageAdmin0Page .btn-group-style .btn-primary {
+  width: 100px;
+  margin-right: 10px;
+}
+
+.AccountManageAdmin0Page .wrapper {
+  width: 100%;
+}
+
+.AccountManageAdmin0Page table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 5px 10px #e1e5ee;
+  background-color: white;
+  text-align: left;
+  overflow: hidden;
+}
+.AccountManageAdmin0Page table thead {
+  box-shadow: 0 5px 10px #e1e5ee;
+}
+.AccountManageAdmin0Page table th {
+  padding: 1rem 2rem;
+  letter-spacing: 0.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.AccountManageAdmin0Page table td {
+  padding: 1rem 2rem;
+}
+
+.AccountManageAdmin0Page table td img {
+  height: 60px;
+  width: 60px;
+  border-radius: 100%;
+  border: 5px solid #e6e7e8;
+}
+
+.AccountManageAdmin0Page table .idStyle {
+  text-decoration: none;
+  color: #2962ff;
+}
+.AccountManageAdmin0Page table .status {
+  display: inline-block;
+  width: 90px;
+  border-radius: 0.2rem;
+  padding: 0.2rem 1rem;
+  text-align: center;
+}
+.AccountManageAdmin0Page table .status-pending {
+  background-color: #f14668;
+  color: #fff;
+}
+.AccountManageAdmin0Page table .status-paid {
+  background-color: #48c78e;
+  color: #fff;
+}
+.AccountManageAdmin0Page table .status-unpaid {
+  background-color: #ffcdd2;
+  color: #c62828;
+}
+.AccountManageAdmin0Page table .amount {
+  text-align: right;
+}
+.AccountManageAdmin0Page table tr:nth-child(even) {
+  background-color: #f4f6fb;
+}
+
+.AccountManageAdmin0Page table tr:hover td {
+  color: #000000;
+  cursor: pointer;
+  background-color: #eeebf1;
+}
+
+.AccountManageAdmin0Page .row .col .btn-primary {
+  background: var(--green-50);
+  border-color: var(--green-50);
+  color: var(--black);
+}
+
+.AccountManageAdmin0Page .date-card {
+  margin-bottom: 36px;
+}
