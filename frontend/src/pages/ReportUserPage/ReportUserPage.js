@@ -82,16 +82,8 @@ function ReportUserPage() {
                   <p class="mb-0 px-2">Mahesh</p>
                 </div>
                 <div class="col-6 mb-1">
-                  <h6 class="text-uppercase fs-4 ls-2">Phone </h6>
-                  <p class="mb-0 px-2">+32112345689</p>
-                </div>
-                <div class="col-6 mb-1">
                   <h6 class="text-uppercase fs-4 ls-2">Joined date </h6>
                   <p class="mb-0 px-2">01.10.2020</p>
-                </div>
-                <div class="col-6">
-                  <h6 class="text-uppercase fs-4 ls-2">Email </h6>
-                  <p class="mb-0 px-2">Arttic@gmail.com</p>
                 </div>
                 <div class="col-6">
                   <h6 class="text-uppercase fs-4 ls-2">Accounnt status</h6>

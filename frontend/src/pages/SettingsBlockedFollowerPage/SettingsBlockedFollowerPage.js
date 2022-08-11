@@ -25,7 +25,7 @@ function SettingsBlockedFollowerPage() {
                           placeholder="Search..."
                           aria-label="Search"
                         />
-                        <button className="btn btn-secondary" type="submit">
+                        <button className="btn btn-primary" type="submit">
                           <i className="bi bi-search"></i>
                         </button>
                       </form>
@@ -60,7 +60,7 @@ function SettingsBlockedFollowerPage() {
                               <img src="https://drive.google.com/uc?export=view&id=1f4xC0G0UeGqQxrjbKt12C0gP3RGkA8y3" />
                             </td>
                             <td>pradeepratnayake@gmail.com</td>
-                            <td>Admin</td>
+                            <td>Follower</td>
                           </tr>
 
                           <tr>

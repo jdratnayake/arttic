@@ -6,11 +6,9 @@ import SideNavBar from "../../components/SideNavBar/SideNavBar";
 function CreatorTemplate({ children = "" }) {
     return (
         <span className="CreatorTemplate">
-
             <NavBarCreator />
-            <div className="container mt-2 feedBack wrapperCreator">
+            <div className="mt-2 feedBack wrapperCreator">
                 <div className="row justify-content-center">
-
                     <div className="col-md-3 sidebar-col ">
                         <SideNavBar />
                     </div>
@@ -19,7 +17,6 @@ function CreatorTemplate({ children = "" }) {
                     </div>
                 </div>
             </div>
-
         </span>
     );
 }
