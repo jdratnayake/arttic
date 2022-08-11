@@ -31,6 +31,7 @@ import AdvertismentPage from "./pages/AdvertisementPage/AdvertisementPage";
 import Feed from "./components/Feed/Feed";
 import Test from "./pages/Test/Test";
 import AdvertismentTablePage from "./pages/AdvertismentTablePage/AdvertismentTablePage";
+import AdvertismentReviewAdminPage from "./pages/AdvertismentReviewAdminPage/AdvertismentReviewAdminPage";
 
 function App() {
   return (
@@ -78,6 +79,12 @@ function App() {
           path="/admin0/transactions"
           element={
             <Admin0Template children={<SystemTransactionDetailsPage />} />
+          }
+        ></Route>
+         <Route
+          path="/admin0/reviewadvertisment"
+          element={
+            <Admin0Template children={<AdvertismentReviewAdminPage />} />
           }
         ></Route>
         <Route
