@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 import { API_URL } from "../../constants/globalConstants";
@@ -9,11 +10,18 @@ import "./SettingsPurchasePage.css";
 function SettingsPurchasePage() {
   const [purchaseData, setPurchaseData] = useState([]);
 
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
+
   const getPurchaseData = async () => {
-    const id = 1;
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
 
     await axios
-      .get(API_URL + "/settings/getPurchaseHistory/" + id)
+      .get(API_URL + "/settings/getPurchaseHistory/" + userId, config)
       .then((response) => {
         setPurchaseData(response.data);
       });
