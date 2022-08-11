@@ -7,7 +7,7 @@ const nodemailer = require("nodemailer");
 
 const { user, followerCreator, creator } = new PrismaClient();
 
-const { generateOtp, otpEmail } = require("./authControllerHelper");
+const { generateOtp, otpEmail } = require("./helpers/authControllerHelper");
 
 // this API is used in the SignUpPage
 const emailCheck = asyncHandler(async (req, res) => {
