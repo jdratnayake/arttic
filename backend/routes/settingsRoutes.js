@@ -13,7 +13,7 @@ const router = express.Router();
 
 // define specific routes
 router.get("/getPurchaseHistory/:id", validateToken, getPurchaseHistory);
-router.get("/getbillingaddresses/:id", validateToken, getBillingAddresses);
 router.post("/registerbillingaddress", validateToken, registerBillingAddress);
+router.get("/getbillingaddresses/:id", validateToken, getBillingAddresses);
 
 module.exports = router;

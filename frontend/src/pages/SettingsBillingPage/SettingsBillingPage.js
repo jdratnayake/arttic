@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import axios from "axios";
 
 import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
 import {
@@ -8,6 +9,7 @@ import {
   billingAddressValidation,
 } from "./Validation";
 import { registerBillingAddress } from "./Helper";
+import { API_URL } from "../../constants/globalConstants";
 
 import "../SettingsBasicPage/settings.css";
 
@@ -24,12 +26,12 @@ function SettingsBillingPage() {
       },
     };
 
-    // await axios
-    //   .get(API_URL + "/settings/getPurchaseHistory/" + userId, config)
-    //   .then((response) => {
-    //     // setPurchaseData(response.data);
-    //     console.log(response.data);
-    //   });
+    await axios
+      .get(API_URL + "/settings/getbillingaddresses/" + userId, config)
+      .then((response) => {
+        console.log(response.data);
+        setBillingAddressList(response.data);
+      });
   };
 
   useEffect(() => {
@@ -114,142 +116,84 @@ function SettingsBillingPage() {
                 {/* card body  --> */}
                 <div class="card-body">
                   <div class="row align-items-center">
-                    <div class="col-lg-6 col-md-12 col-12 mb-4 mb-lg-0">
-                      <div class="mb-3 mb-lg-0">
-                        {/* radio  --> */}
-                        <div class="form-check ">
-                          <input
-                            type="radio"
-                            id="shippingBillingAddress"
-                            name="customRadio"
-                            class="form-check-input"
-                            checked
-                          />
-                          <label
-                            class="form-check-label"
-                            for="shippingBillingAddress"
-                          >
-                            <span
-                              class="d-block mb-3 text-dark
-                                  fw-bold"
-                            >
-                              Shipping Billing Address
-                            </span>
-                            <span
-                              class="d-block text-dark
-                                  fw-medium fs-4"
-                            >
-                              Valarie Tarrant
-                            </span>
-                            <span class="d-block mb-4">
-                              3757 Morgan Street Tallahassee, FL 32301
-                            </span>
-                            <a
-                              href="#"
-                              class="me-2 text-muted
-                                  text-primary-hover"
-                            >
-                              Edit
-                            </a>
-                            <a
-                              href="#"
-                              class="me-2 text-muted
-                                  text-primary-hover"
-                            >
-                              Delete
-                            </a>
-                            <a
-                              href="#"
-                              class="me-2 text-muted
-                                  text-primary-hover"
-                            >
-                              Remove as Default Billing
-                            </a>
-                          </label>
+                    {/* {console.log(billingAddressList)} */}
+                    {billingAddressList.map((item) => (
+                      <div
+                        key={item.billingAddressId}
+                        style={{ display: "contents" }}
+                      >
+                        <div class="col-lg-6 col-md-12 col-12 mb-4 mb-lg-0">
+                          <div class="mb-3 mb-lg-0">
+                            <div class="form-check ">
+                              <input
+                                type="radio"
+                                id="shippingBillingAddress"
+                                name="customRadio"
+                                class="form-check-input"
+                                checked
+                              />
+                              <label
+                                class="form-check-label"
+                                for="shippingBillingAddress"
+                              >
+                                <span
+                                  class="d-block mb-3 text-dark
+                                 fw-bold"
+                                >
+                                  Billing Address
+                                </span>
+                                <span
+                                  class="d-block text-dark
+                                 fw-medium fs-4"
+                                >
+                                  {item.addressLine1}, {item.addressLine2}
+                                </span>
+                                <span class="d-block mb-4">
+                                  {item.city}
+                                  <br />
+                                  {item.state}, {item.country}, {item.zipCode}
+                                </span>
+
+                                <a
+                                  href="#"
+                                  class="me-2 text-muted
+                                 text-primary-hover"
+                                >
+                                  Edit
+                                </a>
+                                <a
+                                  href="#"
+                                  class="me-2 text-muted
+                                 text-primary-hover"
+                                >
+                                  Delete
+                                </a>
+                                <a
+                                  href="#"
+                                  class="me-2 text-muted
+                                 text-primary-hover"
+                                >
+                                  Remove as Default Billing
+                                </a>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="col-lg-6 col-md-12 col-12 d-flex
+                         justify-content-lg-end"
+                        >
+                          <div class="mb-2">
+                            <p class="mb-1">E-mail: {item.email}</p>
+                            <p>Phone: {item.phone}</p>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <hr class="my-6" />
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="col-lg-6 col-md-12 col-12 d-flex
-                          justify-content-lg-end"
-                    >
-                      {/* text  --> */}
-                      <div class="mb-2">
-                        <p class="mb-1">
-                          E-mail: <a href="#">valarietarrant@dashui.com</a>
-                        </p>
-                        <p>Phone: 321-654-0987</p>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      {/* hr  --> */}
-                      <hr class="my-6" />
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-12 mb-4 mb-lg-0">
-                      {/* radio  --> */}
-                      <div class="form-check ">
-                        <input
-                          type="radio"
-                          id="customRadio2"
-                          name="customRadio"
-                          class="form-check-input"
-                        />
-                        <label class="form-check-label" for="customRadio2">
-                          <span
-                            class="d-block mb-3 text-dark
-                                fw-bold"
-                          >
-                            Default Billing Address
-                          </span>
-                          <span
-                            class="d-block text-dark fw-medium
-                                fs-4"
-                          >
-                            Mildred Cantu
-                          </span>
-                          <span class="d-block mb-4">
-                            3757 Morgan Street Tallahassee, FL 32301
-                          </span>
-                          <a
-                            href="#"
-                            class="me-2 text-muted
-                                text-primary-hover"
-                          >
-                            Edit
-                          </a>
-                          <a
-                            href="#"
-                            class="me-2 text-muted
-                                text-primary-hover"
-                          >
-                            Delete
-                          </a>
-                          <a
-                            href="#"
-                            class="me-2 text-muted
-                                text-primary-hover"
-                          >
-                            Set as Default
-                          </a>
-                        </label>
-                      </div>
-                    </div>
-                    <div
-                      class="col-lg-6 col-md-12 col-12 d-flex
-                          justify-content-lg-end"
-                    >
-                      {/* text  --> */}
-                      <div class="mb-2">
-                        <p class="mb-1">
-                          E-mail: <a href="#">valarietarrant@dashui.com</a>
-                        </p>
-                        <p>Phone: 321-654-0987</p>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      {/* hr  --> */}
-                      <hr class="mt-6 mb-4" />
-                    </div>
+                    ))}
+
                     <div class="col-12">
                       {/* button  --> */}
                       <a

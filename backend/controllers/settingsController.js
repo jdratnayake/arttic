@@ -1,7 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const asyncHandler = require("express-async-handler");
 
-const { transactionLog, billingAddress } = new PrismaClient();
+const { user, transactionLog, billingAddress } = new PrismaClient();
 
 const getPurchaseHistory = asyncHandler(async (req, res) => {
   const userId = parseInt(req.params.id);
@@ -66,13 +66,28 @@ const registerBillingAddress = asyncHandler(async (req, res) => {
 const getBillingAddresses = asyncHandler(async (req, res) => {
   const userId = parseInt(req.params.id);
 
-  const address = await billingAddress.findMany({
+  let address = await billingAddress.findMany({
     where: {
       userId: userId,
     },
     orderBy: {
       isDefault: "desc",
     },
+  });
+
+  const existUser = await user.findUnique({
+    where: {
+      userId,
+    },
+    select: {
+      email: true,
+      phone: true,
+    },
+  });
+
+  address = address.map((item) => {
+    const newItem = { ...item, email: existUser.email, phone: existUser.phone };
+    return newItem;
   });
 
   res.json(address);

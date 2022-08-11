@@ -25,6 +25,7 @@ model user{
   email String @db.VarChar(128) @unique
   emailStatus Boolean @default(false)
   username String @db.VarChar(128) @unique
+  phone String? @db.Char(10)
   joinedDate DateTime @default(now())
   profilePhoto String @db.VarChar(256) @default("0")
   password String @db.VarChar(128)
