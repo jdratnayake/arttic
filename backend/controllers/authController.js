@@ -3,9 +3,13 @@ const { StatusCodes } = require("http-status-codes");
 const bycrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const { sign } = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 
 const { user, followerCreator, creator } = new PrismaClient();
 
+const { generateOtp, otpEmail } = require("./helpers/authControllerHelper");
+
+// this API is used in the SignUpPage
 const emailCheck = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
@@ -268,4 +272,184 @@ const creatorVerify = asyncHandler(async (req, res) => {
   };
 });
 
-module.exports = { register, login, creatorVerify, emailCheck };
+// password recovery - START
+
+const usernameCheck = asyncHandler(async (req, res) => {
+  const { username } = req.body;
+
+  const existUser = await user.findFirst({
+    where: {
+      OR: [
+        {
+          email: username,
+        },
+        {
+          username: username,
+        },
+      ],
+    },
+  });
+
+  if (existUser) {
+    res.json({ isExist: true });
+  } else {
+    res.json({ isExist: false });
+  }
+});
+
+const forgotPasswordOtp = asyncHandler(async (req, res) => {
+  const { username } = req.body;
+  const otp = generateOtp();
+
+  const status = await user.updateMany({
+    where: {
+      OR: [
+        {
+          email: username,
+        },
+        {
+          username: username,
+        },
+      ],
+    },
+    data: {
+      forgotPasswordOtp: otp,
+    },
+  });
+
+  const existUser = await user.findFirst({
+    where: {
+      OR: [
+        {
+          email: username,
+        },
+        {
+          username: username,
+        },
+      ],
+    },
+  });
+
+  //email test - START
+  const htmlEmail = otpEmail(existUser.name, otp);
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+
+    auth: {
+      user: "alec.software.cooperation@gmail.com",
+      pass: "lbwzzqktlqaicniu",
+    },
+  });
+
+  const mailOptions = {
+    from: "alec.software.cooperation@gmail.com",
+    to: existUser.email,
+    replyTo: existUser.email,
+    subject: "Password reset - ARTTIC",
+    html: htmlEmail,
+  };
+
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      console.log("error in sending mail", err);
+      return res.status(400).json({
+        message: `error in sending the mail${err}`,
+      });
+    } else {
+      return res.json({ message: "Successfully sent Email." });
+    }
+  });
+  //email test - END
+
+  if (status) {
+    res.json({
+      statusCode: 1,
+      msg: "OTP generated",
+    });
+  } else {
+    res.json({
+      statusCode: 2,
+      msg: "Error in OTP",
+    });
+  }
+});
+
+const forgotPasswordOtpCheck = asyncHandler(async (req, res) => {
+  const { username, otp } = req.body;
+
+  const existUser = await user.findFirst({
+    where: {
+      OR: [
+        {
+          email: username,
+        },
+        {
+          username: username,
+        },
+      ],
+    },
+    select: {
+      forgotPasswordOtp: true,
+    },
+  });
+
+  if (otp === existUser.forgotPasswordOtp) {
+    res.json({
+      statusCode: 1,
+      msg: "Valid Access",
+    });
+  } else {
+    res.json({
+      statusCode: 2,
+      msg: "Invalid Access",
+    });
+  }
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+  const { username, password } = req.body;
+
+  bycrypt.hash(password, 10).then(async (hash) => {
+    const status = await user.updateMany({
+      where: {
+        OR: [
+          {
+            email: username,
+          },
+          {
+            username: username,
+          },
+        ],
+      },
+      data: {
+        password: hash,
+      },
+    });
+
+    if (status) {
+      res.json({
+        statusCode: 1,
+        msg: "Password Changed",
+      });
+    } else {
+      res.json({
+        statusCode: 2,
+        msg: "Error in Password Changed",
+      });
+    }
+  });
+});
+
+// password recovery - END
+
+module.exports = {
+  register,
+  login,
+  creatorVerify,
+  emailCheck,
+  usernameCheck,
+  forgotPasswordOtp,
+  forgotPasswordOtpCheck,
+  resetPassword,
+};

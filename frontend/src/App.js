@@ -14,13 +14,16 @@ import SignUpOptionPage from "./pages/SignUpOptionPage/SignUpOptionPage";
 import LogInPage from "./pages/LoginPage/LogInPage";
 import WalletConnectPage from "./pages/WalletConnectPage/WalletConnectPage";
 import CreatorProfilePage from "./pages/CreatorProfilePage/CreatorProfilePage";
-import FrogetPasswordPage1 from "./pages/FrogetPasswordPage/FrogetPasswordPage1";
-import FrogetPasswordPage2 from "./pages/FrogetPasswordPage/FrogetPasswordPage2";
+import CreatorAnalyticsCom from "./components/CreatorAnalyticsCom/CreatorAnalyticsCom";
+import FrogotPasswordUsernamePage from "./pages/FrogotPasswordUsernamePage/FrogotPasswordUsernamePage";
+import FrogotPasswordResetPasswordPage from "./pages/FrogotPasswordResetPasswordPage/FrogotPasswordResetPasswordPage";
+import ForgotPasswordOTP from "./pages/ForgotPasswordOTP/ForgotPasswordOTP";
 import ReportUserPage from "./pages/ReportUserPage/ReportUserPage";
 import ReportPostPage from "./pages/ReportPostPage/ReportPostPage";
 import ReportAdvertismentPage from "./pages/ReportAdvertismentPage/ReportAdvertismentPage";
 import ReportCommentPage from "./pages/ReportCommentPage/ReportCommentPage";
 import Settings from "./components/Settings/Settings";
+import AccountManagementAdmin0Page from "./pages/AccountManageAdmin0Page/AccountManageAdmin0Page";
 import DashboardAdmin0Page from "./pages/DashboardAdmin0Page/DashboardAdmin0Page";
 import SystemTransactionDetailsPage from "./pages/SystemTransactionDetailsPage/SystemTransactionDetailsPage";
 import UserDetailsPage from "./pages/UserDetailsPage/UserDetailsPage";
@@ -29,6 +32,9 @@ import ReportUserAdmin1Page from "./pages/ReportUserAdmin1Page/ReportUserAdmin1P
 import AdvertismentPage from "./pages/AdvertisementPage/AdvertisementPage";
 import Feed from "./components/Feed/Feed";
 import Test from "./pages/Test/Test";
+import AdvertismentTablePage from "./pages/AdvertismentTablePage/AdvertismentTablePage";
+import AdvertismentReviewAdminPage from "./pages/AdvertismentReviewAdminPage/AdvertismentReviewAdminPage";
+import SubscribedCreatorsPage from "./pages/SubscribedCreatorsPage/SubscribedCreatorsPage";
 import ExternalSignUpPasswordPage from "./pages/ExternalSignUpPasswordPage/ExternalSignUpPasswordPage";
 
 function App() {
@@ -41,6 +47,10 @@ function App() {
           element={<CreatorTemplate children={<Feed />} />}
         ></Route>
         <Route
+          path="/subscribedcreatorspage"
+          element={<CreatorTemplate children={<SubscribedCreatorsPage />} />}
+        ></Route>
+        <Route
           path="/settings"
           element={<CreatorTemplate children={<Settings />} />}
         ></Route>
@@ -51,15 +61,27 @@ function App() {
         <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
         <Route
           path="/advertisment"
+          element={<CreatorTemplate children={<AdvertismentTablePage />} />}
+        ></Route>
+        <Route
+          path="/advertisment/form"
           element={<CreatorTemplate children={<AdvertismentPage />} />}
         ></Route>
         <Route
-          path="/frogetpassword1"
-          element={<FrogetPasswordPage1 />}
+          path="/creator/analytics"
+          element={<CreatorTemplate children={<CreatorAnalyticsCom />} />}
         ></Route>
         <Route
-          path="/frogetpassword2"
-          element={<FrogetPasswordPage2 />}
+          path="/frogotpassword/username"
+          element={<FrogotPasswordUsernamePage />}
+        ></Route>
+        <Route
+          path="/frogotpassword/otp"
+          element={<ForgotPasswordOTP />}
+        ></Route>
+        <Route
+          path="/frogotpassword/passwordreset"
+          element={<FrogotPasswordResetPasswordPage />}
         ></Route>
         <Route
           path="/admin0/dashboard"
@@ -72,8 +94,20 @@ function App() {
           }
         ></Route>
         <Route
+          path="/admin0/reviewadvertisment"
+          element={
+            <Admin0Template children={<AdvertismentReviewAdminPage />} />
+          }
+        ></Route>
+        <Route
           path="/admin0/userdetails"
           element={<Admin0Template children={<UserDetailsPage />} />}
+        ></Route>
+        <Route
+          path="/admin0/accountmanage"
+          element={
+            <Admin0Template children={<AccountManagementAdmin0Page />} />
+          }
         ></Route>
         <Route path="*" element={<ErrorPage />}></Route>
         <Route
@@ -98,10 +132,12 @@ function App() {
         ></Route>
         <Route
           path="/test"
-          element={<Admin0Template children={<Test />} />}
+          element={<CreatorTemplate children={<Test />} />}
         ></Route>
-        <Route path="/ExternalSignUpPasswordPage" element={<ExternalSignUpPasswordPage />}></Route>
-
+        <Route
+          path="/ExternalSignUpPasswordPage"
+          element={<ExternalSignUpPasswordPage />}
+        ></Route>
       </Routes>
     </BrowserRouter>
   );

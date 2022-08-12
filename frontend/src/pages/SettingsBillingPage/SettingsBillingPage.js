@@ -1,6 +1,84 @@
+import { useState, useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import axios from "axios";
+import $ from "jquery";
+
+import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
+import {
+  initialBillingAddressValues,
+  billingAddressValidation,
+} from "./Validation";
+import { API_URL } from "../../constants/globalConstants";
+
 import "../SettingsBasicPage/settings.css";
 
 function SettingsBillingPage() {
+  const [billingAddressList, setBillingAddressList] = useState([]);
+
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
+
+  const getBillingAddresses = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/settings/getbillingaddresses/" + userId, config)
+      .then((response) => {
+        // console.log(response.data);
+        setBillingAddressList(response.data);
+      });
+  };
+
+  useEffect(() => {
+    getBillingAddresses();
+  }, []);
+
+  const registerBillingAddress = async (data, { resetForm }) => {
+    const inputData = {
+      userId: userId,
+      country: data.country,
+      addressLine1: data.address1,
+      addressLine2: data.address2,
+      city: data.city,
+      state: data.state,
+      zipCode: data.zip,
+      isDefault: data.default,
+    };
+    // console.log(inputData);
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .post(API_URL + "/settings/registerbillingaddress/", inputData, config)
+      .then((response) => {
+        if (response.data.isDefault) {
+          setBillingAddressList((current) => [response.data, ...current]);
+        } else {
+          // let newList = billingAddressList.map((x) => x);
+          // newList = newList.push(response.data);
+          // console.log(newList);
+          // setBillingAddressList(newList);
+
+          setBillingAddressList((current) => [...current, response.data]);
+        }
+        // console.log(response.data);
+        // forceUpdate();
+        $("#btn-close-form").click();
+      });
+
+    resetForm();
+    // window.location.reload(false);
+  };
+
   return (
     <div className="settingsPage">
       {/* row  --> */}
@@ -69,7 +147,7 @@ function SettingsBillingPage() {
                 </div>
               </div>
             </div>
-            <div class="col-12 mb-6">
+            <div class="col-12">
               {/* card  --> */}
               <div class="card">
                 {/* card header  --> */}
@@ -79,142 +157,93 @@ function SettingsBillingPage() {
                 {/* card body  --> */}
                 <div class="card-body">
                   <div class="row align-items-center">
-                    <div class="col-lg-6 col-md-12 col-12 mb-4 mb-lg-0">
-                      <div class="mb-3 mb-lg-0">
-                        {/* radio  --> */}
-                        <div class="form-check ">
-                          <input
-                            type="radio"
-                            id="shippingBillingAddress"
-                            name="customRadio"
-                            class="form-check-input"
-                            checked
-                          />
-                          <label
-                            class="form-check-label"
-                            for="shippingBillingAddress"
-                          >
-                            <span
-                              class="d-block mb-3 text-dark
-                                  fw-bold"
-                            >
-                              Shipping Billing Address
-                            </span>
-                            <span
-                              class="d-block text-dark
-                                  fw-medium fs-4"
-                            >
-                              Valarie Tarrant
-                            </span>
-                            <span class="d-block mb-4">
-                              3757 Morgan Street Tallahassee, FL 32301
-                            </span>
-                            <a
-                              href="#"
-                              class="me-2 text-muted
-                                  text-primary-hover"
-                            >
-                              Edit
-                            </a>
-                            <a
-                              href="#"
-                              class="me-2 text-muted
-                                  text-primary-hover"
-                            >
-                              Delete
-                            </a>
-                            <a
-                              href="#"
-                              class="me-2 text-muted
-                                  text-primary-hover"
-                            >
-                              Remove as Default Billing
-                            </a>
-                          </label>
+                    {billingAddressList.map((item, index) => (
+                      <div
+                        key={item.billingAddressId}
+                        style={{ display: "contents" }}
+                      >
+                        <div class="col-lg-6 col-md-12 col-12 mb-4 mb-lg-0">
+                          <div class="mb-3 mb-lg-0">
+                            <div class="form-check ">
+                              {index === 0 ? (
+                                <input
+                                  type="radio"
+                                  id="shippingBillingAddress"
+                                  name="customRadio"
+                                  class="form-check-input"
+                                  checked
+                                />
+                              ) : (
+                                <input
+                                  type="radio"
+                                  id="shippingBillingAddress"
+                                  name="customRadio"
+                                  class="form-check-input"
+                                />
+                              )}
+
+                              <label
+                                class="form-check-label"
+                                for="shippingBillingAddress"
+                              >
+                                <span
+                                  class="d-block mb-3 text-dark
+                                 fw-bold"
+                                >
+                                  Billing Address
+                                </span>
+                                <span
+                                  class="d-block text-dark
+                                 fw-medium fs-4"
+                                >
+                                  {item.addressLine1}, {item.addressLine2}
+                                </span>
+                                <span class="d-block mb-4">
+                                  {item.city}
+                                  <br />
+                                  {item.state}, {item.country}, {item.zipCode}
+                                </span>
+
+                                <a
+                                  href="#"
+                                  class="me-2 text-muted
+                                 text-primary-hover"
+                                >
+                                  Edit
+                                </a>
+                                <a
+                                  href="#"
+                                  class="me-2 text-muted
+                                 text-primary-hover"
+                                >
+                                  Delete
+                                </a>
+                                <a
+                                  href="#"
+                                  class="me-2 text-muted
+                                 text-primary-hover"
+                                >
+                                  Remove as Default Billing
+                                </a>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="col-lg-6 col-md-12 col-12 d-flex
+                         justify-content-lg-end"
+                        >
+                          <div class="mb-2">
+                            <p class="mb-1">E-mail: {item.email}</p>
+                            <p>Phone: {item.phone}</p>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <hr class="my-6" />
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="col-lg-6 col-md-12 col-12 d-flex
-                          justify-content-lg-end"
-                    >
-                      {/* text  --> */}
-                      <div class="mb-2">
-                        <p class="mb-1">
-                          E-mail: <a href="#">valarietarrant@dashui.com</a>
-                        </p>
-                        <p>Phone: 321-654-0987</p>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      {/* hr  --> */}
-                      <hr class="my-6" />
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-12 mb-4 mb-lg-0">
-                      {/* radio  --> */}
-                      <div class="form-check ">
-                        <input
-                          type="radio"
-                          id="customRadio2"
-                          name="customRadio"
-                          class="form-check-input"
-                        />
-                        <label class="form-check-label" for="customRadio2">
-                          <span
-                            class="d-block mb-3 text-dark
-                                fw-bold"
-                          >
-                            Default Billing Address
-                          </span>
-                          <span
-                            class="d-block text-dark fw-medium
-                                fs-4"
-                          >
-                            Mildred Cantu
-                          </span>
-                          <span class="d-block mb-4">
-                            3757 Morgan Street Tallahassee, FL 32301
-                          </span>
-                          <a
-                            href="#"
-                            class="me-2 text-muted
-                                text-primary-hover"
-                          >
-                            Edit
-                          </a>
-                          <a
-                            href="#"
-                            class="me-2 text-muted
-                                text-primary-hover"
-                          >
-                            Delete
-                          </a>
-                          <a
-                            href="#"
-                            class="me-2 text-muted
-                                text-primary-hover"
-                          >
-                            Set as Default
-                          </a>
-                        </label>
-                      </div>
-                    </div>
-                    <div
-                      class="col-lg-6 col-md-12 col-12 d-flex
-                          justify-content-lg-end"
-                    >
-                      {/* text  --> */}
-                      <div class="mb-2">
-                        <p class="mb-1">
-                          E-mail: <a href="#">valarietarrant@dashui.com</a>
-                        </p>
-                        <p>Phone: 321-654-0987</p>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      {/* hr  --> */}
-                      <hr class="mt-6 mb-4" />
-                    </div>
+                    ))}
+
                     <div class="col-12">
                       {/* button  --> */}
                       <a
@@ -363,100 +392,93 @@ function SettingsBillingPage() {
               <button
                 type="button"
                 class="btn-close"
+                id="btn-close-form"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
             </div>
             <div class="modal-body p-5">
-              <form class="row">
-                <div class="mb-3 col-12">
-                  <label for="country" class="form-label">
-                    Country
-                  </label>
-                  <select class="form-select" id="country">
-                    <option selected>India</option>
-                    <option value="US">US</option>
-                    <option value="UK">UK</option>
-                    <option value="UAE">UAE</option>
-                  </select>
-                </div>
-                <div class="mb-3 col-12">
-                  <label for="addressOne" class="form-label">
-                    Address line 1
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="123 Ocean Ave"
-                    id="addressOne"
-                    required
-                  />
-                </div>
-                <div class="mb-3 col-12">
-                  <label for="addressTwo" class="form-label">
-                    Address line 2
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="123 Ocean Ave"
-                    id="addressTwo"
-                    required
-                  />
-                </div>
-                <div class="mb-3 col-12">
-                  <label for="city" class="form-label">
-                    City
-                  </label>
-                  <select class="form-select" id="city">
-                    <option selected>Ahmedabad</option>
-                    <option value="New York">New York</option>
-                    <option value="Los Angeles">Los Angeles</option>
-                    <option value="Chicago">Chicago</option>
-                  </select>
-                </div>
-                <div class="mb-3 col-md-6 col-12">
-                  <label for="state" class="form-label">
-                    State
-                  </label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    placeholder="Gujarat"
-                    id="state"
-                    required
-                  />
-                </div>
-                <div class="mb-3 col-md-6 col-12">
-                  <label for="zipCode" class="form-label">
-                    Zip/Postal Code
-                  </label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    placeholder="000000"
-                    id="zipCode"
-                    required
-                  />
-                </div>
-                <div class="col-12 mb-3">
-                  <div class="form-check custom-checkbox">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      id="customCheckAddress"
+              <Formik
+                initialValues={initialBillingAddressValues}
+                validationSchema={billingAddressValidation}
+                onSubmit={registerBillingAddress}
+              >
+                {({ isSubmitting }) => (
+                  <Form>
+                    <AuthenticationField
+                      label="Country"
+                      type="text"
+                      id="country"
+                      name="country"
+                      placeholder="Enter Country"
                     />
-                    <label class="form-check-label" for="customCheckAddress">
-                      Make this my default payment method.
-                    </label>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <button type="submit" class="btn btn-primary d-grid">
-                    Save Address
-                  </button>
-                </div>
-              </form>
+
+                    <AuthenticationField
+                      label="Address Line 1"
+                      type="text"
+                      id="address1"
+                      name="address1"
+                      placeholder="Enter Address Line 1"
+                    />
+
+                    <AuthenticationField
+                      label="Address Line 2"
+                      type="text"
+                      id="address2"
+                      name="address2"
+                      placeholder="Enter Address Line 2"
+                    />
+
+                    <AuthenticationField
+                      label="City"
+                      type="text"
+                      id="city"
+                      name="city"
+                      placeholder="Enter City"
+                    />
+
+                    <AuthenticationField
+                      label="State"
+                      type="text"
+                      id="state"
+                      name="state"
+                      placeholder="Enter State"
+                    />
+
+                    <AuthenticationField
+                      label="Zip/Postal Code"
+                      type="text"
+                      id="zip"
+                      name="zip"
+                      placeholder="Enter Zip/Postal Code"
+                    />
+
+                    <div class="col-12 mb-3">
+                      <div class="form-check custom-checkbox">
+                        <Field
+                          type="checkbox"
+                          className="form-check-input"
+                          id="default"
+                          name="default"
+                        />
+                        <label class="form-check-label" for="default">
+                          Make this my default payment method.
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <button
+                        type="submit"
+                        class="btn btn-primary d-grid"
+                        disabled={isSubmitting}
+                      >
+                        Save Address
+                      </button>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
             </div>
           </div>
         </div>

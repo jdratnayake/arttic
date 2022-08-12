@@ -65,11 +65,10 @@ function NavBar() {
             */}
             <div class="wrap-sb">
               <div class="search">
-                  <button class="searchButton">
-                      <i class="bi bi-search"></i>
-                  </button>
-                  <input type="text" class="searchTerm" placeholder="Search" />
-
+                <button class="searchButton">
+                  <i class="bi bi-search"></i>
+                </button>
+                <input type="text" class="searchTerm" placeholder="Search" />
               </div>
             </div>
             {/* <button className="btn btn-secondary" type="submit">

@@ -25,9 +25,12 @@ model user{
   email String @db.VarChar(128) @unique
   emailStatus Boolean @default(false)
   username String @db.VarChar(128) @unique
+  phone String? @db.Char(10)
   joinedDate DateTime @default(now())
   profilePhoto String @db.VarChar(256) @default("0")
   password String @db.VarChar(128)
+  forgotPasswordOtp String? @db.VarChar(5)
+  emailVerificationOtp String? @db.VarChar(5)
   blockedStatus Boolean @default(false)
   blockedDate DateTime?
   blockedAdminID Int?
@@ -112,7 +115,7 @@ model billingAddress{
   userId Int
   country String @db.VarChar(32)
   addressLine1 String @db.VarChar(64)
-  addressLine2 String @db.VarChar(64)
+  addressLine2 String? @db.VarChar(64)
   city String @db.VarChar(32)
   state String @db.VarChar(32)
   zipCode String @db.VarChar(16)

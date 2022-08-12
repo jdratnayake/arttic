@@ -1,0 +1,83 @@
+.settingsPage .btn-group-style .btn-primary {
+    width: 100px;
+    margin-right: 10px;
+  }
+  
+  .settingsPage .wrapper {
+    width: 100%;
+  }
+  
+  .settingsPage table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 5px 10px #e1e5ee;
+    background-color: white;
+    text-align: left;
+    overflow: hidden;
+  }
+  .settingsPage table thead {
+    box-shadow: 0 5px 10px #e1e5ee;
+  }
+  .settingsPage table th {
+    padding: 1rem 2rem;
+    letter-spacing: 0.1rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .settingsPage table td {
+    padding: 1rem 2rem;
+  }
+  
+  .settingsPage table td img {
+    height: 60px;
+    width: 60px;
+    border-radius: 100%;
+    border: 5px solid #e6e7e8;
+  }
+  
+  .settingsPage table .idStyle {
+    text-decoration: none;
+    color: #2962ff;
+  }
+  .settingsPage table .status {
+    display: inline-block;
+    width: 90px;
+    border-radius: 0.2rem;
+    padding: 0.2rem 1rem;
+    text-align: center;
+  }
+  .settingsPage table .status-pending {
+    background-color: #f14668;
+    color: #fff;
+  }
+  .settingsPage table .status-paid {
+    background-color: #48c78e;
+    color: #fff;
+  }
+  .settingsPage table .status-unpaid {
+    background-color: #ffcdd2;
+    color: #c62828;
+  }
+  .settingsPage table .amount {
+    text-align: right;
+  }
+  .settingsPage table tr:nth-child(even) {
+    background-color: #f4f6fb;
+  }
+  
+  .settingsPage table tr:hover td {
+    color: #000000;
+    cursor: pointer;
+    background-color: #eeebf1;
+  }
+  
+  .settingsPage .row .col .btn-primary {
+    background: var(--green-50);
+    border-color: var(--green-50);
+    color: var(--black);
+  }
+  
+  .settingsPage .date-card {
+    margin-bottom: 36px;
+  }
+  

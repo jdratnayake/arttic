@@ -129,7 +129,7 @@ function ReportUserAdmin1Page() {
                           handleClick({ id: 100, type: "User" })
                         }
                         href="#"
-                        class="btn btn-dark d-grid mb-2 openComplaintDialog"
+                        class="btn btn-primary d-grid mb-2 openComplaintDialog"
                         data-bs-toggle="modal"
                         data-bs-target="#complainModal"
                       >
@@ -149,7 +149,7 @@ function ReportUserAdmin1Page() {
                           handleClick({ id: 100, type: "User" })
                         }
                         href="#"
-                        class="btn btn-dark d-grid mb-2"
+                        class="btn btn-primary d-grid mb-2"
                         data-bs-toggle="modal"
                         data-bs-target="#complainModal"
                       >
@@ -169,7 +169,7 @@ function ReportUserAdmin1Page() {
                           handleClick({ id: 100, type: "User" })
                         }
                         href="#"
-                        class="btn btn-dark d-grid mb-2"
+                        class="btn btn-primary d-grid mb-2"
                         data-bs-toggle="modal"
                         data-bs-target="#complainModal"
                       >
@@ -224,7 +224,7 @@ function ReportUserAdmin1Page() {
                           handleClick({ id: 100, type: "Post" })
                         }
                         href="#"
-                        class="btn btn-dark d-grid mb-2 openComplaintDialog"
+                        class="btn btn-primary d-grid mb-2 openComplaintDialog"
                         data-bs-toggle="modal"
                         data-bs-target="#complainModal"
                       >
@@ -244,7 +244,7 @@ function ReportUserAdmin1Page() {
                           handleClick({ id: 100, type: "Post" })
                         }
                         href="#"
-                        class="btn btn-dark d-grid mb-2"
+                        class="btn btn-primary d-grid mb-2"
                         data-bs-toggle="modal"
                         data-bs-target="#complainModal"
                       >
@@ -264,7 +264,7 @@ function ReportUserAdmin1Page() {
                           handleClick({ id: 100, type: "Post" })
                         }
                         href="#"
-                        class="btn btn-dark d-grid mb-2"
+                        class="btn btn-primary d-grid mb-2"
                         data-bs-toggle="modal"
                         data-bs-target="#complainModal"
                       >
@@ -319,7 +319,7 @@ function ReportUserAdmin1Page() {
                           handleClick({ id: 90, type: "Comment" })
                         }
                         href="#"
-                        class="btn btn-dark d-grid mb-2 openComplaintDialog"
+                        class="btn btn-primary d-grid mb-2 openComplaintDialog"
                         data-bs-toggle="modal"
                         data-bs-target="#complainModal"
                       >
@@ -339,7 +339,7 @@ function ReportUserAdmin1Page() {
                           handleClick({ id: 80, type: "Comment" })
                         }
                         href="#"
-                        class="btn btn-dark d-grid mb-2"
+                        class="btn btn-primary d-grid mb-2"
                         data-bs-toggle="modal"
                         data-bs-target="#complainModal"
                       >
@@ -359,7 +359,7 @@ function ReportUserAdmin1Page() {
                           handleClick({ id: 70, type: "Comment" })
                         }
                         href="#"
-                        class="btn btn-dark d-grid mb-2"
+                        class="btn btn-primary d-grid mb-2"
                         data-bs-toggle="modal"
                         data-bs-target="#complainModal"
                       >
@@ -414,7 +414,7 @@ function ReportUserAdmin1Page() {
                           handleClick({ id: 1, type: "Advertisment" })
                         }
                         href="#"
-                        class="btn btn-dark d-grid mb-2 openComplaintDialog"
+                        class="btn btn-primary d-grid mb-2 openComplaintDialog"
                         data-bs-toggle="modal"
                         data-bs-target="#complainModal"
                       >
@@ -434,7 +434,7 @@ function ReportUserAdmin1Page() {
                           handleClick({ id: 2, type: "Advertisment" })
                         }
                         href="#"
-                        class="btn btn-dark d-grid mb-2"
+                        class="btn btn-primary d-grid mb-2"
                         data-bs-toggle="modal"
                         data-bs-target="#complainModal"
                       >
@@ -454,7 +454,7 @@ function ReportUserAdmin1Page() {
                           handleClick({ id: 7, type: "Advertisment" })
                         }
                         href="#"
-                        class="btn btn-dark d-grid mb-2"
+                        class="btn btn-primary d-grid mb-2"
                         data-bs-toggle="modal"
                         data-bs-target="#complainModal"
                       >
@@ -521,13 +521,6 @@ function ReportUserAdmin1Page() {
                 {" "}
                 View{" "}
               </Link>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
             </div>
           </div>
         </div>

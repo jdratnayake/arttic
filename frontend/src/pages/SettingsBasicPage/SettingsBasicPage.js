@@ -1,10 +1,24 @@
+import { useState, useRef } from "react";
+
 import "./settings.css";
 import t from "../../images/users/pic1.png";
 
 function SettingsBasicPage() {
+  const [file, setFile] = useState();
+  const profilePicInput = useRef(null);
+
+  const handleClick = (event) => {
+    profilePicInput.current.click();
+  };
+
+  const handleChange = (e) => {
+    console.log(e.target.files);
+    setFile(URL.createObjectURL(e.target.files[0]));
+  };
+
   return (
     <div className="settingsPage">
-      <div class="row mb-8">
+      <div class="row mb-6">
         <div class="col">
           {/* card */}
           <div class="card">
@@ -21,16 +35,23 @@ function SettingsBasicPage() {
                   <div class="d-flex align-items-center">
                     <div class="me-3">
                       <img
-                        src={t}
+                        src={file}
                         class="rounded-circle avatar avatar-lg"
                         alt=""
                       />
                     </div>
                     <div>
+                      <input
+                        type="file"
+                        ref={profilePicInput}
+                        onChange={handleChange}
+                        style={{ display: "none" }}
+                      />
                       <button
                         type="submit"
                         class="btn btn-outline-white
                             me-1"
+                        onClick={handleClick}
                       >
                         Change
                       </button>
@@ -42,7 +63,7 @@ function SettingsBasicPage() {
                 </div>
               </div>
               {/* col */}
-              <div class="row mb-8">
+              <div class="row mb-6">
                 <div class="col-md-3 mb-3 mb-md-0">
                   {/* heading */}
                   <h5 class="mb-0">Cover photo</h5>
@@ -50,10 +71,15 @@ function SettingsBasicPage() {
                 <div class="col-md-9">
                   {/* dropzone input */}
                   <div>
-                    <form action="#" class="dropzone mb-3 border-dashed dz-clickable">
+                    <form
+                      action="#"
+                      class="dropzone mb-3 border-dashed dz-clickable"
+                    >
                       <div class="dz-default dz-message">
                         {/*<input class="dz-button" name="file" type="file" multiple />*/}
-                        <button className="dz-button" type="button">Drop files here to upload </button>
+                        <button className="dz-button" type="button">
+                          Drop files here to upload{" "}
+                        </button>
                       </div>
                     </form>
                     <button type="submit" class="btn btn-outline-white">
@@ -215,7 +241,7 @@ function SettingsBasicPage() {
           </div>
         </div>
       </div>
-      <div class="row mb-8">
+      <div class="row mb-6">
         <div class="col-md-12 col-12">
           {/* card */}
           <div class="card" id="edit">
@@ -352,7 +378,7 @@ function SettingsBasicPage() {
         <div class="col-12">
           {/*  card  */}
 
-          <div class="card mb-6">
+          <div class="card">
             {/*  card body  */}
             <div class="card-body">
               <div class="mb-6">
@@ -369,8 +395,8 @@ function SettingsBasicPage() {
                   Delete Account
                 </a>
                 <p class="small mb-0 mt-3">
-                  Feel free to contact with any{" "}
-                  <a href="#">arttic@gmail.com</a> questions.
+                  Feel free to contact with any <a href="#">arttic@gmail.com</a>{" "}
+                  questions.
                 </p>
               </div>
             </div>

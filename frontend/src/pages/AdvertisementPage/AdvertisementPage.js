@@ -1,14 +1,17 @@
 import DatePicker from "react-datepicker";
 import React, { useState } from "react";
+import {
+    useNavigate,
+} from "react-router-dom";
 
-import NavBar from "../../components/NavBar/NavBar";
-import SideNavBar from "../../components/SideNavBar/SideNavBar";
 
 import "./AdvertisementPage.css";
 import "react-datepicker/dist/react-datepicker.css";
 
 
 function AdvertismentPage() {
+
+    const navigate = useNavigate();
 
     const [cDate, setStartDate] = useState(new Date());
 
@@ -43,7 +46,7 @@ function AdvertismentPage() {
                                 {/* card body */}
                                 <div class="card-body">
                                     <div class=" mb-6">
-                                        <h4 class="mb-1">Advertisment</h4>
+                                        <h4 class="mb-1">Advertisment Form</h4>
                                     </div>
 
                                     <div>
@@ -147,13 +150,23 @@ function AdvertismentPage() {
                                                     <input type="text" class="form-control" placeholder="$25"
                                                         id="price" readOnly
                                                     />
-                                                </div>                                                
+                                                </div>
                                             </div>
 
                                             {/* row */}
                                             <div class="mb-3 row">
-                                                <div class="offset-md-4 col-md-8 mt-4 algn-rght">
-                                                    <button type="submit" class="btn btn-primary float-sm-right">
+                                                <div class="col-md-6 mt-4">
+                                                    <button type="submit" class="btn btn-secondary"
+                                                        onClick={() => {
+                                                            navigate("/Advertisment");
+                                                        }}
+                                                    >
+
+                                                        Back
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-6 mt-4 d-flex justify-content-end">
+                                                    <button type="submit" class="btn btn-primary">
                                                         {" "}
                                                         Submit
                                                     </button>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import MetaMaskOnboarding from "@metamask/onboarding";
@@ -55,15 +55,20 @@ function WalletConnectPage() {
 
     const accessToken = getAccessToken();
 
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
     const inputData = {
       userId: userId,
       openSeaUsername: data.username,
       walletAddress: data.metaMaskAddress,
-      accessToken,
     };
 
     await axios
-      .post(API_URL + "/auth/creatorverify", inputData)
+      .post(API_URL + "/auth/creatorverify", inputData, config)
       .then((response) => {
         if (response.data.error) {
           setUsernameError(response.data.error.username);
