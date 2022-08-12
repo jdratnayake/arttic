@@ -1,0 +1,57 @@
+.AdvertismentPage .input-preview__src {
+    display: block;
+  }
+  .AdvertismentPage .input-preview {
+    border: dashed rgb(192, 192, 192) 0.15em;
+    border-radius: 0.5em;
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    transition: ease-in-out 750ms;
+  }
+  .AdvertismentPage .input-preview::after {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(50%);
+  }
+  .AdvertismentPage .has-image::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(50, 50, 50, 0.2);
+	content: " ";
+    transition: ease-in-out 750ms;
+  }
+
+  .AdvertismentPage .date-picker-date {
+    width: 12rem;
+    height: 2.5rem;
+    font-size: 16px;
+    border-radius: 10px;
+    padding: 10px 15px;
+    padding-right: 50px;
+    /* margin: 10px; */
+    cursor: pointer;
+    border-style: solid;
+    background: url("https://image.freepik.com/free-icon/calendar-icon-in-black_318-9776.jpg");
+    background-repeat: no-repeat;
+    background-size: 24px;
+    background-position: 9.6rem 0.4rem;
+  }
+
+  .AdvertismentPage .algn-rght{
+        display: flex;
+        justify-content: flex-end;
+  }
+
+  

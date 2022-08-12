@@ -1,0 +1,16 @@
+.trending-card{
+    max-width: 150px;
+    margin: 0 0 10px 0;
+    box-shadow: 0px 3px 10px 0px rgb(100 100 100 / 30%);
+}
+
+.trending-card > .card-body > .card-title{
+    font-size: 0.8rem;;
+}
+
+.trending-card-image{
+    box-shadow: none;
+    max-height: 7rem;
+    min-height: 7rem;
+    object-fit: cover;
+}

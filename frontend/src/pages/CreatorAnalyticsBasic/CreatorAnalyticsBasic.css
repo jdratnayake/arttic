@@ -1,0 +1,43 @@
+.CreatorAnalytics .analyticsCardRow {
+    padding-top: 36px;
+}
+
+.CreatorAnalytics .second-row {
+    margin-top: 36px;
+}
+
+.CreatorAnalytics .card-second{
+    border: none;
+}
+
+.CreatorAnalytics .card-align {
+    padding-bottom: 18px;
+}
+
+.CreatorAnalytics .mb-6 {
+    margin-bottom: 1rem !important;
+    padding-left: 20px;
+    padding-top: 10px;
+}
+
+.CreatorAnalytics .mb-1 {
+    margin-bottom: 0.25rem !important;
+}
+
+.CreatorAnalytics .card-header {
+    padding: 0.75rem 1.5rem;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    /*new attribute*/
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.CreatorAnalytics h4 {
+    letter-spacing: -0.02rem;
+    font-size: 1.125rem;
+}
+
+.CreatorAnalytics .p-4 {
+    padding: 1.25rem !important;
+}
