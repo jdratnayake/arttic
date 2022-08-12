@@ -2,6 +2,9 @@ import "./CreatorProfilePage.css";
 
 import NavBarCreator from "../../components/NavBarCreator/NavBarCreator";
 import profile from "../../images/users/pic4.png";
+import avatar1 from "../../images/avatar/avatar-2.jpg";
+import avatar2 from "../../images/avatar/avatar-3.jpg";
+import avatar3 from "../../images/avatar/avatar-4.jpg";
 import t from '../../images/NFTs/monkey-removebg.png';
 import Post from "../../components/Post/Post";
 import checkedMark from "../../images/svg/checked-mark.svg";
@@ -40,7 +43,10 @@ function CreatorProfilePage() {
                                     {/* text */}
                                     <div class="lh-1">
                                         <h2 class="mb-0"> Peter Pan </h2>
-                                        <p class="mb-0 d-block">101 following</p>
+                                        <div class="sub-lh-1">
+                                            <p class="mb-0 d-block">101 followers</p>
+                                            <p class="mb-0 d-block following">50 following</p>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -67,22 +73,19 @@ function CreatorProfilePage() {
                         <div class="card reportBio">
                             {/* card body */}
                             <div class="card-body reportBioBody">
-                                <span class="text-uppercase fw-medium text-dark fs-5 ls-2">
-                                    Bio
-                                </span>
-                                {/* text */}
-                                <p class="mt-1 mb-1">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                    Suspen disse var ius enim in eros elementum tristique. Duis
-                                    cursus, mi quis viverra ornare, eros dolor interdum nulla, ut
-                                    commodo diam libero vitae erat.
-                                </p>
                                 {/* row */}
                                 <div class="row">
                                     <div class="col-12 mb-1">
                                         {/* text */}
+                                        <h6 class="text-uppercase fs-5 ls-2">Bio</h6>
+                                        <p class="mb-0">I work as CPO for a Swiss Telco/Messaging Platform Company. 
+                                                        My real passion is developing in Golang, Vue-Nuxt/ReactJs/Angular 
+                                                        with Redis, Nsq/RabbitMQ, ArangoDB, MongoDB and Sql</p>
+                                    </div>
+                                    <div class="col-12 mb-1">
+                                        {/* text */}
                                         <h6 class="text-uppercase fs-5 ls-2">Username</h6>
-                                        <p class="mb-0">Mahesh</p>
+                                        <p class="mb-0">Peter Pan</p>
                                     </div>
                                     <div class="col-6 mb-1">
                                         <h6 class="text-uppercase fs-5 ls-2">Phone </h6>
@@ -162,7 +165,7 @@ function CreatorProfilePage() {
                                         <div class="d-flex align-items-center">
 
                                             <div>
-                                                <img src="../assets/images/avatar/avatar-2.jpg" class="rounded-circle avatar-md" alt="" />
+                                                <img src={avatar1} class="rounded-circle avatar-md" alt="" />
                                             </div>
 
                                             <div class="ms-3 ">
@@ -184,7 +187,7 @@ function CreatorProfilePage() {
                                         <div class="d-flex align-items-center">
 
                                             <div>
-                                                <img src="../assets/images/avatar/avatar-3.jpg" class="rounded-circle avatar-md" alt="" />
+                                                <img src={avatar2} class="rounded-circle avatar-md" alt="" />
                                             </div>
 
                                             <div class="ms-3 ">
@@ -206,7 +209,7 @@ function CreatorProfilePage() {
 
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <img src="../assets/images/avatar/avatar-4.jpg" class="rounded-circle avatar-md" alt="" />
+                                                <img src={avatar3} class="rounded-circle avatar-md" alt="" />
                                             </div>
 
                                             <div class="ms-3 ">
