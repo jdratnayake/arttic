@@ -98,26 +98,17 @@ function SettingsBasicPage() {
 
                   <div class="mb-3 row">
                     <label
-                      for="fullName"
+                      for="email"
                       class="col-sm-4 col-form-label form-label"
                     >
-                      Full name
+                      Name
                     </label>
-                    <div class="col-sm-4 mb-3 mb-lg-0">
+                    <div class="col-md-8 col-12">
                       <input
-                        type="text"
+                        type="email"
                         class="form-control"
-                        placeholder="First name"
-                        id="fullName"
-                        required
-                      />
-                    </div>
-                    <div class="col-sm-4">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Last name"
-                        id="lastName"
+                        placeholder="Email"
+                        id="email"
                         required
                       />
                     </div>
@@ -141,6 +132,25 @@ function SettingsBasicPage() {
                       />
                     </div>
                   </div>
+
+                  <div class="mb-3 row">
+                    <label
+                      for="email"
+                      class="col-sm-4 col-form-label form-label"
+                    >
+                      Username
+                    </label>
+                    <div class="col-md-8 col-12">
+                      <input
+                        type="email"
+                        class="form-control"
+                        placeholder="Email"
+                        id="email"
+                        required
+                      />
+                    </div>
+                  </div>
+
                   {/* row */}
                   <div class="mb-3 row">
                     <label
@@ -156,83 +166,6 @@ function SettingsBasicPage() {
                         placeholder="Phone"
                         id="phone"
                       />
-                    </div>
-                  </div>
-                  {/* row */}
-                  <div class="mb-3 row">
-                    <label
-                      for="location"
-                      class="col-sm-4 col-form-label form-label"
-                    >
-                      Location
-                    </label>
-
-                    <div class="col-md-8 col-12">
-                      <select class="form-select" id="location">
-                        <option selected>Select Country</option>
-                        <option value="1">India</option>
-                        <option value="2">UK</option>
-                        <option value="3">USA</option>
-                      </select>
-                    </div>
-                  </div>
-                  {/* row */}
-                  <div class="mb-3 row">
-                    <label
-                      for="addressLine"
-                      class="col-sm-4 col-form-label form-label"
-                    >
-                      Address line 1
-                    </label>
-
-                    <div class="col-md-8 col-12">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="placeholder"
-                        id="addressLine"
-                      />
-                    </div>
-                  </div>
-                  {/* row */}
-                  <div class="mb-3 row">
-                    <label
-                      for="addressLineTwo"
-                      class="col-sm-4 col-form-label form-label"
-                    >
-                      Address line 2
-                    </label>
-                    <div class="col-md-8 col-12">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="placeholder"
-                        id="addressLineTwo"
-                      />
-                    </div>
-                  </div>
-                  {/* row */}
-                  <div class="row align-items-center">
-                    <label
-                      for="zipcode"
-                      class="col-sm-4 col-form-label form-label"
-                    >
-                      Zip code <i data-feather="info" class="me-2 icon-xs"></i>
-                    </label>
-
-                    <div class="col-md-8 col-12">
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="placeholder"
-                        id="zipcode"
-                      />
-                    </div>
-                    <div class="offset-md-4 col-md-8 mt-4">
-                      <button type="submit" class="btn btn-primary">
-                        {" "}
-                        Save Changes
-                      </button>
                     </div>
                   </div>
                 </form>
