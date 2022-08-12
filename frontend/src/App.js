@@ -35,6 +35,7 @@ import Test from "./pages/Test/Test";
 import AdvertismentTablePage from "./pages/AdvertismentTablePage/AdvertismentTablePage";
 import AdvertismentReviewAdminPage from "./pages/AdvertismentReviewAdminPage/AdvertismentReviewAdminPage";
 import SubscribedCreatorsPage from "./pages/SubscribedCreatorsPage/SubscribedCreatorsPage";
+import ExternalSignUpPasswordPage from "./pages/ExternalSignUpPasswordPage/ExternalSignUpPasswordPage";
 
 function App() {
   return (
@@ -68,8 +69,8 @@ function App() {
         ></Route>
         <Route
           path="/creator/analytics"
-          element={<CreatorTemplate children={<CreatorAnalyticsCom />} />}>
-        </Route>
+          element={<CreatorTemplate children={<CreatorAnalyticsCom />} />}
+        ></Route>
         <Route
           path="/frogotpassword/username"
           element={<FrogotPasswordUsernamePage />}
@@ -92,7 +93,7 @@ function App() {
             <Admin0Template children={<SystemTransactionDetailsPage />} />
           }
         ></Route>
-         <Route
+        <Route
           path="/admin0/reviewadvertisment"
           element={
             <Admin0Template children={<AdvertismentReviewAdminPage />} />
@@ -132,6 +133,10 @@ function App() {
         <Route
           path="/test"
           element={<CreatorTemplate children={<Test />} />}
+        ></Route>
+        <Route
+          path="/ExternalSignUpPasswordPage"
+          element={<ExternalSignUpPasswordPage />}
         ></Route>
       </Routes>
     </BrowserRouter>

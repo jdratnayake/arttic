@@ -14,12 +14,14 @@
 .nav-bar-btn{
     margin-right:10px;
 }
-.search-form{
-    display: flex;
-    flex-direction: row;
-    border: #8427E2;
-    
+.search-form .wrap-sb {
+    width: 25%;
+    position: absolute;
+    top: 50%;
+    left: 71%;
+    transform: translate(-50%, -50%);
 }
+
 .search-bar {
     height: 60px;
     /* background-color: $bg-color; */
