@@ -79,7 +79,8 @@ function NavBarCreator() {
                                 <div class="dropdown d-inline-block drop-list-upper">
                                     <button className="dr-btn" id="page-header-user-dropdown"
                                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="bi bi-person-circle icon-theme-nav"></i>
+                                        {/* <i class="bi bi-person-circle icon-theme-nav"></i> */}
+                                        <img src="/static/media/avatar-1.f4a1f2a6c3e0cdf08b2b.jpg" width={40} height={40} className="rounded-circle" ></img>
                                     </button>
 
                                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"
