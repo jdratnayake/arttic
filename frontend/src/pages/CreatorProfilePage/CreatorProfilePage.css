@@ -65,8 +65,8 @@
   display: flex;
   flex-direction: row;
 }
-.creatorProfilePage .sub-lh-1 p{
-  margin-left: 5px;
+.creatorProfilePage .sub-lh-1 .following{
+  margin-left: 20px;
 }
 .creatorProfilePage .intro {
   padding-top: 15px;
@@ -3924,13 +3924,14 @@
   border-color: #5c596d;
 }
 .creatorProfilePage .btn-outline-primary {
-  color: #624BFF;
-  border-color: #624BFF;
+  color: var(--white);
+  border-color: var(--primary-100);
+  background-color: var(--primary-100);
 }
 .creatorProfilePage .btn-outline-primary:hover {
-  color: #fff;
-  background-color: #624BFF;
-  border-color: #624BFF;
+  color: var(--primary-100);
+  background-color: var(--white);
+  border-color: var(--primary-100);
 }
 .creatorProfilePage .btn-check:focus + .btn-outline-primary, .creatorProfilePage .btn-outline-primary:focus {
   box-shadow: 0 0 0 0.25rem rgba(98, 75, 255, 0.5);
@@ -8473,7 +8474,7 @@
   margin-bottom: 0 !important;
 }
 .creatorProfilePage .mb-1 {
-  margin-bottom: 0.25rem !important;
+  margin-bottom: 0.75rem !important;
 }
 .creatorProfilePage .mb-2 {
   margin-bottom: 0.5rem !important;
@@ -9792,6 +9793,7 @@
 }
 .creatorProfilePage .text-uppercase {
   text-transform: uppercase !important;
+  font-weight: 600;
 }
 .creatorProfilePage .text-capitalize {
   text-transform: capitalize !important;
