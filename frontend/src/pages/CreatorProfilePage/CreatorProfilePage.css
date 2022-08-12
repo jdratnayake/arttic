@@ -8710,6 +8710,11 @@
 .creatorProfilePage .d-inline-block {
   display: inline-block !important;
 }
+.creatorProfilePage .d-inline-block .dr-btn {
+  border: none;
+  background: #fff;
+  margin-left: 12px;
+}
 .creatorProfilePage .d-block {
   display: block !important;
 }
