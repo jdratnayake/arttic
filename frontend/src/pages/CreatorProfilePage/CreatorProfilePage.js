@@ -40,7 +40,10 @@ function CreatorProfilePage() {
                                     {/* text */}
                                     <div class="lh-1">
                                         <h2 class="mb-0"> Peter Pan </h2>
-                                        <p class="mb-0 d-block">101 following</p>
+                                        <div class="sub-lh-1">
+                                            <p class="mb-0 d-block">101 followers</p>
+                                            <p class="mb-0 d-block">50 following</p>
+                                        </div>
                                     </div>
 
                                 </div>
