@@ -44,7 +44,7 @@ function App() {
         <Route path="/" element={<HomePage />}></Route>
         <Route
           path="/feed"
-          element={<CreatorTemplate children={<Feed />} />}
+          element={<CreatorTemplate children={<Feed />} sideNavBarIndex="0" />}
         ></Route>
         <Route
           path="/subscribedcreatorspage"
@@ -52,7 +52,9 @@ function App() {
         ></Route>
         <Route
           path="/settings"
-          element={<CreatorTemplate children={<Settings />} />}
+          element={
+            <CreatorTemplate children={<Settings />} sideNavBarIndex="5" />
+          }
         ></Route>
         <Route path="/signupoption" element={<SignUpOptionPage />}></Route>
         <Route path="/signup/:userType" element={<SignUpPage />}></Route>
@@ -61,7 +63,12 @@ function App() {
         <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
         <Route
           path="/advertisment"
-          element={<CreatorTemplate children={<AdvertismentTablePage />} />}
+          element={
+            <CreatorTemplate
+              children={<AdvertismentTablePage />}
+              sideNavBarIndex="6"
+            />
+          }
         ></Route>
         <Route
           path="/advertisment/form"
@@ -69,7 +76,12 @@ function App() {
         ></Route>
         <Route
           path="/creator/analytics"
-          element={<CreatorTemplate children={<CreatorAnalyticsCom />} />}
+          element={
+            <CreatorTemplate
+              children={<CreatorAnalyticsCom />}
+              sideNavBarIndex="4"
+            />
+          }
         ></Route>
         <Route
           path="/frogotpassword/username"
@@ -90,18 +102,29 @@ function App() {
         <Route
           path="/admin0/transactions"
           element={
-            <Admin0Template children={<SystemTransactionDetailsPage />} />
+            <Admin0Template
+              children={<SystemTransactionDetailsPage />}
+              sideNavBarIndex="4"
+            />
           }
         ></Route>
         <Route
           path="/admin0/reviewadvertisment"
           element={
-            <Admin0Template children={<AdvertismentReviewAdminPage />} />
+            <Admin0Template
+              children={<AdvertismentReviewAdminPage />}
+              sideNavBarIndex="3"
+            />
           }
         ></Route>
         <Route
           path="/admin0/userdetails"
-          element={<Admin0Template children={<UserDetailsPage />} />}
+          element={
+            <Admin0Template
+              children={<UserDetailsPage />}
+              sideNavBarIndex="1"
+            />
+          }
         ></Route>
         <Route
           path="/admin0/accountmanage"
@@ -112,7 +135,12 @@ function App() {
         <Route path="*" element={<ErrorPage />}></Route>
         <Route
           path="/admin1/reportUser"
-          element={<Admin0Template children={<ReportUserAdmin1Page />} />}
+          element={
+            <Admin0Template
+              children={<ReportUserAdmin1Page />}
+              sideNavBarIndex="2"
+            />
+          }
         ></Route>
         <Route
           path="/admin1/reportUser/:id"
