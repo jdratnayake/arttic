@@ -54,7 +54,7 @@ function CreatorProfilePage() {
                                     <a href="#" class="btn btn-outline-primary  d-sm-block"><i class="bi bi-bookmark-plus dinvit"></i>Follow</a>
 
                                     <div class="dropdown d-inline-block drop-list-upper">
-                                        <button className="dr-btn" id="page-header-notifications-dropdown"
+                                        <button className="dr-btn report-threedots" id="page-header-notifications-dropdown"
                                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="bi bi-three-dots"></i>
                                         </button>

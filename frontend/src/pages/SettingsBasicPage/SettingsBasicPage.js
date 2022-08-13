@@ -25,7 +25,7 @@ function SettingsBasicPage() {
             {/* card body */}
             <div class="card-body">
               <div class=" mb-6">
-                <h4 class="mb-1">General Settings</h4>
+                <h4 class="mb-1">Profile Settings</h4>
               </div>
               <div class="row align-items-center mb-8">
                 <div class="col-md-3 mb-3 mb-md-0">
@@ -34,11 +34,13 @@ function SettingsBasicPage() {
                 <div class="col-md-9">
                   <div class="d-flex align-items-center">
                     <div class="me-3">
-                      <img
+                      {/* <img
                         src={file}
                         class="rounded-circle avatar avatar-lg"
                         alt=""
-                      />
+                      /> */}
+                      <img src="/static/media/avatar-1.f4a1f2a6c3e0cdf08b2b.jpg" width={40} height={40} className="rounded-circle" ></img>
+
                     </div>
                     <div>
                       <input
