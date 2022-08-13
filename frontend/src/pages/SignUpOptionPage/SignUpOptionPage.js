@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 
 import "./SignUpOptionPage.css";
-// import NavBar from "../../components/NavBar/NavBar";
+import NavBarSignUp from "../../components/NavBarSignUp/NavBarSignUp";
+import AuthenticationFooter from "../../components/AuthenticationFooter/AuthenticationFooter";
 import SignUpOptionCard from "../../components/SignUpOptionCard/SignUpOptionCard";
 import logo from "../../images/logo.png";
 
 function SignUpOptionPage() {
   return (
     <>
+      <NavBarSignUp/>
       <span class="SignUpOptionPage">
         <div class="row row-1">
           <div class="row d-flex justify-content-center ptop">
@@ -38,25 +40,7 @@ function SignUpOptionPage() {
               />
             </div>
           </div>
-          <div class="help-privacy-terms">
-            <div class="row">
-              <div class="col">
-                <a class="link" href="#">
-                  Help
-                </a>
-              </div>
-              <div class="col">
-                <a class="link" href="#">
-                  Privacy
-                </a>
-              </div>
-              <div class="col">
-                <a class="link" href="#">
-                  Terms
-                </a>
-              </div>
-            </div>
-          </div>
+          <AuthenticationFooter/>
         </div>
       </span>
     </>

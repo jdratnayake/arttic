@@ -17,6 +17,19 @@
     border: var(--bs-card-border-width) solid var(--bs-card-border-color);
     box-shadow: 0px 3px 12px 1px rgb(100 100 100 / 30%);
 }
+.card-info-image-left{
+    width: 70%;
+    margin-left: 25%;
+}
+.card-info-image-right{
+    width: 70%;
+}
+.right-row{
+    flex-wrap: nowrap;
+}
+.right-text{
+    margin-left: 8%;
+}
 
 @media only screen and (max-width:1000px){
     .cardInfoRow{
