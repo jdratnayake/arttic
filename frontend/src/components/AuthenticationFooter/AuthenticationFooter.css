@@ -8,11 +8,11 @@
     cursor: pointer;
 }
 .help-privacy-terms .link{
-    color: var(--black);
+    color: grey;
     text-decoration: none;
 }
 .help-privacy-terms .link:hover{
-    color: var( --green-50);
+    color: var( --black);
 }
 @media only screen and (max-width:1000px){
     .help-privacy-terms{

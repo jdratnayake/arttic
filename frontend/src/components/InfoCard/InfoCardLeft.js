@@ -1,6 +1,6 @@
 import "./InfoCard.css";
 
-import cardImage1 from "../../images/NFTs/monkey-removebg.png";
+import cardImage1 from "../../images/NFTs/NFT2.png";
 
 function InfoCardLeft(props) {
   return (
@@ -10,7 +10,7 @@ function InfoCardLeft(props) {
           <div className="col-lg-6 col-sm-12 col-xs-12 align-self-center">
             <img
               src={cardImage1}
-              className="img-fluid rounded  card-info-image card-image card-image-end"
+              className="img-fluid rounded  card-info-image card-info-image-left card-image card-image-end"
               alt="..."
             />
           </div>

@@ -5,7 +5,7 @@
     height: calc(100vh - var(--navbar-height));
     color: aliceblue;
     /* background: url(../../images/background/9.jpg) center bottom no-repeat; */
-    background-image: linear-gradient(to bottom right, var(--primary-100),var(--green-50));
+    background-image: linear-gradient(to bottom right,#5C0689,var(--primary-100),var(--green-50));
 }
 
 .bannerButtons{
