@@ -1,3 +1,4 @@
+import "./Feed.css";
 import InputBox from "../../components/InputBox/InputBox";
 import Posts from "../../components/Posts/Posts";
 import Ad from "../../components/Ad/Ad";

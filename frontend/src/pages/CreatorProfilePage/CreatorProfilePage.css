@@ -8710,7 +8710,7 @@
 .creatorProfilePage .d-inline-block {
   display: inline-block !important;
 }
-.creatorProfilePage .d-inline-block .dr-btn {
+.creatorProfilePage .report-threedots{
   border: none;
   background: #fff;
   margin-left: 12px;
