@@ -1,19 +1,51 @@
 import { useState, useRef } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
+
+import { API_URL } from "../../constants/globalConstants";
 
 import "./settings.css";
-import t from "../../images/users/pic1.png";
+// import t from "../../../../backend/images/profilePic";
 
 function SettingsBasicPage() {
-  const [file, setFile] = useState();
+  const [profilePicDisplay, setProfilePicDisplay] = useState("");
+  const [profilePicStore, setProfilePicStore] = useState("");
+  const [coverPicDisplay, setCoverPicDisplay] = useState("");
+  const [coverPicStore, setCoverPicStore] = useState("");
+
   const profilePicInput = useRef(null);
 
-  const handleClick = (event) => {
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
+
+  const handleProfilePicClick = (event) => {
     profilePicInput.current.click();
   };
 
-  const handleChange = (e) => {
-    console.log(e.target.files);
-    setFile(URL.createObjectURL(e.target.files[0]));
+  const handleProfilePicChange = (e) => {
+    setProfilePicDisplay(URL.createObjectURL(e.target.files[0]));
+    setProfilePicStore(e.target.files[0]);
+  };
+
+  const uploadProfilePicture = async (e) => {
+    e.preventDefault();
+
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        authorization: accessToken,
+        userid: userId,
+        uploadfiletype: "1",
+      },
+    };
+
+    const inputData = new FormData();
+
+    inputData.append("file", profilePicStore);
+
+    await axios
+      .post(API_URL + "/user/uploadprofileorcoverpicture/", inputData, config)
+      .then((response) => {});
   };
 
   return (
@@ -34,32 +66,32 @@ function SettingsBasicPage() {
                 <div class="col-md-9">
                   <div class="d-flex align-items-center">
                     <div class="me-3">
-                      {/* <img
-                        src={file}
+                      <img
+                        src={profilePicDisplay}
                         class="rounded-circle avatar avatar-lg"
                         alt=""
-                      /> */}
-                      <img src="/static/media/avatar-1.f4a1f2a6c3e0cdf08b2b.jpg" width={40} height={40} className="rounded-circle" ></img>
-
+                      />
                     </div>
                     <div>
-                      <input
-                        type="file"
-                        ref={profilePicInput}
-                        onChange={handleChange}
-                        style={{ display: "none" }}
-                      />
-                      <button
-                        type="submit"
-                        class="btn btn-outline-white
+                      <form onSubmit={uploadProfilePicture}>
+                        <input
+                          type="file"
+                          ref={profilePicInput}
+                          onChange={handleProfilePicChange}
+                          style={{ display: "none" }}
+                        />
+                        <button
+                          type="button"
+                          class="btn btn-outline-white
                             me-1"
-                        onClick={handleClick}
-                      >
-                        Change
-                      </button>
-                      <button type="submit" class="btn btn-outline-white">
-                        Remove
-                      </button>
+                          onClick={handleProfilePicClick}
+                        >
+                          Change
+                        </button>
+                        <button type="submit" class="btn btn-outline-white">
+                          Save
+                        </button>
+                      </form>
                     </div>
                   </div>
                 </div>
