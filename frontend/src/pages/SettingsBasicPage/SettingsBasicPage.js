@@ -1,23 +1,31 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-import { API_URL } from "../../constants/globalConstants";
+import {
+  API_URL,
+  PROFILE_PIC_URL,
+  COVER_PIC_URL,
+} from "../../constants/globalConstants";
 
 import "./settings.css";
 // import t from "../../../../backend/images/profilePic";
 
 function SettingsBasicPage() {
+  const [userDetails, setUserDetails] = useState({});
+
   const [profilePicDisplay, setProfilePicDisplay] = useState("");
   const [profilePicStore, setProfilePicStore] = useState("");
   const [coverPicDisplay, setCoverPicDisplay] = useState("");
   const [coverPicStore, setCoverPicStore] = useState("");
 
   const profilePicInput = useRef(null);
+  const coverPicInput = useRef(null);
 
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
 
+  // profile picture - START
   const handleProfilePicClick = (event) => {
     profilePicInput.current.click();
   };
@@ -47,6 +55,61 @@ function SettingsBasicPage() {
       .post(API_URL + "/user/uploadprofileorcoverpicture/", inputData, config)
       .then((response) => {});
   };
+  // profile picture - END
+
+  // cover picture - START
+  const handleCoverPicClick = (event) => {
+    coverPicInput.current.click();
+  };
+
+  const handleCoverPicChange = (e) => {
+    setCoverPicDisplay(URL.createObjectURL(e.target.files[0]));
+    setCoverPicStore(e.target.files[0]);
+  };
+
+  const uploadCoverPicture = async (e) => {
+    e.preventDefault();
+
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        authorization: accessToken,
+        userid: userId,
+        uploadfiletype: "2",
+      },
+    };
+
+    const inputData = new FormData();
+
+    inputData.append("file", coverPicStore);
+
+    await axios
+      .post(API_URL + "/user/uploadprofileorcoverpicture/", inputData, config)
+      .then((response) => {});
+  };
+  // cover picture - END
+
+  const getUserDetails = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/user/getuserdetails/" + userId, config)
+      .then((response) => {
+        setUserDetails(response.data);
+        setProfilePicDisplay(PROFILE_PIC_URL + response.data.profilePhoto);
+        setCoverPicDisplay(
+          COVER_PIC_URL + response.data.followerCreator.coverPhoto
+        );
+      });
+  };
+
+  useEffect(() => {
+    getUserDetails();
+  }, []);
 
   return (
     <div className="settingsPage">
@@ -106,19 +169,33 @@ function SettingsBasicPage() {
                   {/* dropzone input */}
                   <div>
                     <form
-                      action="#"
-                      class="dropzone mb-3 border-dashed dz-clickable"
+                      onSubmit={uploadCoverPicture}
+                      class=" mb-3  dz-clickable"
                     >
-                      <div class="dz-default dz-message">
-                        {/*<input class="dz-button" name="file" type="file" multiple />*/}
-                        <button className="dz-button" type="button">
-                          Drop files here to upload{" "}
-                        </button>
-                      </div>
+                      <img
+                        src={coverPicDisplay}
+                        style={{ width: "41rem", height: "12rem" }}
+                        alt=""
+                      />
+
+                      <input
+                        type="file"
+                        ref={coverPicInput}
+                        onChange={handleCoverPicChange}
+                        style={{ display: "none" }}
+                      />
+
+                      <button
+                        type="button"
+                        class="btn btn-outline-white"
+                        onClick={handleCoverPicClick}
+                      >
+                        Change
+                      </button>
+                      <button type="submit" class="btn btn-outline-white">
+                        Save
+                      </button>
                     </form>
-                    <button type="submit" class="btn btn-outline-white">
-                      Change
-                    </button>
                   </div>
                 </div>
               </div>

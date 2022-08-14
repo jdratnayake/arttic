@@ -1,7 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const asyncHandler = require("express-async-handler");
 
-const { user } = new PrismaClient();
+const { user, followerCreator } = new PrismaClient();
 
 const uploadProfileOrCoverPicture = asyncHandler(async (req, res) => {
   //   console.log(req.file);
@@ -22,15 +22,31 @@ const uploadProfileOrCoverPicture = asyncHandler(async (req, res) => {
       statusCode: 1,
       msg: "Profile picture upload success",
     });
+  } else if (uploadFileType === "2") {
+    const updateUser = await followerCreator.update({
+      where: {
+        userId: userId,
+      },
+      data: {
+        coverPhoto: req.file.filename,
+      },
+    });
+    res.json({
+      statusCode: 1,
+      msg: "Cover picture upload success",
+    });
   }
 });
 
 const getUserDetails = asyncHandler(async (req, res) => {
-  const userId = parseInt(req.headers.userid);
+  const userId = parseInt(req.params.id);
 
   const existUser = await user.findUnique({
     where: {
       userId: userId,
+    },
+    include: {
+      followerCreator: true,
     },
   });
 

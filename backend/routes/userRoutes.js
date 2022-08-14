@@ -18,6 +18,6 @@ router.post(
   upload.single("file"),
   uploadProfileOrCoverPicture
 );
-router.get("/getuserdetails", validateToken, getUserDetails);
+router.get("/getuserdetails/:id", validateToken, getUserDetails);
 
 module.exports = router;
