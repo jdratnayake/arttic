@@ -25,7 +25,7 @@ app.use("/api/v1/settings", settingsRouter);
 app.use("/api/v1/user", userRouter);
 
 // serve static files
-app.use(express.static("images"));
+app.use(express.static("assets"));
 
 app.use(notFound);
 app.use(errorHandler);
