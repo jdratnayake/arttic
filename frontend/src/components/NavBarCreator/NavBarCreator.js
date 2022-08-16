@@ -1,6 +1,8 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { PROFILE_PIC_URL } from "../../constants/globalConstants";
+import { logout } from "../../actions/userActions";
 
 import "./NavBarCreator.css";
 import logo from "../../images/logo.png";
@@ -8,6 +10,15 @@ import logo from "../../images/logo.png";
 function NavBarCreator() {
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken, profilePhoto } = userInfo.user;
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const signout = (e) => {
+    e.preventDefault();
+    dispatch(logout());
+    navigate("/login");
+  };
 
   return (
     <span className="NavBarCreator">
@@ -133,7 +144,7 @@ function NavBarCreator() {
                       <i class="bi bi-gear-fill dinvit"></i>{" "}
                       <span class="align-middle">Settings</span>
                     </a>
-                    <a class="dropdown-item dinv">
+                    <a class="dropdown-item dinv" onClick={signout}>
                       <i class="bi bi-box-arrow-right dinvit"></i>{" "}
                       <span class="align-middle">Sign out</span>
                     </a>
