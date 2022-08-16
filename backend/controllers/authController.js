@@ -443,6 +443,32 @@ const resetPassword = asyncHandler(async (req, res) => {
 
 // password recovery - END
 
+const getUserState = asyncHandler(async (req, res) => {
+  const userId = parseInt(req.params.id);
+
+  const existUser = await user.findUnique({
+    where: {
+      userId: userId,
+    },
+    select: {
+      userId: true,
+      type: true,
+      name: true,
+      email: true,
+      emailStatus: true,
+      username: true,
+      profilePhoto: true,
+    },
+  });
+
+  const accessToken = sign(
+    { email: existUser.email, userId: existUser.userId },
+    process.env.JWT_SECRET
+  );
+
+  res.json({ ...existUser, accessToken });
+});
+
 module.exports = {
   register,
   login,
@@ -452,4 +478,5 @@ module.exports = {
   forgotPasswordOtp,
   forgotPasswordOtpCheck,
   resetPassword,
+  getUserState,
 };

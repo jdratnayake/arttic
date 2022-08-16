@@ -1,13 +1,34 @@
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { PROFILE_PIC_URL } from "../../constants/globalConstants";
+import { logout } from "../../actions/userActions";
 
 import "./NavBarCreator.css";
 import logo from "../../images/logo.png";
 
 function NavBarCreator() {
+  const [profilePic, setProfilePic] = useState("");
+
   const userInfo = useSelector((state) => state.userInfo);
-  const { userId, accessToken, profilePhoto } = userInfo.user;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const signout = (e) => {
+    e.preventDefault();
+    dispatch(logout());
+    navigate("/login");
+  };
+
+  useEffect(() => {
+    if (!userInfo.user) {
+      navigate("/login");
+    } else {
+      const { userId, accessToken, profilePhoto } = userInfo.user;
+      setProfilePic(PROFILE_PIC_URL + profilePhoto);
+    }
+  }, []);
 
   return (
     <span className="NavBarCreator">
@@ -114,7 +135,7 @@ function NavBarCreator() {
                   >
                     {/* <i class="bi bi-person-circle icon-theme-nav"></i> */}
                     <img
-                      src={PROFILE_PIC_URL + profilePhoto}
+                      src={profilePic}
                       width={40}
                       height={40}
                       className="rounded-circle"
@@ -133,7 +154,7 @@ function NavBarCreator() {
                       <i class="bi bi-gear-fill dinvit"></i>{" "}
                       <span class="align-middle">Settings</span>
                     </a>
-                    <a class="dropdown-item dinv">
+                    <a class="dropdown-item dinv" onClick={signout}>
                       <i class="bi bi-box-arrow-right dinvit"></i>{" "}
                       <span class="align-middle">Sign out</span>
                     </a>
