@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -8,9 +9,9 @@ import "./NavBarCreator.css";
 import logo from "../../images/logo.png";
 
 function NavBarCreator() {
-  const userInfo = useSelector((state) => state.userInfo);
-  const { userId, accessToken, profilePhoto } = userInfo.user;
+  const [profilePic, setProfilePic] = useState("");
 
+  const userInfo = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,6 +20,15 @@ function NavBarCreator() {
     dispatch(logout());
     navigate("/login");
   };
+
+  useEffect(() => {
+    if (!userInfo.user) {
+      navigate("/login");
+    } else {
+      const { userId, accessToken, profilePhoto } = userInfo.user;
+      setProfilePic(PROFILE_PIC_URL + profilePhoto);
+    }
+  }, []);
 
   return (
     <span className="NavBarCreator">
@@ -125,7 +135,7 @@ function NavBarCreator() {
                   >
                     {/* <i class="bi bi-person-circle icon-theme-nav"></i> */}
                     <img
-                      src={PROFILE_PIC_URL + profilePhoto}
+                      src={profilePic}
                       width={40}
                       height={40}
                       className="rounded-circle"

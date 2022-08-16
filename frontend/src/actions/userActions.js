@@ -6,6 +6,8 @@ import {
   USER_LOGIN_FAIL,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
+  USER_STATE_UPDATE_SUCCESS,
+  USER_STATE_UPDATE_FAIL,
 } from "../constants/userConstants";
 import { API_URL } from "../constants/globalConstants";
 
@@ -64,3 +66,24 @@ export const register =
       });
     }
   };
+
+export const updateUserState = (userId) => async (dispatch) => {
+  try {
+    await axios
+      .get(API_URL + "/auth/getuserstate/" + userId)
+      .then((response) => {
+        if (!response.data.error) {
+          dispatch({ type: USER_STATE_UPDATE_SUCCESS, payload: response.data });
+          localStorage.setItem("user", JSON.stringify(response.data));
+        }
+      });
+  } catch (error) {
+    dispatch({
+      type: USER_STATE_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
