@@ -1,20 +1,119 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+
+import {
+  API_URL,
+  PROFILE_PIC_URL,
+  COVER_PIC_URL,
+} from "../../constants/globalConstants";
+import { updateUserState } from "../../actions/userActions";
 
 import "./settings.css";
-import t from "../../images/users/pic1.png";
+// import t from "../../../../backend/images/profilePic";
 
 function SettingsBasicPage() {
-  const [file, setFile] = useState();
-  const profilePicInput = useRef(null);
+  const [userDetails, setUserDetails] = useState({});
 
-  const handleClick = (event) => {
+  const [profilePicDisplay, setProfilePicDisplay] = useState("");
+  const [profilePicStore, setProfilePicStore] = useState("");
+  const [coverPicDisplay, setCoverPicDisplay] = useState("");
+  const [coverPicStore, setCoverPicStore] = useState("");
+
+  const profilePicInput = useRef(null);
+  const coverPicInput = useRef(null);
+  const dispatch = useDispatch();
+
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
+
+  // profile picture - START
+  const handleProfilePicClick = (event) => {
     profilePicInput.current.click();
   };
 
-  const handleChange = (e) => {
-    console.log(e.target.files);
-    setFile(URL.createObjectURL(e.target.files[0]));
+  const handleProfilePicChange = (e) => {
+    setProfilePicDisplay(URL.createObjectURL(e.target.files[0]));
+    setProfilePicStore(e.target.files[0]);
   };
+
+  const uploadProfilePicture = async (e) => {
+    e.preventDefault();
+
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        authorization: accessToken,
+        userid: userId,
+        uploadfiletype: "1",
+      },
+    };
+
+    const inputData = new FormData();
+
+    inputData.append("file", profilePicStore);
+
+    await axios
+      .post(API_URL + "/user/uploadprofileorcoverpicture/", inputData, config)
+      .then((response) => {
+        dispatch(updateUserState(userId));
+      });
+  };
+  // profile picture - END
+
+  // cover picture - START
+  const handleCoverPicClick = (event) => {
+    coverPicInput.current.click();
+  };
+
+  const handleCoverPicChange = (e) => {
+    setCoverPicDisplay(URL.createObjectURL(e.target.files[0]));
+    setCoverPicStore(e.target.files[0]);
+  };
+
+  const uploadCoverPicture = async (e) => {
+    e.preventDefault();
+
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        authorization: accessToken,
+        userid: userId,
+        uploadfiletype: "2",
+      },
+    };
+
+    const inputData = new FormData();
+
+    inputData.append("file", coverPicStore);
+
+    await axios
+      .post(API_URL + "/user/uploadprofileorcoverpicture/", inputData, config)
+      .then((response) => {});
+  };
+  // cover picture - END
+
+  const getUserDetails = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/user/getuserdetails/" + userId, config)
+      .then((response) => {
+        setUserDetails(response.data);
+        setProfilePicDisplay(PROFILE_PIC_URL + response.data.profilePhoto);
+        setCoverPicDisplay(
+          COVER_PIC_URL + response.data.followerCreator.coverPhoto
+        );
+      });
+  };
+
+  useEffect(() => {
+    getUserDetails();
+  }, []);
 
   return (
     <div className="settingsPage">
@@ -34,32 +133,32 @@ function SettingsBasicPage() {
                 <div class="col-md-9">
                   <div class="d-flex align-items-center">
                     <div class="me-3">
-                      {/* <img
-                        src={file}
+                      <img
+                        src={profilePicDisplay}
                         class="rounded-circle avatar avatar-lg"
                         alt=""
-                      /> */}
-                      <img src="/static/media/avatar-1.f4a1f2a6c3e0cdf08b2b.jpg" width={40} height={40} className="rounded-circle" ></img>
-
+                      />
                     </div>
                     <div>
-                      <input
-                        type="file"
-                        ref={profilePicInput}
-                        onChange={handleChange}
-                        style={{ display: "none" }}
-                      />
-                      <button
-                        type="submit"
-                        class="btn btn-outline-white
+                      <form onSubmit={uploadProfilePicture}>
+                        <input
+                          type="file"
+                          ref={profilePicInput}
+                          onChange={handleProfilePicChange}
+                          style={{ display: "none" }}
+                        />
+                        <button
+                          type="button"
+                          class="btn btn-outline-white
                             me-1"
-                        onClick={handleClick}
-                      >
-                        Change
-                      </button>
-                      <button type="submit" class="btn btn-outline-white">
-                        Remove
-                      </button>
+                          onClick={handleProfilePicClick}
+                        >
+                          Change
+                        </button>
+                        <button type="submit" class="btn btn-outline-white">
+                          Save
+                        </button>
+                      </form>
                     </div>
                   </div>
                 </div>
@@ -74,19 +173,33 @@ function SettingsBasicPage() {
                   {/* dropzone input */}
                   <div>
                     <form
-                      action="#"
-                      class="dropzone mb-3 border-dashed dz-clickable"
+                      onSubmit={uploadCoverPicture}
+                      class=" mb-3  dz-clickable"
                     >
-                      <div class="dz-default dz-message">
-                        {/*<input class="dz-button" name="file" type="file" multiple />*/}
-                        <button className="dz-button" type="button">
-                          Drop files here to upload{" "}
-                        </button>
-                      </div>
+                      <img
+                        src={coverPicDisplay}
+                        style={{ width: "41rem", height: "12rem" }}
+                        alt=""
+                      />
+
+                      <input
+                        type="file"
+                        ref={coverPicInput}
+                        onChange={handleCoverPicChange}
+                        style={{ display: "none" }}
+                      />
+
+                      <button
+                        type="button"
+                        class="btn btn-outline-white"
+                        onClick={handleCoverPicClick}
+                      >
+                        Change
+                      </button>
+                      <button type="submit" class="btn btn-outline-white">
+                        Save
+                      </button>
                     </form>
-                    <button type="submit" class="btn btn-outline-white">
-                      Change
-                    </button>
                   </div>
                 </div>
               </div>
