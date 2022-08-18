@@ -6,7 +6,7 @@ import axios from "axios";
 
 import { API_URL, CLIENT_URL } from "../../constants/globalConstants";
 import { getAccessToken } from "../../constants/globalFunctions";
-
+import AuthenticationFooter from "../../components/AuthenticationFooter/AuthenticationFooter";
 import "./WalletConnectPage.css";
 import logo from "../../images/logo.png";
 
@@ -188,6 +188,7 @@ function WalletConnectPage() {
               </div>
             </form>
           </div>
+          <AuthenticationFooter/>
         </div>
       </span>
     </>

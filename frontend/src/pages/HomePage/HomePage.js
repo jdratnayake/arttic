@@ -23,6 +23,7 @@ import home_asset_1 from "../../images/home-assets.png";
 function HomePage() {
   return (
     <>
+    <div class="homepage">
       <NavBar />
       <Banner />
 
@@ -118,6 +119,7 @@ function HomePage() {
         </div>
       </div>
       <Footer />
+    </div>
     </>
   );
 }

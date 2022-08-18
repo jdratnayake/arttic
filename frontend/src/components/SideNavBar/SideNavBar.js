@@ -93,7 +93,7 @@ function SideNavBar({ sideNavBarIndex }) {
           <div className="premium">
             <div className="content-pre">
               <p className="para">
-                Upgrade to premimum <i className="bi bi-gem icon-pre"></i>
+                <a>Upgrade to premimum <i className="bi bi-gem icon-pre"></i></a>
               </p>
               <p className="para">
                 small description on to have interest on premium package

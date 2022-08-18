@@ -6,6 +6,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 
 // js files
 import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
+import AuthenticationFooter from "../../components/AuthenticationFooter/AuthenticationFooter";
 import { register } from "../../actions/userActions";
 import {
   initialRegistrationValues,
@@ -154,19 +155,7 @@ function SignUpPage() {
                 </Formik>
               </div>
             </div>
-            <div class="help-privacy-terms">
-                <div class="row">
-                    <div class="col">
-                        <a class="link" href="#">Help</a>
-                    </div>
-                    <div class="col">
-                        <a class="link" href="#">Privacy</a>
-                    </div>
-                    <div class="col">
-                        <a class="link" href="#">Terms</a>
-                    </div>
-                </div>
-            </div>
+            <AuthenticationFooter/>
           </div>
         </div>
       </span>
