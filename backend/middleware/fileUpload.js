@@ -3,6 +3,7 @@ const path = require("path");
 
 // 1 = profile picture
 // 2 = cover picture
+// 3 = post image
 
 // Storage Engin That Tells/Configures Multer for where (destination) and how (filename) to save/upload our files
 const fileStorageEngine = multer.diskStorage({
@@ -13,6 +14,8 @@ const fileStorageEngine = multer.diskStorage({
       cb(null, "./images/profilePic");
     } else if (uploadFileType === "2") {
       cb(null, "./images/coverPic");
+    } else if (uploadFileType === "3") {
+      cb(null, "./images/postPic");
     }
   },
   filename: (req, file, cb) => {
@@ -21,6 +24,8 @@ const fileStorageEngine = multer.diskStorage({
     if (uploadFileType === "1" || uploadFileType === "2") {
       const userId = req.headers.userid;
       cb(null, userId + path.extname(file.originalname));
+    }else if( uploadFileType === "3" ){
+      cb(null, Date.now() + path.extname(file.originalname));
     }
   },
 });
