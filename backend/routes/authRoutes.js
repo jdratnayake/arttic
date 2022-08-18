@@ -12,6 +12,7 @@ const {
   forgotPasswordOtp,
   forgotPasswordOtpCheck,
   resetPassword,
+  getUserState,
 } = require("../controllers/authController");
 
 const router = express.Router();
@@ -25,5 +26,6 @@ router.post("/usernamecheck", usernameCheck);
 router.post("/forgotpasswordotp", forgotPasswordOtp);
 router.post("/forgotpasswordotpcheck", forgotPasswordOtpCheck);
 router.post("/resetpassword", resetPassword);
+router.get("/getuserstate/:id", getUserState);
 
 module.exports = router;
