@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 
 import {
@@ -7,6 +7,7 @@ import {
   PROFILE_PIC_URL,
   COVER_PIC_URL,
 } from "../../constants/globalConstants";
+import { updateUserState } from "../../actions/userActions";
 
 import "./settings.css";
 // import t from "../../../../backend/images/profilePic";
@@ -21,6 +22,7 @@ function SettingsBasicPage() {
 
   const profilePicInput = useRef(null);
   const coverPicInput = useRef(null);
+  const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
@@ -53,7 +55,9 @@ function SettingsBasicPage() {
 
     await axios
       .post(API_URL + "/user/uploadprofileorcoverpicture/", inputData, config)
-      .then((response) => {});
+      .then((response) => {
+        dispatch(updateUserState(userId));
+      });
   };
   // profile picture - END
 

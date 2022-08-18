@@ -6,6 +6,8 @@ import {
   USER_LOGIN_FAIL,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
+  USER_STATE_UPDATE_SUCCESS,
+  USER_STATE_UPDATE_FAIL,
 } from "../constants/userConstants";
 import { API_URL } from "../constants/globalConstants";
 
@@ -35,7 +37,10 @@ export const login = (username, password) => async (dispatch) => {
   }
 };
 
-// export const logout = () => {};
+export const logout = () => async (dispatch) => {
+  localStorage.removeItem("user");
+  dispatch({ type: USER_LOGOUT });
+};
 
 export const register =
   (userType, name, email, password) => async (dispatch) => {
@@ -61,3 +66,24 @@ export const register =
       });
     }
   };
+
+export const updateUserState = (userId) => async (dispatch) => {
+  try {
+    await axios
+      .get(API_URL + "/auth/getuserstate/" + userId)
+      .then((response) => {
+        if (!response.data.error) {
+          dispatch({ type: USER_STATE_UPDATE_SUCCESS, payload: response.data });
+          localStorage.setItem("user", JSON.stringify(response.data));
+        }
+      });
+  } catch (error) {
+    dispatch({
+      type: USER_STATE_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
