@@ -6,27 +6,30 @@ const { upload } = require("../middleware/fileUpload");
 
 // import controllers
 const {
-    uploadComment,
+  uploadAdReport,
+  uploadPostReport,
+  uploadcommentReaction,
+  uploadpostReaction,
+  uploadComment,
   uploadPost,
   getPosts,
 } = require("../controllers/feedController");
 
 const router = express.Router();
 
-router.post(
-    "/uploadComment",
-    validateToken,
-    uploadComment
-  );
+router.post("/uploadAdReport", validateToken, uploadAdReport);
 
-router.post(
-  "/uploadPost",
-  validateToken,
-  upload.single("file"),
-  uploadPost
-);
+router.post("/uploadPostReport", validateToken, uploadPostReport);
+
+router.post("/uploadcommentReaction", validateToken, uploadcommentReaction);
+
+router.post("/uploadpostReaction", validateToken, uploadpostReaction);
+
+router.post("/uploadComment", validateToken, uploadComment);
+
+router.post("/uploadPost", validateToken, upload.single("file"), uploadPost);
 
 // id : userId
-router.get("/getPosts/:id", validateToken, getPosts);
+router.get("/getPosts", validateToken, getPosts);
 
 module.exports = router;
