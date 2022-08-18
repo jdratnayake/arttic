@@ -1,7 +1,7 @@
 import './Posts.css';
 import Post from '../Post/Post';
 
-function Posts(){
+function Posts( props ){
 	const posts = [
 		{
 			id:1,
@@ -54,6 +54,8 @@ function Posts(){
 				posts.map(post => {
 					return(<Post 
 						key={post.id}
+						userName = { props.name }
+						profilePic = { props.profilePic }
 						name={post.name}
 						message={post.message}
 						timestamp={post.timestamp}
