@@ -10,6 +10,8 @@ const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 //routers
 const authRouter = require("./routes/authRoutes");
 const settingsRouter = require("./routes/settingsRoutes");
+const userRouter = require("./routes/userRoutes");
+const test = require("./routes/testRoutes");
 
 const app = express();
 
@@ -19,8 +21,13 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.json());
 
 //define routes
+app.use("/api/v1/test", test);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/settings", settingsRouter);
+app.use("/api/v1/user", userRouter);
+
+// serve static files
+app.use(express.static("assets"));
 
 app.use(notFound);
 app.use(errorHandler);

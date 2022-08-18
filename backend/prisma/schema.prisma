@@ -27,7 +27,7 @@ model user{
   username String @db.VarChar(128) @unique
   phone String? @db.Char(10)
   joinedDate DateTime @default(now())
-  profilePhoto String @db.VarChar(256) @default("0")
+  profilePhoto String @db.VarChar(256) @default("0.jpg")
   password String @db.VarChar(128)
   forgotPasswordOtp String? @db.VarChar(5)
   emailVerificationOtp String? @db.VarChar(5)
@@ -46,7 +46,7 @@ model user{
 model followerCreator{
   user user @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int @id
-  coverPhoto String @db.VarChar(256) @default("0")
+  coverPhoto String @db.VarChar(256) @default("0.png")
   // blockedStatus Boolean @default(false)
   creator creator?
   billingAddresses billingAddress[]

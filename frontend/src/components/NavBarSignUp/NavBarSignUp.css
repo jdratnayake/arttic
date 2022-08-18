@@ -1,0 +1,36 @@
+.nav-link-active{
+    border-bottom: 2px solid var(--red-50);
+    font-weight: 600;
+}
+
+.nav-bar-item :hover{
+    border-bottom: 2px solid var(--red-50);
+}
+
+.navbar-end{
+    margin: 10px 10px 10px 20px;
+}
+
+.nav-bar-btn{
+    margin-right:10px;
+}
+.navbar .me-auto{
+    margin-right: auto !important;
+}
+.navbar .wrap-sb{
+    width: 30%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/*
+updated media 
+*/
+
+@media (min-width: 1011px){
+    .navbar-expand-lg {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+    }
+}
