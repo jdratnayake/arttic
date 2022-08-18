@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import {
     useNavigate,
 } from "react-router-dom";
-
+import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 
 import "./AdvertisementPage.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -14,6 +15,21 @@ function AdvertismentPage() {
     const navigate = useNavigate();
 
     const [cDate, setStartDate] = useState(new Date());
+
+    const userInfo = useSelector((state) => state.userInfo);
+    const { userId, accessToken } = userInfo.user;
+
+    const newAdd = async => {
+        const config = {
+            headers: {
+                "content-type": "multipart/form-data",
+                authorization: accessToken,
+                userid: userId,
+                uploadfiletype: "3",
+            }
+        };
+        const inputData = new FormData();
+    };
 
     const imgHandler = (e) => {
         const fileImage = document.querySelector('.input-preview__src');
@@ -50,7 +66,7 @@ function AdvertismentPage() {
                                     </div>
 
                                     <div>
-                                        <form>
+                                        <form onSubmit={newAdd}>
                                             {/* row */}
                                             <div class="mb-3 row">
                                                 <label for="category" class="col-sm-4 col-form-label form-label">
