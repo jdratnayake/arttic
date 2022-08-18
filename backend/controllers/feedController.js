@@ -9,17 +9,17 @@ const { post, comment } = new PrismaClient();
 
 const uploadComment = asyncHandler(async (req, res) => {
     // console.log(req.headers);
-    console.log(req.body);
+    // console.log(req.body);
+    const Data = req.body;
     const userId = parseInt(req.headers.userid);
-    res.send("Single FIle upload success");
-    // const CreateComment = await comment.create({
-    //   data: {
-    //     userId: userId,
-    //     postId: req.file.filename,
-    //     description: req.body.desc
-    //   },
-    // });
-    // res.status(StatusCodes.CREATED).json(CreatePost);
+    const CreateComment = await comment.create({
+      data: {
+        userId: Data.commenterId,
+        postId: Data.postId,
+        description: Data.description
+      },
+    });
+    res.status(StatusCodes.CREATED).json(CreateComment);
   });
 
 //upload POST IMAGE start************************************* 

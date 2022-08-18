@@ -13,7 +13,9 @@ const fileStorageEngine = multer.diskStorage({
     if (uploadFileType === "1") {
       cb(null, "./assets/profilePic");
     } else if (uploadFileType === "2") {
-      cb(null, "./images/coverPic");
+      cb(null, "./assets/coverPic");
+    } else if (uploadFileType === "3") {
+      cb(null, "./assets/postPic");
     }
   },
   filename: (req, file, cb) => {
