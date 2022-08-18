@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const { StatusCodes } = require("http-status-codes");
 const asyncHandler = require("express-async-handler");
 
-const { post, comment } = new PrismaClient();
+const { post, comment, userSubscribe } = new PrismaClient();
 
 
 //  upload a comment ***************
@@ -45,18 +45,41 @@ const getPosts = asyncHandler(async(req,res) =>{
     const userId = parseInt(req.headers.userid);
     const skip = parseInt(req.headers.skip)
     const take = parseInt(req.headers.take)
-    const history = await post.findMany({
-      skip:skip,
-      take:take,
-      where: {
+    // const history = await post.findMany({
+    //   skip:skip,
+    //   take:take,
+    //   where: {
+    //     creatorId: userId,
+    //   },
+    //   orderBy: {
+    //     publishedDate: "desc",
+    //   },
+    // });
+    // // res.json(req);
+    // console.log(history)
+
+    const users = await userSubscribe.findMany({
+      where:{
         creatorId: userId,
+      },
+      select:{
+        followerId:true
+      }
+    })
+    users.push({
+      "followerId": userId
+    })
+    const posts = await post.findMany({
+      // skip:skip,
+      // take:take,
+      where: {
+        creatorId: users.followerId,
       },
       orderBy: {
         publishedDate: "desc",
       },
     });
-    // res.json(req);
-    console.log(history)
+    res.send(posts);
 })
 
 module.exports = {
