@@ -39,6 +39,7 @@ model user{
   followerCreator followerCreator?
   userReportResolvedAdmins userReport[] 
   postReports postReport[]
+  commentReports commentReport[]
   advertisementReports advertisementReport[]
 }
 
@@ -63,6 +64,7 @@ model followerCreator{
   sourceUsers userReport[] @relation("sourceReportedUser")
   reportedUsers userReport[] @relation("reportedUser")
   postReports postReport[]
+  commentReports commentReport[]
   advertisementReports advertisementReport[]
   postSaves postSave[]
   transactions transactionLog[]
@@ -138,6 +140,7 @@ model premiumPackageSubscribe{
   packageId Int
   startDate DateTime
   endDate DateTime
+  showAd Boolean @default(true)
 }
 
 model userSubscribe{
@@ -201,6 +204,7 @@ model comment{
   commentedDate DateTime @default(now())
   blockedStatus Boolean @default(false)
   commentReactions commentReaction[]
+  commentReports commentReport[]
 }
 
 model commentReaction{
@@ -226,6 +230,7 @@ model advertisement{
   category Int 
   description String? @db.VarChar(256)
   contentLink String @db.VarChar(256)
+  createdDate DateTime @default(now())
   startDate DateTime
   endDate DateTime
   price Decimal @db.Decimal(3, 2)
@@ -283,6 +288,20 @@ model postReport{
   post post @relation(fields: [reportedPostId], references: [postId], onUpdate: Cascade, onDelete: Cascade)
   reportedPostId Int
   postReportedDate DateTime @default(now())
+  reportCategory Int
+  description String? @db.VarChar(512)
+  resolveStatus Boolean @default(false)
+  resolvedAdmin user? @relation(fields: [resolvedAdminID], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  resolvedAdminID Int?
+}
+
+model commentReport{
+  commentReportId Int @id @default(autoincrement())
+  user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  userId Int
+  comment comment @relation(fields: [reportedCommentId], references: [commentId], onUpdate: Cascade, onDelete: Cascade)
+  reportedCommentId Int
+  commentReportedDate DateTime @default(now())
   reportCategory Int
   description String? @db.VarChar(512)
   resolveStatus Boolean @default(false)
