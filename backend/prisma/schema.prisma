@@ -88,7 +88,7 @@ model creator{
   pageName String @db.VarChar(64) @unique
   description String? @db.VarChar(512)
   creatorJoinedDate DateTime @default(now())
-  walletAddress String @db.VarChar(64) @default("0") @unique
+  walletAddress String? @db.VarChar(64) @unique
   openSeaUsername String? @db.VarChar(64) @unique
   openSeaStatus Int @default(0)
   followerCount Int @default(0)
