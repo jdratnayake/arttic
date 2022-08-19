@@ -6,9 +6,12 @@ CREATE TABLE "user" (
     "email" VARCHAR(128) NOT NULL,
     "emailStatus" BOOLEAN NOT NULL DEFAULT false,
     "username" VARCHAR(128) NOT NULL,
+    "phone" CHAR(10),
     "joinedDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "profilePhoto" VARCHAR(256) NOT NULL DEFAULT '0',
+    "profilePhoto" VARCHAR(256) NOT NULL DEFAULT '0.jpg',
     "password" VARCHAR(128) NOT NULL,
+    "forgotPasswordOtp" VARCHAR(5),
+    "emailVerificationOtp" VARCHAR(5),
     "blockedStatus" BOOLEAN NOT NULL DEFAULT false,
     "blockedDate" TIMESTAMP(3),
     "blockedAdminID" INTEGER,
@@ -19,7 +22,7 @@ CREATE TABLE "user" (
 -- CreateTable
 CREATE TABLE "followerCreator" (
     "userId" INTEGER NOT NULL,
-    "coverPhoto" VARCHAR(256) NOT NULL DEFAULT '0',
+    "coverPhoto" VARCHAR(256) NOT NULL DEFAULT '0.png',
 
     CONSTRAINT "followerCreator_pkey" PRIMARY KEY ("userId")
 );
@@ -56,7 +59,7 @@ CREATE TABLE "billingAddress" (
     "userId" INTEGER NOT NULL,
     "country" VARCHAR(32) NOT NULL,
     "addressLine1" VARCHAR(64) NOT NULL,
-    "addressLine2" VARCHAR(64) NOT NULL,
+    "addressLine2" VARCHAR(64),
     "city" VARCHAR(32) NOT NULL,
     "state" VARCHAR(32) NOT NULL,
     "zipCode" VARCHAR(16) NOT NULL,
@@ -70,7 +73,7 @@ CREATE TABLE "premiumPackage" (
     "packageId" SERIAL NOT NULL,
     "name" VARCHAR(64) NOT NULL,
     "description" VARCHAR(1024),
-    "price" DECIMAL(3,2) NOT NULL,
+    "price" DECIMAL(65,2) NOT NULL,
 
     CONSTRAINT "premiumPackage_pkey" PRIMARY KEY ("packageId")
 );
@@ -82,6 +85,7 @@ CREATE TABLE "premiumPackageSubscribe" (
     "packageId" INTEGER NOT NULL,
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
+    "showAd" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "premiumPackageSubscribe_pkey" PRIMARY KEY ("subscribeId")
 );
@@ -160,9 +164,10 @@ CREATE TABLE "advertisement" (
     "category" INTEGER NOT NULL,
     "description" VARCHAR(256),
     "contentLink" VARCHAR(256) NOT NULL,
+    "createdDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
-    "price" DECIMAL(3,2) NOT NULL,
+    "price" DECIMAL(65,2) NOT NULL,
     "paymentStatus" BOOLEAN NOT NULL DEFAULT false,
     "blockedStatus" BOOLEAN NOT NULL DEFAULT false,
 
@@ -228,6 +233,20 @@ CREATE TABLE "postReport" (
 );
 
 -- CreateTable
+CREATE TABLE "commentReport" (
+    "commentReportId" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "reportedCommentId" INTEGER NOT NULL,
+    "commentReportedDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "reportCategory" INTEGER NOT NULL,
+    "description" VARCHAR(512),
+    "resolveStatus" BOOLEAN NOT NULL DEFAULT false,
+    "resolvedAdminID" INTEGER,
+
+    CONSTRAINT "commentReport_pkey" PRIMARY KEY ("commentReportId")
+);
+
+-- CreateTable
 CREATE TABLE "advertisementReport" (
     "advertisementReportId" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
@@ -247,7 +266,7 @@ CREATE TABLE "transactionLog" (
     "userId" INTEGER NOT NULL,
     "transactionType" INTEGER NOT NULL,
     "otherTableUniqueId" INTEGER,
-    "amount" DECIMAL(3,2) NOT NULL,
+    "amount" DECIMAL(65,2) NOT NULL,
     "transactionDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "transactionLog_pkey" PRIMARY KEY ("transactionId")
@@ -381,6 +400,15 @@ ALTER TABLE "postReport" ADD CONSTRAINT "postReport_reportedPostId_fkey" FOREIGN
 
 -- AddForeignKey
 ALTER TABLE "postReport" ADD CONSTRAINT "postReport_resolvedAdminID_fkey" FOREIGN KEY ("resolvedAdminID") REFERENCES "user"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "commentReport" ADD CONSTRAINT "commentReport_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "commentReport" ADD CONSTRAINT "commentReport_reportedCommentId_fkey" FOREIGN KEY ("reportedCommentId") REFERENCES "comment"("commentId") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "commentReport" ADD CONSTRAINT "commentReport_resolvedAdminID_fkey" FOREIGN KEY ("resolvedAdminID") REFERENCES "user"("userId") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "advertisementReport" ADD CONSTRAINT "advertisementReport_userId_fkey" FOREIGN KEY ("userId") REFERENCES "followerCreator"("userId") ON DELETE CASCADE ON UPDATE CASCADE;

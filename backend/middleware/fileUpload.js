@@ -21,9 +21,11 @@ const fileStorageEngine = multer.diskStorage({
   filename: (req, file, cb) => {
     const uploadFileType = req.headers.uploadfiletype;
 
-    if (uploadFileType === "1" || uploadFileType === "2" || uploadFileType === "5") {
+    if (uploadFileType === "1" || uploadFileType === "2") {
       const userId = req.headers.userid;
       cb(null, userId + path.extname(file.originalname));
+    } else if (uploadFileType === "5") {
+      cb(null, Date.now() + path.extname(file.originalname));
     }
   },
 });
