@@ -32,13 +32,13 @@ function HomePage() {
             <div className="row">
               <div class="col align-self-center about-section">
                 <h1>Welcome to ARTTIC</h1>
-                <h5>
+                <p>
                   On ARTTIC, you can let your fans become active participants in
                   the work they love by offering them a monthly membership. You
                   give them access to exclusive content, community, and insight
                   into your creative process. This builds a spanning network all
                   over the world between NFT creators and followers.
-                </h5>
+                </p>
               </div>
             </div>
           </div>
@@ -47,15 +47,15 @@ function HomePage() {
 
       <Slide bottom>
         <InfoCardLeft
-          body="NFT creators can share their posts,videos and polls according to the relevant tiers. "
-          title="How NFT stories sharing?"
+          body="We share exclusive contents,posts and videos about newly released NFTs and latest updates about them."
+          title="What are we shared ?"
         />
       </Slide>
 
       <Slide bottom>
         <InfoCardRight
-          body="We are focusing on people who have enthusiasm in NFT creating,selling and buying processes.This is a central based platform that develops and promotes for the NFT creators to fulfill their marketing purposes."
-          title="Why are we unique?"
+          body="This central based platform is focusing on people who have enthusiasm  in NFTs in all over the world."
+          title="Who can use this ?"
         />
       </Slide>
 
@@ -92,20 +92,23 @@ function HomePage() {
           </div>
         </div>
       </div>
-      <div className="container-fluid">
-        {/* <div class="container"> */}
+      {/* <div className="container-fluid">
+        {/* <div class="container"> 
         <div className="row  align-items-center">
           <div class="col how-section m-3 align-self-center">
-            <h1>It's easier than you think</h1>
+            <h1>We are advertising for you</h1>
+            <div>
+              
+            </div>
             <img
               src={home_asset_1}
               className="img-fluid rounded home-card-image card-image"
               alt="..."
             />
-            {/* </div> */}
+            {/* </div> 
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="container-fluid">
         <div className="row align-items-center">
           <div class="col align-self-center get-start">

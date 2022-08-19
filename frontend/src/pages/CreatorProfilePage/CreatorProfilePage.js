@@ -1,4 +1,8 @@
 import "./CreatorProfilePage.css";
+import { useState, useEffect } from "react";
+import { API_URL } from "../../constants/globalConstants";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 import NavBarCreator from "../../components/NavBarCreator/NavBarCreator";
 import profile from "../../images/users/pic4.png";
@@ -9,7 +13,33 @@ import t from '../../images/NFTs/monkey-removebg.png';
 import Post from "../../components/Post/Post";
 import checkedMark from "../../images/svg/checked-mark.svg";
 
+
+
 function CreatorProfilePage() {
+
+    const [profileData, setProfileData] = useState("");
+
+    const userInfo = useSelector((state) => state.userInfo);
+    const { userId, accessToken } = userInfo.user;
+
+    const getUserData = async () => {
+        const config = {
+          headers: {
+            authorization: accessToken,
+          },
+        };
+    
+        await axios
+          .get(API_URL + "/user/getuserdetails/" + userId, config)
+          .then((response) => {
+            setProfileData(response.data);
+          });
+      };
+
+      useEffect(() => {
+        getUserData();
+      }, []);
+
     return (
         <span className="creatorProfilePage">
             <NavBarCreator />
@@ -42,7 +72,7 @@ function CreatorProfilePage() {
 
                                     {/* text */}
                                     <div class="lh-1">
-                                        <h2 class="mb-0"> Peter Pan </h2>
+                                        <h2 class="mb-0"> {profileData.name} </h2>
                                         <div class="sub-lh-1">
                                             <p class="mb-0 d-block">101 followers</p>
                                             <p class="mb-0 d-block following">50 following</p>
@@ -85,19 +115,19 @@ function CreatorProfilePage() {
                                     <div class="col-12 mb-1">
                                         {/* text */}
                                         <h6 class="text-uppercase fs-5 ls-2">Username</h6>
-                                        <p class="mb-0">Peter Pan</p>
+                                        <p class="mb-0">{profileData.name}</p>
                                     </div>
                                     <div class="col-6 mb-1">
                                         <h6 class="text-uppercase fs-5 ls-2">Phone </h6>
-                                        <p class="mb-0">+32112345689</p>
+                                        <p class="mb-0">{profileData.phone}</p>
                                     </div>
                                     <div class="col-6 mb-1">
                                         <h6 class="text-uppercase fs-5 ls-2">Joined date </h6>
-                                        <p class="mb-0">01.10.2020</p>
+                                        <p class="mb-0">{profileData.joinedDate}</p>
                                     </div>
                                     <div class="col-6">
                                         <h6 class="text-uppercase fs-5 ls-2">Email </h6>
-                                        <p class="mb-0">Arttic@gmail.com</p>
+                                        <p class="mb-0">{profileData.email}</p>
                                     </div>
                                     <div class="col-6">
                                         <h6 class="text-uppercase fs-5 ls-2">Accounnt status</h6>

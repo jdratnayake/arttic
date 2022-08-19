@@ -39,6 +39,7 @@ model user{
   followerCreator followerCreator?
   userReportResolvedAdmins userReport[] 
   postReports postReport[]
+  commentReports commentReport[]
   advertisementReports advertisementReport[]
 }
 
@@ -63,6 +64,7 @@ model followerCreator{
   sourceUsers userReport[] @relation("sourceReportedUser")
   reportedUsers userReport[] @relation("reportedUser")
   postReports postReport[]
+  commentReports commentReport[]
   advertisementReports advertisementReport[]
   postSaves postSave[]
   transactions transactionLog[]
@@ -126,7 +128,7 @@ model premiumPackage{
   packageId Int @id @default(autoincrement())
   name String @db.VarChar(64) @unique
   description String? @db.VarChar(1024)
-  price Decimal @db.Decimal(3, 2)
+  price Decimal @db.Decimal(65, 2)
   users premiumPackageSubscribe[]
 }
 
@@ -138,6 +140,8 @@ model premiumPackageSubscribe{
   packageId Int
   startDate DateTime
   endDate DateTime
+  adStatus Int @default(1)
+  showAd Boolean @default(true)
 }
 
 model userSubscribe{
@@ -201,6 +205,7 @@ model comment{
   commentedDate DateTime @default(now())
   blockedStatus Boolean @default(false)
   commentReactions commentReaction[]
+  commentReports commentReport[]
 }
 
 model commentReaction{
@@ -226,9 +231,10 @@ model advertisement{
   category Int 
   description String? @db.VarChar(256)
   contentLink String @db.VarChar(256)
+  createdDate DateTime @default(now())
   startDate DateTime
   endDate DateTime
-  price Decimal @db.Decimal(3, 2)
+  price Decimal @db.Decimal(65, 2)
   paymentStatus Boolean @default(false)
   blockedStatus Boolean @default(false)
   advertisementViews advertisementView[]
@@ -290,6 +296,20 @@ model postReport{
   resolvedAdminID Int?
 }
 
+model commentReport{
+  commentReportId Int @id @default(autoincrement())
+  user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  userId Int
+  comment comment @relation(fields: [reportedCommentId], references: [commentId], onUpdate: Cascade, onDelete: Cascade)
+  reportedCommentId Int
+  commentReportedDate DateTime @default(now())
+  reportCategory Int
+  description String? @db.VarChar(512)
+  resolveStatus Boolean @default(false)
+  resolvedAdmin user? @relation(fields: [resolvedAdminID], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  resolvedAdminID Int?
+}
+
 model advertisementReport{
   advertisementReportId Int @id @default(autoincrement())
   user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
@@ -313,6 +333,6 @@ model transactionLog{
   userId Int
   transactionType Int
   otherTableUniqueId Int?
-  amount Decimal @db.Decimal(3, 2)
+  amount Decimal @db.Decimal(65, 2)
   transactionDate DateTime @default(now())
 }
