@@ -6,7 +6,7 @@ const path = require("path");
 // 3 = post image
 // 5 = advertisment picture
 
-// Storage Engin That Tells/Configures Multer for where (destination) and how (filename) to save/upload our files
+//Storage Engin That Tells/Configures Multer for where (destination) and how (filename) to save/upload our files
 const fileStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadFileType = req.headers.uploadfiletype;
