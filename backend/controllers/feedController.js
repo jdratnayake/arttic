@@ -47,7 +47,7 @@ const getAds = asyncHandler(async (req, res) => {
       endDate:{
         gt:new Date()
       },
-      // adStatus:1
+      // showAd:true
     },
     // select:{
     //   adStatus:true
@@ -61,6 +61,7 @@ const getAds = asyncHandler(async (req, res) => {
   //     });
   // }
   // console.log(isShowAd);
+  console.log(isShowAd)
   res.json(isShowAd);
 });
 
