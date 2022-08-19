@@ -15,9 +15,10 @@ const test = asyncHandler(async (req, res) => {
 
   await client.connect();
 
-  const result = await client.query({
-    text: 'SELECT * FROM "transactionLog"',
-  });
+  const result =  await client.query(
+    'SELECT post."postId","creatorId","description","imagevideo","publishedDate","reactCount","commentCount" FROM (SELECT "followerId" FROM "userSubscribe" WHERE "creatorId" = $1) AS subscribers INNER JOIN post ON subscribers."followerId" = post."creatorId";',
+    [1]
+  );
 
   res.json(result.rows);
   await client.end();
