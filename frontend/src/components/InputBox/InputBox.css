@@ -1,3 +1,13 @@
+.error-msg {
+  color: red;
+  font-size: small;
+}
+.fcup {
+  border-radius: 10px;
+  font-weight: 100;
+  color: #f4f2f4;
+  font-size: small;
+}
 .post-preview {
   display: flex;
   transition-property: background-color, border-color, color, fill, stroke,
@@ -83,13 +93,13 @@
   align-items: center;
 }
 
-.inputBox-action{
+.inputBox-action {
   text-decoration: none;
   color: black;
 }
 
-
-.inputBox .dropzone, .inputBox .dropzone * {
+.inputBox .dropzone,
+.inputBox .dropzone * {
   box-sizing: border-box;
 }
 .inputBox .dropzone {
@@ -105,7 +115,8 @@
 .inputBox .dropzone.dz-clickable * {
   cursor: default;
 }
-.inputBox .dropzone.dz-clickable .dz-message, .inputBox .dropzone.dz-clickable .dz-message * {
+.inputBox .dropzone.dz-clickable .dz-message,
+.inputBox .dropzone.dz-clickable .dz-message * {
   cursor: pointer;
 }
 .inputBox .dropzone.dz-started .dz-message {
@@ -206,7 +217,8 @@
 .inputBox .dropzone .dz-preview .dz-details .dz-filename:not(:hover) span {
   border: 1px solid transparent;
 }
-.inputBox .dropzone .dz-preview .dz-details .dz-filename span, .inputBox .dropzone .dz-preview .dz-details .dz-size span {
+.inputBox .dropzone .dz-preview .dz-details .dz-filename span,
+.inputBox .dropzone .dz-preview .dz-details .dz-size span {
   background-color: rgba(255, 255, 255, 0.4);
   padding: 0 0.4em;
   border-radius: 3px;
@@ -247,7 +259,8 @@
   -o-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
   animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
 }
-.inputBox .dropzone .dz-preview .dz-success-mark, .inputBox .dropzone .dz-preview .dz-error-mark {
+.inputBox .dropzone .dz-preview .dz-success-mark,
+.inputBox .dropzone .dz-preview .dz-error-mark {
   pointer-events: none;
   opacity: 0;
   z-index: 500;
@@ -258,7 +271,8 @@
   margin-left: -27px;
   margin-top: -27px;
 }
-.inputBox .dropzone .dz-preview .dz-success-mark svg, .inputBox .dropzone .dz-preview .dz-error-mark svg {
+.inputBox .dropzone .dz-preview .dz-success-mark svg,
+.inputBox .dropzone .dz-preview .dz-error-mark svg {
   display: block;
   width: 54px;
   height: 54px;
@@ -358,4 +372,3 @@
 }
 
 /* drop zone ends */
-

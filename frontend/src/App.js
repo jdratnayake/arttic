@@ -36,6 +36,7 @@ import AdvertismentTablePage from "./pages/AdvertismentTablePage/AdvertismentTab
 import AdvertismentReviewAdminPage from "./pages/AdvertismentReviewAdminPage/AdvertismentReviewAdminPage";
 import SubscribedCreatorsPage from "./pages/SubscribedCreatorsPage/SubscribedCreatorsPage";
 import ExternalSignUpPasswordPage from "./pages/ExternalSignUpPasswordPage/ExternalSignUpPasswordPage";
+import ChatCreatorPage from "./pages/ChatCreatorPage/ChatCreatorPage";
 
 function App() {
   return (
@@ -79,6 +80,15 @@ function App() {
           element={
             <CreatorTemplate
               children={<CreatorAnalyticsCom />}
+              sideNavBarIndex="4"
+            />
+          }
+        ></Route>
+        <Route
+          path="/creator/chat"
+          element={
+            <CreatorTemplate
+              children={<ChatCreatorPage />}
               sideNavBarIndex="4"
             />
           }
