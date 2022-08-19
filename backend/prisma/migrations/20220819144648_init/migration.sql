@@ -85,6 +85,7 @@ CREATE TABLE "premiumPackageSubscribe" (
     "packageId" INTEGER NOT NULL,
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
+    "adStatus" INTEGER NOT NULL DEFAULT 1,
     "showAd" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "premiumPackageSubscribe_pkey" PRIMARY KEY ("subscribeId")
