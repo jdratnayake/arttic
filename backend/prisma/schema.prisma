@@ -140,6 +140,7 @@ model premiumPackageSubscribe{
   packageId Int
   startDate DateTime
   endDate DateTime
+  adStatus Int @default(1)
   showAd Boolean @default(true)
 }
 
