@@ -1,54 +1,75 @@
+import { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
+
+import {
+  API_URL,
+  POST_PIC_URL,
+} from "../../constants/globalConstants";
 
 import userImg from "../../images/avatar/avatar-1.jpg";
 import './InputBox.css';
-import {useRef,useState} from 'react';
 
-function InputBox() {
-  const inputRef = useRef(null);
-  const filepickerRef = useRef(null); 
-  const [imageToPost, setImageToPost] = useState(null);
-  const sendPost = e => {
+function InputBox( props ) {
+  const [postImage, setPostImage] = useState("");
+  const [postImageStore, setPostImageStore] = useState("");
+  const [description, setDescription] = useState("");
+
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
+
+  const postImageInput = useRef(null);
+  const postDescription = useRef(null);
+
+  const handlePostImageClick = (event) => {
+    postImageInput.current.click();
+  };
+
+  const handlePostImageChange = (e) => {
+    setPostImage(URL.createObjectURL(e.target.files[0]));
+    setPostImageStore(e.target.files[0]);
+  };
+
+  const uploadPostPicture = async (e) => {
     e.preventDefault();
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        authorization: accessToken,
+        userid: userId,
+        uploadfiletype: "3",
+      },
+    };
+    setDescription(postDescription.current.value);
+    const inputData = new FormData();
 
-    if(!inputRef.current.value) return ;
+    inputData.append("file", postImageStore);
+    inputData.append("desc", description);
+  
+    setPostImage(null);
+    setPostImageStore(null);
+    postDescription.current.value = "";
     
-  }
-  const addimageToPost= e => {
-    const reader =  new FileReader();
-    if (e.target.files[0]){
-      reader.readAsDataURL(e.target.files[0])
-    }
-
-    reader.onload = ( readerEvent) => {
-      setImageToPost(readerEvent.target.result)
-    }
-  }
-
-  const removeImage = () =>{
-    setImageToPost(null);
+    await axios
+      .post(API_URL + "/user/uploadPostImage/", inputData, config)
+      .then((response) => {});
   }
 
   return (
     <div className="mt-6 p-2 inputBox">
       <div className="inputBox-body">
-          <img src={userImg} width={40} height={40} className="rounded-circle"/>
+          <img src={props.profilePic} width={40} height={40} className="rounded-circle"/>
           <form className="inputBox-form">
-            {/*<input ref={inputRef} className="inputBox-input text-muted" type="text" placeholder={`what's on your mind ${"mahesh"} ?`}  />*/}
             <a
               href="#"
               class="inputBox-input text-muted"
               data-bs-toggle="modal"
               data-bs-target="#inputBox"
             >
-                what's on your mind,{"mahesh"} ?
+                what's on your mind,{props.name} ?
             </a>
-            <button hidden type="submit" onClick={sendPost}>Submit</button>
+            <button hidden type="submit">Submit</button>
           </form>
-          {imageToPost && (
-            <div onClick={removeImage} className="post-preview">
-              <img src={imageToPost} className="post-preview-image"/>
-              <p className="m-0 post-preview-p">Remove</p>
-            </div>)}
       </div>
       <div className="d-flex justify-content-evenly p-2 border-top">
           <div className="d-flex align-items-center gap-1 flex-grow justify-content-center p-1 px-4 inputBox-inputIcon">
@@ -107,6 +128,7 @@ function InputBox() {
                             class="form-control"
                             placeholder="Description"
                             id="description"
+                            ref={ postDescription }
                           />
                         </div>
                       </div>
@@ -114,14 +136,31 @@ function InputBox() {
                         <div class="col-md-12">
                           {/* dropzone input */}
                           <div>
-                            <form action="#" class="dropzone mb-3 border-dashed dz-clickable">
-                              <div class="dz-default dz-message">
-                                <button className="dz-button" type="button"><span className="text-muted">Drop files here to upload</span></button>
-                              </div>
+                            <form
+                              class=" mb-3  dz-clickable"
+                            >
+                              <img
+                                src={ postImage }
+                                style={{ width: "41rem", height: "12rem" }}
+                                alt=""
+                              />
+
+                              <input
+                                type="file"
+                                ref={ postImageInput }
+                                onChange={ handlePostImageChange }
+                                style={{ display: "none" }}
+                                placeholder="Insert image or video"
+                              />
+
+                              <button
+                                type="button"
+                                class="btn mt-2  btn-secondary"
+                                onClick={handlePostImageClick}
+                              >
+                                Add Image
+                              </button>
                             </form>
-                            <button type="submit" class="btn btn-secondary">
-                              Change
-                            </button>
                           </div>
                         </div>
                       </div>
@@ -131,10 +170,15 @@ function InputBox() {
               </div>
             </div>
             <div class="modal-footer justify-content-start p-4 pt-2">
-                <button type="submit" class="btn btn-primary">
-                  {" "}
-                  Post
-                </button>
+              <button type="submit" 
+                data-bs-dismiss="modal"
+                aria-label="Close" 
+                class="btn btn-primary" 
+                onClick = { uploadPostPicture } 
+              >
+                {" "}
+                Post
+              </button>
             </div>
           </div>
         </div>

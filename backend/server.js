@@ -12,6 +12,8 @@ const authRouter = require("./routes/authRoutes");
 const settingsRouter = require("./routes/settingsRoutes");
 const userRouter = require("./routes/userRoutes");
 const advertismentRouter = require("./routes/advertismentRoutes");
+const feedRouter = require("./routes/feedRouters");
+const test = require("./routes/testRoutes");
 
 const app = express();
 
@@ -21,10 +23,12 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.json());
 
 //define routes
+app.use("/api/v1/test", test);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/settings", settingsRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/advertisment", advertismentRouter);
+app.use("/api/v1/feed", feedRouter);
 
 // serve static files
 app.use(express.static("assets"));

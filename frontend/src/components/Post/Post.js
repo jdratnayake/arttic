@@ -1,7 +1,7 @@
 import "./Post.css";
 import { useState, useRef } from "react";
 
-function Post(props) {
+function Post( props ) {
   const commentRef = useRef(null);
   const [comment, setComment] = useState("comment here");
   const [iscommentBoxOpen, setCommentBoxOpen] = useState(false);
@@ -33,8 +33,8 @@ function Post(props) {
               <div>
                 <p className="m-0 post-name">{props.name}</p>
                 <p className="m-0 post-timestamp">
-                  {/* {new Date(props.timestamp.toDate()).toLocaleString()} */}
-                  {props.timestamp}
+                  {new Date(props.timestamp.toDate()).toLocaleString()}
+                  {/* {props.timestamp} */}
                 </p>
               </div>
             </div>
@@ -137,7 +137,7 @@ function Post(props) {
             )}
             <div className="inputBox-body">
               <img
-                src={props.userImage}
+                src={props.profilePic}
                 width={40}
                 height={40}
                 className="rounded-circle"
@@ -147,7 +147,7 @@ function Post(props) {
                   ref={commentRef}
                   className="inputBox-input text-muted"
                   type="text"
-                  placeholder={`what's on your mind ${"mahesh"} ?`}
+                  placeholder={`what's on your mind ${props.userName} ?`}
                 />
                 <button
                   className="btn btn-primary"
