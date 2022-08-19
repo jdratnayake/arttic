@@ -3,7 +3,81 @@ const { StatusCodes } = require("http-status-codes");
 const asyncHandler = require("express-async-handler");
 const { Client } = require("pg");
 
-const { post, comment, postReaction, commentReaction , postReport, advertisementReport} = new PrismaClient();
+const { post, advertisement, comment, postReaction, commentReaction , postReport, advertisementReport, commentReport, premiumPackageSubscribe, postSave} = new PrismaClient();
+
+//  upload a favorite post ***************
+const uploadPostSave = asyncHandler(async (req, res) => {
+  const userId = parseInt(req.headers.userid);
+
+  const IsUserSubscribeId =  await premiumPackageSubscribe.findMany({
+    where:{
+      userId:userId,
+      endDate:{
+        gt:new Date()
+      },
+    },
+    select:{
+      userSubscribeId:true
+    }
+  });
+
+  if( IsUserSubscribeId !== undefined || IsUserSubscribeId !== null){
+    const CreatepostReport = await postSave.create({
+      data: {
+        userId: userId,
+        postId: Data.postId,
+      },
+    });
+  }else{
+    
+  }
+  
+  res.status(StatusCodes.CREATED).json(CreatepostReport);
+});
+
+//  retrive  ad ************************************
+const getAds = asyncHandler(async (req, res) => {
+  const userId = parseInt(req.headers.userid);
+  const skip = parseInt(req.headers.skip);
+  const take = parseInt(req.headers.take);
+
+  const isShowAd =  await premiumPackageSubscribe.findMany({
+    where:{
+      userId:userId,
+      endDate:{
+        gt:new Date()
+      },
+      // adStatus:1
+    },
+    // select:{
+    //   adStatus:true
+    // }
+  });
+
+  // if( isShowAd !== undefined || isShowAd !== null){
+  //   const Ads = await advertisement.findMany({
+  //       skip,
+  //       take,
+  //     });
+  // }
+  // console.log(isShowAd);
+  res.json(isShowAd);
+});
+
+//  upload a comment report ***************
+const uploadCommentReport = asyncHandler(async (req, res) => {
+  const userId = parseInt(req.headers.userid);
+  const Data = req.body;
+  const newCommentReport = await commentReport.create({
+    data: {
+      userId: userId,
+      advertisemenreportedCommentIdtId: Data.commentId,
+      reportCategory: Data.category,
+      description: Data.description,
+    },
+  });
+  res.status(StatusCodes.CREATED).json(newCommentReport);
+});
 
 //  upload a post report ***************
 const uploadAdReport = asyncHandler(async (req, res) => {
@@ -117,6 +191,9 @@ const getPosts = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
+  uploadPostSave,
+  getAds,
+  uploadCommentReport,
   uploadAdReport,
   uploadPostReport,
   uploadcommentReaction,
