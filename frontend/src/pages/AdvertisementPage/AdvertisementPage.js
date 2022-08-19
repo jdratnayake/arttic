@@ -14,6 +14,8 @@ import {
 import {
   initialAdvertismentValues,
   advertismentValidation,
+  removeTime,
+  getDifferenceInDays,
 } from "./Validation";
 
 import "./AdvertisementPage.css";
@@ -23,14 +25,22 @@ function AdvertismentPage() {
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
 
-  const removeTime = (date = new Date()) => {
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  };
+  const navigate = useNavigate();
 
-  const getDifferenceInDays = (date1, date2) => {
-    return (date2.getTime() - date1.getTime()) / (1000 * 3600 * 24);
-  };
+  const [picture, setPicture] = useState("");
+  const [description, setDescription] = useState("");
+  const [startDate, setStartDate] = useState(removeTime(new Date()));
+  const [endDate, setEndDate] = useState(removeTime(new Date()));
+  const [price, setPrice] = useState((0).toFixed(2));
 
+  const [errorPicture, setErrorPicture] = useState("");
+  const [errorDescription, setErrorDescription] = useState("");
+  const [startDateError, setStartDateError] = useState("");
+  const [endDateError, setEndDateError] = useState("");
+  const [firstRender, setFirstRender] = useState(true);
+  const [firstRenderForPicture, setFirstRenderForPicture] = useState(true);
+
+  // Validation - START
   const descriptionValidation = () => {
     if (description) {
       setErrorDescription("");
@@ -80,7 +90,7 @@ function AdvertismentPage() {
   };
 
   const pictureValidation = () => {
-    // console.log("Hi");
+    console.log("Hi");
     // console.log(picture.size);
     // console.log(PICTURE_FILE_SIZE);
     if (picture) {
@@ -104,36 +114,7 @@ function AdvertismentPage() {
 
     return true;
   };
-
-  const navigate = useNavigate();
-
-  const [picture, setPicture] = useState("");
-  const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState(removeTime(new Date()));
-  const [endDate, setEndDate] = useState(removeTime(new Date()));
-  const [price, setPrice] = useState((0).toFixed(2));
-
-  const [errorPicture, setErrorPicture] = useState("");
-  const [errorDescription, setErrorDescription] = useState("");
-  const [startDateError, setStartDateError] = useState("");
-  const [endDateError, setEndDateError] = useState("");
-  const [firstRender, setFirstRender] = useState(true);
-  const [firstRenderForPicture, setFirstRenderForPicture] = useState(true);
-
-  // const userInfo = useSelector((state) => state.userInfo);
-  // const { userId, accessToken } = userInfo.user;
-
-  const newAdd = async () => {
-    // const config = {
-    //   headers: {
-    //     "content-type": "multipart/form-data",
-    //     authorization: accessToken,
-    //     userid: userId,
-    //     uploadfiletype: "3",
-    //   },
-    // };
-    // const inputData = new FormData();
-  };
+  // Validation - END
 
   const imgHandler = (e) => {
     const fileImage = document.querySelector(".input-preview__src");
@@ -183,17 +164,12 @@ function AdvertismentPage() {
 
   useEffect(() => {
     if (!firstRenderForPicture) {
-      descriptionValidation();
+      pictureValidation();
     }
     setFirstRenderForPicture(false);
   }, [picture]);
 
   const registerAdvertisment = async (data) => {
-    //
-    // ;
-    // ;
-    // ;
-    // ;
     if (pictureValidation()) {
       if (descriptionValidation()) {
         if (dateValidation1(startDate, 1)) {

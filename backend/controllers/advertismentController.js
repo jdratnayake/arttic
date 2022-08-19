@@ -28,9 +28,9 @@ const newAdvertisment = asyncHandler(async (req, res) => {
   price = parseInt(price).toFixed(2);
   const contentLink = req.file.filename;
 
-  console.log(startDate);
-  console.log(description);
-  console.log(userId);
+  //   console.log(startDate);
+  //   console.log(description);
+  //   console.log(userId);
   //   console.log(req.headers);
 
   const newAdvertisement = await advertisement.create({

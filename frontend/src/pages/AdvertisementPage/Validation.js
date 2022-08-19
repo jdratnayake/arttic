@@ -1,12 +1,8 @@
 import * as Yup from "yup";
-import axios from "axios";
 
-import { API_URL } from "../../constants/globalConstants";
-
+// Formik - START
 export const initialAdvertismentValues = {
   category: "0",
-  addImg: "",
-  description: "",
 };
 
 export const advertismentValidation = Yup.object().shape({
@@ -17,5 +13,15 @@ export const advertismentValidation = Yup.object().shape({
       return "0" !== value;
     }
   ),
-  // addImg: Yup.mixed().required("A file is required"),
 });
+// Formik - END
+
+// Custom validation functions - START
+export const removeTime = (date = new Date()) => {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+};
+
+export const getDifferenceInDays = (date1, date2) => {
+  return (date2.getTime() - date1.getTime()) / (1000 * 3600 * 24);
+};
+// Custom validation functions - END
