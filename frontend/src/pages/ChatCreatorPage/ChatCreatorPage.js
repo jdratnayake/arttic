@@ -39,6 +39,8 @@ function ChatCreatorPage() {
   const send = async () => {
     console.log("12345");
     if (currentMessage !== "") {
+      setMessageList((list) => [...list, currentMessage]);
+
       const messageData = {
         room: room,
         author: username,
@@ -54,6 +56,13 @@ function ChatCreatorPage() {
       setCurrentMessage("");
     }
   };
+
+  useEffect(() => {
+    socket.on("receive_message", (data) => {
+      console.log(data);
+      setMessageList((list) => [...list, data]);
+    });
+  }, [socket]);
 
   return (
     <span className="chatCreatorPage">
@@ -170,6 +179,7 @@ function ChatCreatorPage() {
               <div class="type_msg">
                 <div class="input_msg_write">
                   <input
+                    value={currentMessage}
                     type="text"
                     class="write_msg"
                     placeholder="Type a message"
