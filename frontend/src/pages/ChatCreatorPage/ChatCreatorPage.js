@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import $ from "jquery";
 import io from "socket.io-client";
 
@@ -9,17 +10,19 @@ import "./ChatCreatorPage.css";
 const socket = io.connect("http://localhost:5000");
 
 function ChatCreatorPage() {
-  const [activeChatId, setActiveChatId] = useState("1");
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
+
+  const [username, setUsername] = useState(userId);
+  const [room, setRoom] = useState("1");
   const [currentMessage, setCurrentMessage] = useState("Hello World");
   const [messageList, setMessageList] = useState([]);
-  const [username, setUsername] = useState("2");
-  const [room, setRoom] = useState("1");
 
-  const clickUser = () => {
-    setActiveChatId("2");
-    // console.log("Hi");
-    // console.log(socket);
-  };
+  // const clickUser = () => {
+  //   setActiveChatId("2");
+  //   // console.log("Hi");
+  //   // console.log(socket);
+  // };
 
   useEffect(() => {
     $(".chat_list").click(function (e) {
@@ -80,24 +83,23 @@ function ChatCreatorPage() {
               </div>
               <div class="inbox_chat">
                 <ChatProfileCard
-                  clickFunction={clickUser}
+                  changeRoomFunc={setRoom}
                   imageLink="https://ptetutorials.com/images/user-profile.png"
                   name="Sunil Rajput"
                   date="Dec 28"
                   socket={socket}
+                  room="1"
+                  username={userId}
                 />
 
                 <ChatProfileCard
-                  clickFunction={clickUser}
+                  changeRoomFunc={setRoom}
                   imageLink="https://ptetutorials.com/images/user-profile.png"
                   name="Sunil Rajput"
                   date="Dec 28"
-                />
-                <ChatProfileCard
-                  clickFunction={clickUser}
-                  imageLink="https://ptetutorials.com/images/user-profile.png"
-                  name="Sunil Rajput"
-                  date="Dec 28"
+                  socket={socket}
+                  room="7"
+                  username={userId}
                 />
               </div>
             </div>
@@ -171,6 +173,7 @@ function ChatCreatorPage() {
                     type="text"
                     class="write_msg"
                     placeholder="Type a message"
+                    onChange={(e) => setCurrentMessage(e.target.value)}
                   />
                   <button class="msg_send_btn" type="button" onClick={send}>
                     <i class="bi bi-send"></i>

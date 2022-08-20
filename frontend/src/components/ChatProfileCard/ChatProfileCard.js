@@ -1,22 +1,30 @@
 import { useState } from "react";
 import "./ChatProfileCard.css";
 
-function ChatProfileCard({ clickFunction, imageLink, name, date, socket }) {
-  const [username, setUsername] = useState("2");
-  const [room, setRoom] = useState("1");
-
+function ChatProfileCard({
+  changeRoomFunc,
+  room,
+  username,
+  imageLink,
+  name,
+  date,
+  socket,
+}) {
   const joinRoom = () => {
+    changeRoomFunc(room);
+    console.log(room);
+
     if (username !== "" && room !== "") {
       socket.emit("join_room", room);
       // setShowChat(true);
     }
   };
 
-  const test = () => {
-    console.log("Child");
-    console.log(socket);
-    clickFunction();
-  };
+  // const test = () => {
+  //   console.log("Child");
+  //   console.log(socket);
+  //   clickFunction();
+  // };
 
   return (
     <div class="chat_list" onClick={joinRoom}>
