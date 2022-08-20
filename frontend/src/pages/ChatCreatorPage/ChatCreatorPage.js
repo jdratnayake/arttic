@@ -1,16 +1,24 @@
 import { useEffect, useState } from "react";
 import $ from "jquery";
+import io from "socket.io-client";
 
 import ChatProfileCard from "../../components/ChatProfileCard/ChatProfileCard";
 
 import "./ChatCreatorPage.css";
 
+const socket = io.connect("http://localhost:5000");
+
 function ChatCreatorPage() {
   const [activeChatId, setActiveChatId] = useState("1");
+  const [currentMessage, setCurrentMessage] = useState("Hello World");
+  const [messageList, setMessageList] = useState([]);
+  const [username, setUsername] = useState("2");
+  const [room, setRoom] = useState("1");
 
   const clickUser = () => {
     setActiveChatId("2");
-    console.log("Hi");
+    // console.log("Hi");
+    // console.log(socket);
   };
 
   useEffect(() => {
@@ -24,6 +32,25 @@ function ChatCreatorPage() {
       $(this).addClass("active_chat");
     });
   }, []);
+
+  const send = async () => {
+    console.log("12345");
+    if (currentMessage !== "") {
+      const messageData = {
+        room: room,
+        author: username,
+        message: currentMessage,
+        time:
+          new Date(Date.now()).getHours() +
+          ":" +
+          new Date(Date.now()).getMinutes(),
+      };
+
+      await socket.emit("send_message", messageData);
+      setMessageList((list) => [...list, messageData]);
+      setCurrentMessage("");
+    }
+  };
 
   return (
     <span className="chatCreatorPage">
@@ -57,6 +84,7 @@ function ChatCreatorPage() {
                   imageLink="https://ptetutorials.com/images/user-profile.png"
                   name="Sunil Rajput"
                   date="Dec 28"
+                  socket={socket}
                 />
 
                 <ChatProfileCard
@@ -144,7 +172,7 @@ function ChatCreatorPage() {
                     class="write_msg"
                     placeholder="Type a message"
                   />
-                  <button class="msg_send_btn" type="button">
+                  <button class="msg_send_btn" type="button" onClick={send}>
                     <i class="bi bi-send"></i>
                   </button>
                 </div>

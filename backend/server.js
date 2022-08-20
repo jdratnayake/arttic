@@ -3,6 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
+const http = require("http");
+const { Server } = require("socket.io");
 
 //middlewares
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
@@ -39,7 +41,36 @@ app.use(errorHandler);
 // set the port
 const port = process.env.PORT || 5000;
 
+// Chat - START
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: process.env.CLIENT_URL,
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+
+  socket.on("join_room", (data) => {
+    socket.join(data);
+    console.log(`User with ID: ${socket.id} joined room: ${data}`);
+  });
+
+  socket.on("send_message", (data) => {
+    socket.to(data.room).emit("receive_message", data);
+    console.log(data.message);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User Disconnected", socket.id);
+  });
+});
+// Chart - END
+
 // listen for requests
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is listening on port ${port}...`);
 });

@@ -41,6 +41,7 @@ model user{
   postReports postReport[]
   commentReports commentReport[]
   advertisementReports advertisementReport[]
+  // creatorChats chatHistory[] @relation("creatorUser")
 }
 
 // coverPhoto = 0 indicates there is no cover photo
@@ -335,4 +336,13 @@ model transactionLog{
   otherTableUniqueId Int?
   amount Decimal @db.Decimal(65, 2)
   transactionDate DateTime @default(now())
+}
+
+model chatHistory{
+  messageId Int @id @default(autoincrement())
+  // creator user @relation("creatorUser", fields: [chatId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  chatId Int
+  senderId Int
+  message String @db.VarChar(1024)
+  sendDate DateTime @default(now())
 }
