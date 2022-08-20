@@ -1,6 +1,30 @@
+import { useEffect, useState } from "react";
+import $ from "jquery";
+
+import ChatProfileCard from "../../components/ChatProfileCard/ChatProfileCard";
+
 import "./ChatCreatorPage.css";
 
 function ChatCreatorPage() {
+  const [activeChatId, setActiveChatId] = useState("1");
+
+  const clickUser = () => {
+    setActiveChatId("2");
+    console.log("Hi");
+  };
+
+  useEffect(() => {
+    $(".chat_list").click(function (e) {
+      // console.log("Hi");
+      $(".chat_list").each(function (i) {
+        // console.log(i);
+        $(this).removeClass("active_chat");
+      });
+
+      $(this).addClass("active_chat");
+    });
+  }, []);
+
   return (
     <span className="chatCreatorPage">
       <div class="container">
@@ -28,182 +52,25 @@ function ChatCreatorPage() {
                 </div>
               </div>
               <div class="inbox_chat">
-                <div class="chat_list active_chat">
-                  <div class="chat_people">
-                    <div class="chat_img">
-                      {" "}
-                      <img
-                        src="https://ptetutorials.com/images/user-profile.png"
-                        alt="sunil"
-                      />{" "}
-                    </div>
-                    <div class="chat_ib">
-                      <h5>
-                        Sunil Rajput <span class="chat_date">Dec 25</span>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-                <div class="chat_list active_chat">
-                  <div class="chat_people">
-                    <div class="chat_img">
-                      {" "}
-                      <img
-                        src="https://ptetutorials.com/images/user-profile.png"
-                        alt="sunil"
-                      />{" "}
-                    </div>
-                    <div class="chat_ib">
-                      <h5>
-                        Sunil Rajput <span class="chat_date">Dec 25</span>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-                <div class="chat_list active_chat">
-                  <div class="chat_people">
-                    <div class="chat_img">
-                      {" "}
-                      <img
-                        src="https://ptetutorials.com/images/user-profile.png"
-                        alt="sunil"
-                      />{" "}
-                    </div>
-                    <div class="chat_ib">
-                      <h5>
-                        Sunil Rajput <span class="chat_date">Dec 25</span>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-                <div class="chat_list active_chat">
-                  <div class="chat_people">
-                    <div class="chat_img">
-                      {" "}
-                      <img
-                        src="https://ptetutorials.com/images/user-profile.png"
-                        alt="sunil"
-                      />{" "}
-                    </div>
-                    <div class="chat_ib">
-                      <h5>
-                        Sunil Rajput <span class="chat_date">Dec 25</span>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-                <div class="chat_list active_chat">
-                  <div class="chat_people">
-                    <div class="chat_img">
-                      {" "}
-                      <img
-                        src="https://ptetutorials.com/images/user-profile.png"
-                        alt="sunil"
-                      />{" "}
-                    </div>
-                    <div class="chat_ib">
-                      <h5>
-                        Sunil Rajput <span class="chat_date">Dec 25</span>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-                <div class="chat_list">
-                  <div class="chat_people">
-                    <div class="chat_img">
-                      {" "}
-                      <img
-                        src="https://ptetutorials.com/images/user-profile.png"
-                        alt="sunil"
-                      />{" "}
-                    </div>
-                    <div class="chat_ib">
-                      <h5>
-                        Sunil Rajput <span class="chat_date">Dec 25</span>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-                <div class="chat_list">
-                  <div class="chat_people">
-                    <div class="chat_img">
-                      {" "}
-                      <img
-                        src="https://ptetutorials.com/images/user-profile.png"
-                        alt="sunil"
-                      />{" "}
-                    </div>
-                    <div class="chat_ib">
-                      <h5>
-                        Sunil Rajput <span class="chat_date">Dec 25</span>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-                <div class="chat_list">
-                  <div class="chat_people">
-                    <div class="chat_img">
-                      {" "}
-                      <img
-                        src="https://ptetutorials.com/images/user-profile.png"
-                        alt="sunil"
-                      />{" "}
-                    </div>
-                    <div class="chat_ib">
-                      <h5>
-                        Sunil Rajput <span class="chat_date">Dec 25</span>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-                <div class="chat_list">
-                  <div class="chat_people">
-                    <div class="chat_img">
-                      {" "}
-                      <img
-                        src="https://ptetutorials.com/images/user-profile.png"
-                        alt="sunil"
-                      />{" "}
-                    </div>
-                    <div class="chat_ib">
-                      <h5>
-                        Sunil Rajput <span class="chat_date">Dec 25</span>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-                <div class="chat_list">
-                  <div class="chat_people">
-                    <div class="chat_img">
-                      {" "}
-                      <img
-                        src="https://ptetutorials.com/images/user-profile.png"
-                        alt="sunil"
-                      />{" "}
-                    </div>
-                    <div class="chat_ib">
-                      <h5>
-                        Sunil Rajput <span class="chat_date">Dec 25</span>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-                <div class="chat_list">
-                  <div class="chat_people">
-                    <div class="chat_img">
-                      {" "}
-                      <img
-                        src="https://ptetutorials.com/images/user-profile.png"
-                        alt="sunil"
-                      />{" "}
-                    </div>
-                    <div class="chat_ib">
-                      <h5>
-                        Sunil Rajput <span class="chat_date">Dec 25</span>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
+                <ChatProfileCard
+                  clickFunction={clickUser}
+                  imageLink="https://ptetutorials.com/images/user-profile.png"
+                  name="Sunil Rajput"
+                  date="Dec 28"
+                />
+
+                <ChatProfileCard
+                  clickFunction={clickUser}
+                  imageLink="https://ptetutorials.com/images/user-profile.png"
+                  name="Sunil Rajput"
+                  date="Dec 28"
+                />
+                <ChatProfileCard
+                  clickFunction={clickUser}
+                  imageLink="https://ptetutorials.com/images/user-profile.png"
+                  name="Sunil Rajput"
+                  date="Dec 28"
+                />
               </div>
             </div>
             <div class="mesgs">
