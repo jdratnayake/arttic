@@ -4,6 +4,8 @@ import $ from "jquery";
 import io from "socket.io-client";
 
 import ChatProfileCard from "../../components/ChatProfileCard/ChatProfileCard";
+import IncomingMessage from "../../components/IncomingMessage/IncomingMessage";
+import OutgoingMessage from "../../components/OutgoingMessage/OutgoingMessage";
 
 import "./ChatCreatorPage.css";
 
@@ -14,21 +16,13 @@ function ChatCreatorPage() {
   const { userId, accessToken } = userInfo.user;
 
   const [username, setUsername] = useState(userId);
-  const [room, setRoom] = useState("1");
-  const [currentMessage, setCurrentMessage] = useState("Hello World");
+  const [room, setRoom] = useState("");
+  const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
-
-  // const clickUser = () => {
-  //   setActiveChatId("2");
-  //   // console.log("Hi");
-  //   // console.log(socket);
-  // };
 
   useEffect(() => {
     $(".chat_list").click(function (e) {
-      // console.log("Hi");
       $(".chat_list").each(function (i) {
-        // console.log(i);
         $(this).removeClass("active_chat");
       });
 
@@ -37,9 +31,9 @@ function ChatCreatorPage() {
   }, []);
 
   const send = async () => {
-    console.log("12345");
+    // console.log("12345");
     if (currentMessage !== "") {
-      setMessageList((list) => [...list, currentMessage]);
+      // setMessageList((list) => [...list, currentMessage]);
 
       const messageData = {
         room: room,
@@ -52,17 +46,21 @@ function ChatCreatorPage() {
       };
 
       await socket.emit("send_message", messageData);
-      setMessageList((list) => [...list, messageData]);
-      setCurrentMessage("");
+      // setMessageList((list) => [...list, messageData]);
     }
+    setCurrentMessage("");
   };
 
   useEffect(() => {
-    socket.on("receive_message", (data) => {
+    socket.off("receive_message").on("receive_message", (data) => {
       console.log(data);
       setMessageList((list) => [...list, data]);
     });
   }, [socket]);
+
+  useEffect(() => {
+    console.log(messageList);
+  }, [messageList]);
 
   return (
     <span className="chatCreatorPage">
@@ -114,67 +112,35 @@ function ChatCreatorPage() {
             </div>
             <div class="mesgs">
               <div class="msg_history">
-                <div class="incoming_msg">
-                  <div class="incoming_msg_img">
-                    {" "}
-                    <img
-                      src="https://ptetutorials.com/images/user-profile.png"
-                      alt="sunil"
-                    />{" "}
-                  </div>
-                  <div class="received_msg">
-                    <div class="received_withd_msg">
-                      <p>Test which is a new approach to have all solutions</p>
-                      <span class="time_date"> 11:01 AM | June 9</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="outgoing_msg">
-                  <div class="sent_msg">
-                    <p>Test which is a new approach to have all solutions</p>
-                    <span class="time_date"> 11:01 AM | June 9</span>{" "}
-                  </div>
-                </div>
-                <div class="incoming_msg">
-                  <div class="incoming_msg_img">
-                    {" "}
-                    <img
-                      src="https://ptetutorials.com/images/user-profile.png"
-                      alt="sunil"
-                    />{" "}
-                  </div>
-                  <div class="received_msg">
-                    <div class="received_withd_msg">
-                      <p>Test, which is a new approach to have</p>
-                      <span class="time_date"> 11:01 AM | Yesterday</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="outgoing_msg">
-                  <div class="sent_msg">
-                    <p>Apollo University, Delhi, India Test</p>
-                    <span class="time_date"> 11:01 AM | Today</span>{" "}
-                  </div>
-                </div>
-                <div class="incoming_msg">
-                  <div class="incoming_msg_img">
-                    {" "}
-                    <img
-                      src="https://ptetutorials.com/images/user-profile.png"
-                      alt="sunil"
-                    />{" "}
-                  </div>
-                  <div class="received_msg">
-                    <div class="received_withd_msg">
-                      <p>
-                        We work directly with our designers and suppliers, and
-                        sell direct to you, which means quality, exclusive
-                        products, at a price anyone can afford.
-                      </p>
-                      <span class="time_date"> 11:01 AM | Today</span>
-                    </div>
-                  </div>
-                </div>
+                <IncomingMessage
+                  imageLink="https://ptetutorials.com/images/user-profile.png"
+                  message="Test which is a new approach to have all solutions"
+                  time="11:01 AM | June 9"
+                />
+
+                <OutgoingMessage
+                  message="Test which is a new approach to have all solutions"
+                  time="11:01 AM | June 9"
+                />
+
+                <IncomingMessage
+                  imageLink="https://ptetutorials.com/images/user-profile.png"
+                  message="Test which is a new approach to have all solutions"
+                  time="11:01 AM | June 9"
+                />
+
+                <OutgoingMessage
+                  message="Test which is a new approach to have all solutions"
+                  time="11:01 AM | June 9"
+                />
+
+                <IncomingMessage
+                  imageLink="https://ptetutorials.com/images/user-profile.png"
+                  message="We work directly with our designers and suppliers, and
+                  sell direct to you, which means quality, exclusive
+                  products, at a price anyone can afford."
+                  time="11:01 AM | June 9"
+                />
               </div>
               <div class="type_msg">
                 <div class="input_msg_write">

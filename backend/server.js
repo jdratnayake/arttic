@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const http = require("http");
 const { Server } = require("socket.io");
+const { Client } = require("pg");
 
 //middlewares
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
@@ -59,8 +60,29 @@ io.on("connection", (socket) => {
     console.log(`User with ID: ${socket.id} joined room: ${data}`);
   });
 
-  socket.on("send_message", (data) => {
+  socket.on("send_message", async (data) => {
     socket.to(data.room).emit("receive_message", data);
+
+    const client = new Client({
+      user: process.env.DATABASE_USER,
+      host: process.env.DATABASE_HOST,
+      database: process.env.DATABASE_DATABASE,
+      password: process.env.DATABASE_PASSWORD,
+      port: process.env.DATABASE_PORT,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    await client.connect();
+
+    const result = await client.query(
+      'INSERT INTO "chatHistory" ("chatId","senderId","message") VALUES ($1, $2, $3)',
+      [parseInt(data.room), parseInt(data.author), data.message]
+    );
+
+    await client.end();
+
     console.log(data.message);
   });
 
