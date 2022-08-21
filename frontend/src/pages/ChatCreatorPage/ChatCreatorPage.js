@@ -6,6 +6,7 @@ import io from "socket.io-client";
 import ChatProfileCard from "../../components/ChatProfileCard/ChatProfileCard";
 import IncomingMessage from "../../components/IncomingMessage/IncomingMessage";
 import OutgoingMessage from "../../components/OutgoingMessage/OutgoingMessage";
+import { PROFILE_PIC_URL } from "../../constants/globalConstants";
 
 import "./ChatCreatorPage.css";
 
@@ -119,6 +120,20 @@ function ChatCreatorPage() {
             </div>
             <div class="mesgs">
               <div class="msg_history">
+                {messageList.map((data) =>
+                  data.senderId === userId ? (
+                    <OutgoingMessage
+                      message={data.message}
+                      time="11:01 AM | June 9"
+                    />
+                  ) : (
+                    <IncomingMessage
+                      imageLink={PROFILE_PIC_URL + data.profilePhoto}
+                      message={data.message}
+                      time="11:01 AM | June 9"
+                    />
+                  )
+                )}
                 {/* <IncomingMessage
                   imageLink="https://ptetutorials.com/images/user-profile.png"
                   message="Test which is a new approach to have all solutions"

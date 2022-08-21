@@ -1,4 +1,9 @@
 import { useState } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
+
+import { API_URL } from "../../constants/globalConstants";
+
 import "./ChatProfileCard.css";
 
 function ChatProfileCard({
@@ -11,7 +16,10 @@ function ChatProfileCard({
   date,
   socket,
 }) {
-  const joinRoom = () => {
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
+
+  const joinRoom = async () => {
     changeRoomFunc(room);
     console.log(room);
 
@@ -19,6 +27,20 @@ function ChatProfileCard({
       socket.emit("join_room", room);
       // setShowChat(true);
     }
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/chat/getchathistory/" + room, config)
+      .then((response) => {
+        // setPurchaseData(response.data);
+        // console.log(response);
+        ChangeMessageListFunc(response.data);
+      });
   };
 
   // const test = () => {
