@@ -22,7 +22,7 @@ function ChatProfileCard({
 
   const joinRoom = async () => {
     changeRoomFunc(room);
-    console.log(room);
+    // console.log(room);
 
     if (username !== "" && room !== "") {
       socket.emit("join_room", room);

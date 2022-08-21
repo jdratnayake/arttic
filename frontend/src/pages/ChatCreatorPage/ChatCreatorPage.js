@@ -24,37 +24,6 @@ function ChatCreatorPage() {
   const [messageList, setMessageList] = useState([]);
   const [roomList, setRoomList] = useState([]);
 
-  const getRoomDetails = async () => {
-    const config = {
-      headers: {
-        authorization: accessToken,
-      },
-    };
-
-    await axios
-      .get(API_URL + "/chat/getsubscribecreators/" + userId, config)
-      .then((response) => {
-        setRoomList(response.data);
-      });
-  };
-
-  useEffect(() => {
-    getRoomDetails();
-
-    $(".chat_list").click(function (e) {
-      // console.log("Hi");
-      $(".chat_list").each(function (i) {
-        $(this).removeClass("active_chat");
-      });
-
-      $(this).addClass("active_chat");
-    });
-  }, []);
-
-  const padTo2Digits = (num) => {
-    return String(num).padStart(2, "0");
-  };
-
   const month = [
     "January",
     "February",
@@ -102,22 +71,6 @@ function ChatCreatorPage() {
     setCurrentMessage("");
   };
 
-  useEffect(() => {
-    socket.off("receive_message").on("receive_message", (data) => {
-      console.log(data);
-      setMessageList((list) => [...list, data]);
-    });
-  }, [socket]);
-
-  useEffect(() => {
-    console.log(messageList);
-  }, [messageList]);
-
-  const selectChat = (room) => {
-    console.log("This is");
-    console.log(room);
-  };
-
   const handleKeypress = (e) => {
     // console.log("Hi");
 
@@ -125,6 +78,40 @@ function ChatCreatorPage() {
       send();
     }
   };
+
+  const getRoomDetails = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/chat/getsubscribecreators/" + userId, config)
+      .then((response) => {
+        setRoomList(response.data);
+      });
+  };
+
+  useEffect(() => {
+    getRoomDetails();
+
+    $(".chat_list").click(function (e) {
+      // console.log("Hi");
+      $(".chat_list").each(function (i) {
+        $(this).removeClass("active_chat");
+      });
+
+      $(this).addClass("active_chat");
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.off("receive_message").on("receive_message", (data) => {
+      // console.log(data);
+      setMessageList((list) => [...list, data]);
+    });
+  }, [socket]);
 
   return (
     <span className="chatCreatorPage">
@@ -176,9 +163,9 @@ function ChatCreatorPage() {
               <ScrollToBottom className="msg_history">
                 <div class="msg_history">
                   {/* {console.log(new Date(messageList[0].sendDate))} */}
-                  {messageList.map((data) =>
+                  {/* {messageList.map((data) =>
                     console.log(new Date(data.sendDate))
-                  )}
+                  )} */}
                   {messageList.map((data) =>
                     data.senderId === userId ? (
                       <OutgoingMessage

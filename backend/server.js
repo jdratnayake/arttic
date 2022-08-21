@@ -55,11 +55,11 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
+  // console.log(`User Connected: ${socket.id}`);
 
   socket.on("join_room", (data) => {
     socket.join(data);
-    console.log(`User with ID: ${socket.id} joined room: ${data}`);
+    // console.log(`User with ID: ${socket.id} joined room: ${data}`);
   });
 
   socket.on("send_message", async (data) => {
@@ -94,11 +94,11 @@ io.on("connection", (socket) => {
 
     await client.end();
 
-    console.log(data.message);
+    // console.log(data.message);
   });
 
   socket.on("disconnect", () => {
-    console.log("User Disconnected", socket.id);
+    // console.log("User Disconnected", socket.id);
   });
 });
 // Chart - END
