@@ -217,29 +217,34 @@ const getPosts = asyncHandler(async (req, res) => {
 
   await client.connect();
 
-  const result = await client.query({
+  const posts = await client.query({
     // text: 'SELECT * FROM post WHERE "creatorId" IN (SELECT "creatorId" FROM "userSubscribe" WHERE "followerId"=$1 UNION SELECT $1 AS "creatorId") ORDER BY "postId" DESC LIMIT $2 OFFSET $3',
-    text: `SELECT 
-    posts."postId",posts."creatorId",posts."description",posts."imagevideo",posts."publishedDate",posts."reactCount",posts."commentCount",
-    "commentId",comments."userId" AS "commenterId",comments."description",comments."commentedDate" 
-    FROM 
-      (
-        SELECT * FROM post 
-        WHERE 
-          ("creatorId" IN (SELECT "creatorId" FROM "userSubscribe" WHERE "followerId"=$1 UNION SELECT $1 AS "creatorId") 
-          AND 
-          post."blockedStatus" = false)
-        ORDER BY "postId" DESC LIMIT $2 OFFSET $3 ) as posts
-      LEFT OUTER JOIN 
-        (SELECT * FROM comment WHERE "blockedStatus" = false ) AS comments 
-      ON comments."postId" =  posts."postId" 
-      ORDER BY posts."postId" DESC`,
+    text: `SELECT posts.*,"user"."name","user"."profilePhoto" FROM (
+            SELECT * FROM post 
+             WHERE 
+              ("creatorId" IN (SELECT "creatorId" FROM "userSubscribe" WHERE "followerId"=$1 UNION SELECT $1 AS "creatorId") 
+              AND 
+              post."blockedStatus" = false)) as posts,"user" WHERE ("user"."userId" = posts."creatorId" and "user"."blockedStatus"= false) 
+            ORDER BY "postId" DESC LIMIT $2 OFFSET $3`,
     values: [userId, take, skip],
   });
+
+  // const comment = await client.query({
+  //   // text: 'SELECT * FROM post WHERE "creatorId" IN (SELECT "creatorId" FROM "userSubscribe" WHERE "followerId"=$1 UNION SELECT $1 AS "creatorId") ORDER BY "postId" DESC LIMIT $2 OFFSET $3',
+  //   text: `SELECT comments.*,"user"."name","user"."profilePhoto" FROM 
+  //           (SELECT comment.* 
+  //             FROM comment
+  //             WHERE
+  //             (comment."postId" = $1 and comment."blockedStatus"= false)
+  //           ) as comments
+  //           LEFT OUTER JOIN
+  //           "user" on ("user"."userId" = comments."userId" and "user"."blockedStatus"= false) ORDER BY "commentId" DESC`,
+  //   values: [postId],
+  // });
+
   await client.end();
 
-  // need to update the postView
-  res.json(result.rows);
+  res.json(posts.rows);
 });
 
 module.exports = {
