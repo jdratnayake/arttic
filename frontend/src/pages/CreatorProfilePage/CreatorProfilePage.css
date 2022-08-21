@@ -8710,6 +8710,9 @@
 .creatorProfilePage .d-inline-block {
   display: inline-block !important;
 }
+.creatorProfilePage .bi-bookmark-plus{
+  margin-right: 8px;
+}
 .creatorProfilePage .report-threedots{
   border: none;
   background: #fff;

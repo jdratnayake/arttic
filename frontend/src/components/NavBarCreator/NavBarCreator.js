@@ -136,8 +136,8 @@ function NavBarCreator() {
                     {/* <i class="bi bi-person-circle icon-theme-nav"></i> */}
                     <img
                       src={profilePic}
-                      width={35}
-                      height={35}
+                      width={40}
+                      height={40}
                       className="rounded-circle"
                     ></img>
                   </button>
