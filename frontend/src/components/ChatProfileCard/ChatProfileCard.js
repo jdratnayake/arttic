@@ -3,6 +3,7 @@ import "./ChatProfileCard.css";
 
 function ChatProfileCard({
   changeRoomFunc,
+  ChangeMessageListFunc,
   room,
   username,
   imageLink,

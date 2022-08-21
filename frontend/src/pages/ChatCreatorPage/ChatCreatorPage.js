@@ -62,6 +62,11 @@ function ChatCreatorPage() {
     console.log(messageList);
   }, [messageList]);
 
+  const selectChat = (room) => {
+    console.log("This is");
+    console.log(room);
+  };
+
   return (
     <span className="chatCreatorPage">
       <div class="container">
@@ -91,6 +96,7 @@ function ChatCreatorPage() {
               <div class="inbox_chat">
                 <ChatProfileCard
                   changeRoomFunc={setRoom}
+                  ChangeMessageListFunc={setMessageList}
                   imageLink="https://ptetutorials.com/images/user-profile.png"
                   name="Sunil Rajput"
                   date="Dec 28"
@@ -101,6 +107,7 @@ function ChatCreatorPage() {
 
                 <ChatProfileCard
                   changeRoomFunc={setRoom}
+                  ChangeMessageListFunc={setMessageList}
                   imageLink="https://ptetutorials.com/images/user-profile.png"
                   name="Sunil Rajput"
                   date="Dec 28"
@@ -112,7 +119,7 @@ function ChatCreatorPage() {
             </div>
             <div class="mesgs">
               <div class="msg_history">
-                <IncomingMessage
+                {/* <IncomingMessage
                   imageLink="https://ptetutorials.com/images/user-profile.png"
                   message="Test which is a new approach to have all solutions"
                   time="11:01 AM | June 9"
@@ -140,22 +147,26 @@ function ChatCreatorPage() {
                   sell direct to you, which means quality, exclusive
                   products, at a price anyone can afford."
                   time="11:01 AM | June 9"
-                />
+                /> */}
               </div>
-              <div class="type_msg">
-                <div class="input_msg_write">
-                  <input
-                    value={currentMessage}
-                    type="text"
-                    class="write_msg"
-                    placeholder="Type a message"
-                    onChange={(e) => setCurrentMessage(e.target.value)}
-                  />
-                  <button class="msg_send_btn" type="button" onClick={send}>
-                    <i class="bi bi-send"></i>
-                  </button>
+              {/* {console.log("result")}
+              {console.log(messageList.length)} */}
+              {messageList.length !== 0 && (
+                <div class="type_msg">
+                  <div class="input_msg_write">
+                    <input
+                      value={currentMessage}
+                      type="text"
+                      class="write_msg"
+                      placeholder="Type a message"
+                      onChange={(e) => setCurrentMessage(e.target.value)}
+                    />
+                    <button class="msg_send_btn" type="button" onClick={send}>
+                      <i class="bi bi-send"></i>
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
