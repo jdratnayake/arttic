@@ -63,7 +63,16 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_message", async (data) => {
-    socket.to(data.room).emit("receive_message", data);
+    const inputData = {
+      messageId: 0,
+      chatId: data.room,
+      senderId: data.author,
+      message: data.message,
+      sendDate: "2022-08-20T11:39:17.075Z",
+      profilePhoto: data.profilePhoto,
+    };
+
+    socket.to(data.room).emit("receive_message", inputData);
 
     const client = new Client({
       user: process.env.DATABASE_USER,

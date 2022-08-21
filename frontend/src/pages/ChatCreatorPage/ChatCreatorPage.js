@@ -14,7 +14,7 @@ const socket = io.connect("http://localhost:5000");
 
 function ChatCreatorPage() {
   const userInfo = useSelector((state) => state.userInfo);
-  const { userId, accessToken } = userInfo.user;
+  const { userId, accessToken, profilePhoto } = userInfo.user;
 
   const [username, setUsername] = useState(userId);
   const [room, setRoom] = useState("");
@@ -44,10 +44,21 @@ function ChatCreatorPage() {
           new Date(Date.now()).getHours() +
           ":" +
           new Date(Date.now()).getMinutes(),
+        profilePhoto: profilePhoto,
       };
 
+      const inputData = {
+        messageId: 0,
+        chatId: messageData.room,
+        senderId: messageData.author,
+        message: messageData.message,
+        sendDate: "2022-08-20T11:39:17.075Z",
+        profilePhoto: messageData.profilePhoto,
+      };
+
+      setMessageList((list) => [...list, inputData]);
+
       await socket.emit("send_message", messageData);
-      // setMessageList((list) => [...list, messageData]);
     }
     setCurrentMessage("");
   };
@@ -66,6 +77,14 @@ function ChatCreatorPage() {
   const selectChat = (room) => {
     console.log("This is");
     console.log(room);
+  };
+
+  const handleKeypress = (e) => {
+    // console.log("Hi");
+
+    if (e.key === "Enter") {
+      send();
+    }
   };
 
   return (
@@ -175,6 +194,7 @@ function ChatCreatorPage() {
                       class="write_msg"
                       placeholder="Type a message"
                       onChange={(e) => setCurrentMessage(e.target.value)}
+                      onKeyPress={handleKeypress}
                     />
                     <button class="msg_send_btn" type="button" onClick={send}>
                       <i class="bi bi-send"></i>
