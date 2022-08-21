@@ -33,7 +33,7 @@ function Post( props ) {
               <div>
                 <p className="m-0 post-name">{props.name}</p>
                 <p className="m-0 post-timestamp">
-                  {new Date(props.timestamp.toDate()).toLocaleString()}
+                  {new Date(props.timestamp).toLocaleString()}
                   {/* {props.timestamp} */}
                 </p>
               </div>

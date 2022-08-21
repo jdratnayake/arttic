@@ -19,6 +19,7 @@ function Feed() {
   const [postImage, setPostImage] = useState("");
   const [postImageStore, setPostImageStore] = useState("");
   const [newPost, setNewPost] = useState(null);
+  const [posts, setPost] = useS
 
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
@@ -55,7 +56,7 @@ function Feed() {
     setPostImageStore(null);
    
     console.log(postDescription.current.value)
-    setNewPost(temp);
+    // setNewPost(temp);
 
     await axios
       .post(API_URL + "/feed/uploadPost/", inputData, config)
@@ -67,6 +68,24 @@ function Feed() {
         }
       });
   };
+  
+// *********** get posts ************
+const getPosts = async () => {
+  const config = {
+    headers: {
+      authorization: accessToken,
+    },
+  };
+
+  await axios
+      .get(API_URL + "/user/getuserdetails/" + userId, config)
+      .then((response) => {
+        setUserDetails(response.data);
+        setProfilePicDisplay(PROFILE_PIC_URL + response.data.profilePhoto);
+      });
+
+}
+
 // ****************************************************** get User details *******************************************
   const getUserDetails = async () => {
     const config = {
@@ -98,50 +117,50 @@ function Feed() {
     },
   ];
 
-  const posts = [
-		{
-			id:1,
-			name:"Mahesh Lakshan",
-			message:"owasfbgbaeufbv jubfubauifg jasdguawrbfuawrg",
-			timestamp:"2022-08-16T16:10:24.013Z",
-			image:"https://images.unsplash.com/photo-1508179719682-dbc62681c355?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2378&q=80",
-			userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
-			comments:[
-				{
-					id:5,
-					name:"Roman Reigns",
-					message:"hi,how you doing?",
-					userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
-					timestamp:"2022-08-16T16:10:24.013Z",
-				},
-				{
-					id:6,
-					name:"Dwaine Johnson",
-					message:"whatsup?",
-					userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
-					timestamp:"2022-08-16T16:10:24.013Z",
-				}
-				],
-			likes:20
-		},
-		{
-			id:2,
-			name:"Janitha",
-			message:"owasfbgbaeufbv jubfubauifg jasdguawrbfuawrg",
-			timestamp:"2022-08-16T16:10:24.013Z",
-			userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
-			likes:10
-		},	
-		{
-			id:3,
-			name:"Charith Anjana",
-			message:"owasfbgbaeufbv jubfubauifg jasdguawrbfuawrg",
-			timestamp:"2022-08-16T16:10:24.013Z",
-			image:"https://images.unsplash.com/photo-1566737236500-c8ac43014a67?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-			userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
-			likes:50
-		},
-		];
+  // const posts = [
+	// 	{
+	// 		id:1,
+	// 		name:"Mahesh Lakshan",
+	// 		message:"owasfbgbaeufbv jubfubauifg jasdguawrbfuawrg",
+	// 		timestamp:"2022-08-16T16:10:24.013Z",
+	// 		image:"https://images.unsplash.com/photo-1508179719682-dbc62681c355?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2378&q=80",
+	// 		userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
+	// 		comments:[
+	// 			{
+	// 				id:5,
+	// 				name:"Roman Reigns",
+	// 				message:"hi,how you doing?",
+	// 				userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
+	// 				timestamp:"2022-08-16T16:10:24.013Z",
+	// 			},
+	// 			{
+	// 				id:6,
+	// 				name:"Dwaine Johnson",
+	// 				message:"whatsup?",
+	// 				userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
+	// 				timestamp:"2022-08-16T16:10:24.013Z",
+	// 			}
+	// 			],
+	// 		likes:20
+	// 	},
+	// 	{
+	// 		id:2,
+	// 		name:"Janitha",
+	// 		message:"owasfbgbaeufbv jubfubauifg jasdguawrbfuawrg",
+	// 		timestamp:"2022-08-16T16:10:24.013Z",
+	// 		userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
+	// 		likes:10
+	// 	},	
+	// 	{
+	// 		id:3,
+	// 		name:"Charith Anjana",
+	// 		message:"owasfbgbaeufbv jubfubauifg jasdguawrbfuawrg",
+	// 		timestamp:"2022-08-16T16:10:24.013Z",
+	// 		image:"https://images.unsplash.com/photo-1566737236500-c8ac43014a67?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
+	// 		userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
+	// 		likes:50
+	// 	},
+	// 	];
 
     const temp = {
         blockedStatus: false,
