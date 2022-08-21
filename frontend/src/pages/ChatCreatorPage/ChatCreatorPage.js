@@ -3,11 +3,12 @@ import { useSelector } from "react-redux";
 import $ from "jquery";
 import io from "socket.io-client";
 import ScrollToBottom from "react-scroll-to-bottom";
+import axios from "axios";
 
 import ChatProfileCard from "../../components/ChatProfileCard/ChatProfileCard";
 import IncomingMessage from "../../components/IncomingMessage/IncomingMessage";
 import OutgoingMessage from "../../components/OutgoingMessage/OutgoingMessage";
-import { PROFILE_PIC_URL } from "../../constants/globalConstants";
+import { API_URL, PROFILE_PIC_URL } from "../../constants/globalConstants";
 
 import "./ChatCreatorPage.css";
 
@@ -21,9 +22,27 @@ function ChatCreatorPage() {
   const [room, setRoom] = useState("");
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
+  const [roomList, setRoomList] = useState([]);
+
+  const getRoomDetails = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/chat/getsubscribecreators/" + userId, config)
+      .then((response) => {
+        setRoomList(response.data);
+      });
+  };
 
   useEffect(() => {
+    getRoomDetails();
+
     $(".chat_list").click(function (e) {
+      // console.log("Hi");
       $(".chat_list").each(function (i) {
         $(this).removeClass("active_chat");
       });
@@ -36,7 +55,20 @@ function ChatCreatorPage() {
     return String(num).padStart(2, "0");
   };
 
-  const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const month = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   const send = async () => {
     // console.log("12345");
@@ -121,27 +153,23 @@ function ChatCreatorPage() {
                 </div>
               </div>
               <div class="inbox_chat">
-                <ChatProfileCard
-                  changeRoomFunc={setRoom}
-                  ChangeMessageListFunc={setMessageList}
-                  imageLink="https://ptetutorials.com/images/user-profile.png"
-                  name="Sunil Rajput"
-                  date="Dec 28"
-                  socket={socket}
-                  room="1"
-                  username={userId}
-                />
-
-                <ChatProfileCard
-                  changeRoomFunc={setRoom}
-                  ChangeMessageListFunc={setMessageList}
-                  imageLink="https://ptetutorials.com/images/user-profile.png"
-                  name="Sunil Rajput"
-                  date="Dec 28"
-                  socket={socket}
-                  room="7"
-                  username={userId}
-                />
+                {roomList.map((data) => (
+                  <ChatProfileCard
+                    changeRoomFunc={setRoom}
+                    ChangeMessageListFunc={setMessageList}
+                    imageLink={PROFILE_PIC_URL + data.profilePhoto}
+                    name={data.name}
+                    date={
+                      data.sendDate &&
+                      month[new Date(data.sendDate).getUTCMonth()] +
+                        " " +
+                        new Date(data.sendDate).getDate()
+                    }
+                    socket={socket}
+                    room={data.creatorId}
+                    username={userId}
+                  />
+                ))}
               </div>
             </div>
             <div class="mesgs">
@@ -155,10 +183,16 @@ function ChatCreatorPage() {
                     data.senderId === userId ? (
                       <OutgoingMessage
                         message={data.message}
-                         time={
-                          new Date(data.sendDate).toLocaleTimeString('en-US',{ timeZone: 'Asia/Kolkata',hour: 'numeric', minute: 'numeric' }) +
-                          " | " + month[new Date(data.sendDate).getUTCMonth()] + " "+new Date(data.sendDate).getDate()
-                   
+                        time={
+                          new Date(data.sendDate).toLocaleTimeString("en-US", {
+                            timeZone: "Asia/Kolkata",
+                            hour: "numeric",
+                            minute: "numeric",
+                          }) +
+                          " | " +
+                          month[new Date(data.sendDate).getUTCMonth()] +
+                          " " +
+                          new Date(data.sendDate).getDate()
                         }
                       />
                     ) : (
@@ -166,9 +200,15 @@ function ChatCreatorPage() {
                         imageLink={PROFILE_PIC_URL + data.profilePhoto}
                         message={data.message}
                         time={
-                          new Date(data.sendDate).toLocaleTimeString('en-US',{ timeZone: 'Asia/Kolkata',hour: 'numeric', minute: 'numeric' }) +
-                          " | " + month[new Date(data.sendDate).getUTCMonth()] + " "+new Date(data.sendDate).getDate()
-                   
+                          new Date(data.sendDate).toLocaleTimeString("en-US", {
+                            timeZone: "Asia/Kolkata",
+                            hour: "numeric",
+                            minute: "numeric",
+                          }) +
+                          " | " +
+                          month[new Date(data.sendDate).getUTCMonth()] +
+                          " " +
+                          new Date(data.sendDate).getDate()
                         }
                       />
                     )
@@ -206,7 +246,7 @@ function ChatCreatorPage() {
               </ScrollToBottom>
               {/* {console.log("result")}
               {console.log(messageList.length)} */}
-              {messageList.length !== 0 && (
+              {room && (
                 <div class="type_msg">
                   <div class="input_msg_write">
                     <input

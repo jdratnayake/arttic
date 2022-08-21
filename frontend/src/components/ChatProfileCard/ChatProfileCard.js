@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import $ from "jquery";
 
 import { API_URL } from "../../constants/globalConstants";
 
@@ -48,6 +49,17 @@ function ChatProfileCard({
   //   console.log(socket);
   //   clickFunction();
   // };
+
+  useEffect(() => {
+    $(".chat_list").click(function (e) {
+      // console.log("Hi");
+      $(".chat_list").each(function (i) {
+        $(this).removeClass("active_chat");
+      });
+
+      $(this).addClass("active_chat");
+    });
+  }, []);
 
   return (
     <div class="chat_list" onClick={joinRoom}>
