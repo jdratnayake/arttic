@@ -41,6 +41,7 @@ model user{
   postReports postReport[]
   commentReports commentReport[]
   advertisementReports advertisementReport[]
+  // creatorChats chatHistory[] @relation("creatorUser")
 }
 
 // coverPhoto = 0 indicates there is no cover photo
@@ -88,7 +89,7 @@ model creator{
   pageName String @db.VarChar(64) @unique
   description String? @db.VarChar(512)
   creatorJoinedDate DateTime @default(now())
-  walletAddress String @db.VarChar(64) @default("0") @unique
+  walletAddress String? @db.VarChar(64) @unique
   openSeaUsername String? @db.VarChar(64) @unique
   openSeaStatus Int @default(0)
   followerCount Int @default(0)
@@ -335,4 +336,13 @@ model transactionLog{
   otherTableUniqueId Int?
   amount Decimal @db.Decimal(65, 2)
   transactionDate DateTime @default(now())
+}
+
+model chatHistory{
+  messageId Int @id @default(autoincrement())
+  // creator user @relation("creatorUser", fields: [chatId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  chatId Int
+  senderId Int
+  message String @db.VarChar(1024)
+  sendDate DateTime @default(now())
 }
