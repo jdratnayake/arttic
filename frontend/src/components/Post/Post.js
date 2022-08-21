@@ -73,7 +73,7 @@ function Post( props ) {
             <p className="m-0 post-react-count">{props.likes}</p>
           </div>
           <div className="d-flex align-items-center gap-1 flex-grow justify-content-center p-1 px-4 post-inputIcon">
-            <p className="m-0  post-react-count">30 Comments</p>
+            <p className="m-0  post-react-count">{props.commentCount} Comments</p>
           </div>
         </div>
         <div className="p-1 border-top post-footer d-flex justify-content-between align-items-center rounded-bottom bg-white">
