@@ -11,6 +11,8 @@ import { API_URL } from "../../constants/globalConstants";
 
 import "../FrogotPasswordUsernamePage/FrogetPasswordPage.css";
 import logo from "../../images/logo.png";
+import AuthenticationFooter from "../../components/AuthenticationFooter/AuthenticationFooter";
+
 
 function FrogotPasswordResetPasswordPage() {
   const location = useLocation();
@@ -86,27 +88,9 @@ function FrogotPasswordResetPasswordPage() {
                 </Formik>
               </div>
             </div>
-            <div class="help-privacy-terms">
-              <div class="row">
-                <div class="col">
-                  <a class="link" href="#">
-                    Help
-                  </a>
-                </div>
-                <div class="col">
-                  <a class="link" href="#">
-                    Privacy
-                  </a>
-                </div>
-                <div class="col">
-                  <a class="link" href="#">
-                    Terms
-                  </a>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
+        <AuthenticationFooter/>
       </span>
     </>
   );

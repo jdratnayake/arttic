@@ -154,9 +154,9 @@ function LogInPage() {
                 </Formik>
               </div>
             </div>
-            <AuthenticationFooter/>
           </div>
         </div>
+        <AuthenticationFooter/>
       </span>
     </>
   );

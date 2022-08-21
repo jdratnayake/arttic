@@ -2,15 +2,15 @@ import "./AuthenticationFooter.css";
 
 function AuthenticationFooter(){
     return(
-        <div class="authenticationfooter d-flex justify-content-center">
-            <div class="col-md-6">
+        <div class="authenticationfooter d-flex">
+            <div class="col-md-6 div1">
                 <div class="company-details">
                             "©" 
                             <a class="border-bottom" href="#">Arttic</a>
                             , All Right Reserved
                 </div>
             </div>
-           <div class="col-md-6">
+           <div class="col-md-6 div2">
                 <div class="help-privacy-terms">
                     <div class="col">
                         <a class="link" href="#">About us</a>

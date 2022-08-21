@@ -11,6 +11,9 @@
     font-size: x-large;
     padding-right: 20px;
     color: #8427E2;
+    padding-top: 0.32422rem;
+    padding-bottom: 0.32422rem;
+    top: 50%;
   }
   .NavBarCreator .sebr {
     padding-left: 10%;

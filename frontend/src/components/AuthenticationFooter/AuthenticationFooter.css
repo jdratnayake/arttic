@@ -2,6 +2,7 @@
     color: grey;
     font-size: 14px;
     margin-top: 20px;
+    overflow-x: hidden ;
 }
 .authenticationfooter a{
     color: grey;
@@ -11,8 +12,14 @@
     flex-direction: row;
     flex-wrap: nowrap;
     align-content: center;
-    justify-content: space-around;
+    /* justify-content: center; */
     align-items: center;
+}
+.authenticationfooter .div1{
+   justify-content: flex-start;
+}
+.authenticationfooter .div2{
+    justify-content: flex-end;
 }
 .authenticationfooter .help-privacy-terms{
     display: flex;
@@ -31,11 +38,17 @@
 .help-privacy-terms .link:hover{
     color: var( --black);
 }
-@media only screen and (max-width:1000px){
+.authenticationfooter .company-details{
+    margin-right: 70px;
+}
+.authenticationfooter .help-privacy-terms{
+    margin-right: 0%;
+}
+/* @media only screen and (max-width:1000px){
     .help-privacy-terms{
         margin-top: -20px;
     }
-}
+} */
 @media only screen and (max-width:514px){
     .authenticationfooter{
         flex-direction: column;
@@ -46,5 +59,8 @@
     }
     .help-privacy-terms .col{
         margin-left: 5px;
+    }
+    .authenticationfooter .help-privacy-terms{
+        margin-right: -8%;
     }
 }

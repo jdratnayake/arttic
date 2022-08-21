@@ -9,8 +9,8 @@ import logo from "../../images/logo.png";
 function SignUpOptionPage() {
   return (
     <>
-      <NavBarSignUp/>
       <span class="SignUpOptionPage">
+      <NavBarSignUp/>
         <div class="row row-1">
           <div class="row d-flex justify-content-center ptop">
             <div class="col-4">

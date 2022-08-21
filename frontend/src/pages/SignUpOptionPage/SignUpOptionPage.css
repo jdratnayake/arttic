@@ -1,5 +1,5 @@
 .SignUpOptionPage{
-    overflow-x: hidden;
+    overflow: hidden;
 }
 .SignUpOptionPage .ptop{
     padding-top: 13px;
@@ -11,12 +11,12 @@
 .SignUpOptionPage .def{
     font-weight: 500;
 }
-.SignUpOptionPage .authenticationfooter .company-details{
+/* .SignUpOptionPage .authenticationfooter .company-details{
     margin-right: 70px;
-}
-.SignUpOptionPage .authenticationfooter .help-privacy-terms{
+} */
+/* .SignUpOptionPage .authenticationfooter .help-privacy-terms{
     margin-right: 23%;
-}
+} */
 @media only screen and (max-width:768px){
     .SignUpOptionPage .col-3{
         flex: 1 0 auto;

@@ -1,6 +1,6 @@
 import "./ExternalSignUpPasswordPage.css"
 import logo from '../../images/logo.png'
-
+import AuthenticationFooter from "../../components/AuthenticationFooter/AuthenticationFooter";
 
 function ExternalSignUpPasswordPage() {
     return (
@@ -49,21 +49,9 @@ function ExternalSignUpPasswordPage() {
                                 </div>
                             </div>
                         </div>
-                        <div class="help-privacy-terms">
-                            <div class="row">
-                                <div class="col">
-                                    <a class="link" href="#">Help</a>
-                                </div>
-                                <div class="col">
-                                    <a class="link" href="#">Privacy</a>
-                                </div>
-                                <div class="col">
-                                    <a class="link" href="#">Terms</a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
+                <AuthenticationFooter/>
             </span> 
         </>
     );
