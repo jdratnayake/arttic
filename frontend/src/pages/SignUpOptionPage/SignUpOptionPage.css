@@ -11,6 +11,10 @@
 .SignUpOptionPage .def{
     font-weight: 500;
 }
+.SignUpOptionPage .authenticationfooter{
+    position: relative;
+    /* margin-top: 20px; */
+}
 /* .SignUpOptionPage .authenticationfooter .company-details{
     margin-right: 70px;
 } */

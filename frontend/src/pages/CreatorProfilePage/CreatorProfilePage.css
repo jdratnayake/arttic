@@ -77,6 +77,9 @@
   background: url(../../images/background/8.jpg) no-repeat;
   background-size: cover;
 }
+.creatorProfilePage .post-header{
+  margin-top: 0 !important;
+}
 
 /*------------------------------------------------------------*/
 
@@ -9542,9 +9545,9 @@
 .creatorProfilePage .mt-2 {
   margin-top: 0.5rem !important;
 }
-.creatorProfilePage .mt-3 {
+/* .creatorProfilePage .mt-3 {
   margin-top: 1rem !important;
-}
+} */
 .creatorProfilePage .mt-4 {
   margin-top: 1.25rem !important;
 }

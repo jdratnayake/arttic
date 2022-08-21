@@ -1,6 +1,7 @@
 .WalletConnectPage .wallet-card{
     flex-direction: column;
     align-items: center;
+    margin-top: 4%;
 }
 .WalletConnectPage .icon{
     padding-right: 15px;
@@ -62,6 +63,9 @@
 }
 .WalletConnectPage .alert-danger{
     display: none;
+}
+.WalletConnectPage .authenticationFooter{
+    bottom: 0;
 }
 @media only screen and (max-width:768px){
     .WalletConnectPage .col-4{
