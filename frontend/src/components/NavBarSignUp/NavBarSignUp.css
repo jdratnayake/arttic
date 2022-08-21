@@ -23,6 +23,11 @@
     top: 50%;
     transform: translate(-50%, -50%);
 }
+.navbar-signup .navbar-collapse {
+    display: flex!important;
+    flex-basis: auto;
+    justify-content: flex-end;
+}
 
 /*
 updated media 

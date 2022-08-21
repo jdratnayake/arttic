@@ -12,6 +12,8 @@ import { API_URL } from "../../constants/globalConstants";
 
 import "./FrogetPasswordPage.css";
 import logo from "../../images/logo.png";
+import AuthenticationFooter from "../../components/AuthenticationFooter/AuthenticationFooter";
+
 
 function FrogotPasswordUsernamePage() {
   const navigate = useNavigate();
@@ -92,27 +94,9 @@ function FrogotPasswordUsernamePage() {
                 </Formik>
               </div>
             </div>
-            <div className="help-privacy-terms">
-              <div className="row">
-                <div className="col">
-                  <a className="link" href="#">
-                    Help
-                  </a>
-                </div>
-                <div className="col">
-                  <a className="link" href="#">
-                    Privacy
-                  </a>
-                </div>
-                <div className="col">
-                  <a className="link" href="#">
-                    Terms
-                  </a>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
+        <AuthenticationFooter/>
       </span>
     </>
   );

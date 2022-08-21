@@ -74,7 +74,7 @@ function CreatorAnalyticsPosts() {
                 },
             },
             title: {
-                text: "No Of Posts",
+                text: "No of Posts",
                 align: "left",
                 style: { fontFamily: "Poppins", },
             },
@@ -94,18 +94,18 @@ function CreatorAnalyticsPosts() {
                 <div class="col">
                     {/* card */}
                     {/* card body */}
-                    <div class="card-header p-4 bg-white">
+                    {/* <div class="card-header p-4 bg-white">
                         <h4 class="mb-0">Post Analysis</h4>
-                    </div>
+                    </div> */}
 
                     <br />
 
                     {/* Analytics Cards */}
-                    <div class="row d-flex justify-content-center">
+                    <div class="row d-flex analytics-card-chart">
                         <div class="col-4 mb-6">
                             <AnalyticsCard
-                                cardHeading="No Of Posts"
-                                iconName="bi bi-person-plus-fill"
+                                cardHeading="No of Posts"
+                                iconName="bi bi-postcard-fill"
                             />
                         </div>
                         <div class="col-6 mb-6">
@@ -128,7 +128,7 @@ function CreatorAnalyticsPosts() {
                                     <tr>
                                         <th>No</th>
                                         <th>Date</th>
-                                        <th>Img</th>
+                                        <th>Post</th>
                                         <th>Description</th>
                                         <th></th>
                                     </tr>

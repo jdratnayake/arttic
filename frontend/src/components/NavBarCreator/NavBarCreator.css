@@ -1,6 +1,10 @@
 .NavBarCreator .navbar-end {
     margin: 10px 10px 10px 20px;
   }
+.NavBarCreator .navbar-item{
+    display: flex;
+    align-items: center;
+}
   .NavBarCreator .nav-bar-btn {
     margin-right: 10px;
   }
@@ -11,6 +15,9 @@
     font-size: x-large;
     padding-right: 20px;
     color: #8427E2;
+    padding-top: 0.32422rem;
+    padding-bottom: 0.32422rem;
+    top: 50%;
   }
   .NavBarCreator .sebr {
     padding-left: 10%;

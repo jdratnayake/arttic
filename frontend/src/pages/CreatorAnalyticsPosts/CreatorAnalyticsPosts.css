@@ -97,3 +97,6 @@
 .CreatorAnalytics .p-4 {
   padding: 1.25rem !important;
 }
+.CreatorAnalytics .analytics-card-chart{
+  justify-content: space-between;
+}
