@@ -5,7 +5,7 @@ function OutgoingMessage({ message, time }) {
     <div class="outgoing_msg">
       <div class="sent_msg">
         <p>{message}</p>
-        <span class="time_date"> 11:01 AM | June 9</span>{" "}
+        <span class="time_date"> {time}</span>{" "}
       </div>
     </div>
   );

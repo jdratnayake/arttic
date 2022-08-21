@@ -10,7 +10,7 @@ function IncomingMessage({ imageLink, message, time }) {
       <div class="received_msg">
         <div class="received_withd_msg">
           <p>{message}</p>
-          <span class="time_date"> 11:01 AM | June 9</span>
+          <span class="time_date"> {time}</span>
           {/* <span class="time_date"> 11:01 AM | June 9</span> */}
         </div>
       </div>

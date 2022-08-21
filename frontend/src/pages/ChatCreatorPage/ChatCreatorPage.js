@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import $ from "jquery";
 import io from "socket.io-client";
+import ScrollToBottom from "react-scroll-to-bottom";
 
 import ChatProfileCard from "../../components/ChatProfileCard/ChatProfileCard";
 import IncomingMessage from "../../components/IncomingMessage/IncomingMessage";
@@ -30,6 +31,12 @@ function ChatCreatorPage() {
       $(this).addClass("active_chat");
     });
   }, []);
+
+  const padTo2Digits = (num) => {
+    return String(num).padStart(2, "0");
+  };
+
+  const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
   const send = async () => {
     // console.log("12345");
@@ -138,22 +145,35 @@ function ChatCreatorPage() {
               </div>
             </div>
             <div class="mesgs">
-              <div class="msg_history">
-                {messageList.map((data) =>
-                  data.senderId === userId ? (
-                    <OutgoingMessage
-                      message={data.message}
-                      time="11:01 AM | June 9"
-                    />
-                  ) : (
-                    <IncomingMessage
-                      imageLink={PROFILE_PIC_URL + data.profilePhoto}
-                      message={data.message}
-                      time="11:01 AM | June 9"
-                    />
-                  )
-                )}
-                {/* <IncomingMessage
+              <ScrollToBottom className="msg_history">
+                <div class="msg_history">
+                  {/* {console.log(new Date(messageList[0].sendDate))} */}
+                  {messageList.map((data) =>
+                    console.log(new Date(data.sendDate))
+                  )}
+                  {messageList.map((data) =>
+                    data.senderId === userId ? (
+                      <OutgoingMessage
+                        message={data.message}
+                         time={
+                          new Date(data.sendDate).toLocaleTimeString('en-US',{ timeZone: 'Asia/Kolkata',hour: 'numeric', minute: 'numeric' }) +
+                          " | " + month[new Date(data.sendDate).getUTCMonth()] + " "+new Date(data.sendDate).getDate()
+                   
+                        }
+                      />
+                    ) : (
+                      <IncomingMessage
+                        imageLink={PROFILE_PIC_URL + data.profilePhoto}
+                        message={data.message}
+                        time={
+                          new Date(data.sendDate).toLocaleTimeString('en-US',{ timeZone: 'Asia/Kolkata',hour: 'numeric', minute: 'numeric' }) +
+                          " | " + month[new Date(data.sendDate).getUTCMonth()] + " "+new Date(data.sendDate).getDate()
+                   
+                        }
+                      />
+                    )
+                  )}
+                  {/* <IncomingMessage
                   imageLink="https://ptetutorials.com/images/user-profile.png"
                   message="Test which is a new approach to have all solutions"
                   time="11:01 AM | June 9"
@@ -182,7 +202,8 @@ function ChatCreatorPage() {
                   products, at a price anyone can afford."
                   time="11:01 AM | June 9"
                 /> */}
-              </div>
+                </div>{" "}
+              </ScrollToBottom>
               {/* {console.log("result")}
               {console.log(messageList.length)} */}
               {messageList.length !== 0 && (
