@@ -75,7 +75,7 @@ function ForgotPasswordOTP() {
                 </Link>
               </div>
 
-              <h3 className="title">OTP Verification</h3>
+              <h4 className="title text-center theme">OTP Verification</h4>
               <p className="sub-title">
                 Enter the OTP you received to
                 <span className="phone-number">{username}</span>
@@ -120,7 +120,6 @@ function ForgotPasswordOTP() {
               <div className="container">
                 <button className="resend" onClick={generateOtp}>
                   Resend OTP
-                  <i className="fa fa-caret-right"></i>
                 </button>
               </div>
             </div>
