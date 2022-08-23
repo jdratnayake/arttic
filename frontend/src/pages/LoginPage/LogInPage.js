@@ -32,7 +32,11 @@ function LogInPage() {
         setUsernameError("");
         setPasswordError("");
 
-        if (user.type === 3) {
+        if (user.type === 1) {
+          navigate("/admin0/dashboard");
+        } else if (user.type === 2) {
+          //redirect to the follower page
+        } else if (user.type === 3) {
           if (user.openSeaStatus === 1 || user.openSeaStatus === 2) {
             navigate("/creatorprofile");
           } else if (user.openSeaStatus === 0) {
@@ -156,7 +160,7 @@ function LogInPage() {
             </div>
           </div>
         </div>
-        <AuthenticationFooter/>
+        <AuthenticationFooter />
       </span>
     </>
   );

@@ -45,7 +45,7 @@ function SideNavBarAdmin0({ sideNavBarIndex }) {
             <li
               className="sideNavBarSectionHighlight"
               onClick={() => {
-                navigate("/admin0/userdetails");
+                navigate("/admin0/accountmanage");
               }}
             >
               <a>
