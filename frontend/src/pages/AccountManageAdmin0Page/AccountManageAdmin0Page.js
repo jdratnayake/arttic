@@ -3,9 +3,16 @@ import { Link } from "react-router-dom";
 import Chart from "react-apexcharts";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import $ from "jquery";
 
 import { API_URL, PROFILE_PIC_URL } from "../../constants/globalConstants";
 import SummaryCard from "../../components/SummaryCard/SummaryCard";
+import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
+import {
+  initialRegistrationValues,
+  registrationValidation,
+} from "./Validation";
 
 import "./AccountManageAdmin0Page.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -33,6 +40,15 @@ function AccountManageAdmin0Page() {
   useEffect(() => {
     getDetails();
   }, []);
+
+  const registerAdmin = async (data) => {
+    const inputData = {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+    };
+    console.log(inputData);
+  };
 
   const lineChartValues1 = {
     options: {
@@ -398,62 +414,6 @@ function AccountManageAdmin0Page() {
                         </td>
                       </tr>
                     ))}
-                    {/* <tr>
-                      <td className="idStyle">1</td>
-                      <td>
-                        <img src="https://drive.google.com/uc?export=view&id=1IFgWbb4Pgt3jNVIuQezHHpSl6sseO0Zk" />
-                      </td>
-                      <td>janitharatnayake@gmail.com</td>
-                      <td> 2022/01/01 03:35 PM</td>
-                      <td class="amount">
-                        <Link
-                          className="btn btn-secondary"
-                          to={"/admin1/reportUser/" + 100}
-                          target="_blank"
-                        >
-                          {" "}
-                          View{" "}
-                        </Link>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="idStyle">2</td>
-                      <td>
-                        <img src="https://drive.google.com/uc?export=view&id=1f4xC0G0UeGqQxrjbKt12C0gP3RGkA8y3" />
-                      </td>
-                      <td>pradeepratnayake@gmail.com</td>
-                      <td> 2022/01/01 03:35 PM</td>
-
-                      <td class="amount">
-                        <Link
-                          className="btn btn-secondary"
-                          to={"/admin1/reportUser/" + 105}
-                          target="_blank"
-                        >
-                          {" "}
-                          View{" "}
-                        </Link>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td className="idStyle">3</td>
-                      <td>
-                        <img src="https://drive.google.com/uc?export=view&id=1KOZ9Yt9tc5qgiYjTdu9D-pnURTlRj_NU" />
-                      </td>
-                      <td>dulitharatnayake@gmail.com</td>
-                      <td> 2022/01/01 03:35 PM</td>
-                      <td class="amount">
-                        <Link
-                          className="btn btn-secondary"
-                          to={"/admin1/reportUser/" + 10}
-                          target="_blank"
-                        >
-                          {" "}
-                          View{" "}
-                        </Link>
-                      </td>
-                    </tr> */}
                   </tbody>
                 </table>
               </div>
@@ -474,7 +434,7 @@ function AccountManageAdmin0Page() {
             <div class="modal-header p-3">
               <div>
                 <h4 class="mb-0" id="planModalLabel">
-                  Complain
+                  Add New Admin
                 </h4>
               </div>
               <button
@@ -485,38 +445,49 @@ function AccountManageAdmin0Page() {
               ></button>
             </div>
             <div class="modal-body p-4">
-              <div class="card border shadow-none border-bottom p-4">
-                <div class="row">
-                  <div class="col-12 mb-3">
-                    <h6 class="text-uppercase fs-6 ls-2">Username</h6>
-                    <p class="mb-1 fs-8">sdfsdfsfd</p>
-                  </div>
-                  <div class="col-6 mb-3">
-                    <h6 class="text-uppercase fs-6 ls-2">Date </h6>
-                    <p class="mb-1 fs-8">sdsdf</p>
-                  </div>
-                  <div class="col-6 mb-3">
-                    <h6 class="text-uppercase fs-6 ls-2">Category </h6>
-                    <p class="mb-1 fs-8">sdfsdf</p>
-                  </div>
-                  <div class="col-12 mb-3">
-                    <h6 class="text-uppercase fs-6 ls-2">Description</h6>
-                    <p class="mb-1 fs-8">sdfsdfs</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer justify-content-start p-4 pt-2">
-              <button type="button" class="btn btn-danger">
-                Add
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
+              <Formik
+                initialValues={initialRegistrationValues}
+                validationSchema={registrationValidation}
+                onSubmit={registerAdmin}
               >
-                Close
-              </button>
+                {({ isSubmitting }) => (
+                  <Form>
+                    <AuthenticationField
+                      label="Name"
+                      type="text"
+                      id="name"
+                      name="name"
+                      placeholder="Enter Name"
+                    />
+
+                    <AuthenticationField
+                      label="Email"
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="Enter Email"
+                    />
+
+                    <AuthenticationField
+                      label="Password"
+                      type="text"
+                      id="password"
+                      name="password"
+                      placeholder="Enter Password"
+                    />
+
+                    <div class="col-12">
+                      <button
+                        type="submit"
+                        class="btn btn-primary d-grid"
+                        disabled={isSubmitting}
+                      >
+                        Save Address
+                      </button>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
             </div>
           </div>
         </div>
