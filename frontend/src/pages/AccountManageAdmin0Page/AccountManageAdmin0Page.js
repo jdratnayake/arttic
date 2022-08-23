@@ -1,13 +1,39 @@
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
 import Chart from "react-apexcharts";
-import "react-datepicker/dist/react-datepicker.css";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
+import { API_URL, PROFILE_PIC_URL } from "../../constants/globalConstants";
 import SummaryCard from "../../components/SummaryCard/SummaryCard";
 
 import "./AccountManageAdmin0Page.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 function AccountManageAdmin0Page() {
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
+
+  const [admin0List, setAdmin0List] = useState([]);
+
+  const getDetails = async () => {
+    console.log("admin0");
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios.get(API_URL + "/accountmanagement", config).then((response) => {
+      setAdmin0List(response.data.admin1);
+      console.log(response.data);
+    });
+  };
+
+  useEffect(() => {
+    getDetails();
+  }, []);
+
   const lineChartValues1 = {
     options: {
       chart: {
@@ -334,12 +360,45 @@ function AccountManageAdmin0Page() {
                       <th>No</th>
                       <th>Image</th>
                       <th>Email</th>
-                      <th>Joined Date</th>
+                      <th>Joined</th>
+                      <th></th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    {admin0List.map((data, i) => (
+                      <tr key={data.userId}>
+                        <td className="idStyle">{i + 1}</td>
+                        <td>
+                          <img src={PROFILE_PIC_URL + data.profilePhoto} />
+                        </td>
+                        <td>{data.email}</td>
+                        <td>
+                          {" "}
+                          {new Date(data.joinedDate).toLocaleDateString()}
+                        </td>
+                        <td>
+                          {data.blockedStatus ? (
+                            <span class="status status-pending">Blocked</span>
+                          ) : (
+                            <td>
+                              <span class="status status-paid">Active</span>
+                            </td>
+                          )}
+                        </td>
+                        <td class="amount">
+                          <Link
+                            className="btn btn-secondary"
+                            to={"/admin1/reportUser/" + 100}
+                            target="_blank"
+                          >
+                            {" "}
+                            View{" "}
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                    {/* <tr>
                       <td className="idStyle">1</td>
                       <td>
                         <img src="https://drive.google.com/uc?export=view&id=1IFgWbb4Pgt3jNVIuQezHHpSl6sseO0Zk" />
@@ -394,7 +453,7 @@ function AccountManageAdmin0Page() {
                           View{" "}
                         </Link>
                       </td>
-                    </tr>
+                    </tr> */}
                   </tbody>
                 </table>
               </div>
