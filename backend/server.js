@@ -18,6 +18,7 @@ const advertismentRouter = require("./routes/advertismentRoutes");
 const feedRouter = require("./routes/feedRouters");
 const test = require("./routes/testRoutes");
 const chatRouter = require("./routes/chatRoutes");
+const accountManagementRouter = require("./routes/accountManagementRoutes");
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/advertisment", advertismentRouter);
 app.use("/api/v1/feed", feedRouter);
 app.use("/api/v1/chat", chatRouter);
+app.use("/api/v1/accountmanagement", accountManagementRouter);
 
 // serve static files
 app.use(express.static("assets"));
