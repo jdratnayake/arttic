@@ -6,9 +6,16 @@ const { StatusCodes } = require("http-status-codes");
 
 const { user, followerCreator } = new PrismaClient();
 
+const { generateOtp, otpEmail } = require("./helpers/accountManagementHelper");
+
 const initial = asyncHandler(async (req, res) => {
   //   Admin1 details
   const admin1 = await user.findMany({
+    orderBy: [
+      {
+        userId: "desc",
+      },
+    ],
     where: {
       type: 2,
     },
@@ -36,8 +43,6 @@ const registerAdmin = asyncHandler(async (req, res) => {
     },
   });
 
-  // 3 = creator
-  // 4 = follower
   if (emailStatus) {
     res.json({ error: "Email Already Registered! Please Login" });
   } else {
@@ -52,6 +57,39 @@ const registerAdmin = asyncHandler(async (req, res) => {
           password: hash,
         },
       });
+
+      //email - START
+      const htmlEmail = otpEmail(name, email, password);
+
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        secure: false,
+        auth: {
+          user: "alec.software.cooperation@gmail.com",
+          pass: "lbwzzqktlqaicniu",
+        },
+        tls: {
+          rejectUnauthorized: false,
+        },
+      });
+
+      const mailOptions = {
+        from: "alec.software.cooperation@gmail.com",
+        to: email,
+        replyTo: email,
+        subject: "Admin account creation - ARTTIC",
+        html: htmlEmail,
+      };
+
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.log("error in sending mail", err);
+          return res.status(400).json({
+            message: `error in sending the mail${err}`,
+          });
+        }
+      });
+      //email test - END
 
       res.status(StatusCodes.CREATED).json(newAdmin);
     });

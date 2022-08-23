@@ -41,13 +41,28 @@ function AccountManageAdmin0Page() {
     getDetails();
   }, []);
 
-  const registerAdmin = async (data) => {
+  const registerAdmin = async (data, { resetForm }) => {
     const inputData = {
       name: data.name,
       email: data.email,
       password: data.password,
     };
     console.log(inputData);
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .post(API_URL + "/accountmanagement/registeradmin/", inputData, config)
+      .then((response) => {
+        setAdmin0List((current) => [response.data, ...current]);
+      });
+
+    $("#btn-close-form").click();
+    resetForm();
   };
 
   const lineChartValues1 = {
@@ -442,6 +457,7 @@ function AccountManageAdmin0Page() {
                 class="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                id="btn-close-form"
               ></button>
             </div>
             <div class="modal-body p-4">
