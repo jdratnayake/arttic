@@ -39,7 +39,7 @@ function SideNavBar({ sideNavBarIndex }) {
               }}
             >
               <a>
-                <i className="bi bi-rss icon-theme"></i>Feed
+                <i className="bi bi-rss-fill icon-theme"></i>Feed
               </a>
             </li>
             <li className="sideNavBarSectionHighlight">
@@ -49,12 +49,12 @@ function SideNavBar({ sideNavBarIndex }) {
             </li>
             <li className="sideNavBarSectionHighlight">
               <a>
-                <i className="bi bi-star icon-theme"></i>Favourits
+                <i className="bi bi-star-fill icon-theme"></i>Favourits
               </a>
             </li>
             <li className="sideNavBarSectionHighlight">
               <a>
-                <i className="bi bi-chat-dots icon-theme"></i>Chat
+                <i className="bi bi-chat-left-dots-fill icon-theme"></i>Chat
               </a>
             </li>
             <li
@@ -64,7 +64,7 @@ function SideNavBar({ sideNavBarIndex }) {
               }}
             >
               <a>
-                <i className="bi bi-graph-up icon-theme"></i>Statics
+                <i className="bi bi-bar-chart-fill icon-theme"></i>Analytics
               </a>
             </li>
             <li
@@ -74,7 +74,7 @@ function SideNavBar({ sideNavBarIndex }) {
               }}
             >
               <a>
-                <i className="bi bi-gear icon-theme"></i>Settings
+                <i className="bi bi-gear-fill icon-theme"></i>Settings
               </a>
             </li>
             <li
@@ -93,7 +93,7 @@ function SideNavBar({ sideNavBarIndex }) {
           <div className="premium">
             <div className="content-pre">
               <p className="para">
-                Upgrade to premimum <i className="bi bi-gem icon-pre"></i>
+                <a>Upgrade to premimum <i className="bi bi-gem icon-pre"></i></a>
               </p>
               <p className="para">
                 small description on to have interest on premium package

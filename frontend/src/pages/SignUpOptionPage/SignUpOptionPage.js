@@ -9,33 +9,37 @@ import logo from "../../images/logo.png";
 function SignUpOptionPage() {
   return (
     <>
-      <NavBarSignUp/>
       <span class="SignUpOptionPage">
+      <NavBarSignUp/>
         <div class="row row-1">
           <div class="row d-flex justify-content-center ptop">
-            <div class="col-3">
+            <div class="col-4">
               <SignUpOptionCard
                 title="View more details with a one click"
-                btn="Sign Up on Arttic"
+                btn="Sign Up as Follower"
                 av="follower"
-                p1="You can have latest updates regarding the NFTs"
-                p2="Get access to view the posts, images and trail videos."
+                def1="If you only want to seek out NFT information, the best way is to sign up as a follower on Arttic."
+                def2="You can have the following benefits as a follower."
+                p1="Stay informed about the latest updates related to NFT"
+                p2="Get access to view the posts, images and videos"
                 p3="Subscribe your favourite creators and communicate with them"
                 p4="Subscribe the premium package to possess more benefits"
                 p5="Upgrade the account as a creator"
                 link="/signup/follower"
               />
             </div>
-            <div class="col-3">
+            <div class="col-4">
               <SignUpOptionCard
                 title="Share your NFT stories with the global "
-                btn="Sign Up as Creator on Arttic"
+                btn="Sign Up as Creator"
                 av="creator"
-                p1="You have all the benefits that follower has "
-                p2="Get access to  share the posts, images and trail videos."
-                p3="Great oppurtunity to communicate with your fans"
-                p4="Publish advertisements and be a  revenue generator"
-                p5="Analysis your  own performance."
+                def1="If you would like to share your NFT stories with the NFT community, sign up as a creator on Arttic." 
+                def2="You can have the following benefits as a creator."
+                p1="Share the posts, images and videos of your NFTs"
+                p2="Get all the benefits that follower has with more features"
+                p3="Great oppurtunity to communicate with your fans directly"
+                p4="Advertise your NFT informations in NFT community and have try on packages"
+                p5="Analysis of your own performance"
                 link="/signup/creator"
               />
             </div>
@@ -48,10 +52,4 @@ function SignUpOptionPage() {
 }
 
 export default SignUpOptionPage;
-{
-  /* <div class="d-grid gap-2 col-12 mx-auto text-center arttic-logo">
-          <Link to="/">
-            <img src={logo} width="200" height="45" />
-          </Link>
-        </div> */
-}
+

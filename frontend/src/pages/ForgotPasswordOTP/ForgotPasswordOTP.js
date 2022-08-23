@@ -7,6 +7,8 @@ import { API_URL } from "../../constants/globalConstants";
 
 import "./ForgotPasswordOTP.css";
 import logo from "../../images/logo.png";
+import AuthenticationFooter from "../../components/AuthenticationFooter/AuthenticationFooter";
+
 
 function ForgotPasswordOTP() {
   const location = useLocation();
@@ -123,27 +125,9 @@ function ForgotPasswordOTP() {
               </div>
             </div>
           </div>
-          <div className="help-privacy-terms">
-            <div className="row">
-              <div className="col">
-                <a className="link" href="#">
-                  Help
-                </a>
-              </div>
-              <div className="col">
-                <a className="link" href="#">
-                  Privacy
-                </a>
-              </div>
-              <div className="col">
-                <a className="link" href="#">
-                  Terms
-                </a>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
+      <AuthenticationFooter/>
     </span>
   );
 }

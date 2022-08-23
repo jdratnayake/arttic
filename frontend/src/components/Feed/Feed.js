@@ -19,6 +19,10 @@ function Feed() {
   const [postImage, setPostImage] = useState("");
   const [postImageStore, setPostImageStore] = useState("");
   const [newPost, setNewPost] = useState(null);
+  const [posts, setPost] = useState([]);
+  const [stopScroller,setStopScroller] = useState(0)
+  let skip = 0;
+  let exit = 0;
 
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
@@ -55,7 +59,7 @@ function Feed() {
     setPostImageStore(null);
    
     console.log(postDescription.current.value)
-    setNewPost(temp);
+    // setNewPost(temp);
 
     await axios
       .post(API_URL + "/feed/uploadPost/", inputData, config)
@@ -67,6 +71,53 @@ function Feed() {
         }
       });
   };
+  
+// *********** get posts ************
+const getPosts = async () => {
+  console.log("get post called and skip ",skip)
+  const config = {
+    headers: {
+      authorization: accessToken,
+      userid:userId,
+      skip:skip,
+      take:2
+    },
+  };
+
+  await axios
+      .get(API_URL + "/feed/getPosts/", config)
+      .then((response) => {
+        const newPosts = response.data;
+        if(newPosts.length === 0){
+          setStopScroller(1)
+          console.log("scroller work",stopScroller,newPosts.length)
+        }
+        // console.log(response.data)
+        setPost((oldposts) => [...oldposts,...newPosts]);
+      });
+  skip = skip + 2;
+  // exit = exit + 1
+}
+// ****************************************************** handle scroll *******************************************
+
+const handleScroll = (e)=>{
+  // clearTimeout(timeout);
+  console.log("in handler")
+  if(window.innerHeight + e.target.documentElement.scrollTop >= e.target.documentElement.scrollHeight){
+    console.log("at the bottom")
+    if (!stopScroller){
+        getPosts();
+        console.log("scroller work",stopScroller)
+    }
+    window.removeEventListener("scroll",handleScroll);
+    console.log('no scroll');
+    setTimeout(() => {
+      window.addEventListener("scroll", handleScroll);
+      console.log('scroller on');
+    }, 5000);
+  }
+  
+}
 // ****************************************************** get User details *******************************************
   const getUserDetails = async () => {
     const config = {
@@ -84,7 +135,9 @@ function Feed() {
   };
 
   useEffect(() => {
-    getUserDetails();
+      getUserDetails();
+      getPosts();
+      window.addEventListener("scroll", handleScroll);
   }, []);
 
   const ads = [
@@ -97,64 +150,6 @@ function Feed() {
       url: "https://press.farm/wp-content/uploads/2022/02/nft-pomotion-advertise-your-nfts-755x466.jpg",
     },
   ];
-
-  const posts = [
-		{
-			id:1,
-			name:"Mahesh Lakshan",
-			message:"owasfbgbaeufbv jubfubauifg jasdguawrbfuawrg",
-			timestamp:"2022-08-16T16:10:24.013Z",
-			image:"https://images.unsplash.com/photo-1508179719682-dbc62681c355?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2378&q=80",
-			userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
-			comments:[
-				{
-					id:5,
-					name:"Roman Reigns",
-					message:"hi,how you doing?",
-					userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
-					timestamp:"2022-08-16T16:10:24.013Z",
-				},
-				{
-					id:6,
-					name:"Dwaine Johnson",
-					message:"whatsup?",
-					userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
-					timestamp:"2022-08-16T16:10:24.013Z",
-				}
-				],
-			likes:20
-		},
-		{
-			id:2,
-			name:"Janitha",
-			message:"owasfbgbaeufbv jubfubauifg jasdguawrbfuawrg",
-			timestamp:"2022-08-16T16:10:24.013Z",
-			userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
-			likes:10
-		},	
-		{
-			id:3,
-			name:"Charith Anjana",
-			message:"owasfbgbaeufbv jubfubauifg jasdguawrbfuawrg",
-			timestamp:"2022-08-16T16:10:24.013Z",
-			image:"https://images.unsplash.com/photo-1566737236500-c8ac43014a67?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-			userImage:"https://images.genius.com/2326b69829d58232a2521f09333da1b3.1000x1000x1.jpg",
-			likes:50
-		},
-		];
-
-    const temp = {
-        blockedStatus: false,
-        commentCount: 0,
-        creatorId: 1,
-        description: "hi",
-        imagevideo: "1660666220856.png",
-        postId: 12,
-        publishedDate: "2022-08-16T16:10:24.013Z",
-        reactCount: 0
-      }
-    
-
 
   return (
     <div className="row p-0 m-0">
@@ -178,7 +173,7 @@ function Feed() {
                     data-bs-toggle="modal"
                     data-bs-target="#inputBox"
                   >
-                    what's on your mind,{userDetails.name} ?
+                    what's on your mind,{(userInfo.user.name) === 'undifined' ? (userDetails.name): (userInfo.user.name)} ?
                   </a>
                   <button hidden type="submit">
                     Submit
@@ -327,20 +322,21 @@ function Feed() {
                 likes= {newPost.reactCount}
                 /> 
               }
-              {
-                posts.map(post => {
+              {posts &&
+                posts.map((post) => {
                   return(
                     <Post 
-                      key={post.id}
+                      key={post.postId}
                       userName = { userDetails.name }
                       profilePic = { profilePic }
                       name={post.name}
-                      message={post.message}
-                      timestamp={post.timestamp}
-                      image={post.image}
-                      userImage = {post.userImage}
+                      message={post.description}
+                      timestamp={post.publishedDate}
+                      image={ POST_PIC_URL + post.imagevideo}
+                      userImage = { PROFILE_PIC_URL + post.profilePhoto }
+                      commentCount = {post.commentCount}
                       comments = {post.comments}
-                      likes= {post.likes}
+                      likes= {post.reactCount}
                       /> 
                     )
                   }

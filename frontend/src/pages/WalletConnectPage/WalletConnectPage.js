@@ -6,7 +6,7 @@ import axios from "axios";
 
 import { API_URL, CLIENT_URL } from "../../constants/globalConstants";
 import { getAccessToken } from "../../constants/globalFunctions";
-
+import AuthenticationFooter from "../../components/AuthenticationFooter/AuthenticationFooter";
 import "./WalletConnectPage.css";
 import logo from "../../images/logo.png";
 
@@ -137,9 +137,12 @@ function WalletConnectPage() {
 
   return (
     <>
-      <span class="SignUpCreatorPage2">
-        <div class="d-flex justify-content-center">
+      <span class="WalletConnectPage">
+        <div class="d-flex justify-content-center wallet-card">
           <div class="col-4">
+            <span class="alert alert-danger" role="alert">
+              Metamask wallet and Opensea username didn't match 
+            </span>
             <form onSubmit={submitData}>
               <div class="card card-update">
                 <div class="card-body">
@@ -189,6 +192,7 @@ function WalletConnectPage() {
             </form>
           </div>
         </div>
+        <AuthenticationFooter/>
       </span>
     </>
   );
