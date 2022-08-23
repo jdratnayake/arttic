@@ -83,7 +83,7 @@ function NavBarCreator() {
                                     </button>
 
                                     <div
-                                        class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
+                                        class="dropdown-menu dropdown-menu-lg dropdown-menu-end"
                                         aria-labelledby="page-header-notifications-dropdown"
                                     >
                                         <a class="dropdown-item">
@@ -111,7 +111,7 @@ function NavBarCreator() {
                                     </button>
 
                                     <div
-                                        class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
+                                        class="dropdown-menu dropdown-menu-lg dropdown-menu-end"
                                         aria-labelledby="page-header-notifications-dropdown"
                                     >
                                         <a class="dropdown-item">
@@ -145,7 +145,7 @@ function NavBarCreator() {
                                     </button>
 
                                     <div
-                                        class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"
+                                        class="dropdown-menu dropdown-menu-end "
                                         aria-labelledby="page-header-user-dropdown"
                                     >
                                         <a class="dropdown-item dinv" onClick={() => {

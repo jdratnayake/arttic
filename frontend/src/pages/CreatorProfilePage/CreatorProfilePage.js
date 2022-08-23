@@ -42,7 +42,7 @@ function CreatorProfilePage() {
       <NavBarCreator />
 
       <div class="main-container">
-        <div class="row align-items-center">
+        <div class="row align-items-center main-container-row">
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             {/* Bg */}
             <div class="pt-20 rounded-top bannerImage"></div>
@@ -113,7 +113,7 @@ function CreatorProfilePage() {
               {/* card body */}
               <div class="card-body reportBioBody">
                 {/* row */}
-                <div class="row">
+                <div class="row reportBio-row">
                   <div class="col-12 mb-1">
                     {/* text */}
                     <h6 class="text-uppercase fs-5 ls-2">Bio</h6>
@@ -152,10 +152,10 @@ function CreatorProfilePage() {
         </div>
 
         <div class="py-6 intro">
-          <div class="row">
+          <div class="row followers-posts">
             <div class="col-xl-8 col-lg-12 col-md-12 col-12 mb-8">
               {/* Posts */}
-              {/* <Post
+              <Post
                 image={t}
                 name={"Peter Pan"}
                 date={"2022-07-13"}
@@ -163,15 +163,101 @@ function CreatorProfilePage() {
                 desc={
                   "When the bass drops, so do my problems.When the bass drops, so do my problems."
                 }
-              /> */}
+              />
 
               <br />
             </div>
 
             <br />
+            {/* following n followers list */}
+             <div class="followers-following">
+              <div class="followers">
+                <div class="card mb-4">
+                  <div class="card-body">
+                    <h4 class="card-title mb-4">Your Followers</h4>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                      <div class="d-flex align-items-center">
+                        <div>
+                          <img
+                            src={profile}
+                            class="rounded-circle avatar-md"
+                            alt=""
+                          />
+                        </div>
+                        <div class="ms-3 ">
+                          <h5 class="mb-1">Dianna Smiley</h5>                        
+                        </div>
+                      </div>
+                      <div class="dropdown d-inline-block drop-list-upper">
+                        <button
+                          className="dr-btn report-threedots"
+                          id="page-header-notifications-dropdown"
+                          data-bs-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <i class="bi bi-three-dots"></i>
+                        </button>
 
+                        <div
+                          class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
+                          aria-labelledby="page-header-notifications-dropdown"
+                        >
+                          <a class="dropdown-item dinv">
+                            <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
+                            <span class="align-middle">Report</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="following">
+                <div class="card mb-4">
+                  <div class="card-body">
+                    <h4 class="card-title mb-4">Your Followings</h4>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                      <div class="d-flex align-items-center">
+                        <div>
+                          <img
+                            src={avatar1}
+                            class="rounded-circle avatar-md"
+                            alt=""
+                          />
+                        </div>
+                        <div class="ms-3 ">
+                          <h5 class="mb-1">Anne Brewer</h5>
+                        </div>
+                      </div>
+                      <div class="dropdown d-inline-block drop-list-upper">
+                        <button
+                          className="dr-btn report-threedots"
+                          id="page-header-notifications-dropdown"
+                          data-bs-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <i class="bi bi-three-dots"></i>
+                        </button>
+
+                        <div
+                          class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
+                          aria-labelledby="page-header-notifications-dropdown"
+                        >
+                          <a class="dropdown-item dinv">
+                            <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
+                            <span class="align-middle">Report</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+             </div>
             {/* Suggesions */}
-            <div class="col-xl-4 col-lg-12 col-md-12 col-12 mb-4">
+            {/* <div class="col-xl-4 col-lg-12 col-md-12 col-12 mb-4">
               <div class="card mb-4">
                 <div class="card-body">
                   <h4 class="card-title mb-4">Suggesions for creator</h4>
@@ -291,7 +377,7 @@ function CreatorProfilePage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
