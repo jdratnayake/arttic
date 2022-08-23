@@ -334,7 +334,7 @@ function AccountManageAdmin0Page() {
                       <th>No</th>
                       <th>Image</th>
                       <th>Email</th>
-                      <th>Last access</th>
+                      <th>Joined Date</th>
                       <th></th>
                     </tr>
                   </thead>
