@@ -35,10 +35,11 @@ function LogInPage() {
         if (user.type === 1) {
           navigate("/admin0/dashboard");
         } else if (user.type === 2) {
+          navigate("/feed");
           //redirect to the follower page
         } else if (user.type === 3) {
           if (user.openSeaStatus === 1 || user.openSeaStatus === 2) {
-            navigate("/creatorprofile");
+            navigate("/feed");
           } else if (user.openSeaStatus === 0) {
             navigate("/walletconnect");
           }
