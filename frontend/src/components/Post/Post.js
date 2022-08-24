@@ -29,7 +29,7 @@ function Post( props ) {
   };
 
 // *********** upload comment ************
-  const sendComment = (e) => {
+  const sendComment = async (e) => {
     e.preventDefault();
     setCommentBoxOpen(false);
 
@@ -49,12 +49,12 @@ function Post( props ) {
       return
     }
     
-    // await axios
-    //   .post(API_URL + "/feed/uploadComment/", inputData, config)
-    //   .then((response) => {
-    //     setComments(oldComments => [...oldComments,response.data]);
-    //     console.log(comments);
-    //   });
+    await axios
+      .post(API_URL + "/feed/uploadComment/", inputData, config)
+      .then((response) => {
+        setComments(oldComments => [...oldComments,response.data]);
+        console.log(comments);
+      });
   
   };
 
