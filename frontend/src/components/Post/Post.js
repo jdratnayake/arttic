@@ -36,11 +36,15 @@ function Post( props ) {
     const config = {
       headers: {
         authorization: accessToken,
-        postid: props.postid,
-        userId: props.profilerId,
-        description: commentRef.current.value
       },
     };
+
+    const inputData = new FormData();
+ 
+    inputData.append("commenterId", props.profilerId);
+    inputData.append("postId", props.postid);
+    inputData.append("description", commentRef.current.value);
+
 
     if (commentRef.current.value) {
       await axios
@@ -62,7 +66,7 @@ function Post( props ) {
         postid:id,
       },
     };
-
+    
     await axios
         .get(API_URL + "/feed/getComments/", config)
         .then((response) => {
