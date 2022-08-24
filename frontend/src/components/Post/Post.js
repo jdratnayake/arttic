@@ -45,15 +45,17 @@ function Post( props ) {
     inputData.append("postId", props.postid);
     inputData.append("description", commentRef.current.value);
 
-
-    if (commentRef.current.value) {
-      await axios
-        .post(API_URL + "/feed/uploadComment/", inputData, config)
-        .then((response) => {
-          setComments(oldComments => [...oldComments,response.data]);
-          console.log(comments);
-        });
+    if (!commentRef.current.value) {
+      return
     }
+    
+    // await axios
+    //   .post(API_URL + "/feed/uploadComment/", inputData, config)
+    //   .then((response) => {
+    //     setComments(oldComments => [...oldComments,response.data]);
+    //     console.log(comments);
+    //   });
+  
   };
 
   // *********** get comments ************
