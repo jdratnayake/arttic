@@ -67,16 +67,6 @@ function LogInPage() {
                   </Link>
                 </div>
 
-                <div class="d-grid gap-2 col-12 mx-auto text-center">
-                  <button class="btn btn-outline-primary" type="button">
-                    <i class="bi bi-google icon"></i>Sign In with Google
-                  </button>
-                  <button class="btn btn-outline-dark" type="button">
-                    <i class="bi bi-apple icon"></i>Sign In with Apple
-                  </button>
-                  <p class="Or">Or</p>
-                </div>
-
                 <Formik
                   initialValues={initialLoginValues}
                   validationSchema={loginValidation}
@@ -161,7 +151,7 @@ function LogInPage() {
             </div>
           </div>
         </div>
-        <AuthenticationFooter />
+        {/* <AuthenticationFooter /> */}
       </span>
     </>
   );

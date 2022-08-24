@@ -76,7 +76,7 @@ function WalletConnectPage() {
         }
 
         if (response.data.statusCode === 1 || response.data.statusCode === 2) {
-          navigate("/creatorprofile");
+          navigate("/feed");
         }
 
         // if there is a error then put a popup message
@@ -141,7 +141,7 @@ function WalletConnectPage() {
         <div class="d-flex justify-content-center wallet-card">
           <div class="col-4">
             <span class="alert alert-danger" role="alert">
-              Metamask wallet and Opensea username didn't match 
+              Metamask wallet and Opensea username didn't match
             </span>
             <form onSubmit={submitData}>
               <div class="card card-update">
@@ -192,7 +192,7 @@ function WalletConnectPage() {
             </form>
           </div>
         </div>
-        <AuthenticationFooter/>
+        <AuthenticationFooter />
       </span>
     </>
   );

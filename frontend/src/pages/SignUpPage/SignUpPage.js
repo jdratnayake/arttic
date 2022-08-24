@@ -62,15 +62,6 @@ function SignUpPage() {
                     <img src={logo} width="200" height="45" />
                   </Link>
                 </div>
-                <div className="d-grid gap-2 col-12 mx-auto text-center">
-                  <button className="btn btn-outline-primary" type="button">
-                    <i className="bi bi-google icon"></i>Sign Up with Google
-                  </button>
-                  <button className="btn btn-outline-dark" type="button">
-                    <i className="bi bi-apple icon"></i>Sign Up with Apple
-                  </button>
-                  <p className="Or">Or</p>
-                </div>
 
                 <Formik
                   initialValues={initialRegistrationValues}
@@ -146,7 +137,9 @@ function SignUpPage() {
                         <div className="col-12">
                           <p className="signup">
                             Already have an account ?{" "}
-                            <Link class="theme" to="/login">Log In</Link>
+                            <Link class="theme" to="/login">
+                              Log In
+                            </Link>
                           </p>
                         </div>
                       </div>
@@ -157,7 +150,7 @@ function SignUpPage() {
             </div>
           </div>
         </div>
-        <AuthenticationFooter/>
+        <AuthenticationFooter />
       </span>
     </>
   );
