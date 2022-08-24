@@ -198,6 +198,38 @@ const uploadPost = asyncHandler(async (req, res) => {
   res.status(StatusCodes.CREATED).json(CreatePost);
 });
 
+//  get a comments  ***************
+const getComments = asyncHandler(async (req, res) => {
+   const client = new Client({
+    user: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE_DATABASE,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  const postId =  parseInt(req.headers.postid);
+
+  await client.connect();
+   const comments = await client.query({
+    text: `SELECT comments.*,"user"."name","user"."profilePhoto" FROM 
+            (SELECT comment.* 
+              FROM comment
+               WHERE
+               (comment."postId" = $1 and comment."blockedStatus"= false)
+            ) as comments
+           LEFT OUTER JOIN
+           "user" on ("user"."userId" = comments."userId" and "user"."blockedStatus"= false) ORDER BY "commentId" DESC`,
+    values: [postId],
+  });
+   await client.end();
+
+  res.json(comments.rows);
+});
+
 //  retrive  posts ************************************
 const getPosts = asyncHandler(async (req, res) => {
   const client = new Client({
@@ -229,18 +261,7 @@ const getPosts = asyncHandler(async (req, res) => {
     values: [userId, take, skip],
   });
 
-  // const comment = await client.query({
-  //   // text: 'SELECT * FROM post WHERE "creatorId" IN (SELECT "creatorId" FROM "userSubscribe" WHERE "followerId"=$1 UNION SELECT $1 AS "creatorId") ORDER BY "postId" DESC LIMIT $2 OFFSET $3',
-  //   text: `SELECT comments.*,"user"."name","user"."profilePhoto" FROM 
-  //           (SELECT comment.* 
-  //             FROM comment
-  //             WHERE
-  //             (comment."postId" = $1 and comment."blockedStatus"= false)
-  //           ) as comments
-  //           LEFT OUTER JOIN
-  //           "user" on ("user"."userId" = comments."userId" and "user"."blockedStatus"= false) ORDER BY "commentId" DESC`,
-  //   values: [postId],
-  // });
+ 
 
   await client.end();
 
@@ -257,5 +278,6 @@ module.exports = {
   uploadpostReaction,
   uploadComment,
   uploadPost,
+  getComments,
   getPosts,
 };

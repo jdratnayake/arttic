@@ -15,6 +15,7 @@ const {
   uploadpostReaction,
   uploadComment,
   uploadPost,
+  getComments,
   getPosts,
 } = require("../controllers/feedController");
 
@@ -35,6 +36,8 @@ router.post("/uploadpostReaction", validateToken, uploadpostReaction);
 router.post("/uploadComment", validateToken, uploadComment);
 
 router.post("/uploadPost", validateToken, upload.single("file"), uploadPost);
+
+router.get("/getComments", validateToken, getComments);
 
 router.get("/getPosts", validateToken, getPosts);
 

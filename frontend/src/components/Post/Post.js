@@ -1,23 +1,79 @@
-import "./Post.css";
 import { useState, useRef } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
+
+import {
+  API_URL,
+  PROFILE_PIC_URL,
+  POST_PIC_URL,
+} from "../../constants/globalConstants";
+
+import "./Post.css";
 
 function Post( props ) {
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
   const commentRef = useRef(null);
-  const [comment, setComment] = useState("comment here");
+  const commentlikeRef = useRef(null);
+  const [comments, setComments] = useState("");
   const [iscommentBoxOpen, setCommentBoxOpen] = useState(false);
+
   const addComment = (e) => {
-    setCommentBoxOpen(true);
+    if(iscommentBoxOpen){
+      setCommentBoxOpen(false)
+    }else{
+      setCommentBoxOpen(true)
+      getComments();
+    };
     console.log("button click", iscommentBoxOpen);
   };
+
+// *********** upload comment ************
   const sendComment = (e) => {
     e.preventDefault();
     setCommentBoxOpen(false);
-    if (e.target.files[0]) {
-      setComment(comment);
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+        postid: props.postid,
+        userId: props.profilerId,
+        description: commentRef.current.value
+      },
+    };
+
+    if (commentRef.current.value) {
+      await axios
+        .post(API_URL + "/feed/uploadComment/", inputData, config)
+        .then((response) => {
+          setComments(oldComments => [...oldComments,response.data]);
+          console.log(comments);
+        });
     }
-    const temp = props.comments;
-    console.log("button click", iscommentBoxOpen, temp);
   };
+
+  // *********** get comments ************
+  const getComments = async () => {
+    const id = props.postid;
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+        postid:id,
+      },
+    };
+
+    await axios
+        .get(API_URL + "/feed/getComments/", config)
+        .then((response) => {
+          setComments(response.data);
+          console.log(response.data,props.postid);
+        });
+  }
+  const updateLike = ( )=>{
+    console.log("liked");
+  }
+
   return (
     <span className="Post">
       <div className="d-flex post">
@@ -96,20 +152,21 @@ function Post( props ) {
         {/* comment */}
         {iscommentBoxOpen && (
           <div className="mt-6 p-2 inputBox">
-            {comment && (
-              <div>
+          <div className="commentSetion">
+            {comments && comments.map(comment => {
+              return(<div key={comment.commentId}>
                 <div className="p-3 pt-0 pb-2 d-flex justify-items-center gap-2">
                   <img
                     className="rounded-circle"
-                    src={props.userImage}
+                    src={PROFILE_PIC_URL+comment.profilePhoto}
                     width={30}
                     height={30}
                   />
                   <div>
                     <p className="px-3 rounded pt-1 pb-1 m-0 fs-9 comment text-muted">
-                      {comment}
+                      {comment.description}
                     </p>
-                    <p className="m-0 comment-like">Like</p>
+                     <p className="m-0 comment-like">Like</p><button onClick={updateLike} hidden>send</button>
                   </div>
                   <div class="dropdown d-inline-block drop-list-upper">
                     <button
@@ -133,8 +190,10 @@ function Post( props ) {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>)
+            }
             )}
+            </div>
             <div className="inputBox-body">
               <img
                 src={props.profilePic}

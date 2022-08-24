@@ -1,3 +1,10 @@
+.Post .commentSetion{
+  max-height: 100px;
+  overflow: hidden;
+}
+.Post .comment{
+  font-size: 14px
+}
 .Post .comment-like{
   font-size: 10px;
 }

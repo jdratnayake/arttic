@@ -90,7 +90,7 @@ const getPosts = async () => {
         const newPosts = response.data;
         if(newPosts.length === 0){
           setStopScroller(1)
-          console.log("scroller work",stopScroller,newPosts.length)
+          // console.log("scroller work",stopScroller,newPosts.length)
         }
         // console.log(response.data)
         setPost((oldposts) => [...oldposts,...newPosts]);
@@ -102,18 +102,18 @@ const getPosts = async () => {
 
 const handleScroll = (e)=>{
   // clearTimeout(timeout);
-  console.log("in handler")
+  // console.log("in handler")
   if(window.innerHeight + e.target.documentElement.scrollTop >= e.target.documentElement.scrollHeight){
-    console.log("at the bottom")
+    // console.log("at the bottom")
     if (!stopScroller){
         getPosts();
-        console.log("scroller work",stopScroller)
+        // console.log("scroller work",stopScroller)
     }
     window.removeEventListener("scroll",handleScroll);
-    console.log('no scroll');
+    // console.log('no scroll');
     setTimeout(() => {
       window.addEventListener("scroll", handleScroll);
-      console.log('scroller on');
+      // console.log('scroller on');
     }, 5000);
   }
   
@@ -311,6 +311,7 @@ const handleScroll = (e)=>{
               { newPost &&
                 <Post 
                 key={ newPost.postId }
+                postid = {newPost.postId}
                 userName = { userDetails.name }
                 profilePic = { profilePic }
                 name={ userDetails.name }
@@ -318,7 +319,6 @@ const handleScroll = (e)=>{
                 timestamp={ newPost.publishedDate }
                 image={ POST_PIC_URL + newPost.imagevideo }
                 userImage = { profilePic }
-                comments = {newPost.comments}
                 likes= {newPost.reactCount}
                 /> 
               }
@@ -327,15 +327,16 @@ const handleScroll = (e)=>{
                   return(
                     <Post 
                       key={post.postId}
+                      postid = {post.postId}
                       userName = { userDetails.name }
                       profilePic = { profilePic }
+                      profilerId = { userId }
                       name={post.name}
                       message={post.description}
                       timestamp={post.publishedDate}
                       image={ POST_PIC_URL + post.imagevideo}
                       userImage = { PROFILE_PIC_URL + post.profilePhoto }
                       commentCount = {post.commentCount}
-                      comments = {post.comments}
                       likes= {post.reactCount}
                       /> 
                     )
