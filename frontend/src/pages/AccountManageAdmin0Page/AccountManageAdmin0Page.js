@@ -25,6 +25,9 @@ function AccountManageAdmin0Page() {
   const [displayAdmin0List, setDisplayAdmin0List] = useState([]);
   const [blockedUsersList, setBlockedUsersList] = useState([]);
   const [displayBlockedUsersList, setDisplayBlockedUsersList] = useState([]);
+  const [adminCount, setAdminCount] = useState(0);
+  const [creatorCount, setCreatorCount] = useState(0);
+  const [followerCount, setFollowerCount] = useState(0);
 
   const getDetails = async () => {
     console.log("admin0");
@@ -35,8 +38,12 @@ function AccountManageAdmin0Page() {
     };
 
     await axios.get(API_URL + "/accountmanagement", config).then((response) => {
+      setAdminCount(response.data.adminCount);
+      setCreatorCount(response.data.creatorCount);
+      setFollowerCount(response.data.followerCount);
       setDisplayAdmin0List(response.data.admin1);
       setDisplayBlockedUsersList(response.data.blockedUsers);
+
       setAdmin0List(response.data.admin1);
       setBlockedUsersList(response.data.blockedUsers);
     });
@@ -225,13 +232,22 @@ function AccountManageAdmin0Page() {
           <div class="card-body date-card">
             <div class="row">
               <div class="col">
-                <SummaryCard cardHeading="Admin" numberValue="10, 000" />
+                <SummaryCard
+                  cardHeading="Admin"
+                  numberValue={adminCount.toLocaleString()}
+                />
               </div>
               <div class="col">
-                <SummaryCard cardHeading="Creator" numberValue="100, 000" />
+                <SummaryCard
+                  cardHeading="Creator"
+                  numberValue={creatorCount.toLocaleString()}
+                />
               </div>
               <div class="col">
-                <SummaryCard cardHeading="Follower" numberValue="1, 000, 000" />
+                <SummaryCard
+                  cardHeading="Follower"
+                  numberValue={followerCount.toLocaleString()}
+                />
               </div>
             </div>
             <div class="row pt-3">

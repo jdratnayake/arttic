@@ -54,7 +54,40 @@ const initial = asyncHandler(async (req, res) => {
     },
   });
 
-  const outputData = { admin1: admin1, blockedUsers: blockedUsers };
+  const adminCount = await user.aggregate({
+    where: {
+      type: 2,
+    },
+    _count: {
+      userId: true,
+    },
+  });
+
+  const creatorCount = await user.aggregate({
+    where: {
+      type: 3,
+    },
+    _count: {
+      userId: true,
+    },
+  });
+
+  const followerCount = await user.aggregate({
+    where: {
+      type: 4,
+    },
+    _count: {
+      userId: true,
+    },
+  });
+
+  const outputData = {
+    adminCount: adminCount["_count"]["userId"],
+    creatorCount: creatorCount["_count"]["userId"],
+    followerCount: followerCount["_count"]["userId"],
+    blockedUsers: blockedUsers,
+    admin1: admin1,
+  };
   res.json(outputData);
 });
 
