@@ -29,7 +29,32 @@ const initial = asyncHandler(async (req, res) => {
     },
   });
 
-  const outputData = { admin1: admin1 };
+  const blockedUsers = await user.findMany({
+    orderBy: [
+      {
+        blockedDate: "desc",
+      },
+    ],
+    where: {
+      AND: [
+        {
+          OR: [{ type: 3 }, { type: 4 }],
+        },
+        { blockedStatus: true },
+      ],
+    },
+    select: {
+      userId: true,
+      type: true,
+      name: true,
+      email: true,
+      joinedDate: true,
+      profilePhoto: true,
+      blockedStatus: true,
+    },
+  });
+
+  const outputData = { admin1: admin1, blockedUsers: blockedUsers };
   res.json(outputData);
 });
 

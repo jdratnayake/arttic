@@ -23,7 +23,8 @@ function AccountManageAdmin0Page() {
 
   const [admin0List, setAdmin0List] = useState([]);
   const [displayAdmin0List, setDisplayAdmin0List] = useState([]);
-  // const [searchValue, setSearchValue] = useState("");
+  const [blockedUsersList, setBlockedUsersList] = useState([]);
+  const [displayBlockedUsersList, setDisplayBlockedUsersList] = useState([]);
 
   const getDetails = async () => {
     console.log("admin0");
@@ -35,7 +36,9 @@ function AccountManageAdmin0Page() {
 
     await axios.get(API_URL + "/accountmanagement", config).then((response) => {
       setDisplayAdmin0List(response.data.admin1);
+      setDisplayBlockedUsersList(response.data.blockedUsers);
       setAdmin0List(response.data.admin1);
+      setBlockedUsersList(response.data.blockedUsers);
     });
   };
 
@@ -77,6 +80,18 @@ function AccountManageAdmin0Page() {
     });
 
     setDisplayAdmin0List(newList);
+  };
+
+  const filterBlockedUsers = (e) => {
+    const searchValue = e.target.value;
+
+    const newList = blockedUsersList.filter((data) => {
+      return (
+        data.name.includes(searchValue) || data.email.includes(searchValue)
+      );
+    });
+
+    setDisplayBlockedUsersList(newList);
   };
 
   const lineChartValues1 = {
@@ -253,13 +268,39 @@ function AccountManageAdmin0Page() {
           <div class="card-body mx-3 pt-4 pb-4">
             <div class="row">
               <div class="col">
-                <button type="button" class="btn btn-primary margin-right-5">
+                <button
+                  type="button"
+                  class="btn btn-primary margin-right-5"
+                  onClick={() => {
+                    setDisplayBlockedUsersList(blockedUsersList);
+                  }}
+                >
                   All
                 </button>
-                <button type="button" class="btn btn-primary margin-right-5">
+                <button
+                  type="button"
+                  class="btn btn-primary margin-right-5"
+                  onClick={() => {
+                    const newList = blockedUsersList.filter((data) => {
+                      return data.type === 3;
+                    });
+
+                    setDisplayBlockedUsersList(newList);
+                  }}
+                >
                   Creators
                 </button>
-                <button type="button" class="btn btn-primary">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onClick={() => {
+                    const newList = blockedUsersList.filter((data) => {
+                      return data.type === 4;
+                    });
+
+                    setDisplayBlockedUsersList(newList);
+                  }}
+                >
                   Followers
                 </button>
               </div>
@@ -267,19 +308,18 @@ function AccountManageAdmin0Page() {
 
             <div class="row pt-2">
               <div class="col">
-                <form className="search-form" role="search">
-                  <div class="search">
-                    <button className="searchButton" type="submit">
-                      <i className="bi bi-search"></i>
-                    </button>
-                    <input
-                      className="searchTerm"
-                      type="search"
-                      placeholder="Search..."
-                      aria-label="Search"
-                    />
-                  </div>
-                </form>
+                <div class="search">
+                  <button className="searchButton" type="submit">
+                    <i className="bi bi-search"></i>
+                  </button>
+                  <input
+                    className="searchTerm"
+                    type="search"
+                    placeholder="Search..."
+                    aria-label="Search"
+                    onChange={filterBlockedUsers}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -298,62 +338,26 @@ function AccountManageAdmin0Page() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td className="idStyle">1</td>
-                      <td>
-                        <img src="https://drive.google.com/uc?export=view&id=1IFgWbb4Pgt3jNVIuQezHHpSl6sseO0Zk" />
-                      </td>
-                      <td>janitharatnayake@gmail.com</td>
-                      <td>Creator</td>
-                      <td class="amount">
-                        <Link
-                          className="btn btn-secondary"
-                          to={"/admin1/reportUser/" + 100}
-                          target="_blank"
-                        >
-                          {" "}
-                          View{" "}
-                        </Link>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="idStyle">2</td>
-                      <td>
-                        <img src="https://drive.google.com/uc?export=view&id=1f4xC0G0UeGqQxrjbKt12C0gP3RGkA8y3" />
-                      </td>
-                      <td>pradeepratnayake@gmail.com</td>
-                      <td>Creator</td>
-
-                      <td class="amount">
-                        <Link
-                          className="btn btn-secondary"
-                          to={"/admin1/reportUser/" + 105}
-                          target="_blank"
-                        >
-                          {" "}
-                          View{" "}
-                        </Link>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td className="idStyle">3</td>
-                      <td>
-                        <img src="https://drive.google.com/uc?export=view&id=1KOZ9Yt9tc5qgiYjTdu9D-pnURTlRj_NU" />
-                      </td>
-                      <td>dulitharatnayake@gmail.com</td>
-                      <td>Follower</td>
-                      <td class="amount">
-                        <Link
-                          className="btn btn-secondary"
-                          to={"/admin1/reportUser/" + 10}
-                          target="_blank"
-                        >
-                          {" "}
-                          View{" "}
-                        </Link>
-                      </td>
-                    </tr>
+                    {displayBlockedUsersList.map((data) => (
+                      <tr>
+                        <td className="idStyle">1</td>
+                        <td>
+                          <img src={PROFILE_PIC_URL + data.profilePhoto} />
+                        </td>
+                        <td>{data.email}</td>
+                        <td>{data.type === 3 ? "Creator" : "Follower"}</td>
+                        <td class="amount">
+                          <Link
+                            className="btn btn-secondary"
+                            to={"/admin1/reportUser/" + 100}
+                            target="_blank"
+                          >
+                            {" "}
+                            View{" "}
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
