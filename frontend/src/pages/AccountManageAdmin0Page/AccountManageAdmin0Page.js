@@ -22,6 +22,8 @@ function AccountManageAdmin0Page() {
   const { userId, accessToken } = userInfo.user;
 
   const [admin0List, setAdmin0List] = useState([]);
+  const [displayAdmin0List, setDisplayAdmin0List] = useState([]);
+  // const [searchValue, setSearchValue] = useState("");
 
   const getDetails = async () => {
     console.log("admin0");
@@ -32,8 +34,8 @@ function AccountManageAdmin0Page() {
     };
 
     await axios.get(API_URL + "/accountmanagement", config).then((response) => {
+      setDisplayAdmin0List(response.data.admin1);
       setAdmin0List(response.data.admin1);
-      console.log(response.data);
     });
   };
 
@@ -63,6 +65,18 @@ function AccountManageAdmin0Page() {
 
     $("#btn-close-form").click();
     resetForm();
+  };
+
+  const filterAdmin0 = (e) => {
+    const searchValue = e.target.value;
+
+    const newList = admin0List.filter((data) => {
+      return (
+        data.name.includes(searchValue) || data.email.includes(searchValue)
+      );
+    });
+
+    setDisplayAdmin0List(newList);
   };
 
   const lineChartValues1 = {
@@ -254,15 +268,15 @@ function AccountManageAdmin0Page() {
             <div class="row pt-2">
               <div class="col">
                 <form className="search-form" role="search">
-                <div class="search">
+                  <div class="search">
                     <button className="searchButton" type="submit">
                       <i className="bi bi-search"></i>
                     </button>
                     <input
-                    className="searchTerm"
-                    type="search"
-                    placeholder="Search..."
-                    aria-label="Search"
+                      className="searchTerm"
+                      type="search"
+                      placeholder="Search..."
+                      aria-label="Search"
                     />
                   </div>
                 </form>
@@ -369,19 +383,18 @@ function AccountManageAdmin0Page() {
 
             <div class="row pt-2">
               <div class="col">
-                <form className="search-form" role="search">
-                  <div class="search">
-                    <button className="searchButton" type="submit">
-                      <i className="bi bi-search"></i>
-                    </button>
-                    <input
+                <div class="search">
+                  <button className="searchButton" type="submit">
+                    <i className="bi bi-search"></i>
+                  </button>
+                  <input
                     className="searchTerm"
                     type="search"
                     placeholder="Search..."
                     aria-label="Search"
-                    />
-                  </div>
-                </form>
+                    onChange={filterAdmin0}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -401,7 +414,7 @@ function AccountManageAdmin0Page() {
                     </tr>
                   </thead>
                   <tbody>
-                    {admin0List.map((data, i) => (
+                    {displayAdmin0List.map((data, i) => (
                       <tr key={data.userId}>
                         <td className="idStyle">{i + 1}</td>
                         <td>
