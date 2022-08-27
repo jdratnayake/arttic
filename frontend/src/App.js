@@ -36,6 +36,7 @@ import AdvertismentTablePage from "./pages/AdvertismentTablePage/AdvertismentTab
 import AdvertismentReviewAdminPage from "./pages/AdvertismentReviewAdminPage/AdvertismentReviewAdminPage";
 import SubscribedCreatorsPage from "./pages/SubscribedCreatorsPage/SubscribedCreatorsPage";
 import ExternalSignUpPasswordPage from "./pages/ExternalSignUpPasswordPage/ExternalSignUpPasswordPage";
+import ChatCreatorPage from "./pages/ChatCreatorPage/ChatCreatorPage";
 
 function App() {
   return (
@@ -84,6 +85,15 @@ function App() {
           }
         ></Route>
         <Route
+          path="/creator/chat"
+          element={
+            <CreatorTemplate
+              children={<ChatCreatorPage />}
+              sideNavBarIndex="4"
+            />
+          }
+        ></Route>
+        <Route
           path="/frogotpassword/username"
           element={<FrogotPasswordUsernamePage />}
         ></Route>
@@ -117,6 +127,8 @@ function App() {
             />
           }
         ></Route>
+
+        {/* This is not using now */}
         <Route
           path="/admin0/userdetails"
           element={

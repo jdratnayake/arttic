@@ -15,9 +15,9 @@ const test = asyncHandler(async (req, res) => {
 
   await client.connect();
 
-  const result = await client.query({
-    text: 'SELECT * FROM "transactionLog"',
-  });
+  const result =  await client.query(
+    'SELECT "subscribeId", "userId", "packageId", "startDate", "endDate", "adStatus", "showAd" FROM public."premiumPackageSubscribe"'
+  );
 
   res.json(result.rows);
   await client.end();

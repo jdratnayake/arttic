@@ -10,6 +10,7 @@
     display: block;
     margin-bottom: 2rem;
     transform: scale(1.5);
+    margin-top: 32%;
 }
 
 
@@ -24,7 +25,10 @@
 }
 
 .errorTag {
-    color: black;
+    color: var(--primary-100);
     text-decoration:underline;
     text-transform: capitalize;
+}
+.errorTag:hover{
+    color: var(--blue-100);
 }

@@ -6,6 +6,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 
 // js files
 import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
+import AuthenticationFooter from "../../components/AuthenticationFooter/AuthenticationFooter";
 import { register } from "../../actions/userActions";
 import {
   initialRegistrationValues,
@@ -60,15 +61,6 @@ function SignUpPage() {
                   <Link to="/">
                     <img src={logo} width="200" height="45" />
                   </Link>
-                </div>
-                <div className="d-grid gap-2 col-12 mx-auto text-center">
-                  <button className="btn btn-outline-primary" type="button">
-                    <i className="bi bi-google icon"></i>Sign Up with Google
-                  </button>
-                  <button className="btn btn-outline-dark" type="button">
-                    <i className="bi bi-apple icon"></i>Sign Up with Apple
-                  </button>
-                  <p className="Or">Or</p>
                 </div>
 
                 <Formik
@@ -145,7 +137,9 @@ function SignUpPage() {
                         <div className="col-12">
                           <p className="signup">
                             Already have an account ?{" "}
-                            <Link class="theme" to="/login">Log In</Link>
+                            <Link class="theme" to="/login">
+                              Log In
+                            </Link>
                           </p>
                         </div>
                       </div>
@@ -154,21 +148,9 @@ function SignUpPage() {
                 </Formik>
               </div>
             </div>
-            <div class="help-privacy-terms">
-                <div class="row">
-                    <div class="col">
-                        <a class="link" href="#">Help</a>
-                    </div>
-                    <div class="col">
-                        <a class="link" href="#">Privacy</a>
-                    </div>
-                    <div class="col">
-                        <a class="link" href="#">Terms</a>
-                    </div>
-                </div>
-            </div>
           </div>
         </div>
+        <AuthenticationFooter />
       </span>
     </>
   );

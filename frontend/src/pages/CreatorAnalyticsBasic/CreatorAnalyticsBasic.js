@@ -129,19 +129,19 @@ function CreatorAnalyticsBasic() {
                         <div class="col-4 mb-6">
                             <AnalyticsCard
                                 cardHeading="Total Followers"
-                                iconName="bi bi-person-plus-fill"
+                                iconName="bi bi-people-fill"
                             />
                         </div>
                         <div class="col-4 mb-6">
                             <AnalyticsCard
                                 cardHeading="Total Unfollowers"
-                                iconName="bi bi-postcard-fill"
+                                iconName="bi bi-person-x-fill"
                             />
                         </div>
                         <div class="col-4 mb-6">
                             <AnalyticsCard
                                 cardHeading="Total Premium Users"
-                                iconName="bi bi-badge-ad-fill"
+                                iconName="bi bi-person-plus-fill"
                             />
                         </div>
                     </div>

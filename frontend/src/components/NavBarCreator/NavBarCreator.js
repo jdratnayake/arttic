@@ -34,7 +34,13 @@ function NavBarCreator() {
     <span className="NavBarCreator">
       <nav className="navbar navbar-expand-lg bg-light">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">
+          <a
+            className="navbar-brand"
+            href="#"
+            onClick={() => {
+              navigate("/feed");
+            }}
+          >
             <img src={logo} width="200" height="45" />
           </a>
 
@@ -81,7 +87,7 @@ function NavBarCreator() {
                   </button>
 
                   <div
-                    class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
+                    class="dropdown-menu dropdown-menu-lg dropdown-menu-end"
                     aria-labelledby="page-header-notifications-dropdown"
                   >
                     <a class="dropdown-item">
@@ -109,7 +115,7 @@ function NavBarCreator() {
                   </button>
 
                   <div
-                    class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
+                    class="dropdown-menu dropdown-menu-lg dropdown-menu-end"
                     aria-labelledby="page-header-notifications-dropdown"
                   >
                     <a class="dropdown-item">
@@ -143,14 +149,24 @@ function NavBarCreator() {
                   </button>
 
                   <div
-                    class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"
+                    class="dropdown-menu dropdown-menu-end "
                     aria-labelledby="page-header-user-dropdown"
                   >
-                    <a class="dropdown-item dinv">
+                    <a
+                      class="dropdown-item dinv"
+                      onClick={() => {
+                        navigate("/creatorprofile");
+                      }}
+                    >
                       <i class="bi bi-person-circle dinvit"></i>{" "}
                       <span class="align-middle">View Profile</span>
                     </a>
-                    <a class="dropdown-item dinv">
+                    <a
+                      class="dropdown-item dinv"
+                      onClick={() => {
+                        navigate("/settings");
+                      }}
+                    >
                       <i class="bi bi-gear-fill dinvit"></i>{" "}
                       <span class="align-middle">Settings</span>
                     </a>
