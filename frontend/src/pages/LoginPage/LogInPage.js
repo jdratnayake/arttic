@@ -32,9 +32,14 @@ function LogInPage() {
         setUsernameError("");
         setPasswordError("");
 
-        if (user.type === 3) {
+        if (user.type === 1) {
+          navigate("/admin0/dashboard");
+        } else if (user.type === 2) {
+          navigate("/feed");
+          //redirect to the follower page
+        } else if (user.type === 3) {
           if (user.openSeaStatus === 1 || user.openSeaStatus === 2) {
-            navigate("/creatorprofile");
+            navigate("/feed");
           } else if (user.openSeaStatus === 0) {
             navigate("/walletconnect");
           }
@@ -60,16 +65,6 @@ function LogInPage() {
                   <Link to="/">
                     <img src={logo} width="200" height="45" />
                   </Link>
-                </div>
-
-                <div class="d-grid gap-2 col-12 mx-auto text-center">
-                  <button class="btn btn-outline-primary" type="button">
-                    <i class="bi bi-google icon"></i>Sign In with Google
-                  </button>
-                  <button class="btn btn-outline-dark" type="button">
-                    <i class="bi bi-apple icon"></i>Sign In with Apple
-                  </button>
-                  <p class="Or">Or</p>
                 </div>
 
                 <Formik
@@ -156,7 +151,7 @@ function LogInPage() {
             </div>
           </div>
         </div>
-        <AuthenticationFooter/>
+        {/* <AuthenticationFooter /> */}
       </span>
     </>
   );

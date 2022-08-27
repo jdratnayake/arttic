@@ -1,11 +1,28 @@
-.margin-right-5{
-    margin-right: 5px;
-  }
+.margin-right-5 {
+  margin-right: 5px;
+}
+
+.AccountManageAdmin0Page table .status {
+  display: inline-block;
+  width: 90px;
+  border-radius: 0.2rem;
+  padding: 0.2rem 1rem;
+  text-align: center;
+}
+.AccountManageAdmin0Page table .status-pending {
+  background-color: #f14668;
+  color: #fff;
+}
+.AccountManageAdmin0Page table .status-paid {
+  background-color: #48c78e;
+  color: #fff;
+}
+
 .AccountManageAdmin0Page .tab-pane {
-    background-color: white;
-    border-bottom: 1px solid #dee2e6;
-    border-left: 1px solid #dee2e6;
-    border-right: 1px solid #dee2e6;
+  background-color: white;
+  border-bottom: 1px solid #dee2e6;
+  border-left: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
 }
 .AccountManageAdmin0Page .btn-group-style .btn-primary {
   width: 100px;

@@ -335,10 +335,13 @@ const forgotPasswordOtp = asyncHandler(async (req, res) => {
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
-
+    secure: false,
     auth: {
       user: "alec.software.cooperation@gmail.com",
       pass: "lbwzzqktlqaicniu",
+    },
+    tls: {
+      rejectUnauthorized: false,
     },
   });
 

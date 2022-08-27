@@ -1,3 +1,6 @@
+.creatorProfilePage{
+  overflow-x: hidden;
+}
 .creatorProfilePage .main-container {
   padding-top: 20px;
   padding-left: 10%;
@@ -79,6 +82,24 @@
 }
 .creatorProfilePage .post-header{
   margin-top: 0 !important;
+}
+.creatorProfilePage .intro .row .col-12{
+  max-width: 672px;
+}
+.creatorProfilePage .followers-posts{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+.creatorProfilePage .followers-following{
+  display: flex;
+  flex-direction: row;
+}
+.creatorProfilePage .followers{
+  padding-right: 12px;
+}
+.creatorProfilePage .following{
+  padding-left: 12px;
 }
 
 /*------------------------------------------------------------*/
@@ -850,7 +871,7 @@
     max-width: 1320px;
   }
 }
-.creatorProfilePage .row {
+.creatorProfilePage .main-container-row, .creatorProfilePage .reportBio-row {
   --bs-gutter-x: 32px;
   --bs-gutter-y: 0;
   display: flex;
@@ -860,7 +881,7 @@
   margin-left: calc(var(--bs-gutter-x) / -2);
 }
 .creatorProfilePage .row > * {
-  flex-shrink: 0;
+  flex-shrink: 1;
   width: 100%;
   max-width: 100%;
   padding-right: calc(var(--bs-gutter-x) / 2);
@@ -22461,7 +22482,7 @@
   border-radius: 0.5rem;
 }
 .creatorProfilePage .dropdown-menu-lg {
-  min-width: 22rem !important;
+  /* min-width: 22rem !important; */
   border-radius: 0.5rem;
 }
 .creatorProfilePage .dropdown-menu-xl {
