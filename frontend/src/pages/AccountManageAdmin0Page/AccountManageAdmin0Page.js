@@ -254,15 +254,17 @@ function AccountManageAdmin0Page() {
             <div class="row pt-2">
               <div class="col">
                 <form className="search-form" role="search">
-                  <input
-                    className="form-control me-2"
+                <div class="search">
+                    <button className="searchButton" type="submit">
+                      <i className="bi bi-search"></i>
+                    </button>
+                    <input
+                    className="searchTerm"
                     type="search"
                     placeholder="Search..."
                     aria-label="Search"
-                  />
-                  <button className="btn btn-secondary" type="submit">
-                    <i className="bi bi-search"></i>
-                  </button>
+                    />
+                  </div>
                 </form>
               </div>
             </div>
@@ -368,15 +370,17 @@ function AccountManageAdmin0Page() {
             <div class="row pt-2">
               <div class="col">
                 <form className="search-form" role="search">
-                  <input
-                    className="form-control me-2"
+                  <div class="search">
+                    <button className="searchButton" type="submit">
+                      <i className="bi bi-search"></i>
+                    </button>
+                    <input
+                    className="searchTerm"
                     type="search"
                     placeholder="Search..."
                     aria-label="Search"
-                  />
-                  <button className="btn btn-secondary" type="submit">
-                    <i className="bi bi-search"></i>
-                  </button>
+                    />
+                  </div>
                 </form>
               </div>
             </div>
