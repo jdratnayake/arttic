@@ -14,6 +14,8 @@ const {
   advertisementReport,
   commentReport,
   postSave,
+  postView,
+  advertisementView,
 } = new PrismaClient();
 
 //  upload a favorite post ***************
@@ -102,11 +104,48 @@ const getAds = asyncHandler(async (req, res) => {
     [userId]
   );
 
+  // const randomNumber = (max,min) => {
+  //   return Math.floor(Math.random()* (max - min +1))+ min
+  // }
+
+
+  // const noArray = [];
+  // const createArray = (length) => {
+  //   let t = randomNumber(10,1);
+  //   if (noArray.find(t)){
+  //     noArray.push(t);
+  //   }
+  // }
+
+  // createArray(5)
+  // console.log(noArray)
+
   if (isShowAd.rows[0].showAd) {
     Ads = await advertisement.findMany({
       skip,
       take,
+      select:{
+        advertisementId:true,
+        creatorId:true,
+        contentLink:true
+      },
+      where:{
+        blockedStatus: false,
+        paymentStatus: true,
+        endDate:{
+          gt: new Date()
+        }
+      }    
     });
+
+    Ads.map(async (ad) => {
+      await advertisementView.create({
+        data: {
+          advertisementId: ad.advertisementId,
+          followerCreatorId: userId,
+        }
+      });
+    })
   }
   // console.log(isShowAd);
   await client.end();
@@ -294,7 +333,15 @@ const getPosts = asyncHandler(async (req, res) => {
     values: [userId, take, skip],
   });
 
- 
+  (posts.rows).map(async (post) =>  {
+    // console.log(post.postId)
+    await postView.create({
+      data: {
+        postId: post.postId,
+        followerCreatorId: userId,
+      }
+    });
+  })
 
   await client.end();
 
