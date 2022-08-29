@@ -1,6 +1,6 @@
 .Post .commentSetion{
   max-height: 100px;
-  overflow: hidden;
+  overflow-y: auto;
 }
 .Post .comment{
   font-size: 14px

@@ -351,7 +351,7 @@ const handleScroll = (e)=>{
       </div>
       <div class="col-sm-4 col-xs-4 col-advertisment">
         {ads.map((ad) => {
-          return <Ad key={ad.id} image={ad.url} />;
+          return <Ad key={ad.id} adId={ad.id} image={ad.url} />;
         })}
       </div>
     </div>

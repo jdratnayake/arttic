@@ -11,7 +11,7 @@ const {
   uploadCommentReport,
   uploadAdReport,
   uploadPostReport,
-  uploadcommentReaction,
+  uploadCommentReaction,
   uploadpostReaction,
   uploadComment,
   uploadPost,
@@ -29,7 +29,7 @@ router.post("/uploadAdReport", validateToken, uploadAdReport);
 
 router.post("/uploadPostReport", validateToken, uploadPostReport);
 
-router.post("/uploadcommentReaction", validateToken, uploadcommentReaction);
+router.post("/uploadcommentReaction", validateToken, uploadCommentReaction);
 
 router.post("/uploadpostReaction", validateToken, uploadpostReaction);
 

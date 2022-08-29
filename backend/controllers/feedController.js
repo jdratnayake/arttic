@@ -20,6 +20,7 @@ const {
 const uploadPostSave = asyncHandler(async (req, res) => {
   const Data = req.body;
   const userId = parseInt(req.headers.userid);
+  console.log(Data.postId,"userId:",userId);
   let createPostSave = {};
 
   const client = new Client({
@@ -40,7 +41,16 @@ const uploadPostSave = asyncHandler(async (req, res) => {
     [userId]
   );
 
+  const isPostExist = await client.query(
+    'SELECT "postSaveId" FROM public."postSave" WHERE ( "postId" =$1 and "userId" = $2);',
+    [Data.postId,userId]
+  );
+
   await client.end();
+  console.log(isPostExist.rowCount);
+  if(isPostExist.rowCount !== 0){
+    res.json("post exits");
+  }
 
   if (isShowAd.rows[0].showAd) {
     createPostSave = await postSave.create({
@@ -105,28 +115,28 @@ const getAds = asyncHandler(async (req, res) => {
 
 //  upload a comment report ***************
 const uploadCommentReport = asyncHandler(async (req, res) => {
-  const userId = parseInt(req.headers.userid);
   const Data = req.body;
+  console.log(Data);
   const newCommentReport = await commentReport.create({
     data: {
-      userId: userId,
-      advertisemenreportedCommentIdtId: Data.commentId,
-      reportCategory: Data.category,
+      userId: Data.userId,
+      reportedCommentId: Data.commentId,
+      reportCategory: parseInt(Data.category),
       description: Data.description,
     },
   });
   res.status(StatusCodes.CREATED).json(newCommentReport);
+  // res.json("done");
 });
 
 //  upload a post report ***************
 const uploadAdReport = asyncHandler(async (req, res) => {
-  const userId = parseInt(req.headers.userid);
   const Data = req.body;
   const CreateAdReport = await advertisementReport.create({
     data: {
-      userId: userId,
-      advertisementId: Data.adId,
-      reportCategory: Data.category,
+      userId: Data.userId,
+      advertisementId: Data.commentId,
+      reportCategory: parseInt(Data.category),
       description: Data.description,
     },
   });
@@ -135,13 +145,13 @@ const uploadAdReport = asyncHandler(async (req, res) => {
 
 //  upload a post report ***************
 const uploadPostReport = asyncHandler(async (req, res) => {
-  const userId = parseInt(req.headers.userid);
   const Data = req.body;
+  console.log(Data);
   const CreatepostReport = await postReport.create({
     data: {
-      userId: userId,
-      reportedPostId: Data.postId,
-      reportCategory: Data.category,
+      userId: Data.userId,
+      reportedPostId: Data.commentId,
+      reportCategory: parseInt(Data.category),
       description: Data.description,
     },
   });
@@ -149,11 +159,12 @@ const uploadPostReport = asyncHandler(async (req, res) => {
 });
 
 //  upload a commentReaction ***************
-const uploadcommentReaction = asyncHandler(async (req, res) => {
+const uploadCommentReaction = asyncHandler(async (req, res) => {
   const Data = req.body;
+  console.log(Data);
   const CreatecommentReaction = await commentReaction.create({
     data: {
-      userId: Data.commenterId,
+      userId: Data.reactorId,
       commentId: Data.commentId,
     },
   });
@@ -165,7 +176,7 @@ const uploadpostReaction = asyncHandler(async (req, res) => {
   const Data = req.body;
   const CreatepostReaction = await postReaction.create({
     data: {
-      userId: Data.commenterId,
+      userId: Data.reactorId,
       postId: Data.postId,
     },
   });
@@ -175,6 +186,7 @@ const uploadpostReaction = asyncHandler(async (req, res) => {
 //  upload a comment ***************
 const uploadComment = asyncHandler(async (req, res) => {
   const Data = req.body;
+  console.log(Data);
   const CreateComment = await comment.create({
     data: {
       userId: Data.commenterId,
@@ -274,7 +286,7 @@ module.exports = {
   uploadCommentReport,
   uploadAdReport,
   uploadPostReport,
-  uploadcommentReaction,
+  uploadCommentReaction,
   uploadpostReaction,
   uploadComment,
   uploadPost,
