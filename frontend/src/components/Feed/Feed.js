@@ -20,9 +20,10 @@ function Feed() {
   const [postImageStore, setPostImageStore] = useState("");
   const [newPost, setNewPost] = useState(null);
   const [posts, setPost] = useState([]);
+  // const [ads, setAds] = useState([]);
   const [stopScroller,setStopScroller] = useState(0)
   let skip = 0;
-  let exit = 0;
+  let adskip = 0;
 
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
@@ -134,21 +135,55 @@ const handleScroll = (e)=>{
       });
   };
 
+  // const getAds = async () => {
+  //   const config = {
+  //     headers: {
+  //       authorization: accessToken,
+  //       userid:userId,
+  //       skip:adskip,
+  //       take:2
+  //     },
+  //   };
+  
+  //   await axios
+  //       .get(API_URL + "/feed/getAds/", config)
+  //       .then((response) => {
+  //         setAds(response.data);
+  //       });
+  //   // exit = exit + 1
+  // }
+
   useEffect(() => {
       getUserDetails();
       getPosts();
+      // getAds();
       window.addEventListener("scroll", handleScroll);
   }, []);
 
   const ads = [
     {
-      id: 1,
-      url: "https://cached.imagescaler.hbpl.co.uk/resize/scaleWidth/820/cached.offlinehbpl.hbpl.co.uk/news/SUC/nft-unlock.jpg",
-    },
-    {
-      id: 2,
-      url: "https://press.farm/wp-content/uploads/2022/02/nft-pomotion-advertise-your-nfts-755x466.jpg",
-    },
+        "advertisementId": 1,
+        "creatorId": 1,
+        "category": 1,
+        "description": "NFT Social Media\r\n\r\nIn here we try to create NFT's for social media companies",
+        "contentLink": "https://cached.imagescaler.hbpl.co.uk/resize/scaleWidth/820/cached.offlinehbpl.hbpl.co.uk/news/SUC/nft-unlock.jpg",
+        "startDate": "2022-08-18T18:30:00.000Z",
+        "endDate": "2022-08-28T18:30:00.000Z",
+        "price": "100",
+        "paymentStatus": false,
+        "blockedStatus": false
+    },{
+        "advertisementId": 2,
+        "creatorId": 1,
+        "category": 1,
+        "description": "NFT Social Media\r\n\r\nIn here we try to create NFT's for social media companies",
+        "contentLink": "https://press.farm/wp-content/uploads/2022/02/nft-pomotion-advertise-your-nfts-755x466.jpg",
+        "startDate": "2022-08-18T18:30:00.000Z",
+        "endDate": "2022-08-28T18:30:00.000Z",
+        "price": "100",
+        "paymentStatus": false,
+        "blockedStatus": false
+      }
   ];
 
   return (
@@ -351,7 +386,7 @@ const handleScroll = (e)=>{
       </div>
       <div class="col-sm-4 col-xs-4 col-advertisment">
         {ads.map((ad) => {
-          return <Ad key={ad.id} adId={ad.id} image={ad.url} />;
+          return <Ad key={ad.advertisementId} adId={ad.advertisementId} image={ad.contentLink} creatorId={ad.creatorId}/>;
         })}
       </div>
     </div>
