@@ -37,6 +37,7 @@ import AdvertismentReviewAdminPage from "./pages/AdvertismentReviewAdminPage/Adv
 import SubscribedCreatorsPage from "./pages/SubscribedCreatorsPage/SubscribedCreatorsPage";
 import ExternalSignUpPasswordPage from "./pages/ExternalSignUpPasswordPage/ExternalSignUpPasswordPage";
 import ChatCreatorPage from "./pages/ChatCreatorPage/ChatCreatorPage";
+import FollowerProfile from "./pages/FollowerProfile/FollowerProfile";
 
 function App() {
   return (
@@ -62,6 +63,7 @@ function App() {
         <Route path="/walletconnect" element={<WalletConnectPage />}></Route>
         <Route path="/login" element={<LogInPage />}></Route>
         <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
+        <Route path="/followerprofile/:followerId" element={<FollowerProfile />}></Route>
         <Route
           path="/advertisment"
           element={

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import $ from "jquery";
+import { useNavigate } from "react-router-dom";
 
 import { initialReportValues, reportDescriptionValidation } from "./Validation";
 
@@ -15,6 +16,8 @@ import {
 import "./Post.css";
 
 function Post(props) {
+  const navigate = useNavigate();
+  
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
   const commentRef = useRef(null);
@@ -27,6 +30,13 @@ function Post(props) {
   const [reportType, setReportType] = useState("");
   const [reportItemId, setReportItemId] = useState("");
 
+  const gotoProfile = ( pid ) => {
+    if(pid === userId){
+      navigate("/creatorprofile");
+    }else{
+      navigate("/followerprofile/"+ pid);
+    }
+  }
   const submitReport = async (data, { resetForm }) => {
     const inputData = {
       userId: userId,
@@ -211,8 +221,8 @@ function Post(props) {
     <span className="Post">
       <div className="d-flex post">
         <div className="p-3 pb-2 mt-3 post-header rounded-top">
-          <div className="d-flex justify-content-between gap-2">
-            <div className="d-flex justify-items-center gap-2">
+          <div className="d-flex justify-content-between gap-2 " >
+            <div className="d-flex justify-items-center gap-2" style={{cursor:'pointer'}} onClick={() =>{ gotoProfile(props.creatorId)}}>
               <img
                 className="rounded-circle"
                 src={props.userImage}

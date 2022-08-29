@@ -20,7 +20,7 @@ function Feed() {
   const [postImageStore, setPostImageStore] = useState("");
   const [newPost, setNewPost] = useState(null);
   const [posts, setPost] = useState([]);
-  // const [ads, setAds] = useState([]);
+  const [ads, setAds] = useState([]);
   const [stopScroller,setStopScroller] = useState(0)
   let skip = 0;
   let adskip = 0;
@@ -59,13 +59,13 @@ function Feed() {
     setPostImage(null);
     setPostImageStore(null);
    
-    console.log(postDescription.current.value)
+    // console.log(postDescription.current.value)
     // setNewPost(temp);
 
     await axios
       .post(API_URL + "/feed/uploadPost/", inputData, config)
       .then((response) => { 
-        console.log(response);
+        // console.log(response);
         postDescription.current.value = "";
         if(response.status === 201 ){
           setNewPost(response.data)
@@ -75,7 +75,7 @@ function Feed() {
   
 // *********** get posts ************
 const getPosts = async () => {
-  console.log("get post called and skip ",skip)
+  // console.log("get post called and skip ",skip)
   const config = {
     headers: {
       authorization: accessToken,
@@ -135,56 +135,57 @@ const handleScroll = (e)=>{
       });
   };
 
-  // const getAds = async () => {
-  //   const config = {
-  //     headers: {
-  //       authorization: accessToken,
-  //       userid:userId,
-  //       skip:adskip,
-  //       take:2
-  //     },
-  //   };
+  const getAds = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+        userid:userId,
+        skip:adskip,
+        take:2
+      },
+    };
   
-  //   await axios
-  //       .get(API_URL + "/feed/getAds/", config)
-  //       .then((response) => {
-  //         setAds(response.data);
-  //       });
-  //   // exit = exit + 1
-  // }
+    await axios
+        .get(API_URL + "/feed/getAds/", config)
+        .then((response) => {
+          console.log(response.data)
+          setAds(response.data);
+        });
+    // exit = exit + 1
+  }
 
   useEffect(() => {
       getUserDetails();
       getPosts();
-      // getAds();
+      getAds();
       window.addEventListener("scroll", handleScroll);
   }, []);
 
-  const ads = [
-    {
-        "advertisementId": 1,
-        "creatorId": 1,
-        "category": 1,
-        "description": "NFT Social Media\r\n\r\nIn here we try to create NFT's for social media companies",
-        "contentLink": "https://cached.imagescaler.hbpl.co.uk/resize/scaleWidth/820/cached.offlinehbpl.hbpl.co.uk/news/SUC/nft-unlock.jpg",
-        "startDate": "2022-08-18T18:30:00.000Z",
-        "endDate": "2022-08-28T18:30:00.000Z",
-        "price": "100",
-        "paymentStatus": false,
-        "blockedStatus": false
-    },{
-        "advertisementId": 2,
-        "creatorId": 1,
-        "category": 1,
-        "description": "NFT Social Media\r\n\r\nIn here we try to create NFT's for social media companies",
-        "contentLink": "https://press.farm/wp-content/uploads/2022/02/nft-pomotion-advertise-your-nfts-755x466.jpg",
-        "startDate": "2022-08-18T18:30:00.000Z",
-        "endDate": "2022-08-28T18:30:00.000Z",
-        "price": "100",
-        "paymentStatus": false,
-        "blockedStatus": false
-      }
-  ];
+  // const ads = [
+  //   {
+  //       "advertisementId": 1,
+  //       "creatorId": 1,
+  //       "category": 1,
+  //       "description": "NFT Social Media\r\n\r\nIn here we try to create NFT's for social media companies",
+  //       "contentLink": "https://cached.imagescaler.hbpl.co.uk/resize/scaleWidth/820/cached.offlinehbpl.hbpl.co.uk/news/SUC/nft-unlock.jpg",
+  //       "startDate": "2022-08-18T18:30:00.000Z",
+  //       "endDate": "2022-08-28T18:30:00.000Z",
+  //       "price": "100",
+  //       "paymentStatus": false,
+  //       "blockedStatus": false
+  //   },{
+  //       "advertisementId": 2,
+  //       "creatorId": 1,
+  //       "category": 1,
+  //       "description": "NFT Social Media\r\n\r\nIn here we try to create NFT's for social media companies",
+  //       "contentLink": "https://press.farm/wp-content/uploads/2022/02/nft-pomotion-advertise-your-nfts-755x466.jpg",
+  //       "startDate": "2022-08-18T18:30:00.000Z",
+  //       "endDate": "2022-08-28T18:30:00.000Z",
+  //       "price": "100",
+  //       "paymentStatus": false,
+  //       "blockedStatus": false
+  //     }
+  // ];
 
   return (
     <div className="row p-0 m-0">
@@ -349,12 +350,15 @@ const handleScroll = (e)=>{
                 postid = {newPost.postId}
                 userName = { userDetails.name }
                 profilePic = { profilePic }
+                profilerId = { userId }
                 name={ userDetails.name }
                 message={ newPost.description }
                 timestamp={ newPost.publishedDate }
                 image={ POST_PIC_URL + newPost.imagevideo }
                 userImage = { profilePic }
+                commentCount = {0}
                 likes= {newPost.reactCount}
+                creatorId = {userId}
                 /> 
               }
               {posts &&
@@ -373,6 +377,7 @@ const handleScroll = (e)=>{
                       userImage = { PROFILE_PIC_URL + post.profilePhoto }
                       commentCount = {post.commentCount}
                       likes= {post.reactCount}
+                      creatorId = {post.creatorId}
                       /> 
                     )
                   }

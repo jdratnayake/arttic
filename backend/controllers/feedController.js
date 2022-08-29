@@ -117,16 +117,37 @@ const getAds = asyncHandler(async (req, res) => {
 const uploadCommentReport = asyncHandler(async (req, res) => {
   const Data = req.body;
   console.log(Data);
-  const newCommentReport = await commentReport.create({
-    data: {
-      userId: Data.userId,
-      reportedCommentId: Data.commentId,
-      reportCategory: parseInt(Data.category),
-      description: Data.description,
+  // const newCommentReport = await commentReport.create({
+  //   data: {
+  //     userId: Data.userId,
+  //     reportedCommentId: Data.commentId,
+  //     reportCategory: parseInt(Data.category),
+  //     description: Data.description,
+  //   },
+  // });
+  // res.status(StatusCodes.CREATED).json(newCommentReport);
+  // res.json("done");
+  const client = new Client({
+    user: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE_DATABASE,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
+    ssl: {
+      rejectUnauthorized: false,
     },
   });
-  res.status(StatusCodes.CREATED).json(newCommentReport);
-  // res.json("done");
+
+  await client.connect();
+   const comments = await client.query({
+    text: `INSERT INTO public."commentReport"
+          ("userId", "reportedCommentId","reportCategory", description)
+          VALUES ($1,$2,$3,$4);`,
+    values: [Data.userId,Data.commentId,parseInt(Data.category),Data.description],
+  });
+   await client.end();
+
+  res.json("success");
 });
 
 //  upload a post report ***************

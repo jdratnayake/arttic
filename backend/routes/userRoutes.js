@@ -8,6 +8,7 @@ const { upload } = require("../middleware/fileUpload");
 const {
   uploadProfileOrCoverPicture,
   getUserDetails,
+  uploadUserReport,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -19,5 +20,7 @@ router.post(
   uploadProfileOrCoverPicture
 );
 router.get("/getuserdetails/:id", validateToken, getUserDetails);
+
+router.post("/uploadUserReport", validateToken, uploadUserReport);
 
 module.exports = router;
