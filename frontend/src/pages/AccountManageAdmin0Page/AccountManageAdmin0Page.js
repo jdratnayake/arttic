@@ -30,6 +30,10 @@ function AccountManageAdmin0Page() {
   const [adminCount, setAdminCount] = useState(0);
   const [creatorCount, setCreatorCount] = useState(0);
   const [followerCount, setFollowerCount] = useState(0);
+  // Chart values
+  const [timeValues, setTimeValues] = useState([]);
+  const [creatorCountValues, setCreatorCountValues] = useState([]);
+  const [followerCountValues, setFollowerCountValues] = useState([]);
 
   const getDetails = async () => {
     console.log("admin0");
@@ -48,6 +52,13 @@ function AccountManageAdmin0Page() {
 
       setAdmin0List(response.data.admin1);
       setBlockedUsersList(response.data.blockedUsers);
+
+      // Set chart values
+      setTimeValues(response.data.timeList);
+      setCreatorCountValues(response.data.creatorCountList);
+      setFollowerCountValues(response.data.followerCountList);
+      console.log(response.data.creatorCountList);
+      console.log(response.data.followerCountList);
     });
   };
 
@@ -120,7 +131,7 @@ function AccountManageAdmin0Page() {
         id: "basic-bar",
       },
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+        categories: timeValues,
         title: {
           text: "Time",
           style: {
@@ -147,17 +158,18 @@ function AccountManageAdmin0Page() {
     series: [
       {
         name: "series-1",
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
+        data: creatorCountValues,
       },
     ],
   };
+
   const lineChartValues2 = {
     options: {
       chart: {
         id: "basic-bar",
       },
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+        categories: timeValues,
         title: {
           text: "Time",
           style: {
@@ -184,10 +196,11 @@ function AccountManageAdmin0Page() {
     series: [
       {
         name: "series-1",
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
+        data: followerCountValues,
       },
     ],
   };
+
   return (
     <span className="AccountManageAdmin0Page">
       <ToastContainer
