@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import $ from "jquery";
+import { ToastContainer, toast } from "react-toastify";
 
 import { API_URL, PROFILE_PIC_URL } from "../../constants/globalConstants";
 import SummaryCard from "../../components/SummaryCard/SummaryCard";
@@ -16,6 +17,7 @@ import {
 
 import "./AccountManageAdmin0Page.css";
 import "react-datepicker/dist/react-datepicker.css";
+import "react-toastify/dist/ReactToastify.css";
 
 function AccountManageAdmin0Page() {
   const userInfo = useSelector((state) => state.userInfo);
@@ -28,6 +30,10 @@ function AccountManageAdmin0Page() {
   const [adminCount, setAdminCount] = useState(0);
   const [creatorCount, setCreatorCount] = useState(0);
   const [followerCount, setFollowerCount] = useState(0);
+  // Chart values
+  const [timeValues, setTimeValues] = useState([]);
+  const [creatorCountValues, setCreatorCountValues] = useState([]);
+  const [followerCountValues, setFollowerCountValues] = useState([]);
 
   const getDetails = async () => {
     console.log("admin0");
@@ -46,6 +52,13 @@ function AccountManageAdmin0Page() {
 
       setAdmin0List(response.data.admin1);
       setBlockedUsersList(response.data.blockedUsers);
+
+      // Set chart values
+      setTimeValues(response.data.timeList);
+      setCreatorCountValues(response.data.creatorCountList);
+      setFollowerCountValues(response.data.followerCountList);
+      console.log(response.data.creatorCountList);
+      console.log(response.data.followerCountList);
     });
   };
 
@@ -70,7 +83,18 @@ function AccountManageAdmin0Page() {
     await axios
       .post(API_URL + "/accountmanagement/registeradmin/", inputData, config)
       .then((response) => {
+        setDisplayAdmin0List((current) => [response.data, ...current]);
         setAdmin0List((current) => [response.data, ...current]);
+
+        toast.success("Admin Created Successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       });
 
     $("#btn-close-form").click();
@@ -107,7 +131,7 @@ function AccountManageAdmin0Page() {
         id: "basic-bar",
       },
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+        categories: timeValues,
         title: {
           text: "Time",
           style: {
@@ -134,17 +158,18 @@ function AccountManageAdmin0Page() {
     series: [
       {
         name: "series-1",
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
+        data: creatorCountValues,
       },
     ],
   };
+
   const lineChartValues2 = {
     options: {
       chart: {
         id: "basic-bar",
       },
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+        categories: timeValues,
         title: {
           text: "Time",
           style: {
@@ -171,12 +196,25 @@ function AccountManageAdmin0Page() {
     series: [
       {
         name: "series-1",
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
+        data: followerCountValues,
       },
     ],
   };
+
   return (
     <span className="AccountManageAdmin0Page">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button

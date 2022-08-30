@@ -347,3 +347,8 @@ model chatHistory{
   message String @db.VarChar(1024)
   sendDate DateTime @default(now())
 }
+
+model advertisementGlobalVariables{
+  advertisementGlobalVariableId Int @id @default(autoincrement())
+  nextAdvertisementToDisplay Int
+}
