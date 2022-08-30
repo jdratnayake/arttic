@@ -4,6 +4,9 @@ const asyncHandler = require("express-async-handler");
 const { Client } = require("pg");
 const SAVEPOSTLIMIT = 20;
 
+let adCount = 0; // total add count
+let nextAdToDisplay = 0; //next advertisment to display
+
 const {
   post,
   advertisement,
@@ -83,9 +86,10 @@ const uploadPostSave = asyncHandler(async (req, res) => {
 //  retrive  ad ************************************
 const getAds = asyncHandler(async (req, res) => {
   const userId = parseInt(req.headers.userid);
-  const skip = parseInt(req.headers.skip);
   const take = parseInt(req.headers.take);
+
   let Ads = {};
+
   const client = new Client({
     user: process.env.DATABASE_USER,
     host: process.env.DATABASE_HOST,
@@ -104,36 +108,68 @@ const getAds = asyncHandler(async (req, res) => {
     [userId]
   );
 
-  // const randomNumber = (max,min) => {
-  //   return Math.floor(Math.random()* (max - min +1))+ min
-  // }
+  adCount = await advertisement.count({
+    where:{
+      blockedStatus: false,
+      paymentStatus: true,
+      endDate:{
+        gt: new Date()
+      }
+    }  
+  })
+  // console.log("before update :",nextAdToDisplay);
 
 
-  // const noArray = [];
-  // const createArray = (length) => {
-  //   let t = randomNumber(10,1);
-  //   if (noArray.find(t)){
-  //     noArray.push(t);
-  //   }
-  // }
+  nextAdToDisplay = (nextAdToDisplay % adCount);
+  // console.log("before after :",nextAdToDisplay);
 
-  // createArray(5)
-  // console.log(noArray)
-
-  if (isShowAd.rows[0].showAd) {
-    Ads = await advertisement.findMany({
-      skip,
-      take,
+  const adIds = await advertisement.findMany({
       select:{
         advertisementId:true,
-        creatorId:true,
-        contentLink:true
       },
       where:{
         blockedStatus: false,
         paymentStatus: true,
         endDate:{
           gt: new Date()
+        }
+      }    
+    });
+
+  let adIdArray = [];
+  adIds.map(ad => {
+      adIdArray.push(ad.advertisementId);
+  }) 
+
+  console.log(nextAdToDisplay,nextAdToDisplay + take);
+  
+  adIdsTodisplay = adIdArray.slice(nextAdToDisplay,nextAdToDisplay + take)
+
+  if((nextAdToDisplay + take) >= adCount){
+    adIdsTodisplay = adIdsTodisplay.concat(adIdArray.slice(0,((nextAdToDisplay + take) % adCount)))
+    // console.log(adIdsTodisplay)
+    // console.log(true)
+  }
+
+  // console.log(adCount);
+  // console.log(adIds);
+  // console.log(adIdArray);
+  // console.log(adIdsTodisplay);
+
+  nextAdToDisplay = nextAdToDisplay + take;
+
+  // console.log("nextAdToDisplay: " ,nextAdToDisplay + take);
+
+  if (isShowAd.rows[0].showAd) {
+    Ads = await advertisement.findMany({
+      select:{
+        advertisementId:true,
+        creatorId:true,
+        contentLink:true
+      },
+      where:{
+        advertisementId:{
+          in:adIdsTodisplay
         }
       }    
     });
