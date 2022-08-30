@@ -89,7 +89,7 @@ function SettingsBasicPage() {
 
     await axios
       .post(API_URL + "/user/uploadprofileorcoverpicture/", inputData, config)
-      .then((response) => {});
+      .then((response) => { });
   };
   // cover picture - END
 
@@ -220,10 +220,9 @@ function SettingsBasicPage() {
                     </label>
                     <div class="col-md-8 col-12">
                       <input
-                        type="email"
+                        type="text"
                         class="form-control"
-                        placeholder="Email"
-                        id="email"
+                        value={userDetails.name}
                         required
                       />
                     </div>
@@ -241,9 +240,8 @@ function SettingsBasicPage() {
                       <input
                         type="email"
                         class="form-control"
-                        placeholder="Email"
-                        id="email"
-                        required
+                        value={userDetails.email}
+                        disabled
                       />
                     </div>
                   </div>
@@ -257,10 +255,9 @@ function SettingsBasicPage() {
                     </label>
                     <div class="col-md-8 col-12">
                       <input
-                        type="email"
+                        type="text"
                         class="form-control"
-                        placeholder="Email"
-                        id="email"
+                        value={userDetails.name}
                         required
                       />
                     </div>
@@ -272,16 +269,25 @@ function SettingsBasicPage() {
                       for="phone"
                       class="col-sm-4 col-form-label form-label"
                     >
-                      Phone <span class="text-muted">(Optional)</span>
+                      Bio
                     </label>
                     <div class="col-md-8 col-12">
-                      <input
+                      <textarea
                         type="text"
+                        rows="3"
                         class="form-control"
-                        placeholder="Phone"
-                        id="phone"
+                        value={userDetails.bio}
+                        required
                       />
                     </div>
+
+                    {/* button */}
+                    <div class="offset-md-4 col-md-8 col-12 mt-3">
+                      <button type="submit" class="btn btn-primary">
+                        Save Changes
+                      </button>
+                    </div>
+
                   </div>
                 </form>
               </div>
@@ -295,38 +301,6 @@ function SettingsBasicPage() {
           <div class="card" id="edit">
             {/* card body */}
             <div class="card-body">
-              <div class="mb-6">
-                <h4 class="mb-1">Email</h4>
-              </div>
-              <form>
-                {/* row */}
-                <div class="mb-3 row">
-                  {/* label */}
-                  <label
-                    for="newEmailAddress"
-                    class="col-sm-4 col-form-label form-label"
-                  >
-                    New email
-                  </label>
-                  <div class="col-md-8 col-12">
-                    {/* input */}
-                    <input
-                      type="email"
-                      class="form-control"
-                      placeholder="Enter your email address"
-                      id="newEmailAddress"
-                      required
-                    />
-                  </div>
-                  {/* button */}
-                  <div class="offset-md-4 col-md-8 col-12 mt-3">
-                    <button type="submit" class="btn btn-primary">
-                      Save Changes
-                    </button>
-                  </div>
-                </div>
-              </form>
-
               <div class="mb-6 mt-6">
                 <h4 class="mb-1">Change your password</h4>
               </div>
