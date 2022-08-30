@@ -53,7 +53,23 @@ const getUserDetails = asyncHandler(async (req, res) => {
   res.json(existUser);
 });
 
+const checkUserName = asyncHandler(async (req, res) => {
+  const userName = req.params.name;
+
+  const existUser = await user.findUnique({
+    where: {
+      username: userName,
+    },
+    include: {
+      followerCreator: true,
+    },
+  });
+
+  res.json(existUser);
+});
+
 module.exports = {
   uploadProfileOrCoverPicture,
   getUserDetails,
+  checkUserName,
 };

@@ -10,9 +10,9 @@ const getAdvertismentTable = asyncHandler(async (req, res) => {
     where: {
       creatorId: userId,
     },
-    // orderBy:{
-
-    // },
+    /*orderBy:{
+      createdDate: "desc",
+    },*/
   });
 
   res.json(advertisementTable);
