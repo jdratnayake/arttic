@@ -23,6 +23,7 @@ model user{
   type Int
   name String @db.VarChar(64)
   email String @db.VarChar(128) @unique
+  bio String? @db.VarChar(2048)
   emailStatus Boolean @default(false)
   username String @db.VarChar(128) @unique
   phone String? @db.Char(10)
