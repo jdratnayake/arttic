@@ -1,5 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const asyncHandler = require("express-async-handler");
+const stripe = require("stripe")(process.env.SECRET_KEY);
+const { v4: uuidv4 } = require("uuid");
 
 const { user, transactionLog, billingAddress } = new PrismaClient();
 
@@ -120,8 +122,43 @@ const getBillingAddresses = asyncHandler(async (req, res) => {
   res.json(address);
 });
 
+const payment = asyncHandler(async (req, res) => {
+  const { userId, token } = req.body;
+  const idempontencyKey = uuidv4();
+
+  // console.log(userId);
+
+  await stripe.customers
+    .create({
+      email: token.email,
+      source: token.id,
+    })
+    .then((customer) => {
+      return stripe.charges.create(
+        {
+          amount: 5 * 100,
+          currency: "usd",
+          customer: customer.id,
+          receipt_email: token.email,
+          description: "test 123",
+        },
+        { idempotencyKey: idempontencyKey }
+      );
+      // console.log(temp);
+      // console.log(customer.id);
+    })
+    .then((result) => {
+      console.log(result);
+      res.json(result);
+    })
+    .catch((error) => console.error(error));
+
+  // res.json("address");
+});
+
 module.exports = {
   getPurchaseHistory,
   registerBillingAddress,
   getBillingAddresses,
+  payment,
 };
