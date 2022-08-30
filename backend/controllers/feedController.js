@@ -296,14 +296,24 @@ const uploadComment = asyncHandler(async (req, res) => {
 //upload POST IMAGE start*************************************
 const uploadPost = asyncHandler(async (req, res) => {
   const userId = parseInt(req.headers.userid);
-  const CreatePost = await post.create({
-    data: {
-      creatorId: userId,
-      imagevideo: req.file.filename,
-      description: req.body.desc,
-    },
-  });
-  res.status(StatusCodes.CREATED).json(CreatePost);
+  const sdk = require('api')('@opensea/v1.0#mxj1ql5k6c0il');
+
+  sdk.retrievingASingleAsset({
+    include_orders: 'false',
+    asset_contract_address: '0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb',
+    token_id: '1'
+  })
+    .then(res => console.log(res))
+    .catch(err => console.error(err));
+    
+  // const CreatePost = await post.create({
+  //   data: {
+  //     creatorId: userId,
+  //     imagevideo: req.file.filename,
+  //     description: req.body.desc,
+  //   },
+  // });
+  // res.status(StatusCodes.CREATED).json(CreatePost);
 });
 
 //  get a comments  ***************
