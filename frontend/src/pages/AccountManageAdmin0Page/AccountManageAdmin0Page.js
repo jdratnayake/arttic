@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import $ from "jquery";
+import { ToastContainer, toast } from "react-toastify";
 
 import { API_URL, PROFILE_PIC_URL } from "../../constants/globalConstants";
 import SummaryCard from "../../components/SummaryCard/SummaryCard";
@@ -16,6 +17,7 @@ import {
 
 import "./AccountManageAdmin0Page.css";
 import "react-datepicker/dist/react-datepicker.css";
+import "react-toastify/dist/ReactToastify.css";
 
 function AccountManageAdmin0Page() {
   const userInfo = useSelector((state) => state.userInfo);
@@ -70,7 +72,18 @@ function AccountManageAdmin0Page() {
     await axios
       .post(API_URL + "/accountmanagement/registeradmin/", inputData, config)
       .then((response) => {
+        setDisplayAdmin0List((current) => [response.data, ...current]);
         setAdmin0List((current) => [response.data, ...current]);
+
+        toast.success("Admin Created Successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       });
 
     $("#btn-close-form").click();
@@ -177,6 +190,18 @@ function AccountManageAdmin0Page() {
   };
   return (
     <span className="AccountManageAdmin0Page">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button
