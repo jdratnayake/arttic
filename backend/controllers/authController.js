@@ -480,6 +480,63 @@ const getUserState = asyncHandler(async (req, res) => {
   res.json({ ...existUser, accessToken });
 });
 
+
+//change password-----------------------------------------------------------------
+const changePassword = asyncHandler(async (req, res) => {
+  let { curPassword, newPassword } = req.body;
+  let userId = parseInt(req.headers.userid);
+
+  const existUser = await user.findFirst({
+    where: {
+      userId: userId,
+    }
+  });
+
+  if (existUser) {
+    bycrypt.compare(curPassword, existUser.password).then((match) => {
+      if (match) {
+        bycrypt.hash(newPassword, 10).then(async (hash) => {
+          const state = await user.update({
+            where: {
+              userId: userId,
+            },
+            data: {
+              password: hash,
+            },
+          });
+
+          if (state) {
+            res.json({
+              msg: "Success",
+            });
+          } else {
+            res.json({
+              msg: "Error",
+            });
+          }
+
+        });
+
+      } else {
+        res.json({
+          msg: "WrPass",
+        });
+      }
+
+    });
+
+  } else {
+    res.json({
+      msg: "No User",
+    });
+  }
+
+});
+//end change password------------------------------------------------------------------
+
+
+
+
 module.exports = {
   register,
   login,
@@ -490,4 +547,5 @@ module.exports = {
   forgotPasswordOtpCheck,
   resetPassword,
   getUserState,
+  changePassword,
 };
