@@ -16,3 +16,7 @@ export const SUPPORTED_PICTURE_FORMATS = [
   "image/gif",
   "image/png",
 ];
+
+// Stripe values
+export const PUBLIC_KEY =
+  "pk_test_51LcWUMAC1DwDZIvSbB29lg48P3y2uh8RuSCbeOY7Co7i4G9bK5SoB7qtVhMTnLymlf9BIGtbAXvc4FVrLqv6RxgB00lUHnXORd";

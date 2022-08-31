@@ -7,6 +7,7 @@ const {
   getPurchaseHistory,
   registerBillingAddress,
   getBillingAddresses,
+  payment,
 } = require("../controllers/settingsController");
 
 const router = express.Router();
@@ -15,5 +16,6 @@ const router = express.Router();
 router.get("/getPurchaseHistory/:id", validateToken, getPurchaseHistory);
 router.post("/registerbillingaddress", validateToken, registerBillingAddress);
 router.get("/getbillingaddresses/:id", validateToken, getBillingAddresses);
+router.post("/payment", validateToken, payment);
 
 module.exports = router;
