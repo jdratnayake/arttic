@@ -146,7 +146,7 @@ function AdvertismentTablePage() {
                     {advertismentTable.map((ad) => (
                       <tr key={ad.advertisementId}>
                         <td className="idStyle">{ad.advertisementId}</td>
-                        <td>{ad.createdDate}</td>
+                        <td>{new Date(ad.createdDate).toLocaleDateString()}</td>
                         <td>
                           <img src={ADVERTISMENT_PIC_URL + ad.contentLink} />
                         </td>
@@ -199,7 +199,7 @@ function AdvertismentTablePage() {
                     {advertismentTable.map((ad) => (
                       <tr key={ad.advertisementId}>
                         <td className="idStyle">{ad.advertisementId}</td>
-                        <td>{ad.createdDate}</td>
+                        <td>{new Date(ad.createdDate).toLocaleDateString()}</td>
                         <td>
                           <img src={ADVERTISMENT_PIC_URL + ad.contentLink} />
                         </td>
@@ -252,7 +252,7 @@ function AdvertismentTablePage() {
                     {advertismentTable.map((ad) => (
                       <tr key={ad.advertisementId}>
                         <td className="idStyle">{ad.advertisementId}</td>
-                        <td>{ad.createdDate}</td>
+                        <td>{new Date(ad.createdDate).toLocaleDateString()}</td>
                         <td>
                           <img src={ADVERTISMENT_PIC_URL + ad.contentLink} />
                         </td>

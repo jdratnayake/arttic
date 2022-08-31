@@ -219,7 +219,7 @@ function SettingsBasicPage() {
 
 
   //change password--------------------------------------------------
-  const changePassword = async (formdata) => {
+  const changePassword = async (formdata, { resetForm }) => {
     const head = {
       headers: {
         authorization: accessToken,
@@ -241,7 +241,7 @@ function SettingsBasicPage() {
             draggable: true,
             progress: undefined,
           });
-          
+          resetForm();
         } else if (res.data.msg == "WrPass") {
           toast.error("Wrong Current Password!", {
             position: "top-right",
@@ -252,7 +252,7 @@ function SettingsBasicPage() {
             draggable: true,
             progress: undefined,
           });
-          
+          resetForm();
         }
 
       });
