@@ -120,8 +120,37 @@ const login = asyncHandler(async (req, res) => {
     });
   }
   // console.log(existUser);
+  // console.log(typeof existUser.premiumPackageStartDate);
+  // console.log(typeof existUser.joinedDate);
+  // console.log(typeof existUser.name);
 
   if (existUser) {
+    // Premium Package Validation
+    if (existUser.premiumUser) {
+      const today = new Date();
+
+      if (today.getTime() > existUser.premiumPackageEndDate.getTime()) {
+        const temp = await user.update({
+          where: {
+            userId: existUser.userId,
+          },
+          data: {
+            premiumUser: false,
+            advertisementVisibility: true,
+          },
+        });
+      }
+    } else if (!existUser.advertisementVisibility) {
+      const temp = await user.update({
+        where: {
+          userId: existUser.userId,
+        },
+        data: {
+          advertisementVisibility: true,
+        },
+      });
+    }
+
     bycrypt.compare(password, existUser.password).then((match) => {
       if (match) {
         const accessToken = sign(

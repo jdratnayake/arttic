@@ -36,8 +36,8 @@ model user{
   blockedDate DateTime?
   blockedAdminID Int?
   premiumUser Boolean @default(false)
-  premiumPackageStartDate DateTime?
-  premiumPackageEndDate DateTime?
+  premiumPackageEndDate DateTime @default(now())
+  advertisementVisibility Boolean @default(true)
   blockedAdmin user? @relation("adminBlockFollowerCreator", fields: [blockedAdminID],references: [userId], onUpdate: Cascade, onDelete: Cascade)
   blockedUser user[] @relation("adminBlockFollowerCreator")
   followerCreator followerCreator?

@@ -122,7 +122,21 @@ const getBillingAddresses = asyncHandler(async (req, res) => {
   res.json(address);
 });
 
-const getPremiumStatus = asyncHandler(async (req, res) => {});
+const getPremiumPackageStatus = asyncHandler(async (req, res) => {
+  const userId = parseInt(req.headers.userid);
+
+  const existUser = await user.findUnique({
+    where: {
+      userId,
+    },
+    select: {
+      premiumUser: true,
+      premiumPackageEndDate: true,
+    },
+  });
+
+  res.json(existUser);
+});
 
 const payment = asyncHandler(async (req, res) => {
   const { userId, token } = req.body;
@@ -162,5 +176,6 @@ module.exports = {
   getPurchaseHistory,
   registerBillingAddress,
   getBillingAddresses,
+  getPremiumPackageStatus,
   payment,
 };
