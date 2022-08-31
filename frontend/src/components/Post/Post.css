@@ -1,3 +1,6 @@
+.Post .dDownCustomComment{
+  transform:translate(105px, -10px) !important;
+}
 .Post .commentSetion{
   max-height: 100px;
   overflow-y: auto;

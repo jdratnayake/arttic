@@ -75,7 +75,7 @@ function Feed() {
   
 // *********** get posts ************
 const getPosts = async () => {
-  // console.log("get post called and skip ",skip)
+  console.log("get post called and skip ",skip)
   const config = {
     headers: {
       authorization: accessToken,
@@ -140,8 +140,7 @@ const handleScroll = (e)=>{
       headers: {
         authorization: accessToken,
         userid:userId,
-        skip:adskip,
-        take:2
+        take:3
       },
     };
   
@@ -194,6 +193,7 @@ const handleScroll = (e)=>{
           <div class="container p-0 feed-container">
             {/* <InputBox accessToken profilePic={profilePic} name={userDetails.name}/> */}
             {/* InputBox Start */}
+          {userDetails.type === 3 ? (
             <div className="mt-6 p-2 inputBox">
               <div className="inputBox-body">
                 <img
@@ -339,6 +339,7 @@ const handleScroll = (e)=>{
                 </div>
               </div>
             </div>
+            ): null}
             {/* InputBox End */}
 
             {/* <Posts profilePic={profilePic} name={userDetails.name} /> */}
@@ -347,6 +348,7 @@ const handleScroll = (e)=>{
               { newPost &&
                 <Post 
                 key={ newPost.postId }
+                id = {'post'+newPost.postId}
                 postid = {newPost.postId}
                 userName = { userDetails.name }
                 profilePic = { profilePic }
@@ -366,6 +368,7 @@ const handleScroll = (e)=>{
                   return(
                     <Post 
                       key={post.postId}
+                      id = {'post'+post.postId}
                       postid = {post.postId}
                       userName = { userDetails.name }
                       profilePic = { profilePic }

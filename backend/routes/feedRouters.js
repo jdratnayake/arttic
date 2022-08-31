@@ -17,9 +17,15 @@ const {
   uploadPost,
   getComments,
   getPosts,
+  deletePost,
+  deleteComment,
 } = require("../controllers/feedController");
 
 const router = express.Router();
+
+router.get("/deleteComment", validateToken, deleteComment);
+
+router.get("/deletePost", validateToken, deletePost);
 
 router.post("/uploadPostSave", validateToken, uploadPostSave);
 

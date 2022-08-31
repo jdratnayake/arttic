@@ -217,6 +217,51 @@ function Post(props) {
       });
   };
 
+  const deletePost = async ( pid ) => {
+    if (props.profilerId === props.creatorId){
+      console.log("delete clicked")
+      const config = {
+        headers: {
+          authorization: accessToken,
+          userid:userId,
+          postId:pid
+        },
+      };
+    
+      await axios
+          .get(API_URL + "/feed/deletePost/", config)
+          .then((response) => {
+            console.log(response.data)
+            $(`#post${response.data.postId}`).hide();
+          });
+    }else{
+        console.log("cannot delete")
+    }
+  }
+
+  const deleteComment = async ( cid, commenterId ) => {
+    if (props.profilerId === commenterId){
+      console.log("delete clicked")
+      const config = {
+        headers: {
+          authorization: accessToken,
+          userid:userId,
+          commentId:cid
+        },
+      };
+    
+      await axios
+          .get(API_URL + "/feed/deleteComment/", config)
+          .then((response) => {
+            // console.log(response.data)
+            $(`#comment${response.data.commentId}`).hide();
+            setCommentCount(commentCount - 1);
+          });
+    }else{
+        console.log("cannot delete")
+    }
+  }
+
   return (
     <span className="Post">
       <div className="d-flex post">
@@ -255,14 +300,42 @@ function Post(props) {
                 }}
                 class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
                 aria-labelledby="page-header-notifications-dropdown"
+                // data-bs-toggle="modal"
+                // data-bs-target="#complainModal"
+              >
+                <a
+                  class="dropdown-item dinv"
+                  data-bs-toggle="modal"
+                  data-bs-target="#complainModal"
+                >
+                  <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
+                  <span class="align-middle">Report</span>
+                </a>
+                { props.profilerId === props.creatorId ?(
+                <a
+                  class="dropdown-item dinv"
+                  onClick={() => {deletePost(props.postid)}}
+                >
+                  <i class="bi bi-trash-fill dinvit icon-theme"></i>{" "}
+                  <span class="align-middle">Delete</span>
+                </a>):null
+                }
+              </div>
+              <div
+                onClick={() => {
+                  setReportType(2);
+                  setReportItemId(props.postid);
+                }}
+                class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
+                aria-labelledby="page-header-notifications-dropdown"
                 data-bs-toggle="modal"
                 data-bs-target="#complainModal"
               >
                 <a
                   class="dropdown-item dinv"
                 >
-                  <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
-                  <span class="align-middle">Report</span>
+                  <i class="bi bi-trash-fill dinvit icon-theme"></i>{" "}
+                  <span class="align-middle">Delete</span>
                 </a>
               </div>
             </div>
@@ -313,7 +386,7 @@ function Post(props) {
               {/* new comment start*/}
 
               {newComment && (
-                <div key={newComment.commentId}>
+                <div key={newComment.commentId} id={'comment'+newComment.commentId}>
                   <div className="p-3 pt-0 pb-2 d-flex justify-items-center gap-2">
                     <img
                       className="rounded-circle"
@@ -348,14 +421,24 @@ function Post(props) {
                           setReportType(3);
                           setReportItemId(newComment.commentId);
                         }}
-                        class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
+                        class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow dDownCustomComment"
                         aria-labelledby="page-header-notifications-dropdown"
-                        data-bs-toggle="modal"
-                        data-bs-target="#complainModal"
+                        
                       >
-                        <a class="dropdown-item dinv">
+                        <a 
+                          class="dropdown-item dinv"
+                          data-bs-toggle="modal"
+                          data-bs-target="#complainModal"
+                        >
                           <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
                           <span class="align-middle">Report</span>
+                        </a> 
+                        <a
+                          class="dropdown-item dinv"
+                          onClick={() => {deleteComment(newComment.commentId, props.profilerId)}}
+                        >
+                          <i class="bi bi-trash-fill dinvit icon-theme"></i>{" "}
+                          <span class="align-middle">Delete</span>
                         </a>
                       </div>
                     </div>
@@ -369,7 +452,7 @@ function Post(props) {
               {comments &&
                 comments.map((comment) => {
                   return (
-                    <div key={comment.commentId}>
+                    <div key={comment.commentId} id={'comment'+comment.commentId}>
                       <div className="p-3 pt-0 pb-2 d-flex justify-items-center gap-2">
                         <img
                           className="rounded-circle"
@@ -404,15 +487,27 @@ function Post(props) {
                               setReportType(3);
                               setReportItemId(comment.commentId);
                             }}
-                            class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
+                            class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow dDownCustomComment"
                             aria-labelledby="page-header-notifications-dropdown"
-                            data-bs-toggle="modal"
-                            data-bs-target="#complainModal"
+                            
                           >
-                            <a class="dropdown-item dinv">
+                            <a 
+                              class="dropdown-item dinv"
+                              data-bs-toggle="modal"
+                              data-bs-target="#complainModal"
+                            >
                               <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
                               <span class="align-middle">Report</span>
                             </a>
+                              { props.profilerId === comment.userId ?(
+                                <a
+                                  class="dropdown-item dinv"
+                                  onClick={() => {deleteComment(comment.commentId,comment.userId)}}
+                                >
+                                  <i class="bi bi-trash-fill dinvit icon-theme"></i>{" "}
+                                    <span class="align-middle">Delete</span>
+                                </a>):null
+                              }
                           </div>
                         </div>
                       </div>

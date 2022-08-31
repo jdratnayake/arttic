@@ -25,7 +25,7 @@ const {
 const uploadPostSave = asyncHandler(async (req, res) => {
   const Data = req.body;
   const userId = parseInt(req.headers.userid);
-  console.log(Data.postId,"userId:",userId);
+  // console.log(Data.postId,"userId:",userId);
   let createPostSave = {};
 
   const client = new Client({
@@ -52,7 +52,7 @@ const uploadPostSave = asyncHandler(async (req, res) => {
   );
 
   await client.end();
-  console.log(isPostExist.rowCount);
+  // console.log(isPostExist.rowCount);
   if(isPostExist.rowCount !== 0){
     res.json("post exits");
   }
@@ -141,7 +141,7 @@ const getAds = asyncHandler(async (req, res) => {
       adIdArray.push(ad.advertisementId);
   }) 
 
-  console.log(nextAdToDisplay,nextAdToDisplay + take);
+  // console.log(nextAdToDisplay,nextAdToDisplay + take);
   
   adIdsTodisplay = adIdArray.slice(nextAdToDisplay,nextAdToDisplay + take)
 
@@ -159,8 +159,9 @@ const getAds = asyncHandler(async (req, res) => {
   nextAdToDisplay = nextAdToDisplay + take;
 
   // console.log("nextAdToDisplay: " ,nextAdToDisplay + take);
+  // console.log(isShowAd.rows[0] === undefined ? "true":"false");
 
-  if (isShowAd.rows[0].showAd) {
+  if (isShowAd.rows[0] === undefined || isShowAd.rows[0].showAd) {
     Ads = await advertisement.findMany({
       select:{
         advertisementId:true,
@@ -191,7 +192,7 @@ const getAds = asyncHandler(async (req, res) => {
 //  upload a comment report ***************
 const uploadCommentReport = asyncHandler(async (req, res) => {
   const Data = req.body;
-  console.log(Data);
+  // console.log(Data);
   // const newCommentReport = await commentReport.create({
   //   data: {
   //     userId: Data.userId,
@@ -242,7 +243,7 @@ const uploadAdReport = asyncHandler(async (req, res) => {
 //  upload a post report ***************
 const uploadPostReport = asyncHandler(async (req, res) => {
   const Data = req.body;
-  console.log(Data);
+  // console.log(Data);
   const CreatepostReport = await postReport.create({
     data: {
       userId: Data.userId,
@@ -257,7 +258,7 @@ const uploadPostReport = asyncHandler(async (req, res) => {
 //  upload a commentReaction ***************
 const uploadCommentReaction = asyncHandler(async (req, res) => {
   const Data = req.body;
-  console.log(Data);
+  // console.log(Data);
   const CreatecommentReaction = await commentReaction.create({
     data: {
       userId: Data.reactorId,
@@ -282,7 +283,7 @@ const uploadpostReaction = asyncHandler(async (req, res) => {
 //  upload a comment ***************
 const uploadComment = asyncHandler(async (req, res) => {
   const Data = req.body;
-  console.log(Data);
+  // console.log(Data);
   const CreateComment = await comment.create({
     data: {
       userId: Data.commenterId,
@@ -296,24 +297,14 @@ const uploadComment = asyncHandler(async (req, res) => {
 //upload POST IMAGE start*************************************
 const uploadPost = asyncHandler(async (req, res) => {
   const userId = parseInt(req.headers.userid);
-  const sdk = require('api')('@opensea/v1.0#mxj1ql5k6c0il');
-
-  sdk.retrievingASingleAsset({
-    include_orders: 'false',
-    asset_contract_address: '0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb',
-    token_id: '1'
-  })
-    .then(res => console.log(res))
-    .catch(err => console.error(err));
-    
-  // const CreatePost = await post.create({
-  //   data: {
-  //     creatorId: userId,
-  //     imagevideo: req.file.filename,
-  //     description: req.body.desc,
-  //   },
-  // });
-  // res.status(StatusCodes.CREATED).json(CreatePost);
+  const CreatePost = await post.create({
+    data: {
+      creatorId: userId,
+      imagevideo: req.file.filename,
+      description: req.body.desc,
+    },
+  });
+  res.status(StatusCodes.CREATED).json(CreatePost);
 });
 
 //  get a comments  ***************
@@ -394,6 +385,31 @@ const getPosts = asyncHandler(async (req, res) => {
   res.json(posts.rows);
 });
 
+const deletePost = asyncHandler(async (req,res) => {
+  const userId = parseInt(req.headers.userid);
+  const postId = parseInt(req.headers.postId);
+
+  const deletedPost = await post.delete({
+    where:{
+      postId
+    }
+  })
+  
+});
+
+const deleteComment = asyncHandler(async (req,res) => {
+  const userId = parseInt(req.headers.userid);
+  const commentId = parseInt(req.headers.commentid);
+  console.log(userId,commentId,req.headers)
+  const deletedPost = await comment.delete({
+    where:{
+      commentId
+    }
+  })
+  res.json(deletedPost);
+});
+
+
 module.exports = {
   uploadPostSave,
   getAds,
@@ -406,4 +422,6 @@ module.exports = {
   uploadPost,
   getComments,
   getPosts,
+  deletePost,
+  deleteComment,
 };
