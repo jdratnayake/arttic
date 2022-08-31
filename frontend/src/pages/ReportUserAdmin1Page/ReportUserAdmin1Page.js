@@ -489,7 +489,7 @@ function ReportUserAdmin1Page() {
           </div>
         </div>
       </div>
-      {/* update plan modal */}
+      {/* complain view modal */}
       <div
         class="modal fade"
         id="complainModal"

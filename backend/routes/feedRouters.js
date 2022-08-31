@@ -11,14 +11,21 @@ const {
   uploadCommentReport,
   uploadAdReport,
   uploadPostReport,
-  uploadcommentReaction,
+  uploadCommentReaction,
   uploadpostReaction,
   uploadComment,
   uploadPost,
+  getComments,
   getPosts,
+  deletePost,
+  deleteComment,
 } = require("../controllers/feedController");
 
 const router = express.Router();
+
+router.get("/deleteComment", validateToken, deleteComment);
+
+router.get("/deletePost", validateToken, deletePost);
 
 router.post("/uploadPostSave", validateToken, uploadPostSave);
 
@@ -28,13 +35,15 @@ router.post("/uploadAdReport", validateToken, uploadAdReport);
 
 router.post("/uploadPostReport", validateToken, uploadPostReport);
 
-router.post("/uploadcommentReaction", validateToken, uploadcommentReaction);
+router.post("/uploadcommentReaction", validateToken, uploadCommentReaction);
 
 router.post("/uploadpostReaction", validateToken, uploadpostReaction);
 
 router.post("/uploadComment", validateToken, uploadComment);
 
 router.post("/uploadPost", validateToken, upload.single("file"), uploadPost);
+
+router.get("/getComments", validateToken, getComments);
 
 router.get("/getPosts", validateToken, getPosts);
 

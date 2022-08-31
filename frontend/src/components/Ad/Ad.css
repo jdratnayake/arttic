@@ -1,1 +1,12 @@
 .AdCard{width: 18rem;}
+.adBody{
+    display: flex;
+    padding: 2px;
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+}
+
+.adBtn{
+    border: none;
+    background: white;
+}
