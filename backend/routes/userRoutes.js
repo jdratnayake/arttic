@@ -9,6 +9,7 @@ const {
   uploadProfileOrCoverPicture,
   getUserDetails,
   checkUserName,
+  uploadUserReport,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -21,5 +22,7 @@ router.post(
 );
 router.get("/getuserdetails/:id", validateToken, getUserDetails);
 router.get("/checkusername/:name", validateToken, checkUserName);
+
+router.post("/uploadUserReport", validateToken, uploadUserReport);
 
 module.exports = router;
