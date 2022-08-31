@@ -7,6 +7,8 @@ import {
 import { useState } from "react";
 
 import "./ReportUserAdmin1Page.css";
+import SummaryCard from "../../components/SummaryCard/SummaryCard";
+
 
 function ReportUserAdmin1Page() {
   const [complain, setComplain] = useState("");
@@ -28,6 +30,25 @@ function ReportUserAdmin1Page() {
 
   return (
     <span className="reportUserAdmin1Page">
+      <div class="card-body admin-page-title date-card">
+        <div class="row">
+          <h4>Complaints</h4>
+        </div>
+      </div>
+
+      <div class="card-body date-card">
+        <div class="row">
+          <div class="col">
+            <SummaryCard cardHeading="Total" numberValue="10, 000" />
+          </div>
+          <div class="col">
+            <SummaryCard cardHeading="Solve" numberValue="5,000" />
+          </div>
+          <div class="col">
+            <SummaryCard cardHeading="Have to check" numberValue="5,000" />
+          </div>
+        </div>
+      </div>
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button

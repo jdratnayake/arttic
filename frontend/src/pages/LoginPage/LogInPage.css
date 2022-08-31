@@ -27,7 +27,7 @@ body{
 .LogInPage .col-12 .fcup{
     border-radius: 10px;
     font-weight: 100;
-    color: #F4F2F4;
+    color: var(--black);
     font-size: small;
 }
 .LogInPage p{
@@ -73,6 +73,15 @@ body{
     color: rgba(132, 39, 226, 1);
     text-decoration: none;
   }
+.LogInPage  .authenticationfooter .div1{
+    justify-content: flex-start;
+ }
+.LogInPage .authenticationfooter .div2{
+     justify-content: flex-end;
+ }
+.LogInPage .authenticationfooter .help-privacy-terms{
+    margin-right: 0%;
+}
 
 @media only screen and (max-width:768px){
     .signup{

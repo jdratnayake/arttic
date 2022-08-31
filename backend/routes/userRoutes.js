@@ -8,6 +8,7 @@ const { upload } = require("../middleware/fileUpload");
 const {
   uploadProfileOrCoverPicture,
   getUserDetails,
+  checkUserName,
   uploadUserReport,
 } = require("../controllers/userController");
 
@@ -20,6 +21,7 @@ router.post(
   uploadProfileOrCoverPicture
 );
 router.get("/getuserdetails/:id", validateToken, getUserDetails);
+router.get("/checkusername/:name", validateToken, checkUserName);
 
 router.post("/uploadUserReport", validateToken, uploadUserReport);
 

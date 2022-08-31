@@ -45,7 +45,7 @@ function SideNavBarAdmin0({ sideNavBarIndex }) {
             <li
               className="sideNavBarSectionHighlight"
               onClick={() => {
-                navigate("/admin0/userdetails");
+                navigate("/admin0/accountmanage");
               }}
             >
               <a>
@@ -59,7 +59,7 @@ function SideNavBarAdmin0({ sideNavBarIndex }) {
               }}
             >
               <a>
-                <i class="bi bi-file-text icon-theme"></i>Complaints
+                <i class="bi bi-clipboard-x-fill icon-theme"></i>Complaints
               </a>
             </li>
             <li
@@ -79,12 +79,12 @@ function SideNavBarAdmin0({ sideNavBarIndex }) {
               }}
             >
               <a>
-                <i class="bi bi-cash icon-theme"></i>Transactions
+                <i class="bi bi-wallet-fill icon-theme"></i>Transactions
               </a>
             </li>
             <li className="sideNavBarSectionHighlight">
               <a>
-                <i class="bi bi-gear icon-theme"></i>Settings
+                <i class="bi bi-gear-fill icon-theme"></i>Settings
               </a>
             </li>
           </ul>

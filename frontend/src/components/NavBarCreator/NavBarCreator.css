@@ -1,115 +1,120 @@
-.NavBarCreator .navbar-end {
-    margin: 10px 10px 10px 20px;
-  }
-  .NavBarCreator .nav-bar-btn {
-    margin-right: 10px;
-  }
-  .NavBarCreator .bi-search {
-    font-weight: 2000;
-  }
-  .NavBarCreator .icon-theme-nav {
-    font-size: x-large;
-    padding-right: 20px;
-    color: #8427E2;
-  }
-  .NavBarCreator .sebr {
-    padding-left: 10%;
-  }
-  .NavBarCreator .navbar-item{
-    background-color: #F8F9FA;
-  }
+.NavBarCreator .dropdown-item {
+  cursor: pointer;
+}
 
+.NavBarCreator .navbar-end {
+  margin: 10px 10px 10px 20px;
+}
+.NavBarCreator .navbar-item {
+  display: flex;
+  align-items: center;
+}
+.NavBarCreator .nav-bar-btn {
+  margin-right: 10px;
+}
+.NavBarCreator .bi-search {
+  font-weight: 2000;
+}
+.NavBarCreator .icon-theme-nav {
+  font-size: x-large;
+  padding-right: 20px;
+  color: #8427e2;
+  padding-top: 0.32422rem;
+  padding-bottom: 0.32422rem;
+  top: 50%;
+}
+.NavBarCreator .sebr {
+  padding-left: 10%;
+}
+.NavBarCreator .navbar-item {
+  background-color: #f8f9fa;
+}
 
 /*--------------------------------------------*/
 .NavBarCreator .wrap-sb {
-    width: 30%;
-    position: absolute;
-    top: 50%;
-    left: 35%;
-    transform: translate(-50%, -50%);
-  }
-  .NavBarCreator .search {
-    width: 100%;
-    display: flex;
-  }
-  .NavBarCreator .searchTerm {
-    width: 100%;
-    border: 1px solid #8427E2;
-    background: #F4F2F4;
-    border-left: none;
-    padding: 3px;
-    border-radius: 0 5px 5px 0;
-    outline: none;
-  }
-  .NavBarCreator .searchButton {
-    width: 40px;
-    height: 35px;
-    border: 1px solid #8427E2;
-    background: #F4F2F4;
-    text-align: center;
-    color: #d6d6d6;
-    border-right: none;
-    border-radius: 5px 0 0 5px;
-    cursor: pointer;
-    font-size: 15px;
-  }
-  
+  width: 30%;
+  position: absolute;
+  top: 50%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+}
+.NavBarCreator .search {
+  width: 100%;
+  display: flex;
+}
+.NavBarCreator .searchTerm {
+  width: 100%;
+  border: 1px solid #8427e2;
+  background: #f4f2f4;
+  border-left: none;
+  padding: 3px;
+  border-radius: 0 5px 5px 0;
+  outline: none;
+}
+.NavBarCreator .searchButton {
+  width: 40px;
+  height: 35px;
+  border: 1px solid #8427e2;
+  background: #f4f2f4;
+  text-align: center;
+  color: #d6d6d6;
+  border-right: none;
+  border-radius: 5px 0 0 5px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
 /*----------------------------------------*/
 
-.NavBarCreator .drop-list-upper{
-    padding-left: 10px;
+.NavBarCreator .drop-list-upper {
+  padding-left: 10px;
 }
 
-.NavBarCreator .dr-btn{
-    border: none;
-    width: 40px;
-    height: 100%;
-    background : #F8F9FA;
+.NavBarCreator .dr-btn {
+  border: none;
+  width: 40px;
+  height: 100%;
+  background: #f8f9fa;
 }
 
-
-.NavBarCreator .dinv{
-    padding: 7px;
-
+.NavBarCreator .dinv {
+  padding: 7px;
 }
 
-.NavBarCreator .dinvit{
-    padding-right: 5px !important;
-    padding-left: 5px !important;
+.NavBarCreator .dinvit {
+  padding-right: 5px !important;
+  padding-left: 5px !important;
 }
 
 .NavBarCreator .dropdown-menu-arrow:before {
-	content: "";
-	position: absolute;
-	top: -0.25rem;
-	left: 0.75rem;
-	display: block;
-	background: inherit;
-	width: 14px;
-	height: 14px;
-	transform: rotate(45deg);
-	transform-origin: center;
-	border: 1px solid;
-	border-color: inherit;
-	z-index: -1;
-	clip: rect(0, 9px, 9px, 0);
+  content: "";
+  position: absolute;
+  top: -0.25rem;
+  left: 0.75rem;
+  display: block;
+  background: inherit;
+  width: 14px;
+  height: 14px;
+  transform: rotate(45deg);
+  transform-origin: center;
+  border: 1px solid;
+  border-color: inherit;
+  z-index: -1;
+  clip: rect(0, 9px, 9px, 0);
 }
 
 .NavBarCreator .dropdown-menu-arrow.dropdown-menu-end:before {
-	right: 0.75rem;
-	left: auto;
+  right: 0.75rem;
+  left: auto;
 }
-
-
-
 
 /*
 updated media 
 */
 
 @media (min-width: 1011px) {
-    .NavBarCreator .navbar-expand-lg {
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-    }
+  .NavBarCreator .navbar-expand-lg {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
 }

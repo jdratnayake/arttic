@@ -11,7 +11,8 @@ const { generateOtp, otpEmail } = require("./helpers/authControllerHelper");
 
 // this API is used in the SignUpPage
 const emailCheck = asyncHandler(async (req, res) => {
-  const { email } = req.body;
+  let { email } = req.body;
+  email = email.toLowerCase();
 
   const emailStatus = await user.findUnique({
     where: {
@@ -26,7 +27,8 @@ const emailCheck = asyncHandler(async (req, res) => {
 });
 
 const register = asyncHandler(async (req, res) => {
-  const { userType, name, email, password } = req.body;
+  let { userType, name, email, password } = req.body;
+  email = email.toLowerCase();
 
   const emailStatus = await user.findUnique({
     where: {
@@ -90,7 +92,8 @@ const register = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-  const { username, password } = req.body;
+  let { username, password } = req.body;
+  username = username.toLowerCase();
 
   const existUser = await user.findFirst({
     where: {
@@ -165,7 +168,8 @@ const creatorVerify = asyncHandler(async (req, res) => {
     return String.fromCharCode.apply(null, data);
   };
 
-  const { userId, openSeaUsername, walletAddress } = req.body;
+  let { userId, openSeaUsername, walletAddress } = req.body;
+  openSeaUsername = openSeaUsername.toLowerCase();
 
   const errorData = { username: "", walletAddress: "" };
   let errorSignal = false;
@@ -275,7 +279,8 @@ const creatorVerify = asyncHandler(async (req, res) => {
 // password recovery - START
 
 const usernameCheck = asyncHandler(async (req, res) => {
-  const { username } = req.body;
+  let { username } = req.body;
+  username = username.toLowerCase();
 
   const existUser = await user.findFirst({
     where: {
@@ -298,7 +303,8 @@ const usernameCheck = asyncHandler(async (req, res) => {
 });
 
 const forgotPasswordOtp = asyncHandler(async (req, res) => {
-  const { username } = req.body;
+  let { username } = req.body;
+  username = username.toLowerCase();
   const otp = generateOtp();
 
   const status = await user.updateMany({
@@ -335,10 +341,13 @@ const forgotPasswordOtp = asyncHandler(async (req, res) => {
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
-
+    secure: false,
     auth: {
       user: "alec.software.cooperation@gmail.com",
       pass: "lbwzzqktlqaicniu",
+    },
+    tls: {
+      rejectUnauthorized: false,
     },
   });
 
@@ -376,7 +385,8 @@ const forgotPasswordOtp = asyncHandler(async (req, res) => {
 });
 
 const forgotPasswordOtpCheck = asyncHandler(async (req, res) => {
-  const { username, otp } = req.body;
+  let { username, otp } = req.body;
+  username = username.toLowerCase();
 
   const existUser = await user.findFirst({
     where: {
@@ -408,7 +418,8 @@ const forgotPasswordOtpCheck = asyncHandler(async (req, res) => {
 });
 
 const resetPassword = asyncHandler(async (req, res) => {
-  const { username, password } = req.body;
+  let { username, password } = req.body;
+  username = username.toLowerCase();
 
   bycrypt.hash(password, 10).then(async (hash) => {
     const status = await user.updateMany({

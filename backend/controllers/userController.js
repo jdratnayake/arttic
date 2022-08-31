@@ -54,10 +54,25 @@ const getUserDetails = asyncHandler(async (req, res) => {
   res.json(existUser);
 });
 
+const checkUserName = asyncHandler(async (req, res) => {
+  const userName = req.params.name;
+
+  const existUser = await user.findUnique({
+    where: {
+      username: userName,
+    },
+    include: {
+      followerCreator: true,
+    },
+  });
+
+  res.json(existUser);
+});
+
 //  upload a user report ***************
 const uploadUserReport = asyncHandler(async (req, res) => {
   const Data = req.body;
-  console.log(Data)
+  console.log(Data);
   // const CreateAdReport = await userReport.create({
   //   data: {
   //     userId: Data.userId,
@@ -79,13 +94,18 @@ const uploadUserReport = asyncHandler(async (req, res) => {
   });
 
   await client.connect();
-   const comments = await client.query({
+  const comments = await client.query({
     text: `INSERT INTO public."userReport"
     ("userId", "reportedUserId","reportCategory", description)
     VALUES ($1,$2,$3,$4);`,
-    values: [Data.userId,Data.reportedUserId,parseInt(Data.category),Data.description],
+    values: [
+      Data.userId,
+      Data.reportedUserId,
+      parseInt(Data.category),
+      Data.description,
+    ],
   });
-   await client.end();
+  await client.end();
 
   res.json("success");
 });
@@ -93,5 +113,6 @@ const uploadUserReport = asyncHandler(async (req, res) => {
 module.exports = {
   uploadProfileOrCoverPicture,
   getUserDetails,
+  checkUserName,
   uploadUserReport,
 };

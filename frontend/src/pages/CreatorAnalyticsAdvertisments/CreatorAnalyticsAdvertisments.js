@@ -75,7 +75,7 @@ function CreatorAnalyticsAdvertisments() {
                 },
             },
             title: {
-                text: "No Of Advertisments",
+                text: "No of Advertisments",
                 align: "left",
                 style: { fontFamily: "Poppins", },
             },
@@ -95,18 +95,18 @@ function CreatorAnalyticsAdvertisments() {
                 <div class="col">
                     {/* card */}
                     {/* card body */}
-                    <div class="card-header p-4 bg-white">
+                    {/* <div class="card-header p-4 bg-white">
                         <h4 class="mb-0">Advertisment Analysis</h4>
-                    </div>
+                    </div> */}
 
                     <br />
 
                     {/* Analytics Cards */}
-                    <div class="row d-flex justify-content-center">
+                    <div class="row d-flex analytics-card-chart">
                         <div class="col-4 mb-6">
                             <AnalyticsCard
-                                cardHeading="No Of Advertisments"
-                                iconName="bi bi-person-plus-fill"
+                                cardHeading="No of Advertisments"
+                                iconName="bi bi-badge-ad-fill"
                             />
                         </div>
                         <div class="col-6 mb-6">
@@ -129,7 +129,7 @@ function CreatorAnalyticsAdvertisments() {
                                     <tr>
                                         <th>No</th>
                                         <th>Date</th>
-                                        <th>Img</th>
+                                        <th>Image</th>
                                         <th>Description</th>
                                         <th></th>
                                     </tr>

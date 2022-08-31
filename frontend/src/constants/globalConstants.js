@@ -5,3 +5,18 @@ export const PROFILE_PIC_URL = "http://localhost:5000/profilePic/";
 export const COVER_PIC_URL = "http://localhost:5000/coverPic/";
 export const ADVERTISMENT_PIC_URL = "http://localhost:5000/advertismentPic/";
 export const POST_PIC_URL = "http://localhost:5000/postPic/";
+
+export const ADVERTISMENT_DAY_PRICE = 10;
+
+//KB
+export const PICTURE_FILE_SIZE = 800 * 1024;
+export const SUPPORTED_PICTURE_FORMATS = [
+  "image/jpg",
+  "image/jpeg",
+  "image/gif",
+  "image/png",
+];
+
+// Stripe values
+export const PUBLIC_KEY =
+  "pk_test_51LcWUMAC1DwDZIvSbB29lg48P3y2uh8RuSCbeOY7Co7i4G9bK5SoB7qtVhMTnLymlf9BIGtbAXvc4FVrLqv6RxgB00lUHnXORd";

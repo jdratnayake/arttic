@@ -5,7 +5,7 @@
 .fcup {
   border-radius: 10px;
   font-weight: 100;
-  color: #f4f2f4;
+  color: var(--black);
   font-size: small;
 }
 .post-preview {
