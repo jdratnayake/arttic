@@ -122,6 +122,8 @@ const getBillingAddresses = asyncHandler(async (req, res) => {
   res.json(address);
 });
 
+const getPremiumStatus = asyncHandler(async (req, res) => {});
+
 const payment = asyncHandler(async (req, res) => {
   const { userId, token } = req.body;
   const idempontencyKey = uuidv4();
