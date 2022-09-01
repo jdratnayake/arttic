@@ -9,6 +9,7 @@ const {
   userSubscribe,
   post,
   postView,
+  advertisementView,
 } = new PrismaClient();
 
 const round = (value, precision) => {
@@ -188,6 +189,9 @@ const getPostList = asyncHandler(async (req, res) => {
   const userId = parseInt(req.headers.userid);
 
   const postDetails = await post.findMany({
+    orderBy: {
+      postId: "desc",
+    },
     where: {
       creatorId: userId,
     },
@@ -247,15 +251,152 @@ const getSinglePostAnalytics = asyncHandler(async (req, res) => {
 });
 
 const getAdvertismentAnalytics = asyncHandler(async (req, res) => {
-  res.json("Hi");
+  const userId = parseInt(req.headers.userid);
+
+  const previousToday = new Date();
+  previousToday.setDate(previousToday.getDate() - 7);
+
+  // Start
+  const timeList = [];
+  const userCountList = [];
+  const chartDate = new Date();
+  chartDate.setDate(chartDate.getDate() - 7);
+
+  for (let i = 0; i < 7; i++) {
+    chartDate.setDate(chartDate.getDate() + 1);
+    timeList.push(chartDate.getMonth() + 1 + "/" + chartDate.getDate());
+
+    const userCount = await advertisement.aggregate({
+      where: {
+        AND: [
+          {
+            creatorId: userId,
+          },
+          { createdDate: { lt: chartDate } },
+        ],
+      },
+
+      _count: {
+        advertisementId: true,
+      },
+    });
+
+    userCountList.push(userCount["_count"]["advertisementId"]);
+  }
+
+  const newFollowers = await advertisement.aggregate({
+    where: {
+      creatorId: userId,
+    },
+
+    _count: {
+      advertisementId: true,
+    },
+  });
+
+  const newFollowersPreviousWeek = await advertisement.aggregate({
+    where: {
+      AND: [
+        {
+          creatorId: userId,
+        },
+
+        { createdDate: { lt: previousToday } },
+      ],
+    },
+
+    _count: {
+      advertisementId: true,
+    },
+  });
+
+  const newFollowersCount = newFollowers["_count"]["advertisementId"];
+  const newFollowersPreviousWeekCount =
+    newFollowersPreviousWeek["_count"]["advertisementId"];
+
+  const newFollowersDetails = [
+    newFollowersCount,
+    round(
+      ((newFollowersCount - newFollowersPreviousWeekCount) /
+        (newFollowersPreviousWeekCount || 1)) *
+        100,
+      2
+    ),
+  ];
+  // End
+
+  const outputData = {
+    newAdvertisementDetails: newFollowersDetails,
+    timeList,
+    AdvertisementCountList: userCountList,
+  };
+
+  res.json(outputData);
 });
 
 const getAdvertismentList = asyncHandler(async (req, res) => {
-  res.json("Hi");
+  const userId = parseInt(req.headers.userid);
+
+  const postDetails = await advertisement.findMany({
+    orderBy: {
+      advertisementId: "desc",
+    },
+    where: {
+      creatorId: userId,
+    },
+    select: {
+      advertisementId: true,
+      createdDate: true,
+      contentLink: true,
+      description: true,
+    },
+  });
+
+  res.json(postDetails);
 });
 
 const getSingleAdvertismentAnalytics = asyncHandler(async (req, res) => {
-  res.json("Hi");
+  const advertisementId = parseInt(req.headers.advertisementid);
+
+  const previousToday = new Date();
+  previousToday.setDate(previousToday.getDate() - 7);
+
+  // Start
+  const timeList = [];
+  const userCountList = [];
+  const chartDate = new Date();
+  chartDate.setDate(chartDate.getDate() - 7);
+
+  for (let i = 0; i < 7; i++) {
+    chartDate.setDate(chartDate.getDate() + 1);
+    timeList.push(chartDate.getMonth() + 1 + "/" + chartDate.getDate());
+
+    const userCount = await advertisementView.aggregate({
+      where: {
+        AND: [
+          {
+            advertisementId,
+          },
+          { advertisementViewedDate: { lt: chartDate } },
+        ],
+      },
+
+      _count: {
+        advertisementViewId: true,
+      },
+    });
+
+    userCountList.push(userCount["_count"]["advertisementViewId"]);
+  }
+
+  // End
+
+  const outputData = {
+    timeList,
+    advertisementList: userCountList,
+  };
+
+  res.json(outputData);
 });
 
 module.exports = {

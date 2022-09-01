@@ -22,19 +22,22 @@ function CreatorAnalyticsPosts() {
   const [postTime, setPostTime] = useState([]);
   const [postCount, setPostCount] = useState([]);
 
-  const handleClick = async (postId) => {
+  const handleClick = async (advertisementId) => {
     const config = {
       headers: {
         authorization: accessToken,
-        postId,
+        advertisementId,
       },
     };
 
     await axios
-      .get(API_URL + "/creatoranalytics/getsinglepostanalytics/", config)
+      .get(
+        API_URL + "/creatoranalytics/getsingleadvertismentanalytics/",
+        config
+      )
       .then((response) => {
         setPostTime(response.data.timeList);
-        setPostCount(response.data.postCountList);
+        setPostCount(response.data.advertisementList);
       });
   };
 
