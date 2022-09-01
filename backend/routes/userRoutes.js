@@ -10,6 +10,7 @@ const {
   getUserDetails,
   checkUserName,
   updateUserDetails,
+  uploadUserReport,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -23,5 +24,7 @@ router.post(
 router.get("/getuserdetails/:id", validateToken, getUserDetails);
 router.get("/checkusername/:name", validateToken, checkUserName);
 router.post("/updateuserdetails", validateToken, updateUserDetails);
+
+router.post("/uploadUserReport", validateToken, uploadUserReport);
 
 module.exports = router;
