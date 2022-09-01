@@ -84,6 +84,8 @@ const register = asyncHandler(async (req, res) => {
         username: newUser.username,
         profilePhoto: newUser.profilePhoto,
         accessToken: accessToken,
+        premiumUser: newUser.premiumUser,
+        advertisementVisibility: newUser.advertisementVisibility,
       };
 
       res.status(StatusCodes.CREATED).json(returnData);
@@ -167,6 +169,8 @@ const login = asyncHandler(async (req, res) => {
           username: existUser.username,
           profilePhoto: existUser.profilePhoto,
           accessToken: accessToken,
+          premiumUser: existUser.premiumUser,
+          advertisementVisibility: existUser.advertisementVisibility,
         };
 
         if (existUser.type === 3) {
@@ -498,6 +502,8 @@ const getUserState = asyncHandler(async (req, res) => {
       emailStatus: true,
       username: true,
       profilePhoto: true,
+      premiumUser: true,
+      advertisementVisibility: true,
     },
   });
 
