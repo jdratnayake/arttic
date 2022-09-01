@@ -38,6 +38,8 @@ model user{
   premiumUser Boolean @default(false)
   premiumPackageEndDate DateTime @default(now())
   advertisementVisibility Boolean @default(true)
+  emailValidity Boolean @default(false)
+  emailValidityOtp String? @db.VarChar(5)
   blockedAdmin user? @relation("adminBlockFollowerCreator", fields: [blockedAdminID],references: [userId], onUpdate: Cascade, onDelete: Cascade)
   blockedUser user[] @relation("adminBlockFollowerCreator")
   followerCreator followerCreator?

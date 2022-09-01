@@ -1,0 +1,104 @@
+.forgotPasswordOTP .icon {
+  padding-right: 15px;
+}
+.forgotPasswordOTP .btnlog {
+  margin-bottom: 5%;
+  border-radius: 10px;
+}
+.forgotPasswordOTP .Or {
+  margin-bottom: 0.5rem;
+}
+.forgotPasswordOTP .col-12 {
+  margin-bottom: 1rem;
+}
+.forgotPasswordOTP .col-12 .form-label {
+  margin: 0.2rem;
+}
+.col-12 .fcup::placeholder {
+  /* font-size: 14px; */
+  font-weight: 100;
+}
+.forgotPasswordOTP .card-update {
+  border: rgba(244, 242, 244, 1);
+  margin-top: 10%;
+  margin-bottom: 10%;
+  margin-left: 5%;
+  margin-right: 5%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+.forgotPasswordOTP .fcup {
+  border-radius: 10px;
+  font-weight: 100;
+  font-size: small;
+}
+.forgotPasswordOTP p {
+  margin-bottom: 0;
+}
+.forgotPasswordOTP .col-12 .error-msg {
+  color: red;
+  font-size: small;
+}
+.forgotPasswordOTP .d-flex {
+  margin-top: 7%;
+}
+
+
+.forgotPasswordOTP .container {
+  width: 100%;
+  padding: 0px;
+  background-color: #ffffff;
+  border-radius: 25px;
+}
+.forgotPasswordOTP .title {
+  /* color: #093030; */
+  align-content: center;
+}
+.forgotPasswordOTP p.sub-title {
+  color: var(--black);
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+.forgotPasswordOTP p span.phone-number {
+  display: block;
+  color: var(--primary-100);
+  /* font-weight: 400; */
+}
+
+.forgotPasswordOTP .wrapper input.field:focus {
+  outline: none;
+}
+.forgotPasswordOTP button.resend {
+  background-color: transparent;
+  border: none;
+  font-weight: 500;
+  color: var(--primary-100);
+  cursor: pointer;
+}
+.forgotPasswordOTP button.resend i {
+  margin-left: 5px;
+}
+
+.forgotPasswordOTP .error-msg {
+  text-align: left;
+}
+
+
+@media only screen and (max-width: 768px) {
+  .forgotPasswordOTP .col-4 {
+    width: 50%;
+  }
+}
+@media only screen and (max-width: 514px) {
+  .forgotPasswordOTP .col-4 {
+    width: 83%;
+  }
+  .chcklbl {
+    font-size: 14px;
+  }
+  .terms-conditions {
+    display: flex;
+    flex-direction: row;
+  }
+ 
+}
