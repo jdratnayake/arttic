@@ -1,19 +1,37 @@
+import { useEffect, useState } from "react";
 import ApexCharts from "apexcharts";
 import Chart from "react-apexcharts";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 import "./DashboardAdmin0Page.css";
 import "react-datepicker/dist/react-datepicker.css";
 
 import AnalyticsCard from "../../components/AnalyticsCard/AnalyticsCard";
+import { API_URL } from "../../constants/globalConstants";
 
 function DashboardAdmin0Page() {
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
+
+  // Chart values
+  const [timeValues, setTimeValues] = useState([]);
+  const [userCountValues, setUserCountValues] = useState([]);
+  const [revenueValue, setRevenueValue] = useState([]);
+  const [userDiversity, setUserDiversity] = useState([]);
+  const [newAccountsCount, setNewAccountsCount] = useState(0);
+  const [newAccountsPercentage, setNewAccountsPercentage] = useState(0);
+  const [newAdvertisementsCount, setNewAdvertisementsCount] = useState(0);
+  const [newAdvertisementsPercentage, setNewAdvertisementsPercentage] =
+    useState(0);
+
   const lineChartValues = {
     options: {
       chart: {
         id: "basic-bar",
       },
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+        categories: timeValues,
         title: {
           text: "Time",
           style: {
@@ -40,7 +58,7 @@ function DashboardAdmin0Page() {
     series: [
       {
         name: "series-1",
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
+        data: userCountValues,
       },
     ],
   };
@@ -51,7 +69,7 @@ function DashboardAdmin0Page() {
         id: "basic-bar",
       },
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+        categories: timeValues,
         title: {
           text: "Time",
           style: {
@@ -78,21 +96,15 @@ function DashboardAdmin0Page() {
     series: [
       {
         name: "series-1",
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
+        data: revenueValue,
       },
     ],
   };
 
   const pieChartValues = {
-    series: [5, 11, 2, 82],
+    series: userDiversity,
     chartOptions: {
-      labels: [
-        "Creator - Base",
-        "Creator - Silver",
-        "Creator - Gold",
-        "Creator - Platinum",
-        "Follower",
-      ],
+      labels: ["Creator ", "Follower"],
       title: {
         text: "User Diversity",
         align: "left",
@@ -102,6 +114,30 @@ function DashboardAdmin0Page() {
       },
     },
   };
+
+  const getDashboardDetails = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios.get(API_URL + "/admindashboard", config).then((response) => {
+      console.log(response);
+      setTimeValues(response.data.timeList);
+      setUserCountValues(response.data.userCountList);
+      setRevenueValue(response.data.revenueList);
+      setUserDiversity(response.data.userDiversity);
+      setNewAccountsCount(response.data.newUserAccountDetails[0]);
+      setNewAccountsPercentage(response.data.newUserAccountDetails[1]);
+      setNewAdvertisementsCount(response.data.newAdvertisementDetails[0]);
+      setNewAdvertisementsPercentage(response.data.newAdvertisementDetails[1]);
+    });
+  };
+
+  useEffect(() => {
+    getDashboardDetails();
+  }, []);
 
   return (
     <span className="dashboardAdmin0Page">
@@ -118,19 +154,23 @@ function DashboardAdmin0Page() {
               <AnalyticsCard
                 cardHeading="New Accounts"
                 iconName="bi bi-person-plus-fill"
+                count={newAccountsCount}
+                percentage={newAccountsPercentage}
               />
             </div>
             <div class="col cardCol">
               <AnalyticsCard
                 cardHeading="Advertisements"
                 iconName="bi bi-badge-ad-fill"
+                count={newAdvertisementsCount}
+                percentage={newAdvertisementsPercentage}
               />
             </div>
           </div>
           <div class="row">
             <div class="col cardCol">
               <AnalyticsCard
-                cardHeading="Del. Accounts"
+                cardHeading="Subscription"
                 iconName="bi bi-person-x-fill"
               />
             </div>
