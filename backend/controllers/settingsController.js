@@ -139,10 +139,57 @@ const getPremiumPackageStatus = asyncHandler(async (req, res) => {
 });
 
 const payment = asyncHandler(async (req, res) => {
-  const { userId, token } = req.body;
+  const writeLog = async (userId, stripeId, premiumStatus, premiumEndDate) => {
+    const transaction = await transactionLog.create({
+      data: {
+        userId,
+        transactionType: 2,
+        stripeId,
+        amount: 5,
+      },
+    });
+
+    //today
+    const dateValue = new Date();
+
+    if (premiumStatus) {
+      const extendDate = new Date(premiumEndDate);
+      extendDate.setDate(extendDate.getDate() + 30);
+
+      const updateUser = await user.update({
+        where: {
+          userId,
+        },
+        data: {
+          premiumPackageEndDate: extendDate,
+        },
+      });
+
+      res.json({ premiumUser: true, premiumPackageEndDate: extendDate });
+    } else {
+      dateValue.setDate(dateValue.getDate() + 30);
+
+      const updateUser = await user.update({
+        where: {
+          userId,
+        },
+        data: {
+          premiumPackageEndDate: dateValue,
+          premiumUser: true,
+        },
+      });
+
+      res.json({ premiumUser: true, premiumPackageEndDate: dateValue });
+    }
+  };
+
+  const { userId, token, premiumStatus, premiumEndDate } = req.body;
   const idempontencyKey = uuidv4();
 
   // console.log(userId);
+  // console.log(token);
+  // console.log(premiumStatus);
+  // console.log(typeof premiumStatus);
 
   await stripe.customers
     .create({
@@ -156,7 +203,7 @@ const payment = asyncHandler(async (req, res) => {
           currency: "usd",
           customer: customer.id,
           receipt_email: token.email,
-          description: "test 123",
+          description: "Premium package subscribed.",
         },
         { idempotencyKey: idempontencyKey }
       );
@@ -164,8 +211,9 @@ const payment = asyncHandler(async (req, res) => {
       // console.log(customer.id);
     })
     .then((result) => {
-      console.log(result);
-      res.json(result);
+      // console.log(result);
+
+      writeLog(userId, result.id, premiumStatus, premiumEndDate);
     })
     .catch((error) => console.error(error));
 

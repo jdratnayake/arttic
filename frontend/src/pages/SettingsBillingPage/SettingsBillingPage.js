@@ -101,7 +101,7 @@ function SettingsBillingPage() {
   };
 
   const makePayment = async (token) => {
-    const inputData = { token, userId: 1 };
+    const inputData = { userId, premiumStatus, premiumEndDate, token };
 
     const config = {
       headers: {
@@ -112,7 +112,10 @@ function SettingsBillingPage() {
     await axios
       .post(API_URL + "/settings/payment/", inputData, config)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
+        // getPremiumPackageDetails();
+        setPremiumStatus(response.data.premiumUser);
+        setPremiumEndDate(new Date(response.data.premiumPackageEndDate));
       });
   };
 
@@ -190,11 +193,11 @@ function SettingsBillingPage() {
                               : "Subscribe Now"}
                           </a>
                         </StripeCheckout>
-                        {premiumStatus && (
+                        {/* {premiumStatus && (
                           <a href="#" class="btn btn-outline-white d-grid">
                             Cancel Subscription
                           </a>
-                        )}
+                        )} */}
                       </div>
                     </div>
                   </div>
