@@ -1,6 +1,10 @@
 import "./CreatorProfilePage.css";
 import { useState, useEffect } from "react";
-import { API_URL } from "../../constants/globalConstants";
+import {
+  API_URL,
+  PROFILE_PIC_URL,
+  COVER_PIC_URL,
+} from "../../constants/globalConstants";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
@@ -55,7 +59,7 @@ function CreatorProfilePage() {
                                         justify-content-end align-items-end mt-n10"
                   >
                     <img
-                      src={profile}
+                      src={PROFILE_PIC_URL+profileData.profilePhoto}
                       class="avatar-xxl rounded-circle border border-4 
                                             border-white-color-40"
                       alt=""
@@ -118,10 +122,7 @@ function CreatorProfilePage() {
                     {/* text */}
                     <h6 class="text-uppercase fs-5 ls-2">Bio</h6>
                     <p class="mb-0">
-                      I work as CPO for a Swiss Telco/Messaging Platform
-                      Company. My real passion is developing in Golang,
-                      Vue-Nuxt/ReactJs/Angular with Redis, Nsq/RabbitMQ,
-                      ArangoDB, MongoDB and Sql
+                     {profileData.bio}
                     </p>
                   </div>
                   <div class="col-12 mb-1">
@@ -129,18 +130,18 @@ function CreatorProfilePage() {
                     <h6 class="text-uppercase fs-5 ls-2">Username</h6>
                     <p class="mb-0">{profileData.name}</p>
                   </div>
-                  <div class="col-6 mb-1">
+                  {/* <div class="col-6 mb-1">
                     <h6 class="text-uppercase fs-5 ls-2">Phone </h6>
                     <p class="mb-0">{profileData.phone}</p>
-                  </div>
+                  </div> */}
                   <div class="col-6 mb-1">
                     <h6 class="text-uppercase fs-5 ls-2">Joined date </h6>
-                    <p class="mb-0">{profileData.joinedDate}</p>
+                    <p class="mb-0">{new Date(profileData.joinedDate).toDateString()}</p>
                   </div>
-                  <div class="col-6">
+                  {/* <div class="col-6">
                     <h6 class="text-uppercase fs-5 ls-2">Email </h6>
                     <p class="mb-0">{profileData.email}</p>
-                  </div>
+                  </div> */}
                   <div class="col-6">
                     <h6 class="text-uppercase fs-5 ls-2">Accounnt status</h6>
                     <p class="mb-0">Premium</p>
