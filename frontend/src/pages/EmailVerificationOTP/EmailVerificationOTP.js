@@ -1,26 +1,32 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import OtpInput from "react-otp-input";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 
 import { API_URL } from "../../constants/globalConstants";
+import { updateUserState } from "../../actions/userActions";
 
-import "./ForgotPasswordOTP.css";
+import "./EmailVerificationOTP.css";
 import logo from "../../images/logo.png";
 import AuthenticationFooter from "../../components/AuthenticationFooter/AuthenticationFooter";
 
-function ForgotPasswordOTP() {
-  const location = useLocation();
+function EmailVerificationOTP() {
+  const dispatch = useDispatch();
+
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken, email, emailValidity } = userInfo.user;
+
   const navigate = useNavigate();
 
   const [code, setCode] = useState("");
   const [optError, setOtpError] = useState("");
-  const [username, setUsername] = useState(location.state.username);
+  // const [emailStatus, setEmailStatus] = useState(emailValidity);
 
   const generateOtp = async () => {
-    const inputData = { username: location.state.username };
+    const inputData = { userId };
     await axios
-      .post(API_URL + "/auth/forgotpasswordotp", inputData)
+      .post(API_URL + "/auth/emailverificationotp", inputData)
       .catch((error) => console.log(error));
   };
 
@@ -30,16 +36,18 @@ function ForgotPasswordOTP() {
       // console.log(code);
       // console.log(typeof code);
 
-      const inputData = { username: location.state.username, otp: code };
+      const inputData = { userId, otp: code };
 
       await axios
-        .post(API_URL + "/auth/forgotpasswordotpcheck", inputData)
+        .post(API_URL + "/auth/emailverificationotpcheck", inputData)
         .then((response) => {
           if (response.data.statusCode === 1) {
             setOtpError("");
-            navigate("/frogotpassword/passwordreset", {
-              state: { username: location.state.username },
-            });
+            // console.log("today");
+            dispatch(updateUserState(userId, 1));
+
+            // console.log("today2");
+            // navigate("/login");
           } else {
             setOtpError("Invalid OTP entered");
           }
@@ -55,12 +63,14 @@ function ForgotPasswordOTP() {
   const handleChange = (code) => setCode(code);
 
   useEffect(() => {
-    if (!location.state) {
-      navigate("/frogotpassword/username");
-    } else {
-      generateOtp();
-    }
+    generateOtp();
   }, []);
+
+  useEffect(() => {
+    if (emailValidity) {
+      navigate("/login");
+    }
+  }, [emailValidity]);
 
   return (
     <span className="forgotPasswordOTP">
@@ -74,10 +84,10 @@ function ForgotPasswordOTP() {
                 </Link>
               </div>
 
-              <h4 className="title text-center theme">OTP Verification</h4>
+              <h4 className="title text-center theme">Email Verification</h4>
               <p className="sub-title">
                 Enter the OTP you received to
-                <span className="phone-number">{username}</span>
+                <span className="phone-number">{email}</span>
               </p>
 
               <div className="d-grid gap-2 col-12 mx-auto text-center arttic-logo">
@@ -130,4 +140,4 @@ function ForgotPasswordOTP() {
   );
 }
 
-export default ForgotPasswordOTP;
+export default EmailVerificationOTP;

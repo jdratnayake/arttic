@@ -13,7 +13,10 @@ const {
   forgotPasswordOtpCheck,
   resetPassword,
   getUserState,
-  changePassword
+  changePassword,
+  emailVerificationOtp,
+  emailVerificationOtpCheck,
+  convertToCreator,
 } = require("../controllers/authController");
 
 const router = express.Router();
@@ -29,5 +32,8 @@ router.post("/forgotpasswordotpcheck", forgotPasswordOtpCheck);
 router.post("/resetpassword", resetPassword);
 router.get("/getuserstate/:id", getUserState);
 router.post("/changepassword", validateToken, changePassword);
+router.post("/emailverificationotp", emailVerificationOtp);
+router.post("/emailverificationotpcheck", emailVerificationOtpCheck);
+router.post("/converttocreator", validateToken, convertToCreator);
 
 module.exports = router;

@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import $ from "jquery";
 
 import {
   API_URL,
@@ -11,10 +13,7 @@ import {
 } from "../../constants/globalConstants";
 import { updateUserState } from "../../actions/userActions";
 
-import {
-  initialPasswd,
-  passwdValidation,
-} from "./validation";
+import { initialPasswd, passwdValidation } from "./validation";
 
 import "./settings.css";
 // import t from "../../../../backend/images/profilePic";
@@ -37,9 +36,10 @@ function SettingsBasicPage() {
   const profilePicInput = useRef(null);
   const coverPicInput = useRef(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const userInfo = useSelector((state) => state.userInfo);
-  const { userId, accessToken } = userInfo.user;
+  const { userId, type, accessToken, openSeaStatus } = userInfo.user;
 
   // profile picture - START
   const handleProfilePicClick = (event) => {
@@ -103,7 +103,7 @@ function SettingsBasicPage() {
 
     await axios
       .post(API_URL + "/user/uploadprofileorcoverpicture/", inputData, config)
-      .then((response) => { });
+      .then((response) => {});
   };
   // cover picture - END
 
@@ -201,22 +201,19 @@ function SettingsBasicPage() {
             if (res.data.status == "YES") {
               setErrorUserName("");
               return true;
-            }
-            else {
+            } else {
               setErrorUserName("Username is alredy in use!");
               return false;
             }
           });
       }
-    }
-    else {
+    } else {
       setErrorUserName("Username is required");
       return false;
     }
     return false;
   };
   //end validations ----------------------------------------------------
-
 
   //change password--------------------------------------------------
   const changePassword = async (formdata, { resetForm }) => {
@@ -254,21 +251,45 @@ function SettingsBasicPage() {
           });
           resetForm();
         }
-
       });
-  }
+  };
   //end change password----------------------------------------------
-
 
   useEffect(() => {
     getUserDetails();
   }, []);
 
+  const upgradeToCreator = async () => {
+    console.log("done");
 
+    const token = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    const inputData = { userId };
+
+    await axios
+      .post(API_URL + "/auth/converttocreator/", inputData, token)
+      .then((res) => {
+        if (res.data.statusCode === 1) {
+          dispatch(updateUserState(userId));
+        }
+        // console.log(res.data);
+      });
+
+    $("#btn-close-form").click();
+  };
+
+  useEffect(() => {
+    if (type === 3 && openSeaStatus === 0) {
+      navigate("/login");
+    }
+  }, [type]);
 
   return (
     <div className="settingsPage">
-
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -450,12 +471,20 @@ function SettingsBasicPage() {
 
                     {/* button */}
                     <div class="offset-md-4 col-md-8 col-12 mt-3">
-                      <button type="submit" class="btn btn-primary" onClick={() => { valName(); valUserName(); }}>
+                      <button
+                        type="submit"
+                        class="btn btn-primary"
+                        onClick={() => {
+                          valName();
+                          valUserName();
+                        }}
+                      >
                         Save Changes
                       </button>
-                      <div className="error-msg" style={{ color: "blue" }}>{basicMsg}</div>
+                      <div className="error-msg" style={{ color: "blue" }}>
+                        {basicMsg}
+                      </div>
                     </div>
-
                   </div>
                 </form>
               </div>
@@ -479,7 +508,6 @@ function SettingsBasicPage() {
                 onSubmit={changePassword}
               >
                 {({ isSubmitting }) => (
-
                   <Form>
                     {/* row */}
                     <div class="mb-3 row">
@@ -498,7 +526,11 @@ function SettingsBasicPage() {
                           id="curPassword"
                           name="curPassword"
                         />
-                        <ErrorMessage name="curPassword" component="div" className="error-msg" />
+                        <ErrorMessage
+                          name="curPassword"
+                          component="div"
+                          className="error-msg"
+                        />
                       </div>
                     </div>
                     {/* row */}
@@ -518,7 +550,11 @@ function SettingsBasicPage() {
                           id="newPassword"
                           name="newPassword"
                         />
-                        <ErrorMessage name="newPassword" component="div" className="error-msg" />
+                        <ErrorMessage
+                          name="newPassword"
+                          component="div"
+                          className="error-msg"
+                        />
                       </div>
                     </div>
                     {/* row */}
@@ -537,51 +573,123 @@ function SettingsBasicPage() {
                           id="confirmPassword"
                           name="confirmPassword"
                         />
-                        <ErrorMessage name="confirmPassword" component="div" className="error-msg" />
+                        <ErrorMessage
+                          name="confirmPassword"
+                          component="div"
+                          className="error-msg"
+                        />
                       </div>
                       {/* list */}
                       <div class="offset-md-4 col-md-8 col-12 mt-4">
                         <h6 class="mb-1">Password requirements:</h6>
                         <p>Ensure that these requirements are met:</p>
                         <ul>
-                          <li> Minimum 8 characters long the more, the better</li>
+                          <li>
+                            {" "}
+                            Minimum 8 characters long the more, the better
+                          </li>
                           <li>At least one lowercase character</li>
                           <li>At least one uppercase character</li>
                           <li>
                             At least one number, symbol, or whitespace character
                           </li>
                         </ul>
-                        <button type="submit" class="btn btn-primary" disabled={isSubmitting}>
+                        <button
+                          type="submit"
+                          class="btn btn-primary"
+                          disabled={isSubmitting}
+                        >
                           Save Changes
                         </button>
                       </div>
                     </div>
                   </Form>
-
                 )}
               </Formik>
-
             </div>
           </div>
         </div>
       </div>
-      <div class="row mb-8">
-        <div class="col">
-          {/* card */}
 
-          <div class="card">
-            {/* card body */}
-            <div class="card-body">
-              <div class="mb-6">
-                <h4 class="mb-1">Notification for email</h4>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="row">
         <div class="col-12">
           {/*  card  */}
+
+          {type === 4 && (
+            <div class="card">
+              {/*  card body  */}
+              <div class="card-body">
+                <div class="mb-6">
+                  <h4 class="mb-1">Upgrade To Creator </h4>
+                </div>
+                <div>
+                  {/*  text  */}
+
+                  <button
+                    href="#"
+                    class="btn btn-danger"
+                    style={{
+                      backgroundColor: "#33ff94",
+                      borderColor: "#33ff94",
+                      color: "#000",
+                    }}
+                    data-bs-toggle="modal"
+                    data-bs-target="#upgradeAccount"
+                  >
+                    Upgrade Account
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div
+            class="modal fade"
+            id="upgradeAccount"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Confirm Upgrade
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  This procedure is irreversible. Do you want to proceed?
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    id="btn-close-form"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    style={{
+                      backgroundColor: "#8427e2",
+                      borderColor: "#8427e2",
+                    }}
+                    onClick={upgradeToCreator}
+                  >
+                    Save changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div class="card">
             {/*  card body  */}
@@ -600,8 +708,8 @@ function SettingsBasicPage() {
                   Delete Account
                 </a>
                 <p class="small mb-0 mt-3">
-                  Feel free to contact with any <a href="#">arttic@gmail.com</a>{" "}
-                  questions.
+                  Feel free to contact with any questions{" "}
+                  <a href="#">arttic@gmail.com</a>.
                 </p>
               </div>
             </div>
