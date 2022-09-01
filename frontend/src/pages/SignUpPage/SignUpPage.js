@@ -39,9 +39,9 @@ function SignUpPage() {
   useEffect(() => {
     if (user) {
       if (userType === 3) {
-        navigate("/walletconnect");
+        navigate("/login");
       } else if (userType === 4) {
-        navigate("/followerprofile");
+        navigate("/login");
       }
     }
   }, [user]);

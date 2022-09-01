@@ -16,6 +16,7 @@ const {
   changePassword,
   emailVerificationOtp,
   emailVerificationOtpCheck,
+  convertToCreator,
 } = require("../controllers/authController");
 
 const router = express.Router();
@@ -33,5 +34,6 @@ router.get("/getuserstate/:id", getUserState);
 router.post("/changepassword", validateToken, changePassword);
 router.post("/emailverificationotp", emailVerificationOtp);
 router.post("/emailverificationotpcheck", emailVerificationOtpCheck);
+router.post("/converttocreator", validateToken, convertToCreator);
 
 module.exports = router;

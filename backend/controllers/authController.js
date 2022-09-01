@@ -519,6 +519,24 @@ const getUserState = asyncHandler(async (req, res) => {
     process.env.JWT_SECRET
   );
 
+  let creatorStatus;
+  if (existUser && existUser.type === 3) {
+    creatorStatus = await creator.findUnique({
+      where: {
+        userId: existUser.userId,
+      },
+      select: {
+        openSeaStatus: true,
+      },
+    });
+
+    res.json({
+      ...existUser,
+      openSeaStatus: creatorStatus.openSeaStatus,
+      accessToken,
+    });
+  }
+
   res.json({ ...existUser, accessToken });
 });
 
@@ -660,6 +678,40 @@ const emailVerificationOtpCheck = asyncHandler(async (req, res) => {
   }
 });
 
+const convertToCreator = asyncHandler(async (req, res) => {
+  const { userId } = req.body;
+
+  // const userId = 45;
+
+  const updateUser = await user.update({
+    where: {
+      userId,
+    },
+    data: {
+      type: 3,
+    },
+  });
+
+  const newCreator = await creator.create({
+    data: {
+      userId,
+      pageName: updateUser.username,
+    },
+  });
+
+  if (newCreator) {
+    res.json({
+      statusCode: 1,
+      msg: "Successful",
+    });
+  } else {
+    res.json({
+      statusCode: 2,
+      msg: "Unsuccessful",
+    });
+  }
+});
+
 module.exports = {
   register,
   login,
@@ -673,4 +725,5 @@ module.exports = {
   changePassword,
   emailVerificationOtp,
   emailVerificationOtpCheck,
+  convertToCreator,
 };
