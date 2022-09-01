@@ -9,6 +9,7 @@ const {
   uploadProfileOrCoverPicture,
   getUserDetails,
   checkUserName,
+  updateUserDetails,
   uploadUserReport,
 } = require("../controllers/userController");
 
@@ -22,6 +23,7 @@ router.post(
 );
 router.get("/getuserdetails/:id", validateToken, getUserDetails);
 router.get("/checkusername/:name", validateToken, checkUserName);
+router.post("/updateuserdetails", validateToken, updateUserDetails);
 
 router.post("/uploadUserReport", validateToken, uploadUserReport);
 
