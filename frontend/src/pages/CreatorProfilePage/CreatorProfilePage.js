@@ -19,6 +19,8 @@ import checkedMark from "../../images/svg/checked-mark.svg";
 
 function CreatorProfilePage() {
   const [profileData, setProfileData] = useState("");
+  const [coverPhoto, setCoverPhoto] = useState("");
+  var accstate;
 
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
@@ -34,6 +36,9 @@ function CreatorProfilePage() {
       .get(API_URL + "/user/getuserdetails/" + userId, config)
       .then((response) => {
         setProfileData(response.data);
+        setCoverPhoto(COVER_PIC_URL + response.data.followerCreator.coverPhoto);
+        accstate = response.data.premiumUser;
+        console.log(response.data.premiumUser);
       });
   };
 
@@ -49,7 +54,7 @@ function CreatorProfilePage() {
         <div class="row align-items-center main-container-row">
           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             {/* Bg */}
-            <div class="pt-20 rounded-top bannerImage"></div>
+            <div class="pt-25 rounded-top bannerImage" style={{ backgroundImage: "url(" + coverPhoto + ")" }}></div>
             <div class="bg-white smooth-shadow-sm">
               <div class="d-flex align-items-center justify-content-between pt-4 pb-6 px-4">
                 <div class="d-flex align-items-center">
@@ -59,7 +64,7 @@ function CreatorProfilePage() {
                                         justify-content-end align-items-end mt-n10"
                   >
                     <img
-                      src={PROFILE_PIC_URL+profileData.profilePhoto}
+                      src={PROFILE_PIC_URL + profileData.profilePhoto}
                       class="avatar-xxl rounded-circle border border-4 
                                             border-white-color-40"
                       alt=""
@@ -122,14 +127,13 @@ function CreatorProfilePage() {
                     {/* text */}
                     <h6 class="text-uppercase fs-5 ls-2">Bio</h6>
                     <p class="mb-0">
-                     {profileData.bio}
+                      {profileData.bio}
                     </p>
                   </div>
-                  <div class="col-12 mb-1">
-                    {/* text */}
+                  {/* <div class="col-12 mb-1">
                     <h6 class="text-uppercase fs-5 ls-2">Username</h6>
-                    <p class="mb-0">{profileData.name}</p>
-                  </div>
+                    <p class="mb-0">{profileData.username}</p>
+                  </div> */}
                   {/* <div class="col-6 mb-1">
                     <h6 class="text-uppercase fs-5 ls-2">Phone </h6>
                     <p class="mb-0">{profileData.phone}</p>
@@ -171,7 +175,7 @@ function CreatorProfilePage() {
 
             <br />
             {/* following n followers list */}
-             <div class="followers-following">
+            <div class="followers-following">
               <div class="followers">
                 <div class="card mb-4">
                   <div class="card-body">
@@ -186,7 +190,7 @@ function CreatorProfilePage() {
                           />
                         </div>
                         <div class="ms-3 ">
-                          <h5 class="mb-1">Dianna Smiley</h5>                        
+                          <h5 class="mb-1">Dianna Smiley</h5>
                         </div>
                       </div>
                       <div class="dropdown d-inline-block drop-list-upper">
@@ -256,7 +260,7 @@ function CreatorProfilePage() {
                   </div>
                 </div>
               </div>
-             </div>
+            </div>
             {/* Suggesions */}
             {/* <div class="col-xl-4 col-lg-12 col-md-12 col-12 mb-4">
               <div class="card mb-4">
