@@ -21,7 +21,7 @@ const getChatHistory = asyncHandler(async (req, res) => {
   await client.connect();
 
   const result = await client.query(
-    'SELECT "messageId", "chatId", "senderId", "message", "sendDate", "profilePhoto" FROM "chatHistory" INNER JOIN "user" ON "user"."userId"="chatHistory"."senderId" WHERE "chatId"=$1',
+    'SELECT "messageId", "chatId", "senderId", "message", "sendDate", "profilePhoto" FROM "chatHistory" INNER JOIN "user" ON "user"."userId"="chatHistory"."senderId" WHERE "chatId"=$1 ORDER BY "messageId"',
     [chatId]
   );
 
