@@ -18,6 +18,7 @@ import CreatorAnalyticsCom from "./components/CreatorAnalyticsCom/CreatorAnalyti
 import FrogotPasswordUsernamePage from "./pages/FrogotPasswordUsernamePage/FrogotPasswordUsernamePage";
 import FrogotPasswordResetPasswordPage from "./pages/FrogotPasswordResetPasswordPage/FrogotPasswordResetPasswordPage";
 import ForgotPasswordOTP from "./pages/ForgotPasswordOTP/ForgotPasswordOTP";
+import EmailVerificationOTP from "./pages/EmailVerificationOTP/EmailVerificationOTP";
 import ReportUserPage from "./pages/ReportUserPage/ReportUserPage";
 import ReportPostPage from "./pages/ReportPostPage/ReportPostPage";
 import ReportAdvertismentPage from "./pages/ReportAdvertismentPage/ReportAdvertismentPage";
@@ -63,7 +64,10 @@ function App() {
         <Route path="/walletconnect" element={<WalletConnectPage />}></Route>
         <Route path="/login" element={<LogInPage />}></Route>
         <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
-        <Route path="/followerprofile/:followerId" element={<FollowerProfile />}></Route>
+        <Route
+          path="/followerprofile/:followerId"
+          element={<FollowerProfile />}
+        ></Route>
         <Route
           path="/advertisment"
           element={
@@ -102,6 +106,10 @@ function App() {
         <Route
           path="/frogotpassword/otp"
           element={<ForgotPasswordOTP />}
+        ></Route>
+        <Route
+          path="/emailverificationotp"
+          element={<EmailVerificationOTP />}
         ></Route>
         <Route
           path="/frogotpassword/passwordreset"

@@ -7,7 +7,11 @@ const nodemailer = require("nodemailer");
 
 const { user, followerCreator, creator } = new PrismaClient();
 
-const { generateOtp, otpEmail } = require("./helpers/authControllerHelper");
+const {
+  generateOtp,
+  otpEmail,
+  emailValidityOtpEmail,
+} = require("./helpers/authControllerHelper");
 
 // this API is used in the SignUpPage
 const emailCheck = asyncHandler(async (req, res) => {
@@ -85,6 +89,7 @@ const register = asyncHandler(async (req, res) => {
         profilePhoto: newUser.profilePhoto,
         accessToken: accessToken,
         premiumUser: newUser.premiumUser,
+        emailValidity: newUser.emailValidity,
         advertisementVisibility: newUser.advertisementVisibility,
       };
 
@@ -170,6 +175,7 @@ const login = asyncHandler(async (req, res) => {
           profilePhoto: existUser.profilePhoto,
           accessToken: accessToken,
           premiumUser: existUser.premiumUser,
+          emailValidity: existUser.emailValidity,
           advertisementVisibility: existUser.advertisementVisibility,
         };
 
@@ -504,6 +510,7 @@ const getUserState = asyncHandler(async (req, res) => {
       profilePhoto: true,
       premiumUser: true,
       advertisementVisibility: true,
+      emailValidity: true,
     },
   });
 
@@ -515,7 +522,6 @@ const getUserState = asyncHandler(async (req, res) => {
   res.json({ ...existUser, accessToken });
 });
 
-
 //change password-----------------------------------------------------------------
 const changePassword = asyncHandler(async (req, res) => {
   let { curPassword, newPassword } = req.body;
@@ -524,7 +530,7 @@ const changePassword = asyncHandler(async (req, res) => {
   const existUser = await user.findFirst({
     where: {
       userId: userId,
-    }
+    },
   });
 
   if (existUser) {
@@ -549,28 +555,110 @@ const changePassword = asyncHandler(async (req, res) => {
               msg: "Error",
             });
           }
-
         });
-
       } else {
         res.json({
           msg: "WrPass",
         });
       }
-
     });
-
   } else {
     res.json({
       msg: "No User",
     });
   }
-
 });
 //end change password------------------------------------------------------------------
 
+const emailVerificationOtp = asyncHandler(async (req, res) => {
+  let { userId } = req.body;
 
+  const otp = generateOtp();
 
+  const status = await user.updateMany({
+    where: {
+      userId,
+    },
+    data: {
+      emailValidityOtp: otp,
+    },
+  });
+
+  const existUser = await user.findFirst({
+    where: {
+      userId,
+    },
+  });
+
+  //email test - START
+  const htmlEmail = emailValidityOtpEmail(existUser.name, otp);
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    secure: false,
+    auth: {
+      user: "alec.software.cooperation@gmail.com",
+      pass: "lbwzzqktlqaicniu",
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  const mailOptions = {
+    from: "alec.software.cooperation@gmail.com",
+    to: existUser.email,
+    replyTo: existUser.email,
+    subject: "Email Verification - ARTTIC",
+    html: htmlEmail,
+  };
+
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      console.log("error in sending mail", err);
+      return res.status(400).json({
+        message: `error in sending the mail${err}`,
+      });
+    } else {
+      return res.json({ message: "Successfully sent Email." });
+    }
+  });
+  //email test - END
+});
+
+const emailVerificationOtpCheck = asyncHandler(async (req, res) => {
+  let { userId, otp } = req.body;
+
+  const existUser = await user.findFirst({
+    where: {
+      userId,
+    },
+    select: {
+      emailValidityOtp: true,
+    },
+  });
+
+  if (otp === existUser.emailValidityOtp) {
+    const status = await user.updateMany({
+      where: {
+        userId,
+      },
+      data: {
+        emailValidity: true,
+      },
+    });
+
+    res.json({
+      statusCode: 1,
+      msg: "Valid Access",
+    });
+  } else {
+    res.json({
+      statusCode: 2,
+      msg: "Invalid Access",
+    });
+  }
+});
 
 module.exports = {
   register,
@@ -583,4 +671,6 @@ module.exports = {
   resetPassword,
   getUserState,
   changePassword,
+  emailVerificationOtp,
+  emailVerificationOtpCheck,
 };
