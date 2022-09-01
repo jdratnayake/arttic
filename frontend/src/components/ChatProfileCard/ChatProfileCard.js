@@ -66,7 +66,7 @@ function ChatProfileCard({
       <div class="chat_people">
         <div class="chat_img">
           {" "}
-          <img src={imageLink} alt="sunil" />{" "}
+          <img src={imageLink} alt="" />{" "}
         </div>
         <div class="chat_ib">
           <h5>

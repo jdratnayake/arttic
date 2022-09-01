@@ -3,94 +3,94 @@
 ----------------------------------------------------- */
 
 .sideNavBar .wrapper {
-    display: flex;
-    padding-top: 25px;
-    padding-left: 30px;
-    padding-right: 30px;
-    width: 70%;
-    align-items: stretch;
+  display: flex;
+  padding-top: 25px;
+  padding-left: 30px;
+  padding-right: 30px;
+  width: 70%;
+  align-items: stretch;
 }
 
 .sideNavBar #sidebar {
-    border-radius: 5px;
-    min-width: 250px;
-    max-width: 250px;
-    max-height: 360px;
-    min-height: 360px;
-    background: #fff;
-    color: #000;
-    transition: all 0.3s;
+  border-radius: 5px;
+  min-width: 250px;
+  max-width: 250px;
+  max-height: 360px;
+  min-height: 360px;
+  background: #fff;
+  color: #000;
+  transition: all 0.3s;
 }
 
 .sideNavBar .premium {
-    margin-left: -15px;
-    border-radius: 5px;
-    width: 250px;
-    height: 120px;
-    background: #fff;
-    color: #000;
-    transition: all 0.3s;
-    font-size: 1em;
+  margin-left: -15px;
+  border-radius: 5px;
+  width: 250px;
+  height: 120px;
+  background: #fff;
+  color: #000;
+  transition: all 0.3s;
+  font-size: 1em;
+  cursor: pointer;
 }
 
 .sideNavBar .content-top {
-    padding-top: 20px;
-    padding-left: 15px;
-    padding-right: 15px;
+  padding-top: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .sideNavBar .content-pre {
-    padding-left: 15px;
-    padding-right: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .sideNavBar #sidebar.active {
-    background: #fff;
+  background: #fff;
 }
 
 .sideNavBar #sidebar ul p {
-    color: #fff;
-    padding: 10px;
+  color: #fff;
+  padding: 10px;
 }
 
 .sideNavBar #sidebar ul li a {
-    padding: 10px;
-    font-size: 1.1em;
-    display: block;
+  padding: 10px;
+  font-size: 1.1em;
+  display: block;
 }
 
 .sideNavBar #sidebar ul li a:hover {
-    cursor: pointer;
-    color: #8427E2;
-    background: #fff;
+  cursor: pointer;
+  color: #8427e2;
+  background: #fff;
 }
 
-.sideNavBar #sidebar ul li.activesb>a,
+.sideNavBar #sidebar ul li.activesb > a,
 .sideNavBar a[aria-expanded="true"] {
-    border-radius: 25px;
-    color: #000;
-    background: #E8E8E8;
+  border-radius: 25px;
+  color: #000;
+  background: #e8e8e8;
 }
 
 .sideNavBar a[data-toggle="collapse"] {
-    position: relative;
+  position: relative;
 }
 
 .sideNavBar .icon-theme {
-    padding-right: 15px;
-    color: #8427E2;
+  padding-right: 15px;
+  color: #8427e2;
 }
 
 .sideNavBar .icon-pre {
-    font-size: 1.5em;
-    padding-left: 15px;
-    color: #FFD233;
+  font-size: 1.5em;
+  padding-left: 15px;
+  color: #ffd233;
 }
 
 .sideNavBar .para {
-    font-size: 0.9em;
+  font-size: 0.9em;
 }
-
 
 /*
 a.download {
@@ -105,17 +105,15 @@ a.article:hover {
 }
 */
 
-
-
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
 
 .sideNavBar #content {
-    width: 100%;
-    padding: 20px;
-    min-height: 100vh;
-    transition: all 0.3s;
+  width: 100%;
+  padding: 20px;
+  min-height: 100vh;
+  transition: all 0.3s;
 }
 
 /* ---------------------------------------------------
@@ -123,16 +121,15 @@ a.article:hover {
 ----------------------------------------------------- */
 
 @media (max-width: 768px) {
-    .sideNavBar #sidebar {
-        margin-left: -280px;
-    }
+  .sideNavBar #sidebar {
+    margin-left: -280px;
+  }
 
-    .sideNavBar #sidebar.active {
-        margin-left: 0;
-    }
+  .sideNavBar #sidebar.active {
+    margin-left: 0;
+  }
 
-    .sideNavBar #sidebarCollapse span {
-        display: none;
-    }
-
+  .sideNavBar #sidebarCollapse span {
+    display: none;
+  }
 }
