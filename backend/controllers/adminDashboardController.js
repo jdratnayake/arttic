@@ -1,7 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const asyncHandler = require("express-async-handler");
 
-const { user, transactionLog, advertisement } = new PrismaClient();
+const { user, transactionLog, advertisement, userReport } = new PrismaClient();
 
 const getDashboardDetails = asyncHandler(async (req, res) => {
   const round = (value, precision) => {
@@ -186,6 +186,36 @@ const getDashboardDetails = asyncHandler(async (req, res) => {
       2
     ),
   ];
+
+  const newUserComplaints = await userReport.aggregate({
+    _count: {
+      userReportedId: true,
+    },
+  });
+
+  const newUserComplaintsPreviousWeek = await userReport.aggregate({
+    where: {
+      userReportedDate: { lt: previousToday },
+    },
+
+    _count: {
+      userReportedId: true,
+    },
+  });
+
+  const newUserComplaintsCount = newUserComplaints["_count"]["userReportedId"];
+  const newUserComplaintsPreviousWeekCount =
+    newUserComplaintsPreviousWeek["_count"]["userReportedId"];
+
+  const newUserComplaintsDetails = [
+    newUserComplaintsCount - newUserComplaintsPreviousWeekCount,
+    round(
+      ((newUserComplaintsCount - newUserComplaintsPreviousWeekCount) /
+        (newUserComplaintsPreviousWeekCount || 1)) *
+        100,
+      2
+    ),
+  ];
   // Card data - END
 
   const outputData = {
@@ -196,6 +226,7 @@ const getDashboardDetails = asyncHandler(async (req, res) => {
     newUserAccountDetails,
     newAdvertisementDetails,
     newSubscriptionDetails,
+    newUserComplaintsDetails,
   };
 
   res.json(outputData);

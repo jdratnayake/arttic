@@ -24,6 +24,11 @@ function DashboardAdmin0Page() {
   const [newAdvertisementsCount, setNewAdvertisementsCount] = useState(0);
   const [newAdvertisementsPercentage, setNewAdvertisementsPercentage] =
     useState(0);
+  const [newSubscriptionCount, setNewSubscriptionCount] = useState(0);
+  const [newSubscriptionPercentage, setSubscriptionPercentage] = useState(0);
+  const [newUserComplaintsCount, setNewUserComplaintsCount] = useState(0);
+  const [newUserComplaintsPercentage, setNewUserComplaintsPercentage] =
+    useState(0);
 
   const lineChartValues = {
     options: {
@@ -123,7 +128,7 @@ function DashboardAdmin0Page() {
     };
 
     await axios.get(API_URL + "/admindashboard", config).then((response) => {
-      console.log(response);
+      // console.log(response);
       setTimeValues(response.data.timeList);
       setUserCountValues(response.data.userCountList);
       setRevenueValue(response.data.revenueList);
@@ -132,6 +137,10 @@ function DashboardAdmin0Page() {
       setNewAccountsPercentage(response.data.newUserAccountDetails[1]);
       setNewAdvertisementsCount(response.data.newAdvertisementDetails[0]);
       setNewAdvertisementsPercentage(response.data.newAdvertisementDetails[1]);
+      setNewUserComplaintsCount(response.data.newUserComplaintsDetails[0]);
+      setNewUserComplaintsPercentage(response.data.newUserComplaintsDetails[1]);
+      setNewSubscriptionCount(response.data.newSubscriptionDetails[0]);
+      setSubscriptionPercentage(response.data.newSubscriptionDetails[1]);
     });
   };
 
@@ -160,10 +169,10 @@ function DashboardAdmin0Page() {
             </div>
             <div class="col cardCol">
               <AnalyticsCard
-                cardHeading="Advertisements"
-                iconName="bi bi-badge-ad-fill"
-                count={newAdvertisementsCount}
-                percentage={newAdvertisementsPercentage}
+                cardHeading="User Complaints"
+                iconName="bi bi-clipboard-x-fill"
+                count={newUserComplaintsCount}
+                percentage={newUserComplaintsPercentage}
               />
             </div>
           </div>
@@ -172,12 +181,16 @@ function DashboardAdmin0Page() {
               <AnalyticsCard
                 cardHeading="Subscription"
                 iconName="bi bi-person-x-fill"
+                count={newSubscriptionCount}
+                percentage={newSubscriptionPercentage}
               />
             </div>
             <div class="col cardCol">
               <AnalyticsCard
-                cardHeading="Complaints"
-                iconName="bi bi-clipboard-x-fill"
+                cardHeading="Advertisements"
+                iconName="bi bi-badge-ad-fill"
+                count={newAdvertisementsCount}
+                percentage={newAdvertisementsPercentage}
               />
             </div>
           </div>
