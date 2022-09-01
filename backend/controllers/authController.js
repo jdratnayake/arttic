@@ -84,6 +84,8 @@ const register = asyncHandler(async (req, res) => {
         username: newUser.username,
         profilePhoto: newUser.profilePhoto,
         accessToken: accessToken,
+        premiumUser: newUser.premiumUser,
+        advertisementVisibility: newUser.advertisementVisibility,
       };
 
       res.status(StatusCodes.CREATED).json(returnData);
@@ -120,8 +122,37 @@ const login = asyncHandler(async (req, res) => {
     });
   }
   // console.log(existUser);
+  // console.log(typeof existUser.premiumPackageStartDate);
+  // console.log(typeof existUser.joinedDate);
+  // console.log(typeof existUser.name);
 
   if (existUser) {
+    // Premium Package Validation
+    if (existUser.premiumUser) {
+      const today = new Date();
+
+      if (today.getTime() > existUser.premiumPackageEndDate.getTime()) {
+        const temp = await user.update({
+          where: {
+            userId: existUser.userId,
+          },
+          data: {
+            premiumUser: false,
+            advertisementVisibility: true,
+          },
+        });
+      }
+    } else if (!existUser.advertisementVisibility) {
+      const temp = await user.update({
+        where: {
+          userId: existUser.userId,
+        },
+        data: {
+          advertisementVisibility: true,
+        },
+      });
+    }
+
     bycrypt.compare(password, existUser.password).then((match) => {
       if (match) {
         const accessToken = sign(
@@ -138,6 +169,8 @@ const login = asyncHandler(async (req, res) => {
           username: existUser.username,
           profilePhoto: existUser.profilePhoto,
           accessToken: accessToken,
+          premiumUser: existUser.premiumUser,
+          advertisementVisibility: existUser.advertisementVisibility,
         };
 
         if (existUser.type === 3) {
@@ -469,6 +502,8 @@ const getUserState = asyncHandler(async (req, res) => {
       emailStatus: true,
       username: true,
       profilePhoto: true,
+      premiumUser: true,
+      advertisementVisibility: true,
     },
   });
 
