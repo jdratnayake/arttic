@@ -1,12 +1,14 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import $ from "jquery";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 import { initialReportValues, reportDescriptionValidation } from "./Validation";
 
+import Comment from "../Comment/Comment";
 import {
   API_URL,
   PROFILE_PIC_URL,
@@ -17,76 +19,88 @@ import "./Post.css";
 
 function Post(props) {
   const navigate = useNavigate();
-  
+
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
-  const commentRef = useRef(null);
-  const commentlikeRef = useRef(null);
   const [comments, setComments] = useState("");
   const [newComment, setNewComment] = useState(null);
   const [iscommentBoxOpen, setCommentBoxOpen] = useState(false);
   const [commentCount, setCommentCount] = useState(props.commentCount);
   const [reactCount, setReactCount] = useState(props.likes);
-  const [reportType, setReportType] = useState("");
-  const [reportItemId, setReportItemId] = useState("");
+  const [reportPost , setReportPost] = useState(props.postid);
+  const commentRef = useRef(null);
 
-  const gotoProfile = ( pid ) => {
-    if(pid === userId){
-      navigate("/creatorprofile");
-    }else{
-      navigate("/followerprofile/"+ pid);
+  const deleteComment = async (cid, commenterId) => {
+    if (props.profilerId === commenterId) {
+      // console.log("delete clicked")
+      if (window.confirm("Do you want to delete the comment !")) {
+        const config = {
+          headers: {
+            authorization: accessToken,
+            userid: userId,
+            commentId: cid,
+          },
+        };
+
+        await axios
+          .get(API_URL + "/feed/deleteComment/", config)
+          .then((response) => {
+            // console.log(response.data)
+            $(`#comment${response.data.commentId}`).hide();
+            setComments(comments.filter(comment => comment.commentId !== response.data.commentId))
+          
+            setCommentCount(commentCount - 1);
+          });
+      } else {
+        console.log("cannot delete");
+      }
     }
-  }
+  };
+
+  const gotoProfile = (pid) => {
+    if (pid === userId) {
+      navigate("/creatorprofile");
+    } else {
+      navigate("/followerprofile/" + pid);
+    }
+  };
+
   const submitReport = async (data, { resetForm }) => {
     const inputData = {
       userId: userId,
       category: data.reportCategory,
       description: data.newDescription,
-      reportType: reportType,
-      commentId: reportItemId,
+      reportType: 2,
+      reportedpostid: data.reportpostId,
     };
-    console.log(inputData);
-    // e.preventDefault();
-    console.log("submited");
-    
+
+    // console.log(inputData,data.reportpostId);
+
     const config = {
       headers: {
         authorization: accessToken,
       },
     };
-    if(reportType === 1){
-      console.log("user reported")
-    }else if(reportType === 2){
-      // console.log("post reported")
+
+    // console.log("post reported");
       await axios
       .post(API_URL + "/feed/uploadPostReport/", inputData, config)
       .then((response) => {
-        console.log(response.data);
-        $("#btn-close-form").click();
+        // console.log(response);
+        $(`#btn-close-form${props.postid}`).click();
+        if (response.status === 201) {
+          toast.success("You have successfully reported the post", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        }
       });
-    }else if(reportType === 3){
-      // console.log("comment reported")
-      await axios
-      .post(API_URL + "/feed/uploadCommentReport/", inputData, config)
-      .then((response) => {
-        console.log(response.data);
-        // forceUpdate();
-        $("#btn-close-form").click();
-      });
-    }else{
-      console.log("ad reported")
-      await axios
-      .post(API_URL + "/feed/uploadAdReport/", inputData, config)
-      .then((response) => {
-        console.log(response.data);
-        // forceUpdate();
-        $("#btn-close-form").click();
-      });
-    }
-    
-
     resetForm();
-    // window.location.reload(false);
   };
 
   const addComment = (e) => {
@@ -96,7 +110,7 @@ function Post(props) {
       setCommentBoxOpen(true);
       getComments();
     }
-    console.log("button click", iscommentBoxOpen);
+    // console.log("button click", iscommentBoxOpen);
   };
 
   // *********** upload comment ************
@@ -124,20 +138,14 @@ function Post(props) {
     axios
       .post(API_URL + "/feed/uploadComment/", data, config)
       .then((response) => {
-        console.log(response.data);
-        setNewComment(response.data);
+        setComments((current) => [response.data, ...current]);
         setCommentCount(commentCount + 1);
       });
   };
 
-  // ******** upload report ***********
-  const uploadPostReport = async (PID) => {
-    console.log("PID :" + PID + "reported !");
-  };
-
   // ******** upload post save ***********
   const uploadPostSave = async (PID) => {
-    console.log("PID :" + PID + "saved !");
+    // console.log("PID :" + PID + "saved !");
     var data = JSON.stringify({
       postId: PID,
     });
@@ -153,13 +161,13 @@ function Post(props) {
     axios
       .post(API_URL + "/feed/uploadPostSave/", data, config)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
       });
   };
 
   // ************ upload post react ************
   const uploadPostReact = async (PID) => {
-    console.log(PID);
+    // console.log(PID);
     var data = JSON.stringify({
       reactorId: props.profilerId,
       postId: PID,
@@ -175,7 +183,7 @@ function Post(props) {
     axios
       .post(API_URL + "/feed/uploadpostReaction/", data, config)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setReactCount(reactCount + 1);
       });
   };
@@ -193,81 +201,22 @@ function Post(props) {
 
     await axios.get(API_URL + "/feed/getComments/", config).then((response) => {
       setComments(response.data);
-      console.log(response.data, props.postid);
+      // console.log(response.data, props.postid);
     });
   };
-
-  const updateLike = async (ComId) => {
-    var data = JSON.stringify({
-      reactorId: props.profilerId,
-      commentId: ComId,
-    });
-
-    const config = {
-      headers: {
-        authorization: accessToken,
-        "Content-Type": "application/json",
-      },
-    };
-
-    axios
-      .post(API_URL + "/feed/uploadCommentReaction/", data, config)
-      .then((response) => {
-        console.log(response.data);
-      });
-  };
-
-  const deletePost = async ( pid ) => {
-    if (props.profilerId === props.creatorId){
-      console.log("delete clicked")
-      const config = {
-        headers: {
-          authorization: accessToken,
-          userid:userId,
-          postId:pid
-        },
-      };
-    
-      await axios
-          .get(API_URL + "/feed/deletePost/", config)
-          .then((response) => {
-            console.log(response.data)
-            $(`#post${response.data.postId}`).hide();
-          });
-    }else{
-        console.log("cannot delete")
-    }
-  }
-
-  const deleteComment = async ( cid, commenterId ) => {
-    if (props.profilerId === commenterId){
-      console.log("delete clicked")
-      const config = {
-        headers: {
-          authorization: accessToken,
-          userid:userId,
-          commentId:cid
-        },
-      };
-    
-      await axios
-          .get(API_URL + "/feed/deleteComment/", config)
-          .then((response) => {
-            // console.log(response.data)
-            $(`#comment${response.data.commentId}`).hide();
-            setCommentCount(commentCount - 1);
-          });
-    }else{
-        console.log("cannot delete")
-    }
-  }
 
   return (
     <span className="Post">
       <div className="d-flex post">
         <div className="p-3 pb-2 mt-3 post-header rounded-top">
-          <div className="d-flex justify-content-between gap-2 " >
-            <div className="d-flex justify-items-center gap-2" style={{cursor:'pointer'}} onClick={() =>{ gotoProfile(props.creatorId)}}>
+          <div className="d-flex justify-content-between gap-2 ">
+            <div
+              className="d-flex justify-items-center gap-2"
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                gotoProfile(props.creatorId);
+              }}
+            >
               <img
                 className="rounded-circle"
                 src={props.userImage}
@@ -294,49 +243,26 @@ function Post(props) {
               </button>
 
               <div
-                onClick={() => {
-                  setReportType(2);
-                  setReportItemId(props.postid);
-                }}
                 class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
                 aria-labelledby="page-header-notifications-dropdown"
-                // data-bs-toggle="modal"
-                // data-bs-target="#complainModal"
               >
                 <a
                   class="dropdown-item dinv"
                   data-bs-toggle="modal"
-                  data-bs-target="#complainModal"
+                  data-bs-target={"#complainModal" + props.postid}
                 >
                   <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
                   <span class="align-middle">Report</span>
                 </a>
-                { props.profilerId === props.creatorId ?(
-                <a
-                  class="dropdown-item dinv"
-                  onClick={() => {deletePost(props.postid)}}
-                >
-                  <i class="bi bi-trash-fill dinvit icon-theme"></i>{" "}
-                  <span class="align-middle">Delete</span>
-                </a>):null
-                }
-              </div>
-              <div
-                onClick={() => {
-                  setReportType(2);
-                  setReportItemId(props.postid);
-                }}
-                class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
-                aria-labelledby="page-header-notifications-dropdown"
-                data-bs-toggle="modal"
-                data-bs-target="#complainModal"
-              >
-                <a
-                  class="dropdown-item dinv"
-                >
-                  <i class="bi bi-trash-fill dinvit icon-theme"></i>{" "}
-                  <span class="align-middle">Delete</span>
-                </a>
+                {props.profilerId === props.creatorId ? (
+                  <a
+                    class="dropdown-item dinv"
+                    onClick={() => {props.deletePost(props.postid,props.creatorId)}}
+                  >
+                    <i class="bi bi-trash-fill dinvit icon-theme"></i>{" "}
+                    <span class="align-middle">Delete</span>
+                  </a>
+                ) : null}
               </div>
             </div>
           </div>
@@ -385,133 +311,35 @@ function Post(props) {
             <div className="commentSetion">
               {/* new comment start*/}
 
-              {newComment && (
-                <div key={newComment.commentId} id={'comment'+newComment.commentId}>
-                  <div className="p-3 pt-0 pb-2 d-flex justify-items-center gap-2">
-                    <img
-                      className="rounded-circle"
-                      src={props.profilePic}
-                      width={30}
-                      height={30}
-                    />
-                    <div>
-                      <p className="px-3 rounded pt-1 pb-1 m-0 fs-9 comment text-muted">
-                        {newComment.description}
-                      </p>
-                      <p
-                        className="m-0 comment-like"
-                        onClick={() => updateLike(newComment.commentId)}
-                      >
-                        Like
-                      </p>
-                    </div>
-                    <div class="dropdown d-inline-block drop-list-upper">
-                      <button
-                        className="dr-btn"
-                        id="page-header-notifications-dropdown"
-                        data-bs-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        <i class="bi bi-three-dots"></i>
-                      </button>
-
-                      <div
-                        onClick={() => {
-                          setReportType(3);
-                          setReportItemId(newComment.commentId);
-                        }}
-                        class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow dDownCustomComment"
-                        aria-labelledby="page-header-notifications-dropdown"
-                        
-                      >
-                        <a 
-                          class="dropdown-item dinv"
-                          data-bs-toggle="modal"
-                          data-bs-target="#complainModal"
-                        >
-                          <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
-                          <span class="align-middle">Report</span>
-                        </a> 
-                        <a
-                          class="dropdown-item dinv"
-                          onClick={() => {deleteComment(newComment.commentId, props.profilerId)}}
-                        >
-                          <i class="bi bi-trash-fill dinvit icon-theme"></i>{" "}
-                          <span class="align-middle">Delete</span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+              {/* {newComment && (
+                <Comment
+                  key={newComment.commentId}
+                  id={"comment" + newComment.commentId}
+                  commentorImage={PROFILE_PIC_URL + newComment.profilePhoto}
+                  commentId={newComment.commentId}
+                  profilerId={props.profilerId}
+                  userId={userId}
+                  deleteComment={deleteComment}
+                  description={newComment.description}
+                />
+              )} */}
 
               {/* new comment end*/}
               {/* comments start*/}
-
+              
               {comments &&
                 comments.map((comment) => {
                   return (
-                    <div key={comment.commentId} id={'comment'+comment.commentId}>
-                      <div className="p-3 pt-0 pb-2 d-flex justify-items-center gap-2">
-                        <img
-                          className="rounded-circle"
-                          src={PROFILE_PIC_URL + comment.profilePhoto}
-                          width={30}
-                          height={30}
-                        />
-                        <div>
-                          <p className="px-3 rounded pt-1 pb-1 m-0 fs-9 comment text-muted">
-                            {comment.description}
-                          </p>
-                          <p
-                            className="m-0 comment-like"
-                            onClick={() => updateLike(comment.commentId)}
-                          >
-                            Like
-                          </p>
-                        </div>
-                        <div class="dropdown d-inline-block drop-list-upper">
-                          <button
-                            className="dr-btn"
-                            id="page-header-notifications-dropdown"
-                            data-bs-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            <i class="bi bi-three-dots"></i>
-                          </button>
-
-                          <div
-                            onClick={() => {
-                              setReportType(3);
-                              setReportItemId(comment.commentId);
-                            }}
-                            class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow dDownCustomComment"
-                            aria-labelledby="page-header-notifications-dropdown"
-                            
-                          >
-                            <a 
-                              class="dropdown-item dinv"
-                              data-bs-toggle="modal"
-                              data-bs-target="#complainModal"
-                            >
-                              <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
-                              <span class="align-middle">Report</span>
-                            </a>
-                              { props.profilerId === comment.userId ?(
-                                <a
-                                  class="dropdown-item dinv"
-                                  onClick={() => {deleteComment(comment.commentId,comment.userId)}}
-                                >
-                                  <i class="bi bi-trash-fill dinvit icon-theme"></i>{" "}
-                                    <span class="align-middle">Delete</span>
-                                </a>):null
-                              }
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <Comment
+                      key={comment.commentId}
+                      id={`comment${comment.commentId}`}
+                      commentorImage={PROFILE_PIC_URL + comment.profilePhoto}
+                      commentId={comment.commentId}
+                      profilerId={props.profilerId}
+                      userId={userId}
+                      deleteComment={deleteComment}
+                      description={comment.description}
+                    />
                   );
                 })}
               {/* comments end*/}
@@ -547,7 +375,7 @@ function Post(props) {
 
       <div
         class="modal fade"
-        id="complainModal"
+        id={'complainModal' + props.postid}
         tabindex="-1"
         aria-labelledby="planModalLabel"
         aria-hidden="true"
@@ -565,7 +393,7 @@ function Post(props) {
                 class="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-                id="btn-close-form"
+                id={`btn-close-form${props.postid}`}
               ></button>
             </div>
             <div class="modal-body p-4">
@@ -574,7 +402,11 @@ function Post(props) {
                   <div>
                     {/* border */}
                     <Formik
-                      initialValues={initialReportValues}
+                      initialValues={{
+                        newDescription : "",
+                        reportCategory : '1',
+                        reportpostId : JSON.stringify(props.postid),
+                      }}
                       validationSchema={reportDescriptionValidation}
                       onSubmit={submitReport}
                     >
@@ -596,7 +428,6 @@ function Post(props) {
                                 as="select"
                                 className="form-control form-control-sm"
                                 name="reportCategory"
-                                
                               >
                                 <option value="1">Nudity</option>
                                 <option value="2">Violence</option>
@@ -638,30 +469,18 @@ function Post(props) {
                                 className="error-msg"
                               />
                             </div>
+                            <Field
+                                type="text"
+                                className="form-control form-control-update"
+                                id="reportpostId"
+                                name="reportpostId"
+                                placeholder="Enter your report description"
+                                class="form-control form-control-sm"
+                                hidden
+                              />
+                            
                           </div>
                           {/* row ends*/}
-
-                          {/* report type*/}
-                          <Field
-                            
-                            type="text"
-                            id="reportType"
-                            name="reportType"
-                            class="form-control form-control-sm"
-                            value={reportType}
-                            hidden
-                          />
-
-                          {/* commennt id*/}
-                          <Field
-                            type="text"
-                            id="comId"
-                            name="comId"
-                            class="form-control form-control-sm"
-                            value={reportItemId}
-                            hidden
-                          />
-
                           <div class="col-md-8 col-12 mt-3">
                             <button
                               type="submit"

@@ -107,7 +107,7 @@ const uploadUserReport = asyncHandler(async (req, res) => {
   });
   await client.end();
 
-  res.json("success");
+  res.status(StatusCodes.CREATED)
 });
 
 module.exports = {

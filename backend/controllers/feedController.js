@@ -196,7 +196,7 @@ const uploadCommentReport = asyncHandler(async (req, res) => {
   // const newCommentReport = await commentReport.create({
   //   data: {
   //     userId: Data.userId,
-  //     reportedCommentId: Data.commentId,
+  //     reportedCommentId: parseInt(Data.commentId),
   //     reportCategory: parseInt(Data.category),
   //     description: Data.description,
   //   },
@@ -219,11 +219,11 @@ const uploadCommentReport = asyncHandler(async (req, res) => {
     text: `INSERT INTO public."commentReport"
           ("userId", "reportedCommentId","reportCategory", description)
           VALUES ($1,$2,$3,$4);`,
-    values: [Data.userId,Data.commentId,parseInt(Data.category),Data.description],
+    values: [Data.userId,parseInt(Data.commentId),parseInt(Data.category),Data.description],
   });
    await client.end();
 
-  res.json("success");
+  res.status(StatusCodes.CREATED).json(comments.rows)
 });
 
 //  upload a post report ***************
@@ -247,7 +247,7 @@ const uploadPostReport = asyncHandler(async (req, res) => {
   const CreatepostReport = await postReport.create({
     data: {
       userId: Data.userId,
-      reportedPostId: Data.commentId,
+      reportedPostId: parseInt(Data.reportedpostid),
       reportCategory: parseInt(Data.category),
       description: Data.description,
     },
@@ -271,6 +271,7 @@ const uploadCommentReaction = asyncHandler(async (req, res) => {
 //  upload a postReaction ***************
 const uploadpostReaction = asyncHandler(async (req, res) => {
   const Data = req.body;
+  // console.log(Data);
   const CreatepostReaction = await postReaction.create({
     data: {
       userId: Data.reactorId,
@@ -387,26 +388,27 @@ const getPosts = asyncHandler(async (req, res) => {
 
 const deletePost = asyncHandler(async (req,res) => {
   const userId = parseInt(req.headers.userid);
-  const postId = parseInt(req.headers.postId);
-
+  const postId = parseInt(req.headers.postid);
   const deletedPost = await post.delete({
     where:{
       postId
     }
   })
-  
+
+  // console.log(deletedPost)
+  res.json(deletedPost);
 });
 
 const deleteComment = asyncHandler(async (req,res) => {
   const userId = parseInt(req.headers.userid);
   const commentId = parseInt(req.headers.commentid);
-  console.log(userId,commentId,req.headers)
-  const deletedPost = await comment.delete({
+  // console.log(userId,commentId,req.headers)
+  const deletedComment = await comment.delete({
     where:{
       commentId
     }
   })
-  res.json(deletedPost);
+  res.json(deletedComment);
 });
 
 
