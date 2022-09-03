@@ -31,7 +31,6 @@ function SettingsBasicPage() {
   const [bio, setBio] = useState("");
   const [errorName, setErrorName] = useState("");
   const [errorUserName, setErrorUserName] = useState("");
-  const [basicMsg, setBasicMsg] = useState("");
 
   const profilePicInput = useRef(null);
   const coverPicInput = useRef(null);
@@ -71,6 +70,15 @@ function SettingsBasicPage() {
       .post(API_URL + "/user/uploadprofileorcoverpicture/", inputData, config)
       .then((response) => {
         dispatch(updateUserState(userId));
+        toast.success("Profile Picture Updated", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       });
   };
   // profile picture - END
@@ -103,7 +111,17 @@ function SettingsBasicPage() {
 
     await axios
       .post(API_URL + "/user/uploadprofileorcoverpicture/", inputData, config)
-      .then((response) => {});
+      .then((response) => {
+        toast.success("Cover Picture Updated", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   };
   // cover picture - END
 
@@ -340,7 +358,7 @@ function SettingsBasicPage() {
                         >
                           Change
                         </button>
-                        <button type="submit" class="btn btn-outline-white">
+                        <button type="submit" class="btn btn-outline-white" style={{background:"#33ff94", border:"#33ff94", color:"black"}}>
                           Save
                         </button>
                       </form>
@@ -374,14 +392,16 @@ function SettingsBasicPage() {
                         style={{ display: "none" }}
                       />
 
+                      <br /><br />
+
                       <button
                         type="button"
-                        class="btn btn-outline-white"
+                        class="btn btn-outline-white me-1"
                         onClick={handleCoverPicClick}
                       >
                         Change
                       </button>
-                      <button type="submit" class="btn btn-outline-white">
+                      <button type="submit" class="btn btn-outline-white" style={{background:"#33ff94", border:"#33ff94", color:"black"}}>
                         Save
                       </button>
                     </form>
@@ -461,7 +481,7 @@ function SettingsBasicPage() {
                     <div class="col-md-8 col-12">
                       <textarea
                         type="text"
-                        rows="3"
+                        rows="5"
                         class="form-control"
                         defaultValue={userDetails.bio}
                         on
@@ -482,7 +502,6 @@ function SettingsBasicPage() {
                         Save Changes
                       </button>
                       <div className="error-msg" style={{ color: "blue" }}>
-                        {basicMsg}
                       </div>
                     </div>
                   </div>
@@ -598,6 +617,7 @@ function SettingsBasicPage() {
                           type="submit"
                           class="btn btn-primary"
                           disabled={isSubmitting}
+                          style={{background:"#33ff94", border:"#33ff94", color:"black"}}
                         >
                           Save Changes
                         </button>

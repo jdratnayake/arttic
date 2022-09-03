@@ -11,6 +11,8 @@ const {
   checkUserName,
   updateUserDetails,
   uploadUserReport,
+  getFollowersDetails,
+  getFollowingsDetails,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -26,5 +28,7 @@ router.get("/checkusername/:name", validateToken, checkUserName);
 router.post("/updateuserdetails", validateToken, updateUserDetails);
 
 router.post("/uploadUserReport", validateToken, uploadUserReport);
+router.get("/getfollowersdetails/:id", validateToken, getFollowersDetails);
+router.get("/getfollowingsdetails/:id", validateToken, getFollowingsDetails);
 
 module.exports = router;
