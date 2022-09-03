@@ -198,6 +198,7 @@ const getFollowersDetails = asyncHandler(async (req, res) => {
   );
 
   res.json(result.rows);
+  await client.end();
 
 
   // const followers = await userSubscribe.findMany({
@@ -238,6 +239,7 @@ const getFollowingsDetails = asyncHandler(async (req, res) => {
   );
 
   res.json(result.rows);
+  await client.end();
 
   // const followings = await userSubscribe.findMany({
   //   where: {
