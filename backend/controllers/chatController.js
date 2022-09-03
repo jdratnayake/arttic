@@ -25,6 +25,8 @@ const getChatHistory = asyncHandler(async (req, res) => {
     [chatId]
   );
 
+  await client.end();
+
   res.json(result.rows);
 });
 
@@ -48,6 +50,8 @@ const getSubscribeCreators = asyncHandler(async (req, res) => {
     'SELECT DISTINCT ON ("creatorId") "creatorId", "user"."name", "user"."profilePhoto", "sendDate" FROM "userSubscribe" INNER JOIN "user" ON "userId"="creatorId" LEFT JOIN "chatHistory" ON "creatorId"="chatId" WHERE "followerId"=$1 OR "creatorId"=$1',
     [userId]
   );
+
+  await client.end();
 
   res.json(result.rows);
 });
