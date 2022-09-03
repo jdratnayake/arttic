@@ -9,6 +9,10 @@ const {
   getCommentComplaints,
   getAdvertismentComplaints,
   resolveComplaint,
+  getReportUserDetails,
+  getReportPostDetails,
+  getReportCommentDetails,
+  getReportAdvertismentDetails,
 } = require("../controllers/complaintReviewController");
 
 const router = express.Router();
@@ -23,5 +27,14 @@ router.get(
   getAdvertismentComplaints
 );
 router.post("/resolvecomplaint", validateToken, resolveComplaint);
+
+router.get("/getreportuserdetails", validateToken, getReportUserDetails);
+router.get("/getreportpostdetails", validateToken, getReportPostDetails);
+router.get("/getreportcommentdetails", validateToken, getReportCommentDetails);
+router.get(
+  "/getreportadvertismentdetails",
+  validateToken,
+  getReportAdvertismentDetails
+);
 
 module.exports = router;

@@ -220,10 +220,113 @@ const resolveComplaint = asyncHandler(async (req, res) => {
   res.json({ complaintId, complaintType });
 });
 
+const getReportUserDetails = asyncHandler(async (req, res) => {
+  const reportId = parseInt(req.headers.reportid);
+
+  const report = await userReport.findUnique({
+    where: {
+      userReportedId: reportId,
+    },
+    select: { userId: true },
+  });
+
+  const userId = report.userId;
+
+  const userDetails = await user.findUnique({
+    where: {
+      userId,
+    },
+
+    select: {
+      userId: true,
+      name: true,
+      bio: true,
+      profilePhoto: true,
+      joinedDate: true,
+      premiumUser: true,
+      followerCreator: true,
+    },
+  });
+
+  const userReportDetails = await userReport.findMany({
+    take: 5,
+    orderBy: [
+      {
+        userReportedId: "desc",
+      },
+    ],
+    where: {
+      userId,
+    },
+  });
+
+  const postReportDetails = await postReport.findMany({
+    take: 5,
+    orderBy: [
+      {
+        postReportId: "desc",
+      },
+    ],
+    where: {
+      userId,
+    },
+  });
+
+  const commentReportDetails = await commentReport.findMany({
+    take: 5,
+    orderBy: [
+      {
+        commentReportId: "desc",
+      },
+    ],
+    where: {
+      userId,
+    },
+  });
+
+  const advertisementReportDetails = await advertisementReport.findMany({
+    take: 5,
+    orderBy: [
+      {
+        advertisementReportId: "desc",
+      },
+    ],
+    where: {
+      userId,
+    },
+  });
+
+  const outputData = {
+    userDetails,
+    userReportDetails,
+    postReportDetails,
+    commentReportDetails,
+    advertisementReportDetails,
+  };
+
+  res.json(outputData);
+});
+
+const getReportPostDetails = asyncHandler(async (req, res) => {
+  res.json("Hi");
+});
+
+const getReportCommentDetails = asyncHandler(async (req, res) => {
+  res.json("Hi");
+});
+
+const getReportAdvertismentDetails = asyncHandler(async (req, res) => {
+  res.json("Hi");
+});
+
 module.exports = {
   getUserComplaints,
   getPostComplaints,
   getCommentComplaints,
   getAdvertismentComplaints,
   resolveComplaint,
+  getReportUserDetails,
+  getReportPostDetails,
+  getReportCommentDetails,
+  getReportAdvertismentDetails,
 };
