@@ -11,8 +11,6 @@ import { useSelector } from "react-redux";
 import NavBarCreator from "../../components/NavBarCreator/NavBarCreator";
 import profile from "../../images/users/pic4.png";
 import avatar1 from "../../images/avatar/avatar-2.jpg";
-import avatar2 from "../../images/avatar/avatar-3.jpg";
-import avatar3 from "../../images/avatar/avatar-4.jpg";
 import t from "../../images/NFTs/monkey-removebg.png";
 import Post from "../../components/Post/Post";
 import checkedMark from "../../images/svg/checked-mark.svg";
@@ -20,11 +18,15 @@ import checkedMark from "../../images/svg/checked-mark.svg";
 function CreatorProfilePage() {
   const [profileData, setProfileData] = useState("");
   const [coverPhoto, setCoverPhoto] = useState("");
-  var accstate;
+  const [accstate, setaccstate] = useState("");
+  const [followingData, setFollowingsData] = useState([]);
+  const [followersData, setFollowersData] = useState([]);
 
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
 
+
+  //  get user data --------------------------------------------------------------
   const getUserData = async () => {
     const config = {
       headers: {
@@ -37,13 +39,53 @@ function CreatorProfilePage() {
       .then((response) => {
         setProfileData(response.data);
         setCoverPhoto(COVER_PIC_URL + response.data.followerCreator.coverPhoto);
-        accstate = response.data.premiumUser;
-        console.log(response.data.premiumUser);
+        setaccstate(response.data.premiumUser);
+        // console.log(response.data.userId);
+        // console.log(userId);
       });
   };
+  //  End get user data -------------------------------------------------------
+
+
+  //  get followes data -------------------------------------------------------
+  const getFollowersData = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/user/getfollowersdetails/" + userId, config)
+      .then((response) => {
+        setFollowersData(response.data);
+        console.log(response.data);
+      });
+  };
+  //  end get followers data --------------------------------------------------
+
+
+  //  get followings data -----------------------------------------------------
+  const getFollowingsData = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/user/getfollowingsdetails/" + userId, config)
+      .then((response) => {
+        setFollowingsData(response.data);
+        console.log(response.data);
+      });
+  };
+  //  end followings data ----------------------------------------------------
 
   useEffect(() => {
     getUserData();
+    getFollowersData();
+    getFollowingsData();
   }, []);
 
   return (
@@ -84,37 +126,42 @@ function CreatorProfilePage() {
                     <h2 class="mb-0"> {profileData.name} </h2>
                     <div class="sub-lh-1">
                       <p class="mb-0 d-block">101 followers</p>
-                      <p class="mb-0 d-block following">50 following</p>
+                      <p class="mb-0 d-block following">503 following</p>
                     </div>
                   </div>
                 </div>
-                <div class="d-flex">
-                  <a href="#" class="btn btn-outline-primary  d-sm-block">
-                    <i class="bi bi-bookmark-plus dinvit"></i>Follow
-                  </a>
 
-                  <div class="dropdown d-inline-block drop-list-upper">
-                    <button
-                      className="dr-btn report-threedots"
-                      id="page-header-notifications-dropdown"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i class="bi bi-three-dots"></i>
-                    </button>
-
-                    <div
-                      class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
-                      aria-labelledby="page-header-notifications-dropdown"
-                    >
-                      <a class="dropdown-item dinv">
-                        <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
-                        <span class="align-middle">Report</span>
+                {profileData.userId !== userId &&
+                  (
+                    <div class="d-flex">
+                      <a href="#" class="btn btn-outline-primary  d-sm-block">
+                        <i class="bi bi-bookmark-plus dinvit"></i>Follow
                       </a>
+
+                      <div class="dropdown d-inline-block drop-list-upper">
+                        <button
+                          className="dr-btn report-threedots"
+                          id="page-header-notifications-dropdown"
+                          data-bs-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <i class="bi bi-three-dots"></i>
+                        </button>
+
+                        <div
+                          class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
+                          aria-labelledby="page-header-notifications-dropdown"
+                        >
+                          <a class="dropdown-item dinv">
+                            <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
+                            <span class="align-middle">Report</span>
+                          </a>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  )}
+
               </div>
             </div>
 
@@ -148,7 +195,10 @@ function CreatorProfilePage() {
                   </div> */}
                   <div class="col-6">
                     <h6 class="text-uppercase fs-5 ls-2">Accounnt status</h6>
-                    <p class="mb-0">Premium</p>
+                    {accstate
+                      ? <p class="mb-0">Premium</p>
+                      : <p class="mb-0">Basic</p>
+                    }
                   </div>
                 </div>
               </div>
@@ -176,87 +226,101 @@ function CreatorProfilePage() {
             <br />
             {/* following n followers list */}
             <div class="followers-following">
+
+
               <div class="followers">
                 <div class="card mb-4">
                   <div class="card-body">
                     <h4 class="card-title mb-4">Your Followers</h4>
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                      <div class="d-flex align-items-center">
-                        <div>
-                          <img
-                            src={profile}
-                            class="rounded-circle avatar-md"
-                            alt=""
-                          />
-                        </div>
-                        <div class="ms-3 ">
-                          <h5 class="mb-1">Dianna Smiley</h5>
-                        </div>
-                      </div>
-                      <div class="dropdown d-inline-block drop-list-upper">
-                        <button
-                          className="dr-btn report-threedots"
-                          id="page-header-notifications-dropdown"
-                          data-bs-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          <i class="bi bi-three-dots"></i>
-                        </button>
 
-                        <div
-                          class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
-                          aria-labelledby="page-header-notifications-dropdown"
-                        >
-                          <a class="dropdown-item dinv">
-                            <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
-                            <span class="align-middle">Report</span>
-                          </a>
+                    {followersData.map((folodata, i) => (
+                      <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex align-items-center">
+                          <div>
+                            <img
+                              src={PROFILE_PIC_URL + folodata.profilePhoto}
+                              class="rounded-circle avatar-md"
+                              alt=""
+                            />
+                          </div>
+                          <div class="ms-3 ">
+                            <h5 class="mb-1">{folodata.name}</h5>
+                          </div>
+                        </div>
+                        <div class="dropdown d-inline-block drop-list-upper">
+                          <button
+                            className="dr-btn report-threedots"
+                            id="page-header-notifications-dropdown"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <i class="bi bi-three-dots"></i>
+                          </button>
+                          <div
+                            class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
+                            aria-labelledby="page-header-notifications-dropdown"
+                          >
+                            <a class="dropdown-item dinv">
+                              <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
+                              <span class="align-middle">Report</span>
+                            </a>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ))}
+
+
                   </div>
                 </div>
               </div>
+
+
+
               <div class="following">
                 <div class="card mb-4">
                   <div class="card-body">
                     <h4 class="card-title mb-4">Your Followings</h4>
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                      <div class="d-flex align-items-center">
-                        <div>
-                          <img
-                            src={avatar1}
-                            class="rounded-circle avatar-md"
-                            alt=""
-                          />
-                        </div>
-                        <div class="ms-3 ">
-                          <h5 class="mb-1">Anne Brewer</h5>
-                        </div>
-                      </div>
-                      <div class="dropdown d-inline-block drop-list-upper">
-                        <button
-                          className="dr-btn report-threedots"
-                          id="page-header-notifications-dropdown"
-                          data-bs-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          <i class="bi bi-three-dots"></i>
-                        </button>
 
-                        <div
-                          class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
-                          aria-labelledby="page-header-notifications-dropdown"
-                        >
-                          <a class="dropdown-item dinv">
-                            <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
-                            <span class="align-middle">Report</span>
-                          </a>
+
+                    {followingData.map((folodata, i) => (
+                      <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex align-items-center">
+                          <div>
+                            <img
+                              src={PROFILE_PIC_URL + folodata.profilePhoto}
+                              class="rounded-circle avatar-md"
+                              alt=""
+                            />
+                          </div>
+                          <div class="ms-3 ">
+                            <h5 class="mb-1">{folodata.name}</h5>
+                          </div>
+                        </div>
+                        <div class="dropdown d-inline-block drop-list-upper">
+                          <button
+                            className="dr-btn report-threedots"
+                            id="page-header-notifications-dropdown"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <i class="bi bi-three-dots"></i>
+                          </button>
+                          <div
+                            class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
+                            aria-labelledby="page-header-notifications-dropdown"
+                          >
+                            <a class="dropdown-item dinv">
+                              <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
+                              <span class="align-middle">Report</span>
+                            </a>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ))}
+
+
                   </div>
                 </div>
               </div>

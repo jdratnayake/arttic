@@ -249,8 +249,9 @@ function AdvertismentTablePage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {advertismentTable.map((ad) => (
-                      <tr key={ad.advertisementId}>
+                    {advertismentTable.map((ad , i) => (
+                      i <= 4 &&
+                      (<tr key={ad.advertisementId}>
                         <td className="idStyle">{ad.advertisementId}</td>
                         <td>{new Date(ad.createdDate).toLocaleDateString()}</td>
                         <td>
@@ -262,6 +263,7 @@ function AdvertismentTablePage() {
                           </p>
                         </td>
                         <td>Old</td>
+
                         <td>
                           <a
                             onClick={() => handleClick({ type: "Post" })}
@@ -273,7 +275,7 @@ function AdvertismentTablePage() {
                             View
                           </a>
                         </td>
-                      </tr>
+                      </tr>)
                     ))}
 
                   </tbody>
