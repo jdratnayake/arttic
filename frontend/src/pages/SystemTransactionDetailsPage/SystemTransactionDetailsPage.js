@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
+import { useSelector } from "react-redux";
+import axios from "axios";
+
+import { API_URL } from "../../constants/globalConstants";
 
 import "./SystemTransactionDetailsPage.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -7,8 +11,75 @@ import "react-datepicker/dist/react-datepicker.css";
 import SummaryCard from "../../components/SummaryCard/SummaryCard";
 
 function SystemTransactionDetailsPage() {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
+
+  const removeTime = (date = new Date()) => {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  };
+
+  const [startDate, setStartDate] = useState(removeTime(new Date()));
+  const [endDate, setEndDate] = useState(removeTime(new Date()));
+
+  const [transactionList, setTransactionList] = useState([]);
+  const [displayTransactionList, setDisplayTransactionList] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [subscription, setSubscription] = useState(0);
+  const [advertisement, setAdvertisement] = useState(0);
+
+  const getData = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/admindashboard/gettransactiondetails/", config)
+      .then((response) => {
+        setTotal(response.data.total);
+        setSubscription(response.data.subscriptionRevenue);
+        setAdvertisement(response.data.advertisementRevenue);
+        setDisplayTransactionList(response.data.transactionList);
+        setTransactionList(response.data.transactionList);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const filterTransactions = () => {
+    // console.log(startDate);
+    // console.log(endDate);
+    // console.log(typeof startDate);
+    // console.log(typeof endDate);
+    let newTotal = 0;
+    let newSubscription = 0;
+    let newAdvertisement = 0;
+
+    const newList = transactionList.filter((data) => {
+      if (
+        new Date(data.transactionDate).getTime() >= startDate.getTime() &&
+        new Date(data.transactionDate).getTime() <= endDate.getTime()
+      ) {
+        if (data.transactionType === 1) {
+          newAdvertisement += parseInt(data.amount);
+        } else {
+          newSubscription += parseInt(data.amount);
+        }
+
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    setDisplayTransactionList(newList);
+    setTotal(newTotal);
+    setAdvertisement(newAdvertisement);
+    setSubscription(newSubscription);
+  };
 
   return (
     <span className="systemTransactionDetailsPage">
@@ -21,13 +92,22 @@ function SystemTransactionDetailsPage() {
       <div class="card-body date-card">
         <div class="row">
           <div class="col">
-            <SummaryCard cardHeading="Total" numberValue="$ 300, 000" />
+            <SummaryCard
+              cardHeading="Total"
+              numberValue={"$" + total.toLocaleString()}
+            />
           </div>
           <div class="col">
-            <SummaryCard cardHeading="Subscription" numberValue="$ 100, 000" />
+            <SummaryCard
+              cardHeading="Subscription"
+              numberValue={"$" + subscription.toLocaleString()}
+            />
           </div>
           <div class="col">
-            <SummaryCard cardHeading="Avertisement" numberValue="$ 200, 000" />
+            <SummaryCard
+              cardHeading="Advertisement"
+              numberValue={"$" + advertisement.toLocaleString()}
+            />
           </div>
         </div>
       </div>
@@ -63,7 +143,11 @@ function SystemTransactionDetailsPage() {
           </div>
 
           <div class="col column-container">
-            <button type="button" class="btn btn-primary">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onClick={filterTransactions}
+            >
               Search
             </button>
           </div>
@@ -77,35 +161,24 @@ function SystemTransactionDetailsPage() {
               <tr>
                 <th>ID</th>
                 <th>Date</th>
-                <th>User</th>
                 <th>Type</th>
+
                 <th>Amount</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="idStyle">INV__1001</td>
-                <td>2008/11/28</td>
-                <td>Janitha Ratnayake</td>
-                <td>Advertisment</td>
-                <td class="amount">$520.18</td>
-              </tr>
-
-              <tr>
-                <td className="idStyle">INV__1002</td>
-                <td>2008/11/29</td>
-                <td>Pradeep Ratnayake</td>
-                <td>Premium</td>
-                <td class="amount">$520.18</td>
-              </tr>
-
-              <tr>
-                <td className="idStyle">INV__1003</td>
-                <td>2008/11/30</td>
-                <td>Dulitha Ratnayake</td>
-                <td>Advertisment</td>
-                <td class="amount">$520.18</td>
-              </tr>
+              {displayTransactionList.map((data, i) => (
+                <tr key={data.transactionId}>
+                  <td className="idStyle">{i + 1}</td>
+                  <td>{new Date(data.transactionDate).toLocaleDateString()}</td>
+                  <td>
+                    {data.transactionType === 1
+                      ? "Advertisment"
+                      : "Subscription"}
+                  </td>
+                  <td class="amount">{"$" + data.amount}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
