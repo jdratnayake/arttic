@@ -339,7 +339,7 @@ model transactionLog{
   user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int
   transactionType Int
-  stripeId String @db.VarChar(64)
+  stripeId String? @db.VarChar(64)
   amount Decimal @db.Decimal(65, 2)
   transactionDate DateTime @default(now())
 }
