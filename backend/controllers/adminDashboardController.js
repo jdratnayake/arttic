@@ -232,6 +232,44 @@ const getDashboardDetails = asyncHandler(async (req, res) => {
   res.json(outputData);
 });
 
+const getTransactionDetails = asyncHandler(async (req, res) => {
+  const transactionList = await transactionLog.findMany({});
+
+  const advertisement = await transactionLog.aggregate({
+    where: {
+      transactionType: 1,
+    },
+
+    _sum: {
+      amount: true,
+    },
+  });
+
+  const subscription = await transactionLog.aggregate({
+    where: {
+      transactionType: 2,
+    },
+
+    _sum: {
+      amount: true,
+    },
+  });
+
+  const advertisementRevenue = parseInt(advertisement["_sum"]["amount"]) || 0;
+  const subscriptionRevenue = parseInt(subscription["_sum"]["amount"]) || 0;
+  const total = advertisementRevenue + subscriptionRevenue;
+
+  const outputData = {
+    transactionList,
+    advertisementRevenue,
+    subscriptionRevenue,
+    total,
+  };
+
+  res.json(outputData);
+});
+
 module.exports = {
   getDashboardDetails,
+  getTransactionDetails,
 };

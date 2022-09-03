@@ -51,7 +51,12 @@ function App() {
         ></Route>
         <Route
           path="/subscribedcreatorspage"
-          element={<CreatorTemplate children={<SubscribedCreatorsPage />} />}
+          element={
+            <CreatorTemplate
+              children={<SubscribedCreatorsPage />}
+              sideNavBarIndex="1"
+            />
+          }
         ></Route>
         <Route
           path="/settings"
@@ -95,7 +100,7 @@ function App() {
           element={
             <CreatorTemplate
               children={<ChatCreatorPage />}
-              sideNavBarIndex="4"
+              sideNavBarIndex="3"
             />
           }
         ></Route>
