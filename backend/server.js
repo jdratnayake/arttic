@@ -21,6 +21,7 @@ const chatRouter = require("./routes/chatRoutes");
 const accountManagementRouter = require("./routes/accountManagementRoutes");
 const adminDashboardRouter = require("./routes/adminDashboardRoutes");
 const creatorAnalyticsRouter = require("./routes/creatorAnalyticsRoutes");
+const complaintReviewRouter = require("./routes/complaintReviewRoutes");
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use("/api/v1/chat", chatRouter);
 app.use("/api/v1/accountmanagement", accountManagementRouter);
 app.use("/api/v1/admindashboard", adminDashboardRouter);
 app.use("/api/v1/creatoranalytics", creatorAnalyticsRouter);
+app.use("/api/v1/complaintreview", complaintReviewRouter);
 
 // serve static files
 app.use(express.static("assets"));
