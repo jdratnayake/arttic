@@ -244,6 +244,7 @@ const getReportUserDetails = asyncHandler(async (req, res) => {
       profilePhoto: true,
       joinedDate: true,
       premiumUser: true,
+      blockedStatus: true,
       followerCreator: true,
     },
   });
@@ -307,6 +308,34 @@ const getReportUserDetails = asyncHandler(async (req, res) => {
   res.json(outputData);
 });
 
+const blockUser = asyncHandler(async (req, res) => {
+  console.log("Hi");
+  const { blockUserId, blockedAdminID } = req.body;
+
+  const updateUser = await user.update({
+    where: {
+      userId: blockUserId,
+    },
+    data: {
+      blockedStatus: true,
+      blockedDate: new Date(),
+      blockedAdminID: blockedAdminID,
+    },
+  });
+
+  if (updateUser) {
+    res.json({
+      statusCode: 1,
+      msg: "Successful",
+    });
+  } else {
+    res.json({
+      statusCode: 2,
+      msg: "Unsuccessful",
+    });
+  }
+});
+
 const getReportPostDetails = asyncHandler(async (req, res) => {
   res.json("Hi");
 });
@@ -329,4 +358,5 @@ module.exports = {
   getReportPostDetails,
   getReportCommentDetails,
   getReportAdvertismentDetails,
+  blockUser,
 };

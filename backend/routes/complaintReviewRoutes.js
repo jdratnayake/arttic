@@ -13,6 +13,7 @@ const {
   getReportPostDetails,
   getReportCommentDetails,
   getReportAdvertismentDetails,
+  blockUser,
 } = require("../controllers/complaintReviewController");
 
 const router = express.Router();
@@ -27,7 +28,6 @@ router.get(
   getAdvertismentComplaints
 );
 router.post("/resolvecomplaint", validateToken, resolveComplaint);
-
 router.get("/getreportuserdetails", validateToken, getReportUserDetails);
 router.get("/getreportpostdetails", validateToken, getReportPostDetails);
 router.get("/getreportcommentdetails", validateToken, getReportCommentDetails);
@@ -36,5 +36,6 @@ router.get(
   validateToken,
   getReportAdvertismentDetails
 );
+router.post("/blockuser", validateToken, blockUser);
 
 module.exports = router;

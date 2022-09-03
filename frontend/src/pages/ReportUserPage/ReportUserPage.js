@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import $ from "jquery";
 
 import { API_URL, PROFILE_PIC_URL } from "../../constants/globalConstants";
 
@@ -21,6 +22,8 @@ function ReportUserPage() {
   const [advertisementReportDetails, setAdvertisementReportDetails] = useState(
     []
   );
+  const [buttonName, setButtonName] = useState("Temporary Ban");
+  const [isDisabled, setDisabled] = useState(false);
 
   const typeList = [
     "",
@@ -48,12 +51,37 @@ function ReportUserPage() {
     await axios
       .get(API_URL + "/complaintreview/getReportUserDetails/", config)
       .then((response) => {
+        if (response.data.userDetails.blockedStatus) {
+          setButtonName("Temporary Banned");
+          setDisabled(true);
+        }
         setUserDetails(response.data.userDetails);
         setUserReportDetails(response.data.userReportDetails);
         setPostReportDetails(response.data.postReportDetails);
         setCommentReportDetails(response.data.commentReportDetails);
         setAdvertisementReportDetails(response.data.advertisementReportDetails);
       });
+  };
+
+  const banUser = async () => {
+    const token = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    const inputData = {
+      blockUserId: userDetails.userId,
+      blockedAdminID: userId,
+    };
+
+    await axios
+      .post(API_URL + "/complaintreview/blockuser/", inputData, token)
+      .then((res) => {});
+
+    $("#btn-close-form").click();
+    setButtonName("Temporary Banned");
+    setDisabled(true);
   };
 
   useEffect(() => {
@@ -92,13 +120,64 @@ function ReportUserPage() {
                   <h2 class="mb-0">{userDetails.name}</h2>
                 </div>
                 <div>
-                  <button type="button" class="btn btn-danger banButton">
-                    Temporary Hold
+                  <button
+                    type="button"
+                    class="btn btn-danger banButton"
+                    disabled={isDisabled}
+                    data-bs-toggle="modal"
+                    data-bs-target="#upgradeAccount"
+                  >
+                    {buttonName}
                   </button>
                 </div>
               </div>
             </div>
           </div>
+
+          <div
+            class="modal fade"
+            id="upgradeAccount"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Confirm Ban
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  This procedure is irreversible. Do you want to Ban?
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    id="btn-close-form"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger "
+                    onClick={banUser}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="card reportBio">
             {/* card body */}
             <div class="card-body reportBioBody">
@@ -106,31 +185,22 @@ function ReportUserPage() {
                 Bio
               </span>
               {/* text */}
-              <p class="mt-1 mb-1 px-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspen
-                disse var ius enim in eros elementum tristique. Duis cursus, mi
-                quis viverra ornare, eros dolor interdum nulla, ut commodo diam
-                libero vitae erat.
-              </p>
+              <p class="mt-1 mb-1 ">{userDetails.bio}</p>
               {/* row */}
               <div class="row">
-                <div class="col-12 mb-1">
-                  {/* text */}
-                  <h6 class="text-uppercase fs-4 ls-2">User id</h6>
-                  <p class="mb-0 px-2">{id}</p>
-                </div>
-                <div class="col-12 mb-1">
-                  {/* text */}
-                  <h6 class="text-uppercase fs-4 ls-2">Username</h6>
-                  <p class="mb-0 px-2">Mahesh</p>
-                </div>
                 <div class="col-6 mb-1">
                   <h6 class="text-uppercase fs-4 ls-2">Joined date </h6>
-                  <p class="mb-0 px-2">01.10.2020</p>
+                  <p class="mb-0 ">
+                    {new Date(userDetails.joinedDate).toLocaleDateString()}
+                  </p>
                 </div>
                 <div class="col-6">
                   <h6 class="text-uppercase fs-4 ls-2">Accounnt status</h6>
-                  <p class="mb-0 px-2">Premium</p>
+                  {userDetails.premiumUser ? (
+                    <p class="mb-0">Premium</p>
+                  ) : (
+                    <p class="mb-0">Basic</p>
+                  )}
                 </div>
               </div>
             </div>
