@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const asyncHandler = require("express-async-handler");
 const { Client } = require("pg");
 
-const { user, followerCreator } = new PrismaClient();
+const { user, followerCreator, userSubscribe } = new PrismaClient();
 
 //upload profile photos --------------------------------------------------
 const uploadProfileOrCoverPicture = asyncHandler(async (req, res) => {
@@ -128,10 +128,10 @@ const updateUserDetails = asyncHandler(async (req, res) => {
     });
   }
 });
-//end update user details --------------------------------------------
+//  end update user details --------------------------------------------
 
 
-//  upload a user report ***************
+//  upload a user report ---------------------------------------------
 const uploadUserReport = asyncHandler(async (req, res) => {
   const Data = req.body;
   console.log(Data);
@@ -171,6 +171,88 @@ const uploadUserReport = asyncHandler(async (req, res) => {
 
   res.json("success");
 });
+//  end  upload a user report ---------------------------------------------
+
+
+//  get followers details --------------------------------------------
+const getFollowersDetails = asyncHandler(async (req, res) => {
+  const userId = parseInt(req.params.id);
+
+
+  const client = new Client({
+    user: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE_DATABASE,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  await client.connect();
+
+  const result = await client.query(
+    'SELECT "user"."userId","name","profilePhoto" FROM "userSubscribe" INNER JOIN "user" ON "user"."userId"="userSubscribe"."followerId"  WHERE "userSubscribe"."creatorId"=$1',
+    [userId]
+  );
+
+  res.json(result.rows);
+
+
+  // const followers = await userSubscribe.findMany({
+  //   where: {
+  //     creatorId: userId,
+  //   },
+  //   include: {
+  //     user: true,
+  //   },
+  // });
+
+  // res.json(followers);
+});
+//  end get followers details ----------------------------------------
+
+
+//  get followings details --------------------------------------------
+const getFollowingsDetails = asyncHandler(async (req, res) => {
+  const userId = parseInt(req.params.id);
+
+
+  const client = new Client({
+    user: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE_DATABASE,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  await client.connect();
+
+  const result = await client.query(
+    'SELECT "user"."userId","name","profilePhoto" FROM "userSubscribe" INNER JOIN "user" ON "user"."userId"="userSubscribe"."creatorId"  WHERE "userSubscribe"."followerId"=$1',
+    [userId]
+  );
+
+  res.json(result.rows);
+
+  // const followings = await userSubscribe.findMany({
+  //   where: {
+  //     followerId: userId,
+  //   },
+  //   // include: {
+  //   //   followerCreator: true,
+  //   // },
+  // });
+
+  // res.json(followings);
+});
+//  end get followings details ----------------------------------------
+
+
 
 module.exports = {
   uploadProfileOrCoverPicture,
@@ -178,4 +260,6 @@ module.exports = {
   checkUserName,
   updateUserDetails,
   uploadUserReport,
+  getFollowersDetails,
+  getFollowingsDetails,
 };
