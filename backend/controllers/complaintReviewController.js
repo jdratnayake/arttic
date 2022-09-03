@@ -309,7 +309,6 @@ const getReportUserDetails = asyncHandler(async (req, res) => {
 });
 
 const blockUser = asyncHandler(async (req, res) => {
-  console.log("Hi");
   const { blockUserId, blockedAdminID } = req.body;
 
   const updateUser = await user.update({
