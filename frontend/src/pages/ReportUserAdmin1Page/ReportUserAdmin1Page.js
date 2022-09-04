@@ -1,32 +1,220 @@
+import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
   Link,
   useParams,
 } from "react-router-dom";
-import { useState } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import $ from "jquery";
+
+import SummaryCard from "../../components/SummaryCard/SummaryCard";
+import { API_URL } from "../../constants/globalConstants";
 
 import "./ReportUserAdmin1Page.css";
-import SummaryCard from "../../components/SummaryCard/SummaryCard";
-
 
 function ReportUserAdmin1Page() {
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
+
+  const [complaintId, setComplainId] = useState(0);
+  const [complaintType, setComplainType] = useState(0);
   const [complain, setComplain] = useState("");
-  const [username, setUsername] = useState("");
   const [date, setDate] = useState("");
   const [category, setCategory] = useState("");
   const [path, setPath] = useState("");
 
-  const handleClick = (obj) => {
-    setComplain(
-      "You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the"
-    );
-    setUsername("Tony stark");
-    setDate("07/30/2022");
-    setCategory("Violence");
-    setPath("/admin1/report" + obj.type + "/" + obj.id);
-    console.log(obj, path);
+  const [total, setTotal] = useState(0);
+  const [solveCount, setSolveCount] = useState(0);
+  const [unSolveCount, setUnSolveCount] = useState(0);
+  const [userComplaintList, setUserComplaintList] = useState([]);
+  const [postComplaintList, setPostComplaintList] = useState([]);
+  const [commentComplaintList, setCommentComplaintList] = useState([]);
+  const [advertismentComplaintList, setAdvertismentComplaintList] = useState(
+    []
+  );
+
+  const typeList = [
+    "",
+    "Nudity",
+    "Violence",
+    "Spam",
+    "False Information",
+    "Something Else",
+  ];
+
+  const setResolveComplaint = async () => {
+    // console.log(complaintId);
+    // console.log(complaintType);
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    const inputData = { complaintId, complaintType };
+
+    await axios
+      .post(API_URL + "/complaintreview/resolvecomplaint/", inputData, config)
+      .then((response) => {
+        if (complaintType === 1) {
+          setUserComplaintList(
+            userComplaintList.filter((data) => {
+              return data.userReportedId !== complaintId;
+            })
+          );
+        } else if (complaintType === 2) {
+          setPostComplaintList(
+            postComplaintList.filter((data) => {
+              return data.postReportId !== complaintId;
+            })
+          );
+        } else if (complaintType === 3) {
+          setCommentComplaintList(
+            commentComplaintList.filter((data) => {
+              return data.commentReportId !== complaintId;
+            })
+          );
+        } else if (complaintType === 4) {
+          setAdvertismentComplaintList(
+            advertismentComplaintList.filter((data) => {
+              return data.advertisementReportId !== complaintId;
+            })
+          );
+        }
+
+        $("#btn-close-form").click();
+      });
   };
+
+  const handleClick = (obj) => {
+    let newData = {};
+    setComplainId(obj.id);
+
+    if (obj.type === "User") {
+      newData = userComplaintList.filter((data) => {
+        return data.userReportedId === obj.id;
+      })[0];
+      setDate(new Date(newData.userReportedDate).toLocaleDateString());
+
+      setComplainType(1);
+    } else if (obj.type === "Post") {
+      newData = postComplaintList.filter((data) => {
+        return data.postReportId === obj.id;
+      })[0];
+      setDate(new Date(newData.postReportedDate).toLocaleDateString());
+
+      setComplainType(2);
+    } else if (obj.type === "Comment") {
+      newData = commentComplaintList.filter((data) => {
+        return data.commentReportId === obj.id;
+      })[0];
+      setDate(new Date(newData.commentReportedDate).toLocaleDateString());
+
+      setComplainType(3);
+    } else if (obj.type === "Advertisment") {
+      newData = advertismentComplaintList.filter((data) => {
+        return data.advertisementReportId === obj.id;
+      })[0];
+      setDate(new Date(newData.postReportedDate).toLocaleDateString());
+
+      setComplainType(4);
+    }
+
+    setComplain(newData.description);
+    setCategory(typeList[newData.reportCategory]);
+    setPath("/admin1/report" + obj.type + "/" + obj.id);
+  };
+
+  const getUserData = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/complaintreview/getusercomplaints/", config)
+      .then((response) => {
+        setTotal(response.data.total);
+        setSolveCount(response.data.solveCount);
+        setUnSolveCount(response.data.unSolveCount);
+        setUserComplaintList(response.data.userComplaintList);
+      });
+  };
+
+  const getPostData = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/complaintreview/getpostcomplaints/", config)
+      .then((response) => {
+        setTotal(response.data.total);
+        setSolveCount(response.data.solveCount);
+        setUnSolveCount(response.data.unSolveCount);
+        setPostComplaintList(response.data.postComplaintList);
+      });
+  };
+
+  const getCommentData = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/complaintreview/getcommentcomplaints/", config)
+      .then((response) => {
+        setTotal(response.data.total);
+        setSolveCount(response.data.solveCount);
+        setUnSolveCount(response.data.unSolveCount);
+        setCommentComplaintList(response.data.commentComplaintList);
+      });
+  };
+
+  const getAdvertismentData = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/complaintreview/getadvertismentcomplaints/", config)
+      .then((response) => {
+        setTotal(response.data.total);
+        setSolveCount(response.data.solveCount);
+        setUnSolveCount(response.data.unSolveCount);
+        setAdvertismentComplaintList(response.data.advertisementComplaintList);
+      });
+  };
+
+  useEffect(() => {
+    $("#user-tab").click(function (e) {
+      getUserData();
+    });
+
+    $("#post-tab").click(function (e) {
+      getPostData();
+    });
+
+    $("#comment-tab").click(function (e) {
+      getCommentData();
+    });
+
+    $("#advertisment-tab").click(function (e) {
+      getAdvertismentData();
+    });
+
+    getUserData();
+  }, []);
 
   return (
     <span className="reportUserAdmin1Page">
@@ -39,13 +227,22 @@ function ReportUserAdmin1Page() {
       <div class="card-body date-card">
         <div class="row">
           <div class="col">
-            <SummaryCard cardHeading="Total" numberValue="10, 000" />
+            <SummaryCard
+              cardHeading="Total"
+              numberValue={total.toLocaleString()}
+            />
           </div>
           <div class="col">
-            <SummaryCard cardHeading="Solve" numberValue="5,000" />
+            <SummaryCard
+              cardHeading="Solve"
+              numberValue={solveCount.toLocaleString()}
+            />
           </div>
           <div class="col">
-            <SummaryCard cardHeading="Have to check" numberValue="5,000" />
+            <SummaryCard
+              cardHeading="Have to check"
+              numberValue={unSolveCount.toLocaleString()}
+            />
           </div>
         </div>
       </div>
@@ -128,76 +325,36 @@ function ReportUserAdmin1Page() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td className="idStyle">1</td>
-                    <td>2008/11/28</td>
-                    <td>
-                      <p className="userComplaintDescription">
-                        It is hidden by default, until the collapse plugin
-                        adds the appropriate classes that we use to style
-                        each element. These classes control the overall
-                        appearance, as well as the showing and hiding via
-                        CSS transitions. You can modify any of this with
-                        custom CSS or overriding our default variables. It's
-                        also worth noting that just about any HTML can go
-                        within the
-                      </p>
-                    </td>
-                    <td>Nudity</td>
-                    <td>
-                      <a
-                        onClick={() =>
-                          handleClick({ id: 100, type: "User" })
-                        }
-                        href="#"
-                        class="btn btn-primary d-grid mb-2 openComplaintDialog"
-                        data-bs-toggle="modal"
-                        data-bs-target="#complainModal"
-                      >
-                        View
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td className="idStyle">2</td>
-                    <td>2008/11/29</td>
-                    <td>Pradeep Ratnayake</td>
-                    <td>Violence</td>
-                    <td>
-                      <a
-                        onClick={() =>
-                          handleClick({ id: 100, type: "User" })
-                        }
-                        href="#"
-                        class="btn btn-primary d-grid mb-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#complainModal"
-                      >
-                        View
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td className="idStyle">3</td>
-                    <td>2008/11/30</td>
-                    <td>Dulitha Ratnayake</td>
-                    <td>Advertisment</td>
-                    <td>
-                      <a
-                        onClick={() =>
-                          handleClick({ id: 100, type: "User" })
-                        }
-                        href="#"
-                        class="btn btn-primary d-grid mb-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#complainModal"
-                      >
-                        View
-                      </a>
-                    </td>
-                  </tr>
+                  {userComplaintList.map((data, i) => (
+                    <tr key={data.userReportedId}>
+                      <td className="idStyle">{i + 1}</td>
+                      <td>
+                        {new Date(data.userReportedDate).toLocaleDateString()}
+                      </td>
+                      <td>
+                        <p className="userComplaintDescription">
+                          {data.description}
+                        </p>
+                      </td>
+                      <td>{typeList[data.reportCategory]}</td>
+                      <td>
+                        <a
+                          onClick={() =>
+                            handleClick({
+                              id: data.userReportedId,
+                              type: "User",
+                            })
+                          }
+                          href="#"
+                          class="btn btn-primary d-grid mb-2 openComplaintDialog"
+                          data-bs-toggle="modal"
+                          data-bs-target="#complainModal"
+                        >
+                          View
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -223,76 +380,36 @@ function ReportUserAdmin1Page() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td className="idStyle">1</td>
-                    <td>2008/11/28</td>
-                    <td>
-                      <p className="userComplaintDescription">
-                        It is hidden by default, until the collapse plugin
-                        adds the appropriate classes that we use to style
-                        each element. These classes control the overall
-                        appearance, as well as the showing and hiding via
-                        CSS transitions. You can modify any of this with
-                        custom CSS or overriding our default variables. It's
-                        also worth noting that just about any HTML can go
-                        within the
-                      </p>
-                    </td>
-                    <td>Nudity</td>
-                    <td>
-                      <a
-                        onClick={() =>
-                          handleClick({ id: 100, type: "Post" })
-                        }
-                        href="#"
-                        class="btn btn-primary d-grid mb-2 openComplaintDialog"
-                        data-bs-toggle="modal"
-                        data-bs-target="#complainModal"
-                      >
-                        View
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td className="idStyle">2</td>
-                    <td>2008/11/29</td>
-                    <td>Pradeep Ratnayake</td>
-                    <td>Violence</td>
-                    <td>
-                      <a
-                        onClick={() =>
-                          handleClick({ id: 100, type: "Post" })
-                        }
-                        href="#"
-                        class="btn btn-primary d-grid mb-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#complainModal"
-                      >
-                        View
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td className="idStyle">3</td>
-                    <td>2008/11/30</td>
-                    <td>Dulitha Ratnayake</td>
-                    <td>Advertisment</td>
-                    <td>
-                      <a
-                        onClick={() =>
-                          handleClick({ id: 100, type: "Post" })
-                        }
-                        href="#"
-                        class="btn btn-primary d-grid mb-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#complainModal"
-                      >
-                        View
-                      </a>
-                    </td>
-                  </tr>
+                  {postComplaintList.map((data, i) => (
+                    <tr key={data.postReportId}>
+                      <td className="idStyle">{i + 1}</td>
+                      <td>
+                        {new Date(data.postReportedDate).toLocaleDateString()}
+                      </td>
+                      <td>
+                        <p className="userComplaintDescription">
+                          {data.description}
+                        </p>
+                      </td>
+                      <td>{typeList[data.reportCategory]}</td>
+                      <td>
+                        <a
+                          onClick={() =>
+                            handleClick({
+                              id: data.postReportId,
+                              type: "Post",
+                            })
+                          }
+                          href="#"
+                          class="btn btn-primary d-grid mb-2 openComplaintDialog"
+                          data-bs-toggle="modal"
+                          data-bs-target="#complainModal"
+                        >
+                          View
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -318,76 +435,38 @@ function ReportUserAdmin1Page() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td className="idStyle">1</td>
-                    <td>2008/11/28</td>
-                    <td>
-                      <p className="userComplaintDescription">
-                        It is hidden by default, until the collapse plugin
-                        adds the appropriate classes that we use to style
-                        each element. These classes control the overall
-                        appearance, as well as the showing and hiding via
-                        CSS transitions. You can modify any of this with
-                        custom CSS or overriding our default variables. It's
-                        also worth noting that just about any HTML can go
-                        within the
-                      </p>
-                    </td>
-                    <td>Nudity</td>
-                    <td>
-                      <a
-                        onClick={() =>
-                          handleClick({ id: 90, type: "Comment" })
-                        }
-                        href="#"
-                        class="btn btn-primary d-grid mb-2 openComplaintDialog"
-                        data-bs-toggle="modal"
-                        data-bs-target="#complainModal"
-                      >
-                        View
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td className="idStyle">2</td>
-                    <td>2008/11/29</td>
-                    <td>Pradeep Ratnayake</td>
-                    <td>Violence</td>
-                    <td>
-                      <a
-                        onClick={() =>
-                          handleClick({ id: 80, type: "Comment" })
-                        }
-                        href="#"
-                        class="btn btn-primary d-grid mb-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#complainModal"
-                      >
-                        View
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td className="idStyle">3</td>
-                    <td>2008/11/30</td>
-                    <td>Dulitha Ratnayake</td>
-                    <td>Advertisment</td>
-                    <td>
-                      <a
-                        onClick={() =>
-                          handleClick({ id: 70, type: "Comment" })
-                        }
-                        href="#"
-                        class="btn btn-primary d-grid mb-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#complainModal"
-                      >
-                        View
-                      </a>
-                    </td>
-                  </tr>
+                  {commentComplaintList.map((data, i) => (
+                    <tr key={data.commentReportId}>
+                      <td className="idStyle">{i + 1}</td>
+                      <td>
+                        {new Date(
+                          data.commentReportedDate
+                        ).toLocaleDateString()}
+                      </td>
+                      <td>
+                        <p className="userComplaintDescription">
+                          {data.description}
+                        </p>
+                      </td>
+                      <td>{typeList[data.reportCategory]}</td>
+                      <td>
+                        <a
+                          onClick={() =>
+                            handleClick({
+                              id: data.commentReportId,
+                              type: "Comment",
+                            })
+                          }
+                          href="#"
+                          class="btn btn-primary d-grid mb-2 openComplaintDialog"
+                          data-bs-toggle="modal"
+                          data-bs-target="#complainModal"
+                        >
+                          View
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -413,76 +492,36 @@ function ReportUserAdmin1Page() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td className="idStyle">1</td>
-                    <td>2008/11/28</td>
-                    <td>
-                      <p className="userComplaintDescription">
-                        It is hidden by default, until the collapse plugin
-                        adds the appropriate classes that we use to style
-                        each element. These classes control the overall
-                        appearance, as well as the showing and hiding via
-                        CSS transitions. You can modify any of this with
-                        custom CSS or overriding our default variables. It's
-                        also worth noting that just about any HTML can go
-                        within the
-                      </p>
-                    </td>
-                    <td>Nudity</td>
-                    <td>
-                      <a
-                        onClick={() =>
-                          handleClick({ id: 1, type: "Advertisment" })
-                        }
-                        href="#"
-                        class="btn btn-primary d-grid mb-2 openComplaintDialog"
-                        data-bs-toggle="modal"
-                        data-bs-target="#complainModal"
-                      >
-                        View
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td className="idStyle">2</td>
-                    <td>2008/11/29</td>
-                    <td>Pradeep Ratnayake</td>
-                    <td>Violence</td>
-                    <td>
-                      <a
-                        onClick={() =>
-                          handleClick({ id: 2, type: "Advertisment" })
-                        }
-                        href="#"
-                        class="btn btn-primary d-grid mb-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#complainModal"
-                      >
-                        View
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td className="idStyle">3</td>
-                    <td>2008/11/30</td>
-                    <td>Dulitha Ratnayake</td>
-                    <td>Nudity</td>
-                    <td>
-                      <a
-                        onClick={() =>
-                          handleClick({ id: 7, type: "Advertisment" })
-                        }
-                        href="#"
-                        class="btn btn-primary d-grid mb-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#complainModal"
-                      >
-                        View
-                      </a>
-                    </td>
-                  </tr>
+                  {advertismentComplaintList.map((data, i) => (
+                    <tr key={data.advertisementReportId}>
+                      <td className="idStyle">{i + 1}</td>
+                      <td>
+                        {new Date(data.postReportedDate).toLocaleDateString()}
+                      </td>
+                      <td>
+                        <p className="userComplaintDescription">
+                          {data.description}
+                        </p>
+                      </td>
+                      <td>{typeList[data.reportCategory]}</td>
+                      <td>
+                        <a
+                          onClick={() =>
+                            handleClick({
+                              id: data.advertisementReportId,
+                              type: "Advertisment",
+                            })
+                          }
+                          href="#"
+                          class="btn btn-primary d-grid mb-2 openComplaintDialog"
+                          data-bs-toggle="modal"
+                          data-bs-target="#complainModal"
+                        >
+                          View
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -508,6 +547,7 @@ function ReportUserAdmin1Page() {
               <button
                 type="button"
                 class="btn-close"
+                id="btn-close-form"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
@@ -515,10 +555,6 @@ function ReportUserAdmin1Page() {
             <div class="modal-body p-4">
               <div class="card border shadow-none border-bottom p-4">
                 <div class="row">
-                  <div class="col-12 mb-3">
-                    <h6 class="text-uppercase fs-6 ls-2">Username</h6>
-                    <p class="mb-1 fs-8">{username}</p>
-                  </div>
                   <div class="col-6 mb-3">
                     <h6 class="text-uppercase fs-6 ls-2">Date </h6>
                     <p class="mb-1 fs-8">{date}</p>
@@ -535,7 +571,11 @@ function ReportUserAdmin1Page() {
               </div>
             </div>
             <div class="modal-footer justify-content-start p-4 pt-2">
-              <button type="button" class="btn btn-danger">
+              <button
+                type="button"
+                class="btn btn-danger"
+                onClick={setResolveComplaint}
+              >
                 Resolve
               </button>
               <Link className="btn btn-primary" to={path} target="_blank">

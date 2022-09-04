@@ -289,6 +289,12 @@ model userReport{
   resolvedAdminID Int?
 }
 
+// 1 = Nudity
+// 2 = Violence
+// 3 = Spam
+// 4 = False Information
+// 5 = Something Else
+
 model postReport{
   postReportId Int @id @default(autoincrement())
   user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)

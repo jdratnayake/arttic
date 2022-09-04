@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 import {
   API_URL,
   PROFILE_PIC_URL,
+  ADVERTISMENT_PIC_URL,
   POST_PIC_URL,
 } from "../../constants/globalConstants";
 
@@ -68,14 +70,25 @@ function Feed() {
         // console.log(response);
         postDescription.current.value = "";
         if (response.status === 201) {
-          setNewPost(response.data);
+          // setNewPost(response.data);
+          setPost((current) => [response.data, ...current]);
+          // console.log(response.data);
+          toast.success("You have successfully published the post", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         }
       });
   };
 
   // *********** get posts ************
   const getPosts = async () => {
-    console.log("get post called and skip ", skip);
+    // console.log("get post called and skip ", skip);
     const config = {
       headers: {
         authorization: accessToken,
@@ -91,11 +104,13 @@ function Feed() {
         setStopScroller(1);
         // console.log("scroller work",stopScroller,newPosts.length)
       }
+
       // console.log(response.data)
+      // response.data.map(newpost => posts.find(oldPost => oldPost.postId === newpost.postId)? null:setPost((oldposts) => [...oldposts, newpost]));
+
       setPost((oldposts) => [...oldposts, ...newPosts]);
     });
     skip = skip + 2;
-    // exit = exit + 1
   };
   // ****************************************************** handle scroll *******************************************
 
@@ -145,10 +160,35 @@ function Feed() {
     };
 
     await axios.get(API_URL + "/feed/getAds/", config).then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       setAds(response.data);
     });
     // exit = exit + 1
+  };
+
+  const deletePost = async (pid,creatorId) => {
+    if (window.confirm("Do you want to delete the post !")) {
+      if (userId === creatorId) {
+        // console.log("delete clicked")
+        const config = {
+          headers: {
+            authorization: accessToken,
+            userid: userId,
+            postid: pid,
+          },
+        };
+
+        await axios
+          .get(API_URL + "/feed/deletePost/", config)
+          .then((response) => {
+            // console.log(response.data)
+            // $(`#post${response.data.postId}`).hide();
+            setPost(posts.filter(post => post.postId !== response.data.postId))
+          });
+      } else {
+        console.log("cannot delete");
+      }
+    }
   };
 
   useEffect(() => {
@@ -158,34 +198,19 @@ function Feed() {
     window.addEventListener("scroll", handleScroll);
   }, []);
 
-  // const ads = [
-  //   {
-  //       "advertisementId": 1,
-  //       "creatorId": 1,
-  //       "category": 1,
-  //       "description": "NFT Social Media\r\n\r\nIn here we try to create NFT's for social media companies",
-  //       "contentLink": "https://cached.imagescaler.hbpl.co.uk/resize/scaleWidth/820/cached.offlinehbpl.hbpl.co.uk/news/SUC/nft-unlock.jpg",
-  //       "startDate": "2022-08-18T18:30:00.000Z",
-  //       "endDate": "2022-08-28T18:30:00.000Z",
-  //       "price": "100",
-  //       "paymentStatus": false,
-  //       "blockedStatus": false
-  //   },{
-  //       "advertisementId": 2,
-  //       "creatorId": 1,
-  //       "category": 1,
-  //       "description": "NFT Social Media\r\n\r\nIn here we try to create NFT's for social media companies",
-  //       "contentLink": "https://press.farm/wp-content/uploads/2022/02/nft-pomotion-advertise-your-nfts-755x466.jpg",
-  //       "startDate": "2022-08-18T18:30:00.000Z",
-  //       "endDate": "2022-08-28T18:30:00.000Z",
-  //       "price": "100",
-  //       "paymentStatus": false,
-  //       "blockedStatus": false
-  //     }
-  // ];
-
   return (
     <div className="row p-0 m-0">
+    <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div class="col-sm-8 col-xs-12 p-0 feedBody">
         <div class="container-fluid p-0 feedPage">
           <div class="container p-0 feed-container">
@@ -347,24 +372,6 @@ function Feed() {
             {/* <Posts profilePic={profilePic} name={userDetails.name} /> */}
             {/* Post section  start */}
             <div className="pb-3">
-              {newPost && (
-                <Post
-                  key={newPost.postId}
-                  id={"post" + newPost.postId}
-                  postid={newPost.postId}
-                  userName={userDetails.name}
-                  profilePic={profilePic}
-                  profilerId={userId}
-                  name={userDetails.name}
-                  message={newPost.description}
-                  timestamp={newPost.publishedDate}
-                  image={POST_PIC_URL + newPost.imagevideo}
-                  userImage={profilePic}
-                  commentCount={0}
-                  likes={newPost.reactCount}
-                  creatorId={userId}
-                />
-              )}
               {posts &&
                 posts.map((post) => {
                   return (
@@ -383,6 +390,7 @@ function Feed() {
                       commentCount={post.commentCount}
                       likes={post.reactCount}
                       creatorId={post.creatorId}
+                      deletePost={deletePost}
                     />
                   );
                 })}
@@ -397,7 +405,7 @@ function Feed() {
             <Ad
               key={ad.advertisementId}
               adId={ad.advertisementId}
-              image={ad.contentLink}
+              image={ADVERTISMENT_PIC_URL + ad.contentLink}
               creatorId={ad.creatorId}
             />
           );

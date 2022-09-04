@@ -115,6 +115,13 @@ const login = asyncHandler(async (req, res) => {
     },
   });
 
+  if (existUser && existUser.blockedStatus) {
+    res.json({
+      error: { username: "", password: "Banned User!" },
+    });
+    return 0;
+  }
+
   let creatorStatus;
   if (existUser && existUser.type === 3) {
     creatorStatus = await creator.findUnique({
