@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 import {
   API_URL,
   PROFILE_PIC_URL,
+  ADVERTISMENT_PIC_URL,
   POST_PIC_URL,
 } from "../../constants/globalConstants";
 
@@ -20,9 +22,10 @@ function Feed() {
   const [postImageStore, setPostImageStore] = useState("");
   const [newPost, setNewPost] = useState(null);
   const [posts, setPost] = useState([]);
+  const [ads, setAds] = useState([]);
   const [stopScroller, setStopScroller] = useState(0);
   let skip = 0;
-  let exit = 0;
+  let adskip = 0;
 
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
@@ -58,23 +61,34 @@ function Feed() {
     setPostImage(null);
     setPostImageStore(null);
 
-    console.log(postDescription.current.value);
+    // console.log(postDescription.current.value)
     // setNewPost(temp);
 
     await axios
       .post(API_URL + "/feed/uploadPost/", inputData, config)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         postDescription.current.value = "";
         if (response.status === 201) {
-          setNewPost(response.data);
+          // setNewPost(response.data);
+          setPost((current) => [response.data, ...current]);
+          // console.log(response.data);
+          toast.success("You have successfully published the post", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         }
       });
   };
 
   // *********** get posts ************
   const getPosts = async () => {
-    console.log("get post called and skip ", skip);
+    // console.log("get post called and skip ", skip);
     const config = {
       headers: {
         authorization: accessToken,
@@ -88,33 +102,35 @@ function Feed() {
       const newPosts = response.data;
       if (newPosts.length === 0) {
         setStopScroller(1);
-        console.log("scroller work", stopScroller, newPosts.length);
+        // console.log("scroller work",stopScroller,newPosts.length)
       }
+
       // console.log(response.data)
+      // response.data.map(newpost => posts.find(oldPost => oldPost.postId === newpost.postId)? null:setPost((oldposts) => [...oldposts, newpost]));
+
       setPost((oldposts) => [...oldposts, ...newPosts]);
     });
     skip = skip + 2;
-    // exit = exit + 1
   };
   // ****************************************************** handle scroll *******************************************
 
   const handleScroll = (e) => {
     // clearTimeout(timeout);
-    console.log("in handler");
+    // console.log("in handler")
     if (
       window.innerHeight + e.target.documentElement.scrollTop >=
       e.target.documentElement.scrollHeight
     ) {
-      console.log("at the bottom");
+      // console.log("at the bottom")
       if (!stopScroller) {
         getPosts();
-        console.log("scroller work", stopScroller);
+        // console.log("scroller work",stopScroller)
       }
       window.removeEventListener("scroll", handleScroll);
-      console.log("no scroll");
+      // console.log('no scroll');
       setTimeout(() => {
         window.addEventListener("scroll", handleScroll);
-        console.log("scroller on");
+        // console.log('scroller on');
       }, 5000);
     }
   };
@@ -134,131 +150,173 @@ function Feed() {
       });
   };
 
+  const getAds = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+        userid: userId,
+        take: 3,
+      },
+    };
+
+    await axios.get(API_URL + "/feed/getAds/", config).then((response) => {
+      // console.log(response.data);
+      setAds(response.data);
+    });
+    // exit = exit + 1
+  };
+
+  const deletePost = async (pid,creatorId) => {
+    if (window.confirm("Do you want to delete the post !")) {
+      if (userId === creatorId) {
+        // console.log("delete clicked")
+        const config = {
+          headers: {
+            authorization: accessToken,
+            userid: userId,
+            postid: pid,
+          },
+        };
+
+        await axios
+          .get(API_URL + "/feed/deletePost/", config)
+          .then((response) => {
+            // console.log(response.data)
+            // $(`#post${response.data.postId}`).hide();
+            setPost(posts.filter(post => post.postId !== response.data.postId))
+          });
+      } else {
+        console.log("cannot delete");
+      }
+    }
+  };
+
   useEffect(() => {
     getUserDetails();
     getPosts();
+    getAds();
     window.addEventListener("scroll", handleScroll);
   }, []);
 
-  const ads = [
-    {
-      id: 1,
-      url: "https://cached.imagescaler.hbpl.co.uk/resize/scaleWidth/820/cached.offlinehbpl.hbpl.co.uk/news/SUC/nft-unlock.jpg",
-    },
-    {
-      id: 2,
-      url: "https://img.freepik.com/free-vector/set-pixelated-workers_23-2147571601.jpg?w=740&t=st=1661336484~exp=1661337084~hmac=06b141cd5609510ad5932df89cc0e356b49cbe67f24015c755822c26b2b8dab9",
-    },
-  ];
-
   return (
     <div className="row p-0 m-0">
+    <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div class="col-sm-8 col-xs-12 p-0 feedBody">
         <div class="container-fluid p-0 feedPage">
           <div class="container p-0 feed-container">
             {/* <InputBox accessToken profilePic={profilePic} name={userDetails.name}/> */}
             {/* InputBox Start */}
-            <div className="mt-6 p-2 inputBox">
-              <div className="inputBox-body">
-                <img
-                  src={profilePic}
-                  width={40}
-                  height={40}
-                  className="rounded-circle"
-                />
-                <form className="inputBox-form">
-                  <a
-                    href="#"
-                    class="inputBox-input text-muted"
-                    data-bs-toggle="modal"
-                    data-bs-target="#inputBox"
-                  >
-                    what's on your mind,
-                    {userInfo.user.name === "undifined"
-                      ? userDetails.name
-                      : userInfo.user.name}{" "}
-                    ?
-                  </a>
-                  <button hidden type="submit">
-                    Submit
-                  </button>
-                </form>
-              </div>
-              <div className="d-flex justify-content-evenly p-2 border-top">
-                <div className="d-flex align-items-center gap-1 flex-grow justify-content-center p-1 px-4 inputBox-inputIcon">
-                  <a
-                    className="d-flex gap-1 inputBox-action"
-                    data-bs-toggle="modal"
-                    data-bs-target="#inputBox"
-                  >
-                    <i class="bi bi-camera-reels-fill text-danger"></i>
-                    <p className="m-0 inputBox-icon">Video</p>
-                  </a>
+            {userDetails.type === 3 ? (
+              <div className="mt-6 p-2 inputBox">
+                <div className="inputBox-body">
+                  <img
+                    src={profilePic}
+                    width={40}
+                    height={40}
+                    className="rounded-circle"
+                  />
+                  <form className="inputBox-form">
+                    <a
+                      href="#"
+                      class="inputBox-input text-muted"
+                      data-bs-toggle="modal"
+                      data-bs-target="#inputBox"
+                    >
+                      what's on your mind,
+                      {userInfo.user.name === "undifined"
+                        ? userDetails.name
+                        : userInfo.user.name}{" "}
+                      ?
+                    </a>
+                    <button hidden type="submit">
+                      Submit
+                    </button>
+                  </form>
                 </div>
-                <div className="d-flex align-items-center gap-1 flex-grow justify-content-center p-1 px-4 inputBox-inputIcon">
-                  <a
-                    className="d-flex gap-1 inputBox-action"
-                    data-bs-toggle="modal"
-                    data-bs-target="#inputBox"
-                  >
-                    <i class="bi bi-file-image-fill text-success"></i>
-                    <p className="m-0 inputBox-icon">Photo</p>
-                  </a>
+                <div className="d-flex justify-content-evenly p-2 border-top">
+                  <div className="d-flex align-items-center gap-1 flex-grow justify-content-center p-1 px-4 inputBox-inputIcon">
+                    <a
+                      className="d-flex gap-1 inputBox-action"
+                      data-bs-toggle="modal"
+                      data-bs-target="#inputBox"
+                    >
+                      <i class="bi bi-camera-reels-fill text-danger"></i>
+                      <p className="m-0 inputBox-icon">Video</p>
+                    </a>
+                  </div>
+                  <div className="d-flex align-items-center gap-1 flex-grow justify-content-center p-1 px-4 inputBox-inputIcon">
+                    <a
+                      className="d-flex gap-1 inputBox-action"
+                      data-bs-toggle="modal"
+                      data-bs-target="#inputBox"
+                    >
+                      <i class="bi bi-file-image-fill text-success"></i>
+                      <p className="m-0 inputBox-icon">Photo</p>
+                    </a>
+                  </div>
                 </div>
-              </div>
-              {/* update plan modal */}
-              <div
-                class="modal fade"
-                id="inputBox"
-                tabindex="-1"
-                aria-labelledby="complainModalLabel"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header p-3">
-                      <div>
-                        <h6 class="mb-0" id="complainModalLabel">
-                          Create a post
-                        </h6>
+                {/* update plan modal */}
+                <div
+                  class="modal fade"
+                  id="inputBox"
+                  tabindex="-1"
+                  aria-labelledby="complainModalLabel"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header p-3">
+                        <div>
+                          <h6 class="mb-0" id="complainModalLabel">
+                            Create a post
+                          </h6>
+                        </div>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
                       </div>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div class="modal-body p-4 ">
-                      <div class="card border shadow-none border-bottom p-4 pb-0">
-                        <div class="row">
-                          <div>
-                            {/* border */}
-                            <form>
-                              {/* row */}
-                              <div class="mb-3 row">
-                                <label
-                                  for="description"
-                                  class="col-sm-4 col-form-label form-label"
-                                >
-                                  Description
-                                </label>
-                                <div class="col-md-8 col-12">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Description"
-                                    id="description"
-                                    ref={postDescription}
-                                  />
+                      <div class="modal-body p-4 ">
+                        <div class="card border shadow-none border-bottom p-4 pb-0">
+                          <div class="row">
+                            <div>
+                              {/* border */}
+                              <form>
+                                {/* row */}
+                                <div class="mb-3 row">
+                                  <label
+                                    for="description"
+                                    class="col-sm-4 col-form-label form-label"
+                                  >
+                                    Description
+                                  </label>
+                                  <div class="col-md-8 col-12">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Description"
+                                      id="description"
+                                      ref={postDescription}
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="row mb-3">
-                                <div class="col-md-12">
-                                  {/* dropzone input */}
-                                  <div>
-                                    <form class=" mb-3  dz-clickable">
-                                      {postImage && (
+                                <div class="row mb-3">
+                                  <div class="col-md-12">
+                                    {/* dropzone input */}
+                                    <div>
+                                      <form class=" mb-3  dz-clickable">
                                         <img
                                           src={postImage}
                                           style={{
@@ -267,82 +325,72 @@ function Feed() {
                                           }}
                                           alt=""
                                         />
-                                      )}
 
-                                      <input
-                                        type="file"
-                                        ref={postImageInput}
-                                        onChange={handlePostImageChange}
-                                        style={{ display: "none" }}
-                                        placeholder="Insert image or video"
-                                      />
+                                        <input
+                                          type="file"
+                                          ref={postImageInput}
+                                          onChange={handlePostImageChange}
+                                          style={{ display: "none" }}
+                                          placeholder="Insert image or video"
+                                        />
 
-                                      <button
-                                        type="button"
-                                        class="btn mt-2  btn-secondary"
-                                        onClick={handlePostImageClick}
-                                      >
-                                        Add Image
-                                      </button>
-                                    </form>
+                                        <button
+                                          type="button"
+                                          class="btn mt-2  btn-secondary"
+                                          onClick={handlePostImageClick}
+                                        >
+                                          Add Image
+                                        </button>
+                                      </form>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </form>
+                              </form>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="modal-footer justify-content-start p-4 pt-2">
-                      <button
-                        type="submit"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                        class="btn btn-primary"
-                        onClick={uploadPostPicture}
-                      >
-                        {" "}
-                        Post
-                      </button>
+                      <div class="modal-footer justify-content-start p-4 pt-2">
+                        <button
+                          type="submit"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                          class="btn btn-primary"
+                          onClick={uploadPostPicture}
+                        >
+                          {" "}
+                          Post
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ) : null}
             {/* InputBox End */}
 
             {/* <Posts profilePic={profilePic} name={userDetails.name} /> */}
             {/* Post section  start */}
             <div className="pb-3">
-              {newPost && (
-                <Post
-                  key={newPost.postId}
-                  userName={userDetails.name}
-                  profilePic={profilePic}
-                  name={userDetails.name}
-                  message={newPost.description}
-                  timestamp={newPost.publishedDate}
-                  image={POST_PIC_URL + newPost.imagevideo}
-                  userImage={profilePic}
-                  comments={newPost.comments}
-                  likes={newPost.reactCount}
-                />
-              )}
               {posts &&
                 posts.map((post) => {
                   return (
                     <Post
                       key={post.postId}
+                      id={"post" + post.postId}
+                      postid={post.postId}
                       userName={userDetails.name}
                       profilePic={profilePic}
+                      profilerId={userId}
                       name={post.name}
                       message={post.description}
                       timestamp={post.publishedDate}
                       image={POST_PIC_URL + post.imagevideo}
                       userImage={PROFILE_PIC_URL + post.profilePhoto}
                       commentCount={post.commentCount}
-                      comments={post.comments}
                       likes={post.reactCount}
+                      creatorId={post.creatorId}
+                      deletePost={deletePost}
                     />
                   );
                 })}
@@ -353,7 +401,14 @@ function Feed() {
       </div>
       <div class="col-sm-4 col-xs-4 col-advertisment">
         {ads.map((ad) => {
-          return <Ad key={ad.id} image={ad.url} />;
+          return (
+            <Ad
+              key={ad.advertisementId}
+              adId={ad.advertisementId}
+              image={ADVERTISMENT_PIC_URL + ad.contentLink}
+              creatorId={ad.creatorId}
+            />
+          );
         })}
       </div>
     </div>

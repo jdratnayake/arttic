@@ -1,3 +1,14 @@
+.Post .dDownCustomComment{
+  transform:translate(105px, -10px) !important;
+  z-index: 1000;
+}
+.Post .commentSetion{
+  max-height: 100px;
+  overflow-y: auto;
+}
+.Post .comment{
+  font-size: 14px
+}
 .Post .comment-like{
   font-size: 10px;
 }

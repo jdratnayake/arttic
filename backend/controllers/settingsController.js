@@ -1,5 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const asyncHandler = require("express-async-handler");
+const stripe = require("stripe")(process.env.SECRET_KEY);
+const { v4: uuidv4 } = require("uuid");
 
 const { user, transactionLog, billingAddress } = new PrismaClient();
 
@@ -120,8 +122,108 @@ const getBillingAddresses = asyncHandler(async (req, res) => {
   res.json(address);
 });
 
+const getPremiumPackageStatus = asyncHandler(async (req, res) => {
+  const userId = parseInt(req.headers.userid);
+
+  const existUser = await user.findUnique({
+    where: {
+      userId,
+    },
+    select: {
+      premiumUser: true,
+      premiumPackageEndDate: true,
+    },
+  });
+
+  res.json(existUser);
+});
+
+const payment = asyncHandler(async (req, res) => {
+  const writeLog = async (userId, stripeId, premiumStatus, premiumEndDate) => {
+    const transaction = await transactionLog.create({
+      data: {
+        userId,
+        transactionType: 2,
+        stripeId,
+        amount: 5,
+      },
+    });
+
+    //today
+    const dateValue = new Date();
+
+    if (premiumStatus) {
+      const extendDate = new Date(premiumEndDate);
+      extendDate.setDate(extendDate.getDate() + 30);
+
+      const updateUser = await user.update({
+        where: {
+          userId,
+        },
+        data: {
+          premiumPackageEndDate: extendDate,
+        },
+      });
+
+      res.json({ premiumUser: true, premiumPackageEndDate: extendDate });
+    } else {
+      dateValue.setDate(dateValue.getDate() + 30);
+
+      const updateUser = await user.update({
+        where: {
+          userId,
+        },
+        data: {
+          premiumPackageEndDate: dateValue,
+          premiumUser: true,
+        },
+      });
+
+      res.json({ premiumUser: true, premiumPackageEndDate: dateValue });
+    }
+  };
+
+  const { userId, token, premiumStatus, premiumEndDate } = req.body;
+  const idempontencyKey = uuidv4();
+
+  // console.log(userId);
+  // console.log(token);
+  // console.log(premiumStatus);
+  // console.log(typeof premiumStatus);
+
+  await stripe.customers
+    .create({
+      email: token.email,
+      source: token.id,
+    })
+    .then((customer) => {
+      return stripe.charges.create(
+        {
+          amount: 5 * 100,
+          currency: "usd",
+          customer: customer.id,
+          receipt_email: token.email,
+          description: "Premium package subscribed.",
+        },
+        { idempotencyKey: idempontencyKey }
+      );
+      // console.log(temp);
+      // console.log(customer.id);
+    })
+    .then((result) => {
+      // console.log(result);
+
+      writeLog(userId, result.id, premiumStatus, premiumEndDate);
+    })
+    .catch((error) => console.error(error));
+
+  // res.json("address");
+});
+
 module.exports = {
   getPurchaseHistory,
   registerBillingAddress,
   getBillingAddresses,
+  getPremiumPackageStatus,
+  payment,
 };

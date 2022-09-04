@@ -7,11 +7,16 @@ const nodemailer = require("nodemailer");
 
 const { user, followerCreator, creator } = new PrismaClient();
 
-const { generateOtp, otpEmail } = require("./helpers/authControllerHelper");
+const {
+  generateOtp,
+  otpEmail,
+  emailValidityOtpEmail,
+} = require("./helpers/authControllerHelper");
 
 // this API is used in the SignUpPage
 const emailCheck = asyncHandler(async (req, res) => {
-  const { email } = req.body;
+  let { email } = req.body;
+  email = email.toLowerCase();
 
   const emailStatus = await user.findUnique({
     where: {
@@ -26,7 +31,8 @@ const emailCheck = asyncHandler(async (req, res) => {
 });
 
 const register = asyncHandler(async (req, res) => {
-  const { userType, name, email, password } = req.body;
+  let { userType, name, email, password } = req.body;
+  email = email.toLowerCase();
 
   const emailStatus = await user.findUnique({
     where: {
@@ -82,6 +88,9 @@ const register = asyncHandler(async (req, res) => {
         username: newUser.username,
         profilePhoto: newUser.profilePhoto,
         accessToken: accessToken,
+        premiumUser: newUser.premiumUser,
+        emailValidity: newUser.emailValidity,
+        advertisementVisibility: newUser.advertisementVisibility,
       };
 
       res.status(StatusCodes.CREATED).json(returnData);
@@ -90,7 +99,8 @@ const register = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-  const { username, password } = req.body;
+  let { username, password } = req.body;
+  username = username.toLowerCase();
 
   const existUser = await user.findFirst({
     where: {
@@ -105,6 +115,13 @@ const login = asyncHandler(async (req, res) => {
     },
   });
 
+  if (existUser && existUser.blockedStatus) {
+    res.json({
+      error: { username: "", password: "Banned User!" },
+    });
+    return 0;
+  }
+
   let creatorStatus;
   if (existUser && existUser.type === 3) {
     creatorStatus = await creator.findUnique({
@@ -117,8 +134,37 @@ const login = asyncHandler(async (req, res) => {
     });
   }
   // console.log(existUser);
+  // console.log(typeof existUser.premiumPackageStartDate);
+  // console.log(typeof existUser.joinedDate);
+  // console.log(typeof existUser.name);
 
   if (existUser) {
+    // Premium Package Validation
+    if (existUser.premiumUser) {
+      const today = new Date();
+
+      if (today.getTime() > existUser.premiumPackageEndDate.getTime()) {
+        const temp = await user.update({
+          where: {
+            userId: existUser.userId,
+          },
+          data: {
+            premiumUser: false,
+            advertisementVisibility: true,
+          },
+        });
+      }
+    } else if (!existUser.advertisementVisibility) {
+      const temp = await user.update({
+        where: {
+          userId: existUser.userId,
+        },
+        data: {
+          advertisementVisibility: true,
+        },
+      });
+    }
+
     bycrypt.compare(password, existUser.password).then((match) => {
       if (match) {
         const accessToken = sign(
@@ -135,6 +181,9 @@ const login = asyncHandler(async (req, res) => {
           username: existUser.username,
           profilePhoto: existUser.profilePhoto,
           accessToken: accessToken,
+          premiumUser: existUser.premiumUser,
+          emailValidity: existUser.emailValidity,
+          advertisementVisibility: existUser.advertisementVisibility,
         };
 
         if (existUser.type === 3) {
@@ -165,7 +214,8 @@ const creatorVerify = asyncHandler(async (req, res) => {
     return String.fromCharCode.apply(null, data);
   };
 
-  const { userId, openSeaUsername, walletAddress } = req.body;
+  let { userId, openSeaUsername, walletAddress } = req.body;
+  openSeaUsername = openSeaUsername.toLowerCase();
 
   const errorData = { username: "", walletAddress: "" };
   let errorSignal = false;
@@ -275,7 +325,8 @@ const creatorVerify = asyncHandler(async (req, res) => {
 // password recovery - START
 
 const usernameCheck = asyncHandler(async (req, res) => {
-  const { username } = req.body;
+  let { username } = req.body;
+  username = username.toLowerCase();
 
   const existUser = await user.findFirst({
     where: {
@@ -298,7 +349,8 @@ const usernameCheck = asyncHandler(async (req, res) => {
 });
 
 const forgotPasswordOtp = asyncHandler(async (req, res) => {
-  const { username } = req.body;
+  let { username } = req.body;
+  username = username.toLowerCase();
   const otp = generateOtp();
 
   const status = await user.updateMany({
@@ -379,7 +431,8 @@ const forgotPasswordOtp = asyncHandler(async (req, res) => {
 });
 
 const forgotPasswordOtpCheck = asyncHandler(async (req, res) => {
-  const { username, otp } = req.body;
+  let { username, otp } = req.body;
+  username = username.toLowerCase();
 
   const existUser = await user.findFirst({
     where: {
@@ -411,7 +464,8 @@ const forgotPasswordOtpCheck = asyncHandler(async (req, res) => {
 });
 
 const resetPassword = asyncHandler(async (req, res) => {
-  const { username, password } = req.body;
+  let { username, password } = req.body;
+  username = username.toLowerCase();
 
   bycrypt.hash(password, 10).then(async (hash) => {
     const status = await user.updateMany({
@@ -461,6 +515,9 @@ const getUserState = asyncHandler(async (req, res) => {
       emailStatus: true,
       username: true,
       profilePhoto: true,
+      premiumUser: true,
+      advertisementVisibility: true,
+      emailValidity: true,
     },
   });
 
@@ -469,7 +526,197 @@ const getUserState = asyncHandler(async (req, res) => {
     process.env.JWT_SECRET
   );
 
+  let creatorStatus;
+  if (existUser && existUser.type === 3) {
+    creatorStatus = await creator.findUnique({
+      where: {
+        userId: existUser.userId,
+      },
+      select: {
+        openSeaStatus: true,
+      },
+    });
+
+    res.json({
+      ...existUser,
+      openSeaStatus: creatorStatus.openSeaStatus,
+      accessToken,
+    });
+  }
+
   res.json({ ...existUser, accessToken });
+});
+
+//change password-----------------------------------------------------------------
+const changePassword = asyncHandler(async (req, res) => {
+  let { curPassword, newPassword } = req.body;
+  let userId = parseInt(req.headers.userid);
+
+  const existUser = await user.findFirst({
+    where: {
+      userId: userId,
+    },
+  });
+
+  if (existUser) {
+    bycrypt.compare(curPassword, existUser.password).then((match) => {
+      if (match) {
+        bycrypt.hash(newPassword, 10).then(async (hash) => {
+          const state = await user.update({
+            where: {
+              userId: userId,
+            },
+            data: {
+              password: hash,
+            },
+          });
+
+          if (state) {
+            res.json({
+              msg: "Success",
+            });
+          } else {
+            res.json({
+              msg: "Error",
+            });
+          }
+        });
+      } else {
+        res.json({
+          msg: "WrPass",
+        });
+      }
+    });
+  } else {
+    res.json({
+      msg: "No User",
+    });
+  }
+});
+//end change password------------------------------------------------------------------
+
+const emailVerificationOtp = asyncHandler(async (req, res) => {
+  let { userId } = req.body;
+
+  const otp = generateOtp();
+
+  const status = await user.updateMany({
+    where: {
+      userId,
+    },
+    data: {
+      emailValidityOtp: otp,
+    },
+  });
+
+  const existUser = await user.findFirst({
+    where: {
+      userId,
+    },
+  });
+
+  //email test - START
+  const htmlEmail = emailValidityOtpEmail(existUser.name, otp);
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    secure: false,
+    auth: {
+      user: "alec.software.cooperation@gmail.com",
+      pass: "lbwzzqktlqaicniu",
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  const mailOptions = {
+    from: "alec.software.cooperation@gmail.com",
+    to: existUser.email,
+    replyTo: existUser.email,
+    subject: "Email Verification - ARTTIC",
+    html: htmlEmail,
+  };
+
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      console.log("error in sending mail", err);
+      return res.status(400).json({
+        message: `error in sending the mail${err}`,
+      });
+    } else {
+      return res.json({ message: "Successfully sent Email." });
+    }
+  });
+  //email test - END
+});
+
+const emailVerificationOtpCheck = asyncHandler(async (req, res) => {
+  let { userId, otp } = req.body;
+
+  const existUser = await user.findFirst({
+    where: {
+      userId,
+    },
+    select: {
+      emailValidityOtp: true,
+    },
+  });
+
+  if (otp === existUser.emailValidityOtp) {
+    const status = await user.updateMany({
+      where: {
+        userId,
+      },
+      data: {
+        emailValidity: true,
+      },
+    });
+
+    res.json({
+      statusCode: 1,
+      msg: "Valid Access",
+    });
+  } else {
+    res.json({
+      statusCode: 2,
+      msg: "Invalid Access",
+    });
+  }
+});
+
+const convertToCreator = asyncHandler(async (req, res) => {
+  const { userId } = req.body;
+
+  // const userId = 45;
+
+  const updateUser = await user.update({
+    where: {
+      userId,
+    },
+    data: {
+      type: 3,
+    },
+  });
+
+  const newCreator = await creator.create({
+    data: {
+      userId,
+      pageName: updateUser.username,
+    },
+  });
+
+  if (newCreator) {
+    res.json({
+      statusCode: 1,
+      msg: "Successful",
+    });
+  } else {
+    res.json({
+      statusCode: 2,
+      msg: "Unsuccessful",
+    });
+  }
 });
 
 module.exports = {
@@ -482,4 +729,8 @@ module.exports = {
   forgotPasswordOtpCheck,
   resetPassword,
   getUserState,
+  changePassword,
+  emailVerificationOtp,
+  emailVerificationOtpCheck,
+  convertToCreator,
 };

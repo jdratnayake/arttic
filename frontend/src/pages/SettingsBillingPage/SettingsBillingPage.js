@@ -3,18 +3,21 @@ import { useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import $ from "jquery";
+import StripeCheckout from "react-stripe-checkout";
 
 import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
 import {
   initialBillingAddressValues,
   billingAddressValidation,
 } from "./Validation";
-import { API_URL } from "../../constants/globalConstants";
+import { API_URL, PUBLIC_KEY } from "../../constants/globalConstants";
 
 import "../SettingsBasicPage/settings.css";
 
 function SettingsBillingPage() {
   const [billingAddressList, setBillingAddressList] = useState([]);
+  const [premiumStatus, setPremiumStatus] = useState(false);
+  const [premiumEndDate, setPremiumEndDate] = useState(new Date());
 
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
@@ -34,8 +37,26 @@ function SettingsBillingPage() {
       });
   };
 
+  const getPremiumPackageDetails = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+        userId: userId,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/settings/getpremiumpackagestatus/", config)
+      .then((response) => {
+        // console.log(response.data);
+        setPremiumStatus(response.data.premiumUser);
+        setPremiumEndDate(new Date(response.data.premiumPackageEndDate));
+      });
+  };
+
   useEffect(() => {
     getBillingAddresses();
+    getPremiumPackageDetails();
   }, []);
 
   const registerBillingAddress = async (data, { resetForm }) => {
@@ -79,6 +100,25 @@ function SettingsBillingPage() {
     // window.location.reload(false);
   };
 
+  const makePayment = async (token) => {
+    const inputData = { userId, premiumStatus, premiumEndDate, token };
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .post(API_URL + "/settings/payment/", inputData, config)
+      .then((response) => {
+        // console.log(response.data);
+        // getPremiumPackageDetails();
+        setPremiumStatus(response.data.premiumUser);
+        setPremiumEndDate(new Date(response.data.premiumPackageEndDate));
+      });
+  };
+
   return (
     <div className="settingsPage">
       {/* row  --> */}
@@ -100,7 +140,10 @@ function SettingsBillingPage() {
                       <div class="mb-2">
                         {/* content  --> */}
                         <p class="text-muted mb-0">Current Plan</p>
-                        <h3 class="mt-2 mb-3 fw-bold">Starter - Jan 2021 </h3>
+                        {/* <h3 class="mt-2 mb-3 fw-bold">Starter - Jan 2021 </h3> */}
+                        <h3 class="mt-2 mb-3 fw-bold">
+                          {premiumStatus ? "Premium" : "Starter"}
+                        </h3>
                         <p>
                           Unlimited access to essential tools for design,
                           bootstrap themes, illustrator and icons.
@@ -111,9 +154,16 @@ function SettingsBillingPage() {
                             class="me-2 text-muted
                                 icon-xs"
                           ></i>
-                          Next Payment: on{" "}
-                          <span class="text-primary">$499.00 USD</span>
-                          <span class="text-dark fw-bold"> Jan 1, 2022</span>
+                          {premiumStatus && "Next Payment: on "}
+                          {premiumStatus && (
+                            <span class="text-primary">$5.00 USD</span>
+                          )}
+                          {premiumStatus && (
+                            <span class="text-dark fw-bold">
+                              {" "}
+                              {premiumEndDate.toLocaleDateString("en-CA")}
+                            </span>
+                          )}
                         </p>
                       </div>
                     </div>
@@ -121,8 +171,8 @@ function SettingsBillingPage() {
                     <div class="col-xl-4 col-lg-6 col-md-12 col-12">
                       {/* content  --> */}
                       <div>
-                        <small class="text-muted">Yearly Payment</small>
-                        <h1 class="fw-bold text-primary">$499 USD</h1>
+                        <small class="text-muted">Monthly Payment</small>
+                        <h1 class="fw-bold text-primary">$5 USD</h1>
                         <a
                           href="#"
                           class="mb-3 text-muted
@@ -130,17 +180,24 @@ function SettingsBillingPage() {
                         >
                           Learn more about our membership policy
                         </a>
-                        <a
-                          href="#"
-                          class="btn btn-dark d-grid mb-2"
-                          data-bs-toggle="modal"
-                          data-bs-target="#planModal"
+
+                        <StripeCheckout
+                          stripeKey={PUBLIC_KEY}
+                          token={makePayment}
+                          name="Buy React"
+                          amount={5 * 100}
                         >
-                          Change Plan
-                        </a>
-                        <a href="#" class="btn btn-outline-white d-grid">
-                          Cancel Subscription
-                        </a>
+                          <a href="#" class="btn btn-dark d-grid mb-2">
+                            {premiumStatus
+                              ? "Extend Subscription"
+                              : "Subscribe Now"}
+                          </a>
+                        </StripeCheckout>
+                        {/* {premiumStatus && (
+                          <a href="#" class="btn btn-outline-white d-grid">
+                            Cancel Subscription
+                          </a>
+                        )} */}
                       </div>
                     </div>
                   </div>
@@ -263,111 +320,6 @@ function SettingsBillingPage() {
         </div>
       </div>
 
-      {/* update plan modal --> */}
-      <div
-        class="modal fade"
-        id="planModal"
-        tabindex="-1"
-        aria-labelledby="planModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-          <div class="modal-content">
-            <div class="modal-header p-3">
-              <div>
-                <h4 class="mb-0" id="planModalLabel">
-                  Update Your Plan
-                </h4>
-              </div>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body p-5">
-              <h4 class="mb-1">Change your plan</h4>
-              <p>You can choose from one of the available plans bellow.</p>
-              <div class="card border shadow-none">
-                <div class="card-body border-bottom">
-                  <div
-                    class="d-flex justify-content-between
-                  align-items-center"
-                  >
-                    <div>
-                      <div class="form-check ">
-                        <input
-                          type="radio"
-                          id="customRadioStandard"
-                          name="customRadio"
-                          class="form-check-input"
-                        />
-                        <label
-                          class="form-check-label form-label"
-                          for="customRadioStandard"
-                        >
-                          <span class="d-block text-dark fw-bold">
-                            Free
-                            <span class="badge bg-success">Active Plan</span>
-                          </span>
-                          <span class="mb-0 small text-muted">Single Site</span>
-                        </label>
-                      </div>
-                    </div>
-                    <div>
-                      <h4 class="fw-bold mb-0 text-dark">$0.00</h4>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-body border-bottom">
-                  <div
-                    class="d-flex justify-content-between
-                  align-items-center"
-                  >
-                    <div>
-                      <div class="form-check ">
-                        <input
-                          type="radio"
-                          id="customRadioMultiside"
-                          name="customRadio"
-                          class="form-check-input"
-                        />
-                        <label
-                          class="form-check-label form-label"
-                          for="customRadioMultiside"
-                        >
-                          <span class="d-block text-dark fw-bold">
-                            Premimum
-                          </span>
-                          <span class="mb-0 small text-muted">
-                            Unlimited sites
-                          </span>
-                        </label>
-                      </div>
-                    </div>
-                    <div>
-                      <h4 class="fw-bold mb-0 text-dark">$149.00</h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer justify-content-start p-5">
-              <button type="button" class="btn btn-primary">
-                Save and Continue
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
       {/* Billing Address Modal --> */}
       <div
         class="modal fade"

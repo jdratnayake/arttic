@@ -18,6 +18,7 @@ import CreatorAnalyticsCom from "./components/CreatorAnalyticsCom/CreatorAnalyti
 import FrogotPasswordUsernamePage from "./pages/FrogotPasswordUsernamePage/FrogotPasswordUsernamePage";
 import FrogotPasswordResetPasswordPage from "./pages/FrogotPasswordResetPasswordPage/FrogotPasswordResetPasswordPage";
 import ForgotPasswordOTP from "./pages/ForgotPasswordOTP/ForgotPasswordOTP";
+import EmailVerificationOTP from "./pages/EmailVerificationOTP/EmailVerificationOTP";
 import ReportUserPage from "./pages/ReportUserPage/ReportUserPage";
 import ReportPostPage from "./pages/ReportPostPage/ReportPostPage";
 import ReportAdvertismentPage from "./pages/ReportAdvertismentPage/ReportAdvertismentPage";
@@ -37,6 +38,7 @@ import AdvertismentReviewAdminPage from "./pages/AdvertismentReviewAdminPage/Adv
 import SubscribedCreatorsPage from "./pages/SubscribedCreatorsPage/SubscribedCreatorsPage";
 import ExternalSignUpPasswordPage from "./pages/ExternalSignUpPasswordPage/ExternalSignUpPasswordPage";
 import ChatCreatorPage from "./pages/ChatCreatorPage/ChatCreatorPage";
+import FollowerProfile from "./pages/FollowerProfile/FollowerProfile";
 
 function App() {
   return (
@@ -49,7 +51,12 @@ function App() {
         ></Route>
         <Route
           path="/subscribedcreatorspage"
-          element={<CreatorTemplate children={<SubscribedCreatorsPage />} />}
+          element={
+            <CreatorTemplate
+              children={<SubscribedCreatorsPage />}
+              sideNavBarIndex="1"
+            />
+          }
         ></Route>
         <Route
           path="/settings"
@@ -62,6 +69,10 @@ function App() {
         <Route path="/walletconnect" element={<WalletConnectPage />}></Route>
         <Route path="/login" element={<LogInPage />}></Route>
         <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
+        <Route
+          path="/followerprofile/:followerId"
+          element={<FollowerProfile />}
+        ></Route>
         <Route
           path="/advertisment"
           element={
@@ -89,7 +100,7 @@ function App() {
           element={
             <CreatorTemplate
               children={<ChatCreatorPage />}
-              sideNavBarIndex="4"
+              sideNavBarIndex="3"
             />
           }
         ></Route>
@@ -100,6 +111,10 @@ function App() {
         <Route
           path="/frogotpassword/otp"
           element={<ForgotPasswordOTP />}
+        ></Route>
+        <Route
+          path="/emailverificationotp"
+          element={<EmailVerificationOTP />}
         ></Route>
         <Route
           path="/frogotpassword/passwordreset"
