@@ -31,11 +31,12 @@ function LogInPage() {
       } else {
         setUsernameError("");
         setPasswordError("");
-
-        if (user.type === 1) {
+        if (!user.emailValidity) {
+          navigate("/emailverificationotp");
+        } else if (user.type === 1) {
           navigate("/admin0/dashboard");
         } else if (user.type === 2) {
-          navigate("/feed");
+          // navigate("/feed");
           //redirect to the follower page
         } else if (user.type === 3) {
           if (user.openSeaStatus === 1 || user.openSeaStatus === 2) {
@@ -44,7 +45,7 @@ function LogInPage() {
             navigate("/walletconnect");
           }
         } else if (user.type === 4) {
-          //redirect to the follower page
+          navigate("/feed");
         }
       }
     }

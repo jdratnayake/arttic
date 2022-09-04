@@ -16,6 +16,8 @@ import "../SettingsBasicPage/settings.css";
 
 function SettingsBillingPage() {
   const [billingAddressList, setBillingAddressList] = useState([]);
+  const [premiumStatus, setPremiumStatus] = useState(false);
+  const [premiumEndDate, setPremiumEndDate] = useState(new Date());
 
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
@@ -35,8 +37,26 @@ function SettingsBillingPage() {
       });
   };
 
+  const getPremiumPackageDetails = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+        userId: userId,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/settings/getpremiumpackagestatus/", config)
+      .then((response) => {
+        // console.log(response.data);
+        setPremiumStatus(response.data.premiumUser);
+        setPremiumEndDate(new Date(response.data.premiumPackageEndDate));
+      });
+  };
+
   useEffect(() => {
     getBillingAddresses();
+    getPremiumPackageDetails();
   }, []);
 
   const registerBillingAddress = async (data, { resetForm }) => {
@@ -81,7 +101,7 @@ function SettingsBillingPage() {
   };
 
   const makePayment = async (token) => {
-    const inputData = { token, userId: 1 };
+    const inputData = { userId, premiumStatus, premiumEndDate, token };
 
     const config = {
       headers: {
@@ -92,7 +112,10 @@ function SettingsBillingPage() {
     await axios
       .post(API_URL + "/settings/payment/", inputData, config)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
+        // getPremiumPackageDetails();
+        setPremiumStatus(response.data.premiumUser);
+        setPremiumEndDate(new Date(response.data.premiumPackageEndDate));
       });
   };
 
@@ -117,7 +140,10 @@ function SettingsBillingPage() {
                       <div class="mb-2">
                         {/* content  --> */}
                         <p class="text-muted mb-0">Current Plan</p>
-                        <h3 class="mt-2 mb-3 fw-bold">Starter - Jan 2021 </h3>
+                        {/* <h3 class="mt-2 mb-3 fw-bold">Starter - Jan 2021 </h3> */}
+                        <h3 class="mt-2 mb-3 fw-bold">
+                          {premiumStatus ? "Premium" : "Starter"}
+                        </h3>
                         <p>
                           Unlimited access to essential tools for design,
                           bootstrap themes, illustrator and icons.
@@ -128,9 +154,16 @@ function SettingsBillingPage() {
                             class="me-2 text-muted
                                 icon-xs"
                           ></i>
-                          Next Payment: on{" "}
-                          <span class="text-primary">$5.00 USD</span>
-                          <span class="text-dark fw-bold"> Jan 1, 2022</span>
+                          {premiumStatus && "Next Payment: on "}
+                          {premiumStatus && (
+                            <span class="text-primary">$5.00 USD</span>
+                          )}
+                          {premiumStatus && (
+                            <span class="text-dark fw-bold">
+                              {" "}
+                              {premiumEndDate.toLocaleDateString("en-CA")}
+                            </span>
+                          )}
                         </p>
                       </div>
                     </div>
@@ -155,12 +188,16 @@ function SettingsBillingPage() {
                           amount={5 * 100}
                         >
                           <a href="#" class="btn btn-dark d-grid mb-2">
-                            Pay Now
+                            {premiumStatus
+                              ? "Extend Subscription"
+                              : "Subscribe Now"}
                           </a>
                         </StripeCheckout>
-                        <a href="#" class="btn btn-outline-white d-grid">
-                          Cancel Subscription
-                        </a>
+                        {/* {premiumStatus && (
+                          <a href="#" class="btn btn-outline-white d-grid">
+                            Cancel Subscription
+                          </a>
+                        )} */}
                       </div>
                     </div>
                   </div>

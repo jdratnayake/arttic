@@ -21,9 +21,11 @@ const getChatHistory = asyncHandler(async (req, res) => {
   await client.connect();
 
   const result = await client.query(
-    'SELECT "messageId", "chatId", "senderId", "message", "sendDate", "profilePhoto" FROM "chatHistory" INNER JOIN "user" ON "user"."userId"="chatHistory"."senderId" WHERE "chatId"=$1',
+    'SELECT "messageId", "chatId", "senderId", "message", "sendDate", "profilePhoto" FROM "chatHistory" INNER JOIN "user" ON "user"."userId"="chatHistory"."senderId" WHERE "chatId"=$1 ORDER BY "messageId"',
     [chatId]
   );
+
+  await client.end();
 
   res.json(result.rows);
 });
@@ -48,6 +50,8 @@ const getSubscribeCreators = asyncHandler(async (req, res) => {
     'SELECT DISTINCT ON ("creatorId") "creatorId", "user"."name", "user"."profilePhoto", "sendDate" FROM "userSubscribe" INNER JOIN "user" ON "userId"="creatorId" LEFT JOIN "chatHistory" ON "creatorId"="chatId" WHERE "followerId"=$1 OR "creatorId"=$1',
     [userId]
   );
+
+  await client.end();
 
   res.json(result.rows);
 });
