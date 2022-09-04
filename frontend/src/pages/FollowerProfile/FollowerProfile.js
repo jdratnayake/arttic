@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import $ from "jquery";
 import { useParams } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { ToastContainer, toast } from "react-toastify";
 
 import NavBarCreator from "../../components/NavBarCreator/NavBarCreator";
 import profile from "../../images/users/pic4.png";
@@ -48,9 +49,20 @@ function FollowerProfile() {
       await axios
         .post(API_URL + "/user/uploadUserReport/", inputData, config)
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           // forceUpdate();
           $("#btn-close-form-ad-report").click();
+          if (response.status === 201) {
+          toast.success("You have successfully reported the follower", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        }
         });
     }
     resetForm();
@@ -83,6 +95,17 @@ function FollowerProfile() {
 
     return (
         <span className="followerProfile">
+            <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
             <NavBarCreator />
 
             <div class="main-container">
