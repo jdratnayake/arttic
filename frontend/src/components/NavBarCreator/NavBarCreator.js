@@ -84,6 +84,7 @@ function NavBarCreator() {
                     aria-expanded="false"
                   >
                     <i class="bi bi-bell-fill icon-theme-nav"></i>
+                    <span class="notification-bell-btn">3</span>
                   </button>
 
                   <div
