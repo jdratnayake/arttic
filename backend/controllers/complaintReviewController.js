@@ -336,7 +336,69 @@ const blockUser = asyncHandler(async (req, res) => {
 });
 
 const getReportPostDetails = asyncHandler(async (req, res) => {
-  res.json("Hi");
+  const reportId = parseInt(req.headers.reportid);
+
+  const report = await postReport.findUnique({
+    where: {
+      postReportId: reportId,
+    },
+    select: { userId: true, reportedPostId: true },
+  });
+
+  res.json(report);
+
+  return 0;
+  const userId = report.userId;
+  const postId = report.reportedPostId;
+
+  const userDetails = await user.findUnique({
+    where: {
+      userId,
+    },
+
+    select: {
+      userId: true,
+      name: true,
+      bio: true,
+      profilePhoto: true,
+      joinedDate: true,
+      premiumUser: true,
+      blockedStatus: true,
+      followerCreator: true,
+    },
+  });
+
+  const userReportDetails = await userReport.findMany({
+    take: 5,
+    orderBy: [
+      {
+        userReportedId: "desc",
+      },
+    ],
+    where: {
+      userId,
+    },
+  });
+
+  const postReportDetails = await postReport.findMany({
+    take: 5,
+    orderBy: [
+      {
+        postReportId: "desc",
+      },
+    ],
+    where: {
+      reportedPostId: postId,
+    },
+  });
+
+  const outputData = {
+    userDetails,
+    userReportDetails,
+    postReportDetails,
+  };
+
+  res.json(outputData);
 });
 
 const getReportCommentDetails = asyncHandler(async (req, res) => {
