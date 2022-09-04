@@ -1,3 +1,14 @@
+.NavBarCreator .notification-bell-btn {
+  position: absolute;
+  top: -5px;
+  right: 4px;
+  padding: 1px 5px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+  font-size: 12px;
+}
+
 .NavBarCreator .dropdown-item {
   cursor: pointer;
 }
