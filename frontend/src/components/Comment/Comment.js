@@ -1,39 +1,50 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import $ from "jquery";
 import { ToastContainer, toast } from "react-toastify";
-import "./Ad.css";
 
-import {
-  initialReportValues,
-  reportDescriptionValidation,
-} from "../Post/Validation";
+import { initialReportValues, reportDescriptionValidation } from "../Post/Validation";
 
 import {
   API_URL,
-  PROFILE_PIC_URL,
-  POST_PIC_URL,
 } from "../../constants/globalConstants";
 
-function Ad(props) {
+function Comment(props) {
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
-  const [reportType, setReportType] = useState("");
-  const [reportItemId, setReportItemId] = useState("");
+  // const [commentCount, setCommentCount] = useState(props.commentCount);
 
+  const updateLike = async (ComId) => {
+    var data = JSON.stringify({
+      reactorId: props.profilerId,
+      commentId: ComId,
+    });
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+        "Content-Type": "application/json",
+      },
+    };
+
+    axios
+      .post(API_URL + "/feed/uploadCommentReaction/", data, config)
+      .then((response) => {
+        // console.log(response.data);
+      });
+  };
   const submitReport = async (data, { resetForm }) => {
     const inputData = {
       userId: userId,
       category: data.reportCategory,
       description: data.newDescription,
-      reportType: reportType,
-      commentId: reportItemId,
+      reportType: 3,
+      commentId: data.reportcommentId,
     };
+
     // console.log(inputData);
-    // e.preventDefault();
-    // console.log("submited");
 
     const config = {
       headers: {
@@ -41,39 +52,50 @@ function Ad(props) {
       },
     };
 
-    if (reportType === 4) {
-      // console.log("ad reported");
+    // console.log("comment reported");
       await axios
-        .post(API_URL + "/feed/uploadAdReport/", inputData, config)
-        .then((response) => {
-          // console.log(response.data);
-          // forceUpdate();
-          $("#btn-close-form-ad-report").click();
-          if (response.status === 201) {
-            toast.success("You have successfully reported the advertisment", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-          }
+      .post(API_URL + "/feed/uploadCommentReport/", inputData, config)
+      .then((response) => {
+        // console.log(response.data);
+        $(`#btn-close-formcomment${props.commentId}`).click();
+        if (response.status === 201) {
+          toast.success("You have successfully reported the comment", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
         });
-    }
-    resetForm();
-    // window.location.reload(false);
+        }
+      });
+      resetForm();
   };
 
   return (
-    <>
-    <div class="card adCard mb-3 rounded-bottom">
-      <img src={props.image} class="card-img-top " alt="advertisement" />
-      <div class="card-body adBody">
+    <div>
+      <div className="p-3 pt-0 pb-2 d-flex justify-items-center gap-2">
+        <img
+          className="rounded-circle"
+          src={props.commentorImage}
+          width={30}
+          height={30}
+        />
+        <div>
+          <p className="px-3 rounded pt-1 pb-1 m-0 fs-9 comment text-muted">
+            {props.description}
+          </p>
+          <p
+            className="m-0 comment-like"
+            onClick={() => updateLike(props.commentId)}
+          >
+            Like
+          </p>
+        </div>
         <div class="dropdown d-inline-block drop-list-upper">
           <button
-            className="dr-btn adBtn"
+            className="dr-btn"
             id="page-header-notifications-dropdown"
             data-bs-toggle="dropdown"
             aria-haspopup="true"
@@ -83,28 +105,34 @@ function Ad(props) {
           </button>
 
           <div
-            onClick={() => {
-              setReportType(4);
-              setReportItemId(props.adId);
-            }}
-            class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
+            class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow dDownCustomComment"
             aria-labelledby="page-header-notifications-dropdown"
-            data-bs-toggle="modal"
-            data-bs-target="#complainAdModal"
           >
-            <a class="dropdown-item dinv">
+            <a
+              class="dropdown-item dinv"
+              data-bs-toggle="modal"
+              data-bs-target={'#complaincommentModal' + props.commentId}
+            >
               <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
               <span class="align-middle">Report</span>
             </a>
+            {props.profilerId === props.userId ? (
+              <a
+                class="dropdown-item dinv"
+                onClick={() => {props.deleteComment(props.commentId, userId)}}
+              >
+                <i class="bi bi-trash-fill dinvit icon-theme"></i>{" "}
+                <span class="align-middle">Delete</span>
+              </a>
+            ) : null}
           </div>
         </div>
       </div>
-    </div>
-       {/* complain modal start*/}
+      {/* complain modal start*/}
 
       <div
         class="modal fade"
-        id="complainAdModal"
+        id={'complaincommentModal' + props.commentId}
         tabindex="-1"
         aria-labelledby="planModalLabel"
         aria-hidden="true"
@@ -122,7 +150,7 @@ function Ad(props) {
                 class="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-                id="btn-close-form-ad-report"
+                id={`btn-close-formcomment${props.commentId}`}
               ></button>
             </div>
             <div class="modal-body p-4">
@@ -131,7 +159,11 @@ function Ad(props) {
                   <div>
                     {/* border */}
                     <Formik
-                      initialValues={initialReportValues}
+                      initialValues={{
+                        newDescription : "",
+                        reportCategory : '1',
+                        reportcommentId : JSON.stringify(props.commentId),
+                      }}
                       validationSchema={reportDescriptionValidation}
                       onSubmit={submitReport}
                     >
@@ -153,7 +185,6 @@ function Ad(props) {
                                 as="select"
                                 className="form-control form-control-sm"
                                 name="reportCategory"
-                                
                               >
                                 <option value="1">Nudity</option>
                                 <option value="2">Violence</option>
@@ -195,30 +226,17 @@ function Ad(props) {
                                 className="error-msg"
                               />
                             </div>
+                            <Field
+                                type="text"
+                                className="form-control form-control-update"
+                                id="reportcommentId"
+                                name="reportcommentId"
+                                placeholder="Enter your report description"
+                                class="form-control form-control-sm"
+                                hidden
+                              />
                           </div>
                           {/* row ends*/}
-
-                          {/* report type*/}
-                          <Field
-                            
-                            type="text"
-                            id="reportType"
-                            name="reportType"
-                            class="form-control form-control-sm"
-                            value={reportType}
-                            hidden
-                          />
-
-                          {/* commennt id*/}
-                          <Field
-                            type="text"
-                            id="comId"
-                            name="comId"
-                            class="form-control form-control-sm"
-                            value={reportItemId}
-                            hidden
-                          />
-
                           <div class="col-md-8 col-12 mt-3">
                             <button
                               type="submit"
@@ -240,8 +258,8 @@ function Ad(props) {
       </div>
 
       {/* complain modal ends*/}
-    </>
+    </div>
   );
 }
 
-export default Ad;
+export default Comment;

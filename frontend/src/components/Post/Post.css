@@ -1,5 +1,6 @@
 .Post .dDownCustomComment{
   transform:translate(105px, -10px) !important;
+  z-index: 1000;
 }
 .Post .commentSetion{
   max-height: 100px;
