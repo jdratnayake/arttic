@@ -39,6 +39,8 @@ import SubscribedCreatorsPage from "./pages/SubscribedCreatorsPage/SubscribedCre
 import ExternalSignUpPasswordPage from "./pages/ExternalSignUpPasswordPage/ExternalSignUpPasswordPage";
 import ChatCreatorPage from "./pages/ChatCreatorPage/ChatCreatorPage";
 import FollowerProfile from "./pages/FollowerProfile/FollowerProfile";
+import ViewUserProfile from "./pages/ViewUserProfile/ViewUserProfile";
+import ViewUserList from "./pages/VIewUserList/ViewUserList";
 
 function App() {
   return (
@@ -59,6 +61,15 @@ function App() {
           }
         ></Route>
         <Route
+          path="/ViewUserList/:type"
+          element={
+            <CreatorTemplate
+              children={<ViewUserList />}
+              sideNavBarIndex="1"
+            />
+          }
+        ></Route>
+        <Route
           path="/settings"
           element={
             <CreatorTemplate children={<Settings />} sideNavBarIndex="5" />
@@ -68,7 +79,8 @@ function App() {
         <Route path="/signup/:userType" element={<SignUpPage />}></Route>
         <Route path="/walletconnect" element={<WalletConnectPage />}></Route>
         <Route path="/login" element={<LogInPage />}></Route>
-        <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
+        <Route path="/creatorprofile/" element={<CreatorProfilePage />}></Route>
+        <Route path="/viewuserprofile/:id" element={<ViewUserProfile />}></Route>
         <Route
           path="/followerprofile/:followerId"
           element={<FollowerProfile />}

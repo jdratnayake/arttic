@@ -193,7 +193,7 @@ const getFollowersDetails = asyncHandler(async (req, res) => {
   await client.connect();
 
   const result = await client.query(
-    'SELECT "user"."userId","name","profilePhoto" FROM "userSubscribe" INNER JOIN "user" ON "user"."userId"="userSubscribe"."followerId"  WHERE "userSubscribe"."creatorId"=$1',
+    'SELECT "user"."userId", "user"."type","name","profilePhoto" FROM "userSubscribe" INNER JOIN "user" ON "user"."userId"="userSubscribe"."followerId"  WHERE "userSubscribe"."creatorId"=$1',
     [userId]
   );
 
@@ -234,7 +234,7 @@ const getFollowingsDetails = asyncHandler(async (req, res) => {
   await client.connect();
 
   const result = await client.query(
-    'SELECT "user"."userId","name","profilePhoto" FROM "userSubscribe" INNER JOIN "user" ON "user"."userId"="userSubscribe"."creatorId"  WHERE "userSubscribe"."followerId"=$1',
+    'SELECT "user"."userId", "user"."type","name","profilePhoto" FROM "userSubscribe" INNER JOIN "user" ON "user"."userId"="userSubscribe"."creatorId"  WHERE "userSubscribe"."followerId"=$1',
     [userId]
   );
 
@@ -255,6 +255,102 @@ const getFollowingsDetails = asyncHandler(async (req, res) => {
 //  end get followings details ----------------------------------------
 
 
+//  get top creators details --------------------------------------------
+const getTopCreatorsDetails = asyncHandler(async (req, res) => {
+  const userId = parseInt(req.params.id);
+
+
+  const client = new Client({
+    user: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE_DATABASE,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  await client.connect();
+
+  const result = await client.query(
+    'SELECT "user"."userId", "name", "profilePhoto", COUNT("creatorId") AS "subCount" FROM "userSubscribe" INNER JOIN "user" ON "user"."userId"="userSubscribe"."creatorId" INNER JOIN "followerCreator" ON "followerCreator"."userId" = "user"."userId" WHERE "user"."blockedStatus" = FALSE GROUP BY "user"."userId" ORDER BY "subCount" DESC LIMIT 9',
+
+  );
+
+  res.json(result.rows);
+  await client.end();
+
+
+});
+//  end get top creators details ----------------------------------------
+
+
+//follow Unfollow check Creator-----------------------------------------------
+const followUnfollowCreator = asyncHandler(async (req, res) => {
+
+  const follower = parseInt(req.body.follower);
+  const creator = parseInt(req.body.creator);
+  const status = req.body.status;
+  // status = 1 do 
+  // status = 0 check
+
+  const existUser = await userSubscribe.findFirst({
+    where: {
+      AND: [
+        { creatorId: creator },
+        { followerId: follower }
+      ],
+    },
+  });
+
+  if (existUser) {
+    if (status == "1") { //do unfollow
+      const unfolow = await userSubscribe.deleteMany({
+        where: {
+          AND: [
+            { creatorId: creator },
+            { followerId: follower }
+          ],
+        },
+      })
+      res.json({
+        status: "delete",
+        data: "Unfollowed!",
+        msg: "Follow"
+      });
+    }
+    else {
+      res.json({
+        status: "check",
+        data: "Unfollow"
+      });
+    }
+  } else {
+    if (status == "1") {
+      const folow = await userSubscribe.create({
+        data: {
+          followerId: follower,
+          creatorId: creator,
+        },
+      })
+      res.json({
+        status: "create",
+        data: "Followed!",
+        msg: "Unfollow"
+      });
+    }
+    else {
+      res.json({
+        status: "check",
+        data: "Follow"
+      });
+    }
+  }
+});
+//end follow Unfollow check Creator--------------------------------------------------------
+
+
 
 module.exports = {
   uploadProfileOrCoverPicture,
@@ -264,4 +360,6 @@ module.exports = {
   uploadUserReport,
   getFollowersDetails,
   getFollowingsDetails,
+  getTopCreatorsDetails,
+  followUnfollowCreator,
 };

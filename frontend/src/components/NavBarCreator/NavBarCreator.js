@@ -10,6 +10,7 @@ import logo from "../../images/logo.png";
 
 function NavBarCreator() {
   const [profilePic, setProfilePic] = useState("");
+  const [userId, setUserId] = useState("");
 
   const userInfo = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ function NavBarCreator() {
     } else {
       const { userId, accessToken, profilePhoto } = userInfo.user;
       setProfilePic(PROFILE_PIC_URL + profilePhoto);
+      setUserId(userId);
     }
   }, []);
 

@@ -14,6 +14,7 @@ import avatar1 from "../../images/avatar/avatar-2.jpg";
 import t from "../../images/NFTs/monkey-removebg.png";
 import Post from "../../components/Post/Post";
 import checkedMark from "../../images/svg/checked-mark.svg";
+import { Link } from "react-router-dom";
 
 function CreatorProfilePage() {
   const [profileData, setProfileData] = useState("");
@@ -107,8 +108,7 @@ function CreatorProfilePage() {
                   >
                     <img
                       src={PROFILE_PIC_URL + profileData.profilePhoto}
-                      class="avatar-xxl rounded-circle border border-4 
-                                            border-white-color-40"
+                      class="avatar-xxl rounded-circle border border-4 border-white-color-40"
                       alt=""
                     />
 
@@ -125,8 +125,8 @@ function CreatorProfilePage() {
                   <div class="lh-1">
                     <h2 class="mb-0"> {profileData.name} </h2>
                     <div class="sub-lh-1">
-                      <p class="mb-0 d-block">101 followers</p>
-                      <p class="mb-0 d-block following">503 following</p>
+                      <p class="mb-0 d-block">{followersData.length} followers</p>
+                      <p class="mb-0 d-block following">{followingData.length} following</p>
                     </div>
                   </div>
                 </div>
@@ -234,41 +234,30 @@ function CreatorProfilePage() {
                     <h4 class="card-title mb-4">Your Followers</h4>
 
                     {followersData.map((folodata, i) => (
-                      <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="d-flex align-items-center">
-                          <div>
-                            <img
-                              src={PROFILE_PIC_URL + folodata.profilePhoto}
-                              class="rounded-circle avatar-md"
-                              alt=""
-                            />
+                      i <= 5
+                        ?
+                        (<div class="d-flex justify-content-between align-items-center mb-4">
+                          <div class="d-flex align-items-center">
+                            <div>
+                              <img
+                                src={PROFILE_PIC_URL + folodata.profilePhoto}
+                                class="rounded-circle avatar-md"
+                                alt=""
+                              />
+                            </div>
+                            <div class="ms-3 ">
+                              <h5 class="mb-1">{folodata.name}</h5>
+                            </div>
                           </div>
-                          <div class="ms-3 ">
-                            <h5 class="mb-1">{folodata.name}</h5>
-                          </div>
-                        </div>
-                        <div class="dropdown d-inline-block drop-list-upper">
-                          <button
-                            className="dr-btn report-threedots"
-                            id="page-header-notifications-dropdown"
-                            data-bs-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            <i class="bi bi-three-dots"></i>
-                          </button>
-                          <div
-                            class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
-                            aria-labelledby="page-header-notifications-dropdown"
-                          >
-                            <a class="dropdown-item dinv">
-                              <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
-                              <span class="align-middle">Report</span>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
+                        </div>)
+                        : null
                     ))}
+                    {followersData.length > 2 && (
+                      <Link to={"/viewuserlist/followers"}>
+                        <p style={{ color: "blue" }}>See more..</p>
+                      </Link>
+
+                    )}
 
 
                   </div>
@@ -284,41 +273,30 @@ function CreatorProfilePage() {
 
 
                     {followingData.map((folodata, i) => (
-                      <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="d-flex align-items-center">
-                          <div>
-                            <img
-                              src={PROFILE_PIC_URL + folodata.profilePhoto}
-                              class="rounded-circle avatar-md"
-                              alt=""
-                            />
+                      i <= 5
+                        ?
+                        (<div class="d-flex justify-content-between align-items-center mb-4">
+                          <div class="d-flex align-items-center">
+                            <div>
+                              <img
+                                src={PROFILE_PIC_URL + folodata.profilePhoto}
+                                class="rounded-circle avatar-md"
+                                alt=""
+                              />
+                            </div>
+                            <div class="ms-3 ">
+                              <h5 class="mb-1">{folodata.name}</h5>
+                            </div>
                           </div>
-                          <div class="ms-3 ">
-                            <h5 class="mb-1">{folodata.name}</h5>
-                          </div>
-                        </div>
-                        <div class="dropdown d-inline-block drop-list-upper">
-                          <button
-                            className="dr-btn report-threedots"
-                            id="page-header-notifications-dropdown"
-                            data-bs-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            <i class="bi bi-three-dots"></i>
-                          </button>
-                          <div
-                            class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-arrow"
-                            aria-labelledby="page-header-notifications-dropdown"
-                          >
-                            <a class="dropdown-item dinv">
-                              <i class="bi bi-flag-fill dinvit icon-theme"></i>{" "}
-                              <span class="align-middle">Report</span>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
+                        </div>)
+                        : null
                     ))}
+                    {followingData.length > 1 && (
+                      <Link to={"/viewuserlist/followings"}>
+                        <p style={{ color: "blue" }}>See more..</p>
+                      </Link>
+
+                    )}
 
 
                   </div>
