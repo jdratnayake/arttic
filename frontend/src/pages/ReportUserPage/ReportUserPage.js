@@ -16,6 +16,7 @@ function ReportUserPage() {
   const { userId, accessToken } = userInfo.user;
 
   const [userDetails, setUserDetails] = useState({});
+  const [creatorDetails, setCreatorDetails] = useState({});
   const [userReportDetails, setUserReportDetails] = useState([]);
   const [postReportDetails, setPostReportDetails] = useState([]);
   const [commentReportDetails, setCommentReportDetails] = useState([]);
@@ -56,6 +57,7 @@ function ReportUserPage() {
           setDisabled(true);
         }
         setUserDetails(response.data.userDetails);
+        setCreatorDetails(response.data.creatorDetails);
         setUserReportDetails(response.data.userReportDetails);
         setPostReportDetails(response.data.postReportDetails);
         setCommentReportDetails(response.data.commentReportDetails);
@@ -73,6 +75,7 @@ function ReportUserPage() {
     const inputData = {
       blockUserId: userDetails.userId,
       blockedAdminID: userId,
+      blockType: 1,
     };
 
     await axios
@@ -98,7 +101,7 @@ function ReportUserPage() {
             <div class="d-flex align-items-center justify-content-between pt-4 pb-6 px-4">
               <div class="d-flex align-items-center">
                 {/* avatar */}
-                <div class="avatar-xxl avatar-indicators avatar-online me-2 position-relative d-flex justify-content-end align-items-end mt-n10">
+                <div class="avatar-xxl  avatar-online me-2 position-relative d-flex justify-content-end align-items-end mt-n10">
                   <img
                     src={PROFILE_PIC_URL + "/" + userDetails.profilePhoto}
                     class="avatar-xxl rounded-circle border border-4 border-white-color-40"
@@ -112,7 +115,10 @@ function ReportUserPage() {
                     title=""
                     data-original-title="Verified"
                   >
-                    <img src={checkedMark} alt="" height="30" width="30" />
+                    {userDetails.type === 3 &&
+                      creatorDetails.openSeaStatus === 1 && (
+                        <img src={checkedMark} alt="" height="30" width="30" />
+                      )}
                   </a>
                 </div>
                 {/* text */}

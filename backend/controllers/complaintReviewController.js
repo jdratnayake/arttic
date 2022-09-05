@@ -1,8 +1,16 @@
 const { PrismaClient } = require("@prisma/client");
+const { Client } = require("pg");
 const asyncHandler = require("express-async-handler");
 
-const { user, userReport, postReport, commentReport, advertisementReport } =
-  new PrismaClient();
+const {
+  user,
+  userReport,
+  postReport,
+  commentReport,
+  advertisementReport,
+  post,
+  creator,
+} = new PrismaClient();
 
 const getUserComplaints = asyncHandler(async (req, res) => {
   const solve = await userReport.aggregate({
@@ -239,6 +247,7 @@ const getReportUserDetails = asyncHandler(async (req, res) => {
 
     select: {
       userId: true,
+      type: true,
       name: true,
       bio: true,
       profilePhoto: true,
@@ -246,6 +255,16 @@ const getReportUserDetails = asyncHandler(async (req, res) => {
       premiumUser: true,
       blockedStatus: true,
       followerCreator: true,
+    },
+  });
+
+  const creatorDetails = await creator.findUnique({
+    where: {
+      userId,
+    },
+
+    select: {
+      openSeaStatus: true,
     },
   });
 
@@ -299,6 +318,7 @@ const getReportUserDetails = asyncHandler(async (req, res) => {
 
   const outputData = {
     userDetails,
+    creatorDetails,
     userReportDetails,
     postReportDetails,
     commentReportDetails,
@@ -308,21 +328,39 @@ const getReportUserDetails = asyncHandler(async (req, res) => {
   res.json(outputData);
 });
 
+// 1 = user
+// 2 = post
+// 3 = comment
+// 4 = advertisement
+
 const blockUser = asyncHandler(async (req, res) => {
-  const { blockUserId, blockedAdminID } = req.body;
+  const { blockUserId, blockedAdminID, blockType } = req.body;
 
-  const updateUser = await user.update({
-    where: {
-      userId: blockUserId,
-    },
-    data: {
-      blockedStatus: true,
-      blockedDate: new Date(),
-      blockedAdminID: blockedAdminID,
-    },
-  });
+  let updateEntity;
 
-  if (updateUser) {
+  if (blockType === 1) {
+    updateEntity = await user.update({
+      where: {
+        userId: blockUserId,
+      },
+      data: {
+        blockedStatus: true,
+        blockedDate: new Date(),
+        blockedAdminID: blockedAdminID,
+      },
+    });
+  } else if (blockType === 2) {
+    updateEntity = await post.update({
+      where: {
+        postId: blockUserId,
+      },
+      data: {
+        blockedStatus: true,
+      },
+    });
+  }
+
+  if (updateEntity) {
     res.json({
       statusCode: 1,
       msg: "Successful",
@@ -342,13 +380,19 @@ const getReportPostDetails = asyncHandler(async (req, res) => {
     where: {
       postReportId: reportId,
     },
-    select: { userId: true, reportedPostId: true },
   });
 
-  res.json(report);
+  const postOwner = await post.findUnique({
+    where: {
+      postId: report.reportedPostId,
+    },
+    select: { creatorId: true },
+  });
 
-  return 0;
-  const userId = report.userId;
+  // res.json(postOwner);
+
+  // return 0;
+  const userId = postOwner.creatorId;
   const postId = report.reportedPostId;
 
   const userDetails = await user.findUnique({
@@ -358,6 +402,7 @@ const getReportPostDetails = asyncHandler(async (req, res) => {
 
     select: {
       userId: true,
+      type: true,
       name: true,
       bio: true,
       profilePhoto: true,
@@ -367,6 +412,36 @@ const getReportPostDetails = asyncHandler(async (req, res) => {
       followerCreator: true,
     },
   });
+
+  const creatorDetails = await creator.findUnique({
+    where: {
+      userId,
+    },
+
+    select: {
+      openSeaStatus: true,
+    },
+  });
+
+  const client = new Client({
+    user: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE_DATABASE,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  await client.connect();
+
+  const result = await client.query(
+    'SELECT * FROM "user" INNER JOIN "post" ON "post"."creatorId"="user"."userId" WHERE "postId"=$1',
+    [postId]
+  );
+
+  await client.end();
 
   const userReportDetails = await userReport.findMany({
     take: 5,
@@ -394,6 +469,9 @@ const getReportPostDetails = asyncHandler(async (req, res) => {
 
   const outputData = {
     userDetails,
+    creatorDetails,
+    postDetails: result.rows[0],
+    postComplaint: report,
     userReportDetails,
     postReportDetails,
   };
