@@ -353,19 +353,29 @@ function SettingsBillingPage() {
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body p-4">
+            <div class="modal-body p-4 payment">
               <div class="card border shadow-none border-bottom p-4">
                 <div class="row">
-                  <div class="col-6 mb-3">
-                    <h6 class="text-uppercase fs-6 ls-2">Date </h6>
-                    <p class="mb-1 fs-8">2020/10/12</p>
+                  <div class="col-4 mb-3 payment-chioce">
+                    <h5 class="text-uppercase ls-2 payment-caption">Card Payment</h5>
+                    <button class="btn btn-primary">Pay with Credit/Debit Card</button>
                   </div>
                 </div>
               </div>
+              <div class="card border shadow-none border-bottom p-4">
+                <div class="row">
+                  <div class="col-4 mb-3 payment-chioce">
+                    <h5 class="text-uppercase  ls-2 payment-caption">Crypto Payment</h5>
+                    <button class="btn btn-primary">Connect with Meta Mask</button>
+                    <button class="btn btn-primary">Pay with Meta Mask</button>
+                  </div>
+                </div>
+              </div>
+              
             </div>
-            <div class="modal-footer justify-content-start p-4 pt-2">
-              <button type="button" class="btn btn-danger">
-                Resolve
+            <div class="modal-footer justify-content-end p-4 pt-2">
+              <button type="button" class="btn btn-primary">
+                Okay
               </button>
             </div>
           </div>
