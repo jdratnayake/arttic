@@ -74,49 +74,214 @@ function AdvertismentTablePage() {
           </div>
         </div>
 
-        <div class="row mx-3 pt-4 pb-4">
-          <div className="tableSection">
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Date</th>
-                  <th>Img</th>
-                  <th>Description</th>
-                  <th>Status</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {advertismentTable.map((ad) => (
-                  <tr key={ad.advertisementId}>
-                    <td className="idStyle">{ad.advertisementId}</td>
-                    <td>{ad.createdDate}</td>
-                    <td>
-                      <img src={ADVERTISMENT_PIC_URL + ad.contentLink} />
-                    </td>
-                    <td>
-                      <p className="userComplaintDescription">
-                        {ad.description}
-                      </p>
-                    </td>
-                    <td>Pending</td>
-                    <td>
-                      <a
-                        onClick={() => handleClick({ type: "Post" })}
-                        href="#"
-                        class="btn btn-secondary"
-                        data-bs-toggle="modal"
-                        data-bs-target="#PostModal"
-                      >
-                        View
-                      </a>
-                    </td>
-                  </tr>
-                ))}
+        <br />
 
-              </tbody>
-            </table>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link settings-nav-link active"
+              id="pending-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#pending-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="pending-tab-pane"
+              aria-selected="true"
+            >
+              Pending
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link settings-nav-link "
+              id="accepted-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#accepted-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="accepted-tab-pane"
+              aria-selected="true"
+            >
+              Accepted
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link settings-nav-link"
+              id="old-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#old-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="old-tab-pane"
+              aria-selected="false"
+            >
+              Old
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+          <div
+            class="tab-pane complain-tab fade show active"
+            id="pending-tab-pane"
+            role="tabpanel"
+            aria-labelledby="pending-tab"
+            tabindex="0"
+          >
+            <div class="row mx-3 pt-4 pb-4">
+              <div className="tableSection">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Date</th>
+                      <th>Img</th>
+                      <th>Description</th>
+                      <th>Status</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {advertismentTable.map((ad) => (
+                      <tr key={ad.advertisementId}>
+                        <td className="idStyle">{ad.advertisementId}</td>
+                        <td>{new Date(ad.createdDate).toLocaleDateString()}</td>
+                        <td>
+                          <img src={ADVERTISMENT_PIC_URL + ad.contentLink} />
+                        </td>
+                        <td>
+                          <p className="userComplaintDescription">
+                            {ad.description}
+                          </p>
+                        </td>
+                        <td>Pending</td>
+                        <td>
+                          <a
+                            onClick={() => handleClick({ type: "Post" })}
+                            href="#"
+                            class="btn btn-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#PostModal"
+                          >
+                            View
+                          </a>
+                        </td>
+                      </tr>
+                    ))}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div
+            class="tab-pane complain-tab fade"
+            id="accepted-tab-pane"
+            role="tabpanel"
+            aria-labelledby="accepted-tab"
+            tabindex="0"
+          >
+            <div class="row mx-3 pt-4 pb-4">
+              <div className="tableSection">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Date</th>
+                      <th>Img</th>
+                      <th>Description</th>
+                      <th>Status</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {advertismentTable.map((ad) => (
+                      <tr key={ad.advertisementId}>
+                        <td className="idStyle">{ad.advertisementId}</td>
+                        <td>{new Date(ad.createdDate).toLocaleDateString()}</td>
+                        <td>
+                          <img src={ADVERTISMENT_PIC_URL + ad.contentLink} />
+                        </td>
+                        <td>
+                          <p className="userComplaintDescription">
+                            {ad.description}
+                          </p>
+                        </td>
+                        <td>Accepted</td>
+                        <td>
+                          <a
+                            onClick={() => handleClick({ type: "Post" })}
+                            href="#"
+                            class="btn btn-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#PostModal"
+                          >
+                            Pay
+                          </a>
+                        </td>
+                      </tr>
+                    ))}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div
+            class="tab-pane complain-tab fade"
+            id="old-tab-pane"
+            role="tabpanel"
+            aria-labelledby="old-tab"
+            tabindex="0"
+          >
+            <div class="row mx-3 pt-4 pb-4">
+              <div className="tableSection">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Date</th>
+                      <th>Img</th>
+                      <th>Description</th>
+                      <th>Status</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {advertismentTable.map((ad , i) => (
+                      i <= 4 &&
+                      (<tr key={ad.advertisementId}>
+                        <td className="idStyle">{ad.advertisementId}</td>
+                        <td>{new Date(ad.createdDate).toLocaleDateString()}</td>
+                        <td>
+                          <img src={ADVERTISMENT_PIC_URL + ad.contentLink} />
+                        </td>
+                        <td>
+                          <p className="userComplaintDescription">
+                            {ad.description}
+                          </p>
+                        </td>
+                        <td>Old</td>
+
+                        <td>
+                          <a
+                            onClick={() => handleClick({ type: "Post" })}
+                            href="#"
+                            class="btn btn-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#PostModal"
+                          >
+                            View
+                          </a>
+                        </td>
+                      </tr>)
+                    ))}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>

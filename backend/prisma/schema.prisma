@@ -36,8 +36,10 @@ model user{
   blockedDate DateTime?
   blockedAdminID Int?
   premiumUser Boolean @default(false)
-  premiumPackageStartDate DateTime?
-  premiumPackageEndDate DateTime?
+  premiumPackageEndDate DateTime @default(now())
+  advertisementVisibility Boolean @default(true)
+  emailValidity Boolean @default(false)
+  emailValidityOtp String? @db.VarChar(5)
   blockedAdmin user? @relation("adminBlockFollowerCreator", fields: [blockedAdminID],references: [userId], onUpdate: Cascade, onDelete: Cascade)
   blockedUser user[] @relation("adminBlockFollowerCreator")
   followerCreator followerCreator?
@@ -287,6 +289,12 @@ model userReport{
   resolvedAdminID Int?
 }
 
+// 1 = Nudity
+// 2 = Violence
+// 3 = Spam
+// 4 = False Information
+// 5 = Something Else
+
 model postReport{
   postReportId Int @id @default(autoincrement())
   user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
@@ -337,7 +345,7 @@ model transactionLog{
   user followerCreator @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   userId Int
   transactionType Int
-  otherTableUniqueId Int?
+  stripeId String? @db.VarChar(64)
   amount Decimal @db.Decimal(65, 2)
   transactionDate DateTime @default(now())
 }

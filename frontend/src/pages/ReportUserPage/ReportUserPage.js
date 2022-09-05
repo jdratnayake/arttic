@@ -1,11 +1,93 @@
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import $ from "jquery";
+
+import { API_URL, PROFILE_PIC_URL } from "../../constants/globalConstants";
 
 import "./ReportUserPage.css";
-import avatar from "../../images/users/avatar-1.jpg";
 import checkedMark from "../../images/svg/checked-mark.svg";
 
 function ReportUserPage() {
   let { id } = useParams();
+
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
+
+  const [userDetails, setUserDetails] = useState({});
+  const [userReportDetails, setUserReportDetails] = useState([]);
+  const [postReportDetails, setPostReportDetails] = useState([]);
+  const [commentReportDetails, setCommentReportDetails] = useState([]);
+  const [advertisementReportDetails, setAdvertisementReportDetails] = useState(
+    []
+  );
+  const [buttonName, setButtonName] = useState("Temporary Ban");
+  const [isDisabled, setDisabled] = useState(false);
+
+  const typeList = [
+    "",
+    "Nudity",
+    "Violence",
+    "Spam",
+    "False Information",
+    "Something Else",
+  ];
+
+  const numList = ["One", "Two", "Three", "Four", "Five"];
+
+  const truncate = (str, n = 50) => {
+    return str.length > n ? str.slice(0, n - 1) + "..." : str;
+  };
+
+  const getData = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+        reportid: id,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/complaintreview/getReportUserDetails/", config)
+      .then((response) => {
+        if (response.data.userDetails.blockedStatus) {
+          setButtonName("Temporary Banned");
+          setDisabled(true);
+        }
+        setUserDetails(response.data.userDetails);
+        setUserReportDetails(response.data.userReportDetails);
+        setPostReportDetails(response.data.postReportDetails);
+        setCommentReportDetails(response.data.commentReportDetails);
+        setAdvertisementReportDetails(response.data.advertisementReportDetails);
+      });
+  };
+
+  const banUser = async () => {
+    const token = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    const inputData = {
+      blockUserId: userDetails.userId,
+      blockedAdminID: userId,
+    };
+
+    await axios
+      .post(API_URL + "/complaintreview/blockuser/", inputData, token)
+      .then((res) => {});
+
+    $("#btn-close-form").click();
+    setButtonName("Temporary Banned");
+    setDisabled(true);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <span className="ReportUserPage">
       <div class="row align-items-center">
@@ -18,7 +100,7 @@ function ReportUserPage() {
                 {/* avatar */}
                 <div class="avatar-xxl avatar-indicators avatar-online me-2 position-relative d-flex justify-content-end align-items-end mt-n10">
                   <img
-                    src={avatar}
+                    src={PROFILE_PIC_URL + "/" + userDetails.profilePhoto}
                     class="avatar-xxl rounded-circle border border-4 border-white-color-40"
                     alt=""
                   />
@@ -35,27 +117,67 @@ function ReportUserPage() {
                 </div>
                 {/* text */}
                 <div class="lh-1">
-                  <h2 class="mb-0">
-                    Jitu Chauhan
-                    <a
-                      href="#!"
-                      class="text-decoration-none"
-                      data-bs-toggle="tooltip"
-                      data-placement="top"
-                      title=""
-                      data-original-title="Beginner"
-                    ></a>
-                  </h2>
-                  <p class="mb-0 d-block">@imjituchauhan</p>
+                  <h2 class="mb-0">{userDetails.name}</h2>
                 </div>
                 <div>
-                  <button type="button" class="btn btn-danger banButton">
-                    Temporary Hold
+                  <button
+                    type="button"
+                    class="btn btn-danger banButton"
+                    disabled={isDisabled}
+                    data-bs-toggle="modal"
+                    data-bs-target="#upgradeAccount"
+                  >
+                    {buttonName}
                   </button>
                 </div>
               </div>
             </div>
           </div>
+
+          <div
+            class="modal fade"
+            id="upgradeAccount"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Confirm Ban
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  This procedure is irreversible. Do you want to Ban?
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    id="btn-close-form"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger "
+                    onClick={banUser}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="card reportBio">
             {/* card body */}
             <div class="card-body reportBioBody">
@@ -63,31 +185,22 @@ function ReportUserPage() {
                 Bio
               </span>
               {/* text */}
-              <p class="mt-1 mb-1 px-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspen disse var ius enim in eros elementum tristique. Duis
-                cursus, mi quis viverra ornare, eros dolor interdum nulla,
-                ut commodo diam libero vitae erat.
-              </p>
+              <p class="mt-1 mb-1 ">{userDetails.bio}</p>
               {/* row */}
               <div class="row">
-                <div class="col-12 mb-1">
-                  {/* text */}
-                  <h6 class="text-uppercase fs-4 ls-2">User id</h6>
-                  <p class="mb-0 px-2">{id}</p>
-                </div>
-                <div class="col-12 mb-1">
-                  {/* text */}
-                  <h6 class="text-uppercase fs-4 ls-2">Username</h6>
-                  <p class="mb-0 px-2">Mahesh</p>
-                </div>
                 <div class="col-6 mb-1">
                   <h6 class="text-uppercase fs-4 ls-2">Joined date </h6>
-                  <p class="mb-0 px-2">01.10.2020</p>
+                  <p class="mb-0 ">
+                    {new Date(userDetails.joinedDate).toLocaleDateString()}
+                  </p>
                 </div>
                 <div class="col-6">
                   <h6 class="text-uppercase fs-4 ls-2">Accounnt status</h6>
-                  <p class="mb-0 px-2">Premium</p>
+                  {userDetails.premiumUser ? (
+                    <p class="mb-0">Premium</p>
+                  ) : (
+                    <p class="mb-0">Basic</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -111,120 +224,71 @@ function ReportUserPage() {
                 <div class="row mt-2  p-1 complain-body">
                   {/* Accordion */}
                   <div class="accordion" id="accordionUser">
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingOne">
-                        <button
-                          class="accordion-button"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse1"
-                          aria-expanded="true"
-                          aria-controls="collapse1"
-                        >
-                          It is hidden by default, until the collapse
-                          plugin...
-                        </button>
-                      </h2>
-                      <div
-                        id="collapse1"
-                        class="accordion-collapse collapse show"
-                        aria-labelledby="headingOne"
-                        data-bs-parent="#accordionUser"
-                      >
-                        <div class="accordion-body">
-                          <p>Nudity</p>
-                          <strong>
-                            This is the first item's accordion body.
-                          </strong>
-                          It is hidden by default, until the collapse plugin
-                          adds the appropriate classes that we use to style
-                          each element. These classes control the overall
-                          appearance, as well as the showing and hiding via
-                          CSS transitions. You can modify any of this with
-                          custom CSS or overriding our default variables.
-                          It's also worth noting that just about any HTML
-                          can go within the
-                          <code>.accordion-body</code>, though the
-                          transition does limit overflow.
+                    {userReportDetails.map((data, i) =>
+                      i === 0 ? (
+                        <div class="accordion-item" key={data.userReportedId}>
+                          <h2
+                            class="accordion-header"
+                            id={"heading" + numList[i]}
+                          >
+                            <button
+                              class="accordion-button"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={"#collapse" + (i + 1)}
+                              aria-expanded="true"
+                              aria-controls={"collapse1" + (i + 1)}
+                            >
+                              {truncate(data.description)}
+                            </button>
+                          </h2>
+                          <div
+                            id={"collapse" + (i + 1)}
+                            class="accordion-collapse collapse show"
+                            aria-labelledby={"heading" + numList[i]}
+                            data-bs-parent="#accordionUser"
+                          >
+                            <div class="accordion-body">
+                              <p>
+                                <b>{typeList[data.reportCategory]}</b>
+                              </p>
+                              {data.description}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingTwo">
-                        <button
-                          class="accordion-button collapsed"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse2"
-                          aria-expanded="false"
-                          aria-controls="collapse2"
-                        >
-                          It is hidden by default, until the collapse
-                          plugin...
-                        </button>
-                      </h2>
-                      <div
-                        id="collapse2"
-                        class="accordion-collapse collapse"
-                        aria-labelledby="headingTwo"
-                        data-bs-parent="#accordionUser"
-                      >
-                        <div class="accordion-body">
-                          <p>Nudity</p>
-                          <strong>
-                            This is the second item's accordion body.
-                          </strong>
-                          It is hidden by default, until the collapse plugin
-                          adds the appropriate classes that we use to style
-                          each element. These classes control the overall
-                          appearance, as well as the showing and hiding via
-                          CSS transitions. You can modify any of this with
-                          custom CSS or overriding our default variables.
-                          It's also worth noting that just about any HTML
-                          can go within the
-                          <code>.accordion-body</code>, though the
-                          transition does limit overflow.
+                      ) : (
+                        <div class="accordion-item" key={data.userReportedId}>
+                          <h2
+                            class="accordion-header"
+                            id={"heading" + numList[i]}
+                          >
+                            <button
+                              class="accordion-button collapsed"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={"#collapse" + (i + 1)}
+                              aria-expanded="false"
+                              aria-controls={"collapse" + (i + 1)}
+                            >
+                              {truncate(data.description)}
+                            </button>
+                          </h2>
+                          <div
+                            id={"collapse" + (i + 1)}
+                            class="accordion-collapse collapse"
+                            aria-labelledby={"heading" + numList[i]}
+                            data-bs-parent="#accordionUser"
+                          >
+                            <div class="accordion-body">
+                              <p>
+                                <b>{typeList[data.reportCategory]}</b>
+                              </p>
+                              {data.description}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingThree">
-                        <button
-                          class="accordion-button collapsed"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse3"
-                          aria-expanded="false"
-                          aria-controls="collapse3"
-                        >
-                          It is hidden by default, until the collapse
-                          plugin...
-                        </button>
-                      </h2>
-                      <div
-                        id="collapse3"
-                        class="accordion-collapse collapse"
-                        aria-labelledby="headingThree"
-                        data-bs-parent="#accordionUser"
-                      >
-                        <div class="accordion-body">
-                          <p>Nudity</p>
-                          <strong>
-                            This is the third item's accordion body.
-                          </strong>
-                          It is hidden by default, until the collapse plugin
-                          adds the appropriate classes that we use to style
-                          each element. These classes control the overall
-                          appearance, as well as the showing and hiding via
-                          CSS transitions. You can modify any of this with
-                          custom CSS or overriding our default variables.
-                          It's also worth noting that just about any HTML
-                          can go within the
-                          <code>.accordion-body</code>, though the
-                          transition does limit overflow.
-                        </div>
-                      </div>
-                    </div>
+                      )
+                    )}
                   </div>
                 </div>
               </div>
@@ -243,120 +307,72 @@ function ReportUserPage() {
                 <div class="row mt-2 p-1 complain-body">
                   {/* Accordion */}
                   <div class="accordion" id="accordionPost">
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingOne">
-                        <button
-                          class="accordion-button"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse4"
-                          aria-expanded="true"
-                          aria-controls="collapse4"
-                        >
-                          It is hidden by default, until the collapse
-                          plugin...
-                        </button>
-                      </h2>
-                      <div
-                        id="collapse4"
-                        class="accordion-collapse collapse show"
-                        aria-labelledby="headingOne"
-                        data-bs-parent="#accordionPost"
-                      >
-                        <div class="accordion-body">
-                          <p>Nudity</p>
-                          <strong>
-                            This is the first item's accordion body.
-                          </strong>
-                          It is hidden by default, until the collapse plugin
-                          adds the appropriate classes that we use to style
-                          each element. These classes control the overall
-                          appearance, as well as the showing and hiding via
-                          CSS transitions. You can modify any of this with
-                          custom CSS or overriding our default variables.
-                          It's also worth noting that just about any HTML
-                          can go within the
-                          <code>.accordion-body</code>, though the
-                          transition does limit overflow.
+                    {postReportDetails.map((data, i) =>
+                      i === 0 ? (
+                        <div class="accordion-item" key={data.postReportId}>
+                          <h2
+                            class="accordion-header"
+                            id={"heading" + numList[i]}
+                          >
+                            <button
+                              class="accordion-button"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={"#collapse" + (i + 1 + 5)}
+                              aria-expanded="true"
+                              aria-controls={"collapse" + (i + 1 + 5)}
+                            >
+                              {truncate(data.description)}
+                            </button>
+                          </h2>
+                          <div
+                            id={"collapse" + (i + 1 + 5)}
+                            class="accordion-collapse collapse show"
+                            aria-labelledby={"heading" + numList[i]}
+                            data-bs-parent="#accordionPost"
+                          >
+                            <div class="accordion-body">
+                              <p>
+                                <b>{typeList[data.reportCategory]}</b>
+                              </p>
+
+                              {data.description}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingTwo">
-                        <button
-                          class="accordion-button collapsed"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse5"
-                          aria-expanded="false"
-                          aria-controls="collapse5"
-                        >
-                          It is hidden by default, until the collapse
-                          plugin...
-                        </button>
-                      </h2>
-                      <div
-                        id="collapse5"
-                        class="accordion-collapse collapse"
-                        aria-labelledby="headingTwo"
-                        data-bs-parent="#accordionPost"
-                      >
-                        <div class="accordion-body">
-                          <p>Nudity</p>
-                          <strong>
-                            This is the second item's accordion body.
-                          </strong>
-                          It is hidden by default, until the collapse plugin
-                          adds the appropriate classes that we use to style
-                          each element. These classes control the overall
-                          appearance, as well as the showing and hiding via
-                          CSS transitions. You can modify any of this with
-                          custom CSS or overriding our default variables.
-                          It's also worth noting that just about any HTML
-                          can go within the
-                          <code>.accordion-body</code>, though the
-                          transition does limit overflow.
+                      ) : (
+                        <div class="accordion-item" key={data.postReportId}>
+                          <h2
+                            class="accordion-header"
+                            id={"heading" + numList[i]}
+                          >
+                            <button
+                              class="accordion-button collapsed"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={"#collapse" + (i + 1 + 5)}
+                              aria-expanded="false"
+                              aria-controls={"collapse" + (i + 1 + 5)}
+                            >
+                              {truncate(data.description)}
+                            </button>
+                          </h2>
+                          <div
+                            id={"collapse" + (i + 1 + 5)}
+                            class="accordion-collapse collapse"
+                            aria-labelledby={"heading" + numList[i]}
+                            data-bs-parent="#accordionPost"
+                          >
+                            <div class="accordion-body">
+                              <p>
+                                <b>{typeList[data.reportCategory]}</b>
+                              </p>
+                              {data.description}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingThree">
-                        <button
-                          class="accordion-button collapsed"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse6"
-                          aria-expanded="false"
-                          aria-controls="collapse6"
-                        >
-                          It is hidden by default, until the collapse
-                          plugin...
-                        </button>
-                      </h2>
-                      <div
-                        id="collapse6"
-                        class="accordion-collapse collapse"
-                        aria-labelledby="headingThree"
-                        data-bs-parent="#accordionPost"
-                      >
-                        <div class="accordion-body">
-                          <p>Nudity</p>
-                          <strong>
-                            This is the third item's accordion body.
-                          </strong>
-                          It is hidden by default, until the collapse plugin
-                          adds the appropriate classes that we use to style
-                          each element. These classes control the overall
-                          appearance, as well as the showing and hiding via
-                          CSS transitions. You can modify any of this with
-                          custom CSS or overriding our default variables.
-                          It's also worth noting that just about any HTML
-                          can go within the
-                          <code>.accordion-body</code>, though the
-                          transition does limit overflow.
-                        </div>
-                      </div>
-                    </div>
+                      )
+                    )}
                   </div>
                 </div>
               </div>
@@ -375,120 +391,72 @@ function ReportUserPage() {
                 <div class="row mt-2 p-1 complain-body">
                   {/* Accordion */}
                   <div class="accordion" id="accordionComment">
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingOne">
-                        <button
-                          class="accordion-button"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse7"
-                          aria-expanded="true"
-                          aria-controls="collapse7"
-                        >
-                          It is hidden by default, until the collapse
-                          plugin...
-                        </button>
-                      </h2>
-                      <div
-                        id="collapse7"
-                        class="accordion-collapse collapse show"
-                        aria-labelledby="headingOne"
-                        data-bs-parent="#accordionComment"
-                      >
-                        <div class="accordion-body">
-                          <p>Nudity</p>
-                          <strong>
-                            This is the first item's accordion body.
-                          </strong>
-                          It is hidden by default, until the collapse plugin
-                          adds the appropriate classes that we use to style
-                          each element. These classes control the overall
-                          appearance, as well as the showing and hiding via
-                          CSS transitions. You can modify any of this with
-                          custom CSS or overriding our default variables.
-                          It's also worth noting that just about any HTML
-                          can go within the
-                          <code>.accordion-body</code>, though the
-                          transition does limit overflow.
+                    {commentReportDetails.map((data, i) =>
+                      i === 0 ? (
+                        <div class="accordion-item" key={data.commentReportId}>
+                          <h2
+                            class="accordion-header"
+                            id={"heading" + numList[i]}
+                          >
+                            <button
+                              class="accordion-button"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={"#collapse" + 11 + i}
+                              aria-expanded="true"
+                              aria-controls={"collapse" + 11 + i}
+                            >
+                              {truncate(data.description)}
+                            </button>
+                          </h2>
+                          <div
+                            id={"collapse" + 11 + i}
+                            class="accordion-collapse collapse show"
+                            aria-labelledby={"heading" + numList[i]}
+                            data-bs-parent="#accordionComment"
+                          >
+                            <div class="accordion-body">
+                              <p>
+                                <b>{typeList[data.reportCategory]}</b>
+                              </p>
+
+                              {data.description}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingTwo">
-                        <button
-                          class="accordion-button collapsed"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse8"
-                          aria-expanded="false"
-                          aria-controls="collapse8"
-                        >
-                          It is hidden by default, until the collapse
-                          plugin...
-                        </button>
-                      </h2>
-                      <div
-                        id="collapse8"
-                        class="accordion-collapse collapse"
-                        aria-labelledby="headingTwo"
-                        data-bs-parent="#accordionComment"
-                      >
-                        <div class="accordion-body">
-                          <p>Nudity</p>
-                          <strong>
-                            This is the second item's accordion body.
-                          </strong>
-                          It is hidden by default, until the collapse plugin
-                          adds the appropriate classes that we use to style
-                          each element. These classes control the overall
-                          appearance, as well as the showing and hiding via
-                          CSS transitions. You can modify any of this with
-                          custom CSS or overriding our default variables.
-                          It's also worth noting that just about any HTML
-                          can go within the
-                          <code>.accordion-body</code>, though the
-                          transition does limit overflow.
+                      ) : (
+                        <div class="accordion-item" key={data.commentReportId}>
+                          <h2
+                            class="accordion-header"
+                            id={"heading" + numList[i]}
+                          >
+                            <button
+                              class="accordion-button collapsed"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={"#collapse" + 11 + i}
+                              aria-expanded="false"
+                              aria-controls={"collapse" + 11 + i}
+                            >
+                              {truncate(data.description)}
+                            </button>
+                          </h2>
+                          <div
+                            id={"collapse" + 11 + i}
+                            class="accordion-collapse collapse"
+                            aria-labelledby={"heading" + numList[i]}
+                            data-bs-parent="#accordionComment"
+                          >
+                            <div class="accordion-body">
+                              <p>
+                                <b>{typeList[data.reportCategory]}</b>
+                              </p>
+                              {data.description}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingThree">
-                        <button
-                          class="accordion-button collapsed"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse9"
-                          aria-expanded="false"
-                          aria-controls="collapse9"
-                        >
-                          It is hidden by default, until the collapse
-                          plugin...
-                        </button>
-                      </h2>
-                      <div
-                        id="collapse9"
-                        class="accordion-collapse collapse"
-                        aria-labelledby="headingThree"
-                        data-bs-parent="#accordionComment"
-                      >
-                        <div class="accordion-body">
-                          <p>Nudity</p>
-                          <strong>
-                            This is the third item's accordion body.
-                          </strong>
-                          It is hidden by default, until the collapse plugin
-                          adds the appropriate classes that we use to style
-                          each element. These classes control the overall
-                          appearance, as well as the showing and hiding via
-                          CSS transitions. You can modify any of this with
-                          custom CSS or overriding our default variables.
-                          It's also worth noting that just about any HTML
-                          can go within the
-                          <code>.accordion-body</code>, though the
-                          transition does limit overflow.
-                        </div>
-                      </div>
-                    </div>
+                      )
+                    )}
                   </div>
                 </div>
               </div>
@@ -507,120 +475,77 @@ function ReportUserPage() {
                 <div class="row mt-2 p-1 complain-body">
                   {/* Accordion */}
                   <div class="accordion" id="accordionAd">
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingOne">
-                        <button
-                          class="accordion-button"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse10"
-                          aria-expanded="true"
-                          aria-controls="collapse10"
+                    {advertisementReportDetails.map((data, i) =>
+                      i === 0 ? (
+                        <div
+                          class="accordion-item"
+                          key={data.advertisementReportId}
                         >
-                          It is hidden by default, until the collapse
-                          plugin...
-                        </button>
-                      </h2>
-                      <div
-                        id="collapse10"
-                        class="accordion-collapse collapse show"
-                        aria-labelledby="headingOne"
-                        data-bs-parent="#accordionAd"
-                      >
-                        <div class="accordion-body">
-                          <p>Nudity</p>
-                          <strong>
-                            This is the first item's accordion body.
-                          </strong>
-                          It is hidden by default, until the collapse plugin
-                          adds the appropriate classes that we use to style
-                          each element. These classes control the overall
-                          appearance, as well as the showing and hiding via
-                          CSS transitions. You can modify any of this with
-                          custom CSS or overriding our default variables.
-                          It's also worth noting that just about any HTML
-                          can go within the
-                          <code>.accordion-body</code>, though the
-                          transition does limit overflow.
+                          <h2
+                            class="accordion-header"
+                            id={"heading" + numList[i]}
+                          >
+                            <button
+                              class="accordion-button"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={"#collapse" + i + 16}
+                              aria-expanded="true"
+                              aria-controls={"collapse" + i + 16}
+                            >
+                              {truncate(data.description)}
+                            </button>
+                          </h2>
+                          <div
+                            id={"collapse" + i + 16}
+                            class="accordion-collapse collapse show"
+                            aria-labelledby={"heading" + numList[i]}
+                            data-bs-parent="#accordionAd"
+                          >
+                            <div class="accordion-body">
+                              <p>
+                                <b>{typeList[data.reportCategory]}</b>
+                              </p>
+                              {data.description}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingTwo">
-                        <button
-                          class="accordion-button collapsed"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse11"
-                          aria-expanded="false"
-                          aria-controls="collapse11"
+                      ) : (
+                        <div
+                          class="accordion-item"
+                          key={data.advertisementReportId}
                         >
-                          It is hidden by default, until the collapse
-                          plugin...
-                        </button>
-                      </h2>
-                      <div
-                        id="collapse11"
-                        class="accordion-collapse collapse"
-                        aria-labelledby="headingTwo"
-                        data-bs-parent="#accordionAd"
-                      >
-                        <div class="accordion-body">
-                          <p>Nudity</p>
-                          <strong>
-                            This is the second item's accordion body.
-                          </strong>
-                          It is hidden by default, until the collapse plugin
-                          adds the appropriate classes that we use to style
-                          each element. These classes control the overall
-                          appearance, as well as the showing and hiding via
-                          CSS transitions. You can modify any of this with
-                          custom CSS or overriding our default variables.
-                          It's also worth noting that just about any HTML
-                          can go within the
-                          <code>.accordion-body</code>, though the
-                          transition does limit overflow.
+                          <h2
+                            class="accordion-header"
+                            id={"heading" + numList[i]}
+                          >
+                            <button
+                              class="accordion-button collapsed"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={"#collapse" + i + 16}
+                              aria-expanded="false"
+                              aria-controls={"collapse" + i + 16}
+                            >
+                              {truncate(data.description)}
+                            </button>
+                          </h2>
+                          <div
+                            id={"collapse" + i + 16}
+                            class="accordion-collapse collapse"
+                            aria-labelledby={"heading" + numList[i]}
+                            data-bs-parent="#accordionAd"
+                          >
+                            <div class="accordion-body">
+                              <p>
+                                <b>{typeList[data.reportCategory]}</b>
+                              </p>
+                              {data.description}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingThree">
-                        <button
-                          class="accordion-button collapsed"
-                          type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse12"
-                          aria-expanded="false"
-                          aria-controls="collapse12"
-                        >
-                          It is hidden by default, until the collapse
-                          plugin...
-                        </button>
-                      </h2>
-                      <div
-                        id="collapse12"
-                        class="accordion-collapse collapse"
-                        aria-labelledby="headingThree"
-                        data-bs-parent="#accordionAd"
-                      >
-                        <div class="accordion-body">
-                          <p>Nudity</p>
-                          <strong>
-                            This is the third item's accordion body.
-                          </strong>
-                          It is hidden by default, until the collapse plugin
-                          adds the appropriate classes that we use to style
-                          each element. These classes control the overall
-                          appearance, as well as the showing and hiding via
-                          CSS transitions. You can modify any of this with
-                          custom CSS or overriding our default variables.
-                          It's also worth noting that just about any HTML
-                          can go within the
-                          <code>.accordion-body</code>, though the
-                          transition does limit overflow.
-                        </div>
-                      </div>
-                    </div>
+                      )
+                    )}
                   </div>
                 </div>
               </div>

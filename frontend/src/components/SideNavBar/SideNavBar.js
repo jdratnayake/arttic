@@ -17,13 +17,23 @@ function SideNavBar({ sideNavBarIndex }) {
     });
 
     $(".sideNavBarSectionHighlight").click(function (e) {
-      console.log("Hi");
+      // console.log("Hi");
       $(".sideNavBarSectionHighlight").each(function (i) {
         console.log(i);
         $(this).removeClass("activesb");
       });
 
       $(this).addClass("activesb");
+    });
+
+    $(".premium").click(function (e) {
+      // console.log("Hi");
+      $(".sideNavBarSectionHighlight").each(function (i) {
+        console.log(i);
+        $(this).removeClass("activesb");
+      });
+
+      $("#settingsSection").addClass("activesb");
     });
   }, []);
 
@@ -42,7 +52,12 @@ function SideNavBar({ sideNavBarIndex }) {
                 <i className="bi bi-rss-fill icon-theme"></i>Feed
               </a>
             </li>
-            <li className="sideNavBarSectionHighlight">
+            <li
+              className="sideNavBarSectionHighlight"
+              onClick={() => {
+                navigate("/subscribedcreatorspage");
+              }}
+            >
               <a>
                 <i className="bi bi-people-fill icon-theme"></i>Find Creators
               </a>
@@ -56,9 +71,15 @@ function SideNavBar({ sideNavBarIndex }) {
                 <i className="bi bi-star-fill icon-theme"></i>Favourits
               </a>
             </li>
-            <li className="sideNavBarSectionHighlight">
+            <li
+              className="sideNavBarSectionHighlight"
+              onClick={() => {
+                navigate("/creator/chat");
+              }}
+            >
               <a>
-                <i className="bi bi-chat-left-dots-fill icon-theme"></i>Chat
+                <i className="bi bi-chat-left-dots-fill icon-theme"></i>
+                Chat
               </a>
             </li>
             <li
@@ -73,6 +94,7 @@ function SideNavBar({ sideNavBarIndex }) {
             </li>
             <li
               className="sideNavBarSectionHighlight"
+              id="settingsSection"
               onClick={() => {
                 navigate("/settings");
               }}
@@ -94,10 +116,17 @@ function SideNavBar({ sideNavBarIndex }) {
           </ul>
           <br />
 
-          <div className="premium">
+          <div
+            className="premium"
+            onClick={() => {
+              navigate("/settings");
+            }}
+          >
             <div className="content-pre">
               <p className="para">
-                <a>Upgrade to premimum <i className="bi bi-gem icon-pre"></i></a>
+                <a>
+                  Upgrade to premimum <i className="bi bi-gem icon-pre"></i>
+                </a>
               </p>
               <p className="para">
                 small description on to have interest on premium package
