@@ -37,6 +37,9 @@ function ViewUserProfile() {
     const [profileData, setProfileData] = useState("");
     let [followBtn, setFollowBtn] = useState("");
 
+    const [followingData, setFollowingsData] = useState([]);
+    const [followersData, setFollowersData] = useState([]);
+
     const userInfo = useSelector((state) => state.userInfo);
     const { userId, accessToken } = userInfo.user;
 
@@ -82,8 +85,7 @@ function ViewUserProfile() {
         resetForm();
         // window.location.reload(false);
     };
-
-
+    // end submit report -----------------------------------------------------------
 
 
     //  get user data --------------------------------------------------------------
@@ -159,16 +161,53 @@ function ViewUserProfile() {
                     draggable: true,
                     progress: undefined,
                 });
+                getFollowersData();
+                getFollowingsData();
             });
 
     };
     //  End follow unfollow user  -------------------------------------------------------
 
-    useEffect(() => {
-        getUserData();
-    }, []);
+
+    //  get followes data -------------------------------------------------------
+    const getFollowersData = async () => {
+        const config = {
+            headers: {
+                authorization: accessToken,
+            },
+        };
+
+        await axios
+            .get(API_URL + "/user/getfollowersdetails/" + id, config)
+            .then((response) => {
+                setFollowersData(response.data);
+                //console.log(response.data);
+            });
+    };
+    //  end get followers data --------------------------------------------------
+
+
+    //  get followings data -----------------------------------------------------
+    const getFollowingsData = async () => {
+        const config = {
+            headers: {
+                authorization: accessToken,
+            },
+        };
+
+        await axios
+            .get(API_URL + "/user/getfollowingsdetails/" + id, config)
+            .then((response) => {
+                setFollowingsData(response.data);
+                //console.log(response.data);
+            });
+    };
+    //  end followings data ----------------------------------------------------
 
     useEffect(() => {
+        getUserData();
+        getFollowersData();
+        getFollowingsData();
         getFollowState();
     }, []);
 
@@ -216,10 +255,13 @@ function ViewUserProfile() {
                                     {/* text */}
                                     <div class="lh-1">
                                         <h2 class="mb-0"> {profileData.name} </h2>
-                                        <div class="sub-lh-1">
-                                            <p class="mb-0 d-block">101 followers</p>
-                                            <p class="mb-0 d-block following">50 following</p>
-                                        </div>
+                                        {profileData.type === 3 && (
+                                            <div class="sub-lh-1">
+                                                <p class="mb-0 d-block">{followersData.length} followers</p>
+                                                <p class="mb-0 d-block following">{followingData.length} following</p>
+                                            </div>
+                                        )}
+
                                     </div>
 
                                 </div>

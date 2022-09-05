@@ -60,7 +60,7 @@ function CreatorProfilePage() {
       .get(API_URL + "/user/getfollowersdetails/" + userId, config)
       .then((response) => {
         setFollowersData(response.data);
-        console.log(response.data);
+        //console.log(response.data);
       });
   };
   //  end get followers data --------------------------------------------------
@@ -78,7 +78,7 @@ function CreatorProfilePage() {
       .get(API_URL + "/user/getfollowingsdetails/" + userId, config)
       .then((response) => {
         setFollowingsData(response.data);
-        console.log(response.data);
+        //console.log(response.data);
       });
   };
   //  end followings data ----------------------------------------------------

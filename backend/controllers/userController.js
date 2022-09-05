@@ -351,6 +351,36 @@ const followUnfollowCreator = asyncHandler(async (req, res) => {
 //end follow Unfollow check Creator--------------------------------------------------------
 
 
+//Ad Free Feature-------------------------------------------------------------------------
+const adFreeFeature = asyncHandler(async (req, res) => {
+
+  const state = req.body.data.state;
+  const userId = parseInt(req.body.data.userId);
+
+  const existUser = await user.update({
+    where: {
+      userId,
+    },
+    data: {
+      advertisementVisibility: state,
+    },
+  });
+
+  if (state) {
+    res.json({
+      msg: "Advertisments enabled"
+    });
+  }
+  else {
+    res.json({
+      msg: "Advertisments disabled"
+    });
+  }
+
+});
+//End Ad Free Feature------------------------------------------------------------------------
+
+
 
 module.exports = {
   uploadProfileOrCoverPicture,
@@ -362,4 +392,5 @@ module.exports = {
   getFollowingsDetails,
   getTopCreatorsDetails,
   followUnfollowCreator,
+  adFreeFeature,
 };

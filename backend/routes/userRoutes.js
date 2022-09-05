@@ -15,6 +15,7 @@ const {
   getFollowingsDetails,
   getTopCreatorsDetails,
   followUnfollowCreator,
+  adFreeFeature,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -29,6 +30,7 @@ router.get("/getuserdetails/:id", validateToken, getUserDetails);
 router.get("/checkusername/:name", validateToken, checkUserName);
 router.post("/updateuserdetails", validateToken, updateUserDetails);
 router.post("/followunfollowcreator", validateToken, followUnfollowCreator);
+router.post("/adfreefeature", validateToken, adFreeFeature);
 
 router.post("/uploadUserReport", validateToken, uploadUserReport);
 router.get("/getfollowersdetails/:id", validateToken, getFollowersDetails);
