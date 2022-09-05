@@ -86,20 +86,57 @@ function NavBarCreator() {
                     <i class="bi bi-bell-fill icon-theme-nav"></i>
                     <span class="notification-bell-btn">3</span>
                   </button>
-
+                  
                   <div
                     class="dropdown-menu dropdown-menu-lg dropdown-menu-end"
                     aria-labelledby="page-header-notifications-dropdown"
                   >
-                    <a class="dropdown-item">
-                      <span class="align-middle">N 1</span>
-                    </a>
-                    <a class="dropdown-item">
-                      <span class="align-middle">N 2</span>
-                    </a>
-                    <a class="dropdown-item">
-                      <span class="align-middle">N 3</span>
-                    </a>
+                    <header>
+                      <strong>Notifications</strong>
+                      <a href="">Archive all</a>
+                    </header>
+                    <div role="menu" tabindex="-1" class="dropdown-body clearfix" aria-hidden="false">
+                      <div class="notification-list">
+                        <ul>
+                          <li>
+                            <div class="notification-icon">
+                              <i class="bi bi-postcard-fill"></i>
+                            </div>
+                            <div class="notification-subject">
+                              <div class="notification-text">You have 2 likes on your recent posts from Mahesh and Lavinka</div>
+                              <small>
+                                <time class="time-text" datetime="2020-03-15T07:08:20.000Z" title="2020-03-15 07:08"> 2 months ago</time>
+                              </small>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="notification-icon">
+                              <i class="bi bi-badge-ad-fill"></i>
+                            </div>
+                            <div class="notification-subject">
+                              <div class="notification-text">You have 2 likes on your recent posts from Mahesh and Lavinka</div>
+                              <small>
+                                <time class="time-text" datetime="2020-03-15T07:08:20.000Z" title="2020-03-15 07:08"> 2 months ago</time>
+                              </small>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="notification-icon">
+                              <i class="bi bi-flag-fill"></i>
+                            </div>
+                            <div class="notification-subject">
+                              <div class="notification-text">You have 2 likes on your recent posts from Mahesh and Lavinka</div>
+                              <small>
+                                <time class="time-text" datetime="2020-03-15T07:08:20.000Z" title="2020-03-15 07:08"> 2 months ago</time>
+                              </small>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                      <footer class="final show-all">
+                        <a class="btn " href="" data-analytics="NavBarNotificationsShowAll">Show All</a>
+                      </footer>
+                    </div>
                   </div>
                 </div>
 
