@@ -487,15 +487,13 @@ function AccountManageAdmin0Page() {
                           {data.blockedStatus ? (
                             <span class="status status-pending">Blocked</span>
                           ) : (
-                            <td>
-                              <span class="status status-paid">Active</span>
-                            </td>
+                            <span class="status status-paid">Active</span>
                           )}
                         </td>
                         <td class="amount">
                           <Link
                             className="btn btn-secondary"
-                            to={"/admin1/reportUser/" + 100}
+                            to={"/admin0/admin1manage/" + data.userId}
                             target="_blank"
                           >
                             {" "}

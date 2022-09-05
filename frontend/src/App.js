@@ -40,6 +40,7 @@ import ExternalSignUpPasswordPage from "./pages/ExternalSignUpPasswordPage/Exter
 import ChatCreatorPage from "./pages/ChatCreatorPage/ChatCreatorPage";
 import FollowerProfile from "./pages/FollowerProfile/FollowerProfile";
 import ReportUserRecoveryPage from "./pages/ReportUserRecoveryPage/ReportUserRecoveryPage";
+import ReportAdmin0Page from "./pages/ReportAdmin0Page/ReportAdmin0Page";
 
 function App() {
   return (
@@ -181,7 +182,16 @@ function App() {
           element={
             <Admin0Template
               children={<ReportUserRecoveryPage />}
-              sideNavBarIndex="2"
+              sideNavBarIndex="1"
+            />
+          }
+        ></Route>
+        <Route
+          path="/admin0/admin1manage/:id"
+          element={
+            <Admin0Template
+              children={<ReportAdmin0Page />}
+              sideNavBarIndex="1"
             />
           }
         ></Route>
