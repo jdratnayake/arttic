@@ -403,7 +403,7 @@ function AccountManageAdmin0Page() {
                         <td class="amount">
                           <Link
                             className="btn btn-secondary"
-                            to={"/admin1/reportUser/" + 100}
+                            to={"/admin1/reportUserRecovery/" + data.userId}
                             target="_blank"
                           >
                             {" "}

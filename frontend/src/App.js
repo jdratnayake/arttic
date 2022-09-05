@@ -39,6 +39,7 @@ import SubscribedCreatorsPage from "./pages/SubscribedCreatorsPage/SubscribedCre
 import ExternalSignUpPasswordPage from "./pages/ExternalSignUpPasswordPage/ExternalSignUpPasswordPage";
 import ChatCreatorPage from "./pages/ChatCreatorPage/ChatCreatorPage";
 import FollowerProfile from "./pages/FollowerProfile/FollowerProfile";
+import ReportUserRecoveryPage from "./pages/ReportUserRecoveryPage/ReportUserRecoveryPage";
 
 function App() {
   return (
@@ -173,6 +174,15 @@ function App() {
           path="/admin1/reportUser/:id"
           element={
             <Admin0Template children={<ReportUserPage />} sideNavBarIndex="2" />
+          }
+        ></Route>
+        <Route
+          path="/admin1/reportUserRecovery/:id"
+          element={
+            <Admin0Template
+              children={<ReportUserRecoveryPage />}
+              sideNavBarIndex="2"
+            />
           }
         ></Route>
         <Route

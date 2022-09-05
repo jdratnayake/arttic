@@ -232,15 +232,22 @@ const resolveComplaint = asyncHandler(async (req, res) => {
 
 const getReportUserDetails = asyncHandler(async (req, res) => {
   const reportId = parseInt(req.headers.reportid);
+  const type = parseInt(req.headers.type);
 
-  const report = await userReport.findUnique({
-    where: {
-      userReportedId: reportId,
-    },
-    select: { userId: true },
-  });
+  let userId;
 
-  const userId = report.userId;
+  if (type === 2) {
+    userId = reportId;
+  } else {
+    const report = await userReport.findUnique({
+      where: {
+        userReportedId: reportId,
+      },
+      select: { userId: true },
+    });
+
+    userId = report.userId;
+  }
 
   const userDetails = await user.findUnique({
     where: {
@@ -334,6 +341,7 @@ const getReportUserDetails = asyncHandler(async (req, res) => {
 // 2 = post
 // 3 = comment
 // 4 = advertisement
+// 5 = unblock user
 
 const blockUser = asyncHandler(async (req, res) => {
   const { blockUserId, blockedAdminID, blockType } = req.body;
@@ -376,6 +384,15 @@ const blockUser = asyncHandler(async (req, res) => {
       },
       data: {
         blockedStatus: true,
+      },
+    });
+  } else if (blockType === 5) {
+    updateEntity = await user.update({
+      where: {
+        userId: blockUserId,
+      },
+      data: {
+        blockedStatus: false,
       },
     });
   }

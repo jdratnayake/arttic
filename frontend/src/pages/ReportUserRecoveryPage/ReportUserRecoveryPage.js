@@ -6,10 +6,10 @@ import $ from "jquery";
 
 import { API_URL, PROFILE_PIC_URL } from "../../constants/globalConstants";
 
-import "./ReportUserPage.css";
+import "./ReportUserRecoveryPage.css";
 import checkedMark from "../../images/svg/checked-mark.svg";
 
-function ReportUserPage() {
+function ReportUserRecoveryPage() {
   let { id } = useParams();
 
   const userInfo = useSelector((state) => state.userInfo);
@@ -25,6 +25,7 @@ function ReportUserPage() {
   );
   const [buttonName, setButtonName] = useState("Temporary Ban");
   const [isDisabled, setDisabled] = useState(false);
+  const [buttonStyle, setButtonStyle] = useState({});
 
   const typeList = [
     "",
@@ -46,15 +47,20 @@ function ReportUserPage() {
       headers: {
         authorization: accessToken,
         reportid: id,
-        type: 1,
+        type: 2,
       },
     };
 
     await axios
       .get(API_URL + "/complaintreview/getReportUserDetails/", config)
       .then((response) => {
-        if (response.data.userDetails.blockedStatus) {
-          setButtonName("Temporary Banned");
+        if (!response.data.userDetails.blockedStatus) {
+          setButtonName("Active");
+          setButtonStyle({
+            background: "#33ff94",
+            border: "#33ff94",
+            color: "black",
+          });
           setDisabled(true);
         }
         setUserDetails(response.data.userDetails);
@@ -76,7 +82,7 @@ function ReportUserPage() {
     const inputData = {
       blockUserId: userDetails.userId,
       blockedAdminID: userId,
-      blockType: 1,
+      blockType: 5,
     };
 
     await axios
@@ -84,7 +90,12 @@ function ReportUserPage() {
       .then((res) => {});
 
     $("#btn-close-form").click();
-    setButtonName("Temporary Banned");
+    setButtonName("Active");
+    setButtonStyle({
+      background: "#33ff94",
+      border: "#33ff94",
+      color: "black",
+    });
     setDisabled(true);
   };
 
@@ -133,6 +144,7 @@ function ReportUserPage() {
                     disabled={isDisabled}
                     data-bs-toggle="modal"
                     data-bs-target="#upgradeAccount"
+                    style={buttonStyle}
                   >
                     {buttonName}
                   </button>
@@ -152,7 +164,7 @@ function ReportUserPage() {
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">
-                    Confirm Ban
+                    Confirm Activation
                   </h5>
                   <button
                     type="button"
@@ -162,7 +174,7 @@ function ReportUserPage() {
                   ></button>
                 </div>
                 <div class="modal-body">
-                  This procedure is irreversible. Do you want to Ban?
+                  This procedure is irreversible. Do you want to Active?
                 </div>
                 <div class="modal-footer">
                   <button
@@ -564,4 +576,4 @@ function ReportUserPage() {
   );
 }
 
-export default ReportUserPage;
+export default ReportUserRecoveryPage;
