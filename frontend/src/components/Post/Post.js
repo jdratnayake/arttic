@@ -138,6 +138,7 @@ function Post(props) {
     axios
       .post(API_URL + "/feed/uploadComment/", data, config)
       .then((response) => {
+        console.log(response.data)
         setComments((current) => [response.data, ...current]);
         setCommentCount(commentCount + 1);
       });
@@ -201,7 +202,7 @@ function Post(props) {
 
     await axios.get(API_URL + "/feed/getComments/", config).then((response) => {
       setComments(response.data);
-      // console.log(response.data, props.postid);
+      console.log(response.data);
     });
   };
 
@@ -315,7 +316,7 @@ function Post(props) {
                 <Comment
                   key={newComment.commentId}
                   id={"comment" + newComment.commentId}
-                  commentorImage={PROFILE_PIC_URL + newComment.profilePhoto}
+                  commentorImage={props.profilePic}
                   commentId={newComment.commentId}
                   profilerId={props.profilerId}
                   userId={userId}
@@ -356,7 +357,8 @@ function Post(props) {
                   ref={commentRef}
                   className="inputBox-input text-muted"
                   type="text"
-                  placeholder={`what's on your mind ${props.userName} ?`}
+                  placeholder={`comment here`}
+                  style={{textAlign: "left !important"}}
                 />
                 <button
                   className="btn btn-primary"

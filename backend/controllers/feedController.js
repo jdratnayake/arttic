@@ -19,6 +19,7 @@ const {
   postSave,
   postView,
   advertisementView,
+  creator,
 } = new PrismaClient();
 
 //  upload a favorite post ***************
@@ -48,12 +49,12 @@ const uploadPostSave = asyncHandler(async (req, res) => {
 
   const isPostExist = await client.query(
     'SELECT "postSaveId" FROM public."postSave" WHERE ( "postId" =$1 and "userId" = $2);',
-    [Data.postId,userId]
+    [Data.postId, userId]
   );
 
   await client.end();
   // console.log(isPostExist.rowCount);
-  if(isPostExist.rowCount !== 0){
+  if (isPostExist.rowCount !== 0) {
     res.json("post exits");
   }
 
@@ -109,44 +110,45 @@ const getAds = asyncHandler(async (req, res) => {
   );
 
   adCount = await advertisement.count({
-    where:{
+    where: {
       blockedStatus: false,
       paymentStatus: true,
-      endDate:{
-        gt: new Date()
-      }
-    }  
-  })
+      endDate: {
+        gt: new Date(),
+      },
+    },
+  });
   // console.log("before update :",nextAdToDisplay);
 
-
-  nextAdToDisplay = (nextAdToDisplay % adCount);
+  nextAdToDisplay = nextAdToDisplay % adCount;
   // console.log("before after :",nextAdToDisplay);
 
   const adIds = await advertisement.findMany({
-      select:{
-        advertisementId:true,
+    select: {
+      advertisementId: true,
+    },
+    where: {
+      blockedStatus: false,
+      paymentStatus: true,
+      endDate: {
+        gt: new Date(),
       },
-      where:{
-        blockedStatus: false,
-        paymentStatus: true,
-        endDate:{
-          gt: new Date()
-        }
-      }    
-    });
+    },
+  });
 
   let adIdArray = [];
-  adIds.map(ad => {
-      adIdArray.push(ad.advertisementId);
-  }) 
+  adIds.map((ad) => {
+    adIdArray.push(ad.advertisementId);
+  });
 
   // console.log(nextAdToDisplay,nextAdToDisplay + take);
-  
-  adIdsTodisplay = adIdArray.slice(nextAdToDisplay,nextAdToDisplay + take)
 
-  if((nextAdToDisplay + take) >= adCount){
-    adIdsTodisplay = adIdsTodisplay.concat(adIdArray.slice(0,((nextAdToDisplay + take) % adCount)))
+  adIdsTodisplay = adIdArray.slice(nextAdToDisplay, nextAdToDisplay + take);
+
+  if (nextAdToDisplay + take >= adCount) {
+    adIdsTodisplay = adIdsTodisplay.concat(
+      adIdArray.slice(0, (nextAdToDisplay + take) % adCount)
+    );
     // console.log(adIdsTodisplay)
     // console.log(true)
   }
@@ -163,16 +165,16 @@ const getAds = asyncHandler(async (req, res) => {
 
   if (isShowAd.rows[0] === undefined || isShowAd.rows[0].showAd) {
     Ads = await advertisement.findMany({
-      select:{
-        advertisementId:true,
-        creatorId:true,
-        contentLink:true
+      select: {
+        advertisementId: true,
+        creatorId: true,
+        contentLink: true,
       },
-      where:{
-        advertisementId:{
-          in:adIdsTodisplay
-        }
-      }    
+      where: {
+        advertisementId: {
+          in: adIdsTodisplay,
+        },
+      },
     });
 
     Ads.map(async (ad) => {
@@ -180,9 +182,9 @@ const getAds = asyncHandler(async (req, res) => {
         data: {
           advertisementId: ad.advertisementId,
           followerCreatorId: userId,
-        }
+        },
       });
-    })
+    });
   }
   // console.log(isShowAd);
   await client.end();
@@ -215,15 +217,20 @@ const uploadCommentReport = asyncHandler(async (req, res) => {
   });
 
   await client.connect();
-   const comments = await client.query({
+  const comments = await client.query({
     text: `INSERT INTO public."commentReport"
           ("userId", "reportedCommentId","reportCategory", description)
           VALUES ($1,$2,$3,$4);`,
-    values: [Data.userId,parseInt(Data.commentId),parseInt(Data.category),Data.description],
+    values: [
+      Data.userId,
+      parseInt(Data.commentId),
+      parseInt(Data.category),
+      Data.description,
+    ],
   });
-   await client.end();
+  await client.end();
 
-  res.status(StatusCodes.CREATED).json(comments.rows)
+  res.status(StatusCodes.CREATED).json(comments.rows);
 });
 
 //  upload a post report ***************
@@ -310,7 +317,7 @@ const uploadPost = asyncHandler(async (req, res) => {
 
 //  get a comments  ***************
 const getComments = asyncHandler(async (req, res) => {
-   const client = new Client({
+  const client = new Client({
     user: process.env.DATABASE_USER,
     host: process.env.DATABASE_HOST,
     database: process.env.DATABASE_DATABASE,
@@ -321,10 +328,10 @@ const getComments = asyncHandler(async (req, res) => {
     },
   });
 
-  const postId =  parseInt(req.headers.postid);
+  const postId = parseInt(req.headers.postid);
 
   await client.connect();
-   const comments = await client.query({
+  const comments = await client.query({
     text: `SELECT comments.*,"user"."name","user"."profilePhoto" FROM 
             (SELECT comment.* 
               FROM comment
@@ -335,7 +342,7 @@ const getComments = asyncHandler(async (req, res) => {
            "user" on ("user"."userId" = comments."userId" and "user"."blockedStatus"= false) ORDER BY "commentId" DESC`,
     values: [postId],
   });
-   await client.end();
+  await client.end();
 
   res.json(comments.rows);
 });
@@ -371,44 +378,104 @@ const getPosts = asyncHandler(async (req, res) => {
     values: [userId, take, skip],
   });
 
-  (posts.rows).map(async (post) =>  {
+  posts.rows.map(async (post) => {
     // console.log(post.postId)
     await postView.create({
       data: {
         postId: post.postId,
         followerCreatorId: userId,
-      }
+      },
     });
-  })
+  });
 
   await client.end();
 
   res.json(posts.rows);
 });
 
-const deletePost = asyncHandler(async (req,res) => {
+const deletePost = asyncHandler(async (req, res) => {
   const userId = parseInt(req.headers.userid);
   const postId = parseInt(req.headers.postid);
   const deletedPost = await post.delete({
-    where:{
-      postId
-    }
-  })
+    where: {
+      postId,
+    },
+  });
 
   // console.log(deletedPost)
   res.json(deletedPost);
 });
 
-const deleteComment = asyncHandler(async (req,res) => {
+const deleteComment = asyncHandler(async (req, res) => {
   const userId = parseInt(req.headers.userid);
   const commentId = parseInt(req.headers.commentid);
   // console.log(userId,commentId,req.headers)
   const deletedComment = await comment.delete({
-    where:{
-      commentId
-    }
-  })
+    where: {
+      commentId,
+    },
+  });
   res.json(deletedComment);
+});
+
+const getFavourites = asyncHandler(async (req, res) => {
+  const userId = parseInt(req.headers.userid);
+
+  // const favorites = await post.findMany({
+  //   where:{
+  //     postId:1
+  //   },
+  //   include:{
+  //     postSaves:true
+  //   }
+  // })
+
+  // const posts = await creator.findMany({
+  //   where:{
+  //     userId:3
+  //   },include:{
+  //     posts:true
+  //   }
+  // })
+
+  const postSaved = await postSave.findMany({
+    where: {
+      userId: userId,
+    },
+    include: {
+      post: {
+        include: {
+          creator: {
+            include:{
+              followerCreator:{
+                include:{
+                  user:true
+                }
+              }
+            }
+          }
+        },
+      },
+    },
+  });
+  // console.log(postSaved);
+  // console.log("                     ");
+  // Array.from(postSaved).map(item => console.log(item.post.blockedStatus));
+  // Array.from(postSaved).filter((item) => item.post.blockedStatus !== false);
+  // console.log("filterd", Array.from(postSaved).filter((item) => item.post.blockedStatus !== true));
+  res.json(Array.from(postSaved).filter((item) => item.post.blockedStatus !== true));
+});
+
+const deleteSavePost = asyncHandler(async (req, res) => {
+  const userId = parseInt(req.headers.userid);
+  const postSaveId = parseInt(req.headers.postid);
+  const deletedPost = await postSave.delete({
+    where: {
+      postId:postSaveId,
+    },
+  });
+
+  res.json(deletedPost);
 });
 
 
@@ -426,4 +493,6 @@ module.exports = {
   getPosts,
   deletePost,
   deleteComment,
+  getFavourites,
+  deleteSavePost
 };

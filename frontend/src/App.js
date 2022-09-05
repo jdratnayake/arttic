@@ -38,6 +38,7 @@ import SubscribedCreatorsPage from "./pages/SubscribedCreatorsPage/SubscribedCre
 import ExternalSignUpPasswordPage from "./pages/ExternalSignUpPasswordPage/ExternalSignUpPasswordPage";
 import ChatCreatorPage from "./pages/ChatCreatorPage/ChatCreatorPage";
 import FollowerProfile from "./pages/FollowerProfile/FollowerProfile";
+import Favourite from "./components/Favourite/Favourite";
 
 function App() {
   return (
@@ -47,6 +48,10 @@ function App() {
         <Route
           path="/feed"
           element={<CreatorTemplate children={<Feed />} sideNavBarIndex="0" />}
+        ></Route>
+        <Route
+          path="/favourite"
+          element={<CreatorTemplate children={<Favourite />} sideNavBarIndex="0" />}
         ></Route>
         <Route
           path="/subscribedcreatorspage"
