@@ -11,6 +11,7 @@ const {
   post,
   creator,
   comment,
+  advertisement,
 } = new PrismaClient();
 
 const getUserComplaints = asyncHandler(async (req, res) => {
@@ -368,6 +369,15 @@ const blockUser = asyncHandler(async (req, res) => {
         blockedStatus: true,
       },
     });
+  } else if (blockType === 4) {
+    updateEntity = await advertisement.update({
+      where: {
+        advertisementId: blockUserId,
+      },
+      data: {
+        blockedStatus: true,
+      },
+    });
   }
 
   if (updateEntity) {
@@ -602,7 +612,89 @@ const getReportCommentDetails = asyncHandler(async (req, res) => {
 });
 
 const getReportAdvertismentDetails = asyncHandler(async (req, res) => {
-  res.json("Hi");
+  const reportId = parseInt(req.headers.reportid);
+
+  const report = await advertisementReport.findUnique({
+    where: {
+      advertisementReportId: reportId,
+    },
+  });
+
+  const advertisementDetails = await advertisement.findUnique({
+    where: {
+      advertisementId: report.advertisementId,
+    },
+  });
+
+  // res.json(advertisementOwner);
+
+  // return 0;
+
+  const userId = advertisementDetails.creatorId;
+  const advertisementId = report.advertisementId;
+
+  const userDetails = await user.findUnique({
+    where: {
+      userId,
+    },
+
+    select: {
+      userId: true,
+      type: true,
+      name: true,
+      bio: true,
+      profilePhoto: true,
+      joinedDate: true,
+      premiumUser: true,
+      blockedStatus: true,
+      followerCreator: true,
+    },
+  });
+
+  const creatorDetails = await creator.findUnique({
+    where: {
+      userId,
+    },
+
+    select: {
+      openSeaStatus: true,
+    },
+  });
+
+  const userReportDetails = await userReport.findMany({
+    take: 5,
+    orderBy: [
+      {
+        userReportedId: "desc",
+      },
+    ],
+    where: {
+      reportedUserId: userId,
+    },
+  });
+
+  const advertisementReportDetails = await advertisementReport.findMany({
+    take: 5,
+    orderBy: [
+      {
+        advertisementReportId: "desc",
+      },
+    ],
+    where: {
+      advertisementId: advertisementId,
+    },
+  });
+
+  const outputData = {
+    userDetails,
+    creatorDetails,
+    advertisementReport: report,
+    advertisementDetails,
+    userReportDetails,
+    advertisementReportDetails,
+  };
+
+  res.json(outputData);
 });
 
 module.exports = {

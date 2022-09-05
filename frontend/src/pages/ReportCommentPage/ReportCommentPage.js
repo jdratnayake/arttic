@@ -209,7 +209,6 @@ function ReportCommentPage() {
                   {buttonName}
                 </button>
               </div>
-              <div class="card-footer text-center text-muted">2 days ago</div>
             </div>
           </div>
         </div>
