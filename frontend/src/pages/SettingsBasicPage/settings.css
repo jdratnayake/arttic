@@ -9569,7 +9569,22 @@
   flex: 1 1 auto;
   padding: 1rem;
 }
-
+.payment{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.payment .payment-caption{
+  text-align: center;
+}
+.settingsPage .payment-chioce{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.settingsPage .payment-chioce .btn {
+  margin-bottom: 6px;
+}
 .settingsPage .modal-footer {
   display: flex;
   flex-wrap: wrap;
