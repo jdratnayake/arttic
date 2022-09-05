@@ -171,19 +171,33 @@ function App() {
         ></Route>
         <Route
           path="/admin1/reportUser/:id"
-          element={<Admin0Template children={<ReportUserPage />} />}
+          element={
+            <Admin0Template children={<ReportUserPage />} sideNavBarIndex="2" />
+          }
         ></Route>
         <Route
           path="/admin1/reportPost/:id"
-          element={<Admin0Template children={<ReportPostPage />} />}
+          element={
+            <Admin0Template children={<ReportPostPage />} sideNavBarIndex="2" />
+          }
         ></Route>
         <Route
           path="/admin1/reportComment/:id"
-          element={<Admin0Template children={<ReportCommentPage />} />}
+          element={
+            <Admin0Template
+              children={<ReportCommentPage />}
+              sideNavBarIndex="2"
+            />
+          }
         ></Route>
         <Route
           path="/admin1/reportAdvertisment/:id"
-          element={<Admin0Template children={<ReportAdvertismentPage />} />}
+          element={
+            <Admin0Template
+              children={<ReportAdvertismentPage />}
+              sideNavBarIndex="2"
+            />
+          }
         ></Route>
         <Route
           path="/test"
