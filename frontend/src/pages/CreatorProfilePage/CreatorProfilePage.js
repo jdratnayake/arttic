@@ -252,7 +252,7 @@ function CreatorProfilePage() {
                         </div>)
                         : null
                     ))}
-                    {followersData.length > 2 && (
+                    {followersData.length > 5 && (
                       <Link to={"/viewuserlist/followers"}>
                         <p style={{ color: "blue" }}>See more..</p>
                       </Link>
@@ -291,7 +291,7 @@ function CreatorProfilePage() {
                         </div>)
                         : null
                     ))}
-                    {followingData.length > 1 && (
+                    {followingData.length > 5 && (
                       <Link to={"/viewuserlist/followings"}>
                         <p style={{ color: "blue" }}>See more..</p>
                       </Link>
