@@ -5,6 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import $ from "jquery";
+import Switch from "react-switch";
 
 import {
   API_URL,
@@ -31,6 +32,12 @@ function SettingsBasicPage() {
   const [bio, setBio] = useState("");
   const [errorName, setErrorName] = useState("");
   const [errorUserName, setErrorUserName] = useState("");
+
+  const [premiumUser, SetPremiumUser] = useState(false);
+  const [adVisiChecked, setAdVisiChecked] = useState(false);
+  const handleChange = nextChecked => {
+    setAdVisiChecked(nextChecked);
+  };
 
   const profilePicInput = useRef(null);
   const coverPicInput = useRef(null);
@@ -144,6 +151,9 @@ function SettingsBasicPage() {
         setCoverPicDisplay(
           COVER_PIC_URL + response.data.followerCreator.coverPhoto
         );
+        SetPremiumUser(response.data.premiumUser);
+        setAdVisiChecked(response.data.advertisementVisibility);
+
       });
   };
   //end user details ------------------------------------------------------
@@ -273,6 +283,44 @@ function SettingsBasicPage() {
   };
   //end change password----------------------------------------------
 
+
+  //change Ad free ---------------------------------------------------
+  const changeAdFree = async (event) => {
+    event.preventDefault();
+
+    const head = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    const formData = {
+      data: {
+        userId: userId,
+        state: adVisiChecked
+      }
+    };
+
+    await axios
+      .post(API_URL + "/user/adfreefeature/", formData, head)
+      .then((res) => {
+        //console.log(res.data);
+        dispatch(updateUserState(userId));
+        toast.success(res.data.msg, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+
+
+  };
+  //end ad free------------------------------------------------------
+
   useEffect(() => {
     getUserDetails();
   }, []);
@@ -358,7 +406,7 @@ function SettingsBasicPage() {
                         >
                           Change
                         </button>
-                        <button type="submit" class="btn btn-outline-white" style={{background:"#33ff94", border:"#33ff94", color:"black"}}>
+                        <button type="submit" class="btn btn-outline-white" style={{ background: "#33ff94", border: "#33ff94", color: "black" }}>
                           Save
                         </button>
                       </form>
@@ -401,7 +449,7 @@ function SettingsBasicPage() {
                       >
                         Change
                       </button>
-                      <button type="submit" class="btn btn-outline-white" style={{background:"#33ff94", border:"#33ff94", color:"black"}}>
+                      <button type="submit" class="btn btn-outline-white" style={{ background: "#33ff94", border: "#33ff94", color: "black" }}>
                         Save
                       </button>
                     </form>
@@ -507,10 +555,57 @@ function SettingsBasicPage() {
                   </div>
                 </form>
               </div>
+              <br />
+              {premiumUser && (
+                <div>
+                  <div class="mb-6 mt-6">
+                    <h4 class="mb-1">Advertisment-free feature</h4>
+                  </div>
+
+                  <form onSubmit={changeAdFree}>
+                    {/* row */}
+                    <div class="mb-3 row">
+                      <label
+                        for="followerVisibility"
+                        class="switch-lable  d-flex align-items-center justify-content-between col-sm-4 col-form-label form-label"
+                      >
+                        Enable Advertisments
+                        {/* add toggle button */}
+                        <Switch
+                          onChange={handleChange}
+                          checked={adVisiChecked}
+                          className="react-switch col-md-8 col-12"
+                          onColor="#86d3ff"
+                          onHandleColor="#2693e6"
+                          handleDiameter={20}
+                          uncheckedIcon={false}
+                          checkedIcon={false}
+                          boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                          activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                          height={15}
+                          width={45}
+                          id="material-switch-1"
+                        />
+                      </label>
+                    </div>
+                    <div class="row align-items-center">
+                      <div class="offset-md-4 col-md-8 mt-4">
+                        <button type="submit" class="btn btn-primary">
+                          {" "}
+                          Save Changes
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              )}
+
+
             </div>
           </div>
         </div>
       </div>
+
       <div class="row mb-6">
         <div class="col-md-12 col-12">
           {/* card */}
@@ -617,7 +712,7 @@ function SettingsBasicPage() {
                           type="submit"
                           class="btn btn-primary"
                           disabled={isSubmitting}
-                          style={{background:"#33ff94", border:"#33ff94", color:"black"}}
+                          style={{ background: "#33ff94", border: "#33ff94", color: "black" }}
                         >
                           Save Changes
                         </button>
@@ -724,16 +819,82 @@ function SettingsBasicPage() {
                   comments, your reading list or chat messages. Allow your
                   username to become available to anyone.
                 </p>
-                <a href="#" class="btn btn-danger">
+                <a class="btn btn-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#AccDeleteModal"
+                >
                   Delete Account
                 </a>
                 <p class="small mb-0 mt-3">
                   Feel free to contact with any questions{" "}
-                  <a href="#">arttic@gmail.com</a>.
+                  <a href="mailto:arttic@gmail.com">arttic@gmail.com</a>.
                 </p>
               </div>
             </div>
           </div>
+
+          {/* update plan modal pay ad*/}
+          <div
+            class="modal fade"
+            id="AccDeleteModal"
+            tabindex="-1"
+            aria-labelledby="planModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header p-3">
+                  <div>
+                    <h4 class="mb-0" id="planModalLabel">
+                      Account Deletion
+                    </h4>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body p-4">
+                  <div class="card border shadow-none border-bottom p-4">
+                    <div class="row">
+
+                      <div class="col-6 mb-3">
+                        <h6 class="text-uppercase fs-6 ls-2">Username</h6>
+                        <p class="mb-1 fs-8">{userDetails.username}</p>
+                      </div>
+                      <div class="col-6 mb-3">
+                        <h6 class="text-uppercase fs-6 ls-2">email</h6>
+                        <p class="mb-1 fs-8">{userDetails.email}</p>
+                      </div>
+
+                      <div class="col-12 mb-3">
+                        <p class="mb-1 fs-8">
+                          You are about to delete your account! This will delete al of your content such as articles, comments, advertisements,
+                          chat messages. Also you can't use this username and email again to create new acount.
+                        </p>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer justify-content-start p-4 pt-2">
+                  <button type="button" class="btn btn-danger">
+                    Delete
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* update plan modal pay ad*/}
         </div>
       </div>
     </div>

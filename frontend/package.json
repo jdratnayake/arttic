@@ -27,6 +27,7 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-scroll-to-bottom": "^4.2.0",
+    "react-search-panel": "^1.0.9",
     "react-stripe-checkout": "^2.6.3",
     "react-switch": "^7.0.0",
     "react-toastify": "^9.0.8",
