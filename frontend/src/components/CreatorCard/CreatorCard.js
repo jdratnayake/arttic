@@ -1,19 +1,23 @@
 import "./CreatorCard.css";
+import { Link } from "react-router-dom";
 
-function CreatorCard() {
+function CreatorCard(props) {
+
+  const newdate = new Date(props.date).toDateString();
+
   return (
     <span className="creatorCard">
       <div class="col mb-4">
         <div class="container d-flex justify-content-center align-items-center">
           <div class="card">
             <div class="upper">
-              <img src="https://i.imgur.com/Qtrsrk5.jpg" class="img-fluid" />
+              <img src={props.coverPhoto} class="img-fluid" />
             </div>
 
             <div class="user text-center">
               <div class="profile">
                 <img
-                  src="https://i.imgur.com/JgYD2nQ.jpg"
+                  src={props.profilePhoto}
                   class="rounded-circle"
                   width="80"
                 />
@@ -21,22 +25,26 @@ function CreatorCard() {
             </div>
 
             <div class="mt-5 text-center">
-              <h5 class="mb-0">Benjamin Tims</h5>
-              <span class="text-muted d-block mb-2">Los Angles</span>
+              <h5 class="mb-0">{props.name}</h5>
 
-              <button class="btn btn-primary btn-sm follow">Follow</button>
+              <Link to={"/viewuserprofile/" + props.userId}>
+                <button class="btn btn-secondary btn-sm follow">
+                  Go to Profile
+                </button>
+              </Link>
 
-              <div class="d-flex justify-content-between align-items-center mt-4 px-4">
+              <span class="text-muted d-block mb-2">Joined Date - {newdate}</span>
+
+              {/* <div class="d-flex justify-content-between align-items-center mt-4 px-4">
                 <div class="stats">
-                  <h6 class="mb-0">Followers</h6>
-                  <span>8,797</span>
+                  <h6 class="mb-0">Followers - {props.subCount}</h6>
+                  <span></span>
                 </div>
 
                 <div class="stats">
-                  <h6 class="mb-0">Posts</h6>
-                  <span>142</span>
+                  <h6 class="mb-0">Posts : 142</h6>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

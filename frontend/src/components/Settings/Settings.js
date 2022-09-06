@@ -69,7 +69,7 @@ function Settings() {
             Purchase History
           </button>
         </li>
-        <li class="nav-item" role="presentation">
+        {/* <li class="nav-item" role="presentation">
           <button
             class="nav-link settings-nav-link"
             id="page-tab"
@@ -96,7 +96,7 @@ function Settings() {
           >
             Blocked Followers
           </button>
-        </li>
+        </li> */}
       </ul>
       <div class="tab-content mb-5" id="myTabContent">
         <div
@@ -135,7 +135,7 @@ function Settings() {
         >
           <Purchase />
         </div>
-        <div
+        {/* <div
           class="tab-pane settingBody fade p-2 "
           id="page-tab-pane"
           role="tabpanel"
@@ -152,7 +152,7 @@ function Settings() {
           tabindex="0"
         >
           <BlockedFollower />
-        </div>
+        </div> */}
       </div>
     </div>
   );

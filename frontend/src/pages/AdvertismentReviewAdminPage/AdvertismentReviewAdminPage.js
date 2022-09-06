@@ -136,7 +136,7 @@ function AdvertismentReviewAdminPage() {
                                                 <td class="amount">
                                                     <a
                                                         onClick={() =>
-                                                            handleClick({ id: 100})
+                                                            handleClick({ id: 100 })
                                                         }
                                                         href="#"
                                                         class="btn btn-secondary openComplaintDialog"
@@ -161,7 +161,7 @@ function AdvertismentReviewAdminPage() {
                                                 <td class="amount">
                                                     <a
                                                         onClick={() =>
-                                                            handleClick({ id: 100})
+                                                            handleClick({ id: 100 })
                                                         }
                                                         href="#"
                                                         class="btn btn-secondary openComplaintDialog"
@@ -186,7 +186,7 @@ function AdvertismentReviewAdminPage() {
                                                 <td class="amount">
                                                     <a
                                                         onClick={() =>
-                                                            handleClick({ id: 100})
+                                                            handleClick({ id: 100 })
                                                         }
                                                         href="#"
                                                         class="btn btn-secondary openComplaintDialog"
@@ -234,7 +234,7 @@ function AdvertismentReviewAdminPage() {
                                                 <td class="amount">
                                                     <a
                                                         onClick={() =>
-                                                            handleClick({ id: 100})
+                                                            handleClick({ id: 100 })
                                                         }
                                                         href="#"
                                                         class="btn btn-secondary openComplaintDialog"
@@ -259,7 +259,7 @@ function AdvertismentReviewAdminPage() {
                                                 <td class="amount">
                                                     <a
                                                         onClick={() =>
-                                                            handleClick({ id: 100})
+                                                            handleClick({ id: 100 })
                                                         }
                                                         href="#"
                                                         class="btn btn-secondary openComplaintDialog"
@@ -284,7 +284,7 @@ function AdvertismentReviewAdminPage() {
                                                 <td class="amount">
                                                     <a
                                                         onClick={() =>
-                                                            handleClick({ id: 100})
+                                                            handleClick({ id: 100 })
                                                         }
                                                         href="#"
                                                         class="btn btn-secondary openComplaintDialog"
@@ -332,7 +332,7 @@ function AdvertismentReviewAdminPage() {
                                                 <td class="amount">
                                                     <a
                                                         onClick={() =>
-                                                            handleClick({ id: 100})
+                                                            handleClick({ id: 100 })
                                                         }
                                                         href="#"
                                                         class="btn btn-secondary openComplaintDialog"
@@ -357,7 +357,7 @@ function AdvertismentReviewAdminPage() {
                                                 <td class="amount">
                                                     <a
                                                         onClick={() =>
-                                                            handleClick({ id: 100})
+                                                            handleClick({ id: 100 })
                                                         }
                                                         href="#"
                                                         class="btn btn-secondary openComplaintDialog"
@@ -382,7 +382,7 @@ function AdvertismentReviewAdminPage() {
                                                 <td class="amount">
                                                     <a
                                                         onClick={() =>
-                                                            handleClick({ id: 100})
+                                                            handleClick({ id: 100 })
                                                         }
                                                         href="#"
                                                         class="btn btn-secondary openComplaintDialog"
@@ -434,7 +434,7 @@ function AdvertismentReviewAdminPage() {
                                         <p class="mb-1 fs-8">{date}</p>
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <img src={adimage} className="modal-image"/>
+                                        <img src={adimage} className="modal-image" />
                                     </div>
                                     <div class="col-12 mb-3">
                                         <h6 class="text-uppercase fs-6 ls-2">Description</h6>
@@ -475,8 +475,8 @@ function AdvertismentReviewAdminPage() {
                 </div>
             </div>
 
-             {/* update plan modal active ad*/}
-             <div
+            {/* update plan modal active ad*/}
+            <div
                 class="modal fade"
                 id="ViewActiveAdModal"
                 tabindex="-1"
@@ -488,7 +488,7 @@ function AdvertismentReviewAdminPage() {
                         <div class="modal-header p-3">
                             <div>
                                 <h4 class="mb-0" id="planModalLabel">
-                                    Complain
+                                    Advertisment Details
                                 </h4>
                             </div>
                             <button
@@ -501,12 +501,12 @@ function AdvertismentReviewAdminPage() {
                         <div class="modal-body p-4">
                             <div class="card border shadow-none border-bottom p-4">
                                 <div class="row">
-                                <div class="col-12 mb-3">
+                                    <div class="col-12 mb-3">
                                         <h6 class="text-uppercase fs-6 ls-2">{title}</h6>
                                         <p class="mb-1 fs-8">{date}</p>
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <img src={adimage} className="modal-image"/>
+                                        <img src={adimage} className="modal-image" />
                                     </div>
                                     <div class="col-12 mb-3">
                                         <h6 class="text-uppercase fs-6 ls-2">Description</h6>
@@ -560,7 +560,7 @@ function AdvertismentReviewAdminPage() {
                         <div class="modal-header p-3">
                             <div>
                                 <h4 class="mb-0" id="planModalLabel">
-                                    Complain
+                                    Old Advertisments
                                 </h4>
                             </div>
                             <button
@@ -573,12 +573,12 @@ function AdvertismentReviewAdminPage() {
                         <div class="modal-body p-4">
                             <div class="card border shadow-none border-bottom p-4">
                                 <div class="row">
-                                <div class="col-12 mb-3">
+                                    <div class="col-12 mb-3">
                                         <h6 class="text-uppercase fs-6 ls-2">{title}</h6>
                                         <p class="mb-1 fs-8">{date}</p>
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <img src={adimage} className="modal-image"/>
+                                        <img src={adimage} className="modal-image" />
                                     </div>
                                     <div class="col-12 mb-3">
                                         <h6 class="text-uppercase fs-6 ls-2">Description</h6>
