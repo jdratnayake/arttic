@@ -14,6 +14,7 @@ const {
   getFollowersDetails,
   getFollowingsDetails,
   getTopCreatorsDetails,
+  getAllCreatorsDetails,
   followUnfollowCreator,
   adFreeFeature,
 } = require("../controllers/userController");
@@ -36,5 +37,6 @@ router.post("/uploadUserReport", validateToken, uploadUserReport);
 router.get("/getfollowersdetails/:id", validateToken, getFollowersDetails);
 router.get("/getfollowingsdetails/:id", validateToken, getFollowingsDetails);
 router.get("/gettopcreatorsdetails/", validateToken, getTopCreatorsDetails);
+router.get("/getallcreatorsdetails", validateToken, getAllCreatorsDetails);
 
 module.exports = router;

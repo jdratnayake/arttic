@@ -9,7 +9,7 @@ function UserCard(props) {
                 <div class="container d-flex justify-content-center align-items-center">
                     <div class="card">
                         <div class="upper">
-                            <img src="https://i.imgur.com/Qtrsrk5.jpg" class="img-fluid" />
+                            <img src={props.coverPhoto} class="img-fluid" />
                         </div>
 
                         <div class="user text-center">

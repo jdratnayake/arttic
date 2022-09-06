@@ -193,7 +193,7 @@ const getFollowersDetails = asyncHandler(async (req, res) => {
   await client.connect();
 
   const result = await client.query(
-    'SELECT "user"."userId", "user"."type","name","profilePhoto" FROM "userSubscribe" INNER JOIN "user" ON "user"."userId"="userSubscribe"."followerId"  WHERE "userSubscribe"."creatorId"=$1',
+    'SELECT "user"."userId", "user"."type","name","profilePhoto","coverPhoto" FROM "userSubscribe" INNER JOIN "user" ON "user"."userId"="userSubscribe"."followerId" INNER JOIN "followerCreator" ON "user"."userId"="followerCreator"."userId" WHERE "userSubscribe"."creatorId"=$1',
     [userId]
   );
 
@@ -234,7 +234,7 @@ const getFollowingsDetails = asyncHandler(async (req, res) => {
   await client.connect();
 
   const result = await client.query(
-    'SELECT "user"."userId", "user"."type","name","profilePhoto" FROM "userSubscribe" INNER JOIN "user" ON "user"."userId"="userSubscribe"."creatorId"  WHERE "userSubscribe"."followerId"=$1',
+    'SELECT "user"."userId", "user"."type","name","profilePhoto", "coverPhoto" FROM "userSubscribe" INNER JOIN "user" ON "user"."userId"="userSubscribe"."creatorId" INNER JOIN "followerCreator" ON "user"."userId"="followerCreator"."userId" WHERE "userSubscribe"."followerId"=$1',
     [userId]
   );
 
@@ -274,7 +274,7 @@ const getTopCreatorsDetails = asyncHandler(async (req, res) => {
   await client.connect();
 
   const result = await client.query(
-    'SELECT "user"."userId", "name", "profilePhoto", COUNT("creatorId") AS "subCount" FROM "userSubscribe" INNER JOIN "user" ON "user"."userId"="userSubscribe"."creatorId" INNER JOIN "followerCreator" ON "followerCreator"."userId" = "user"."userId" WHERE "user"."blockedStatus" = FALSE GROUP BY "user"."userId" ORDER BY "subCount" DESC LIMIT 9',
+    'SELECT "user"."userId", "name", "profilePhoto", "joinedDate", COUNT("creatorId") AS "subCount" FROM "userSubscribe" INNER JOIN "user" ON "user"."userId"="userSubscribe"."creatorId" INNER JOIN "followerCreator" ON "followerCreator"."userId" = "user"."userId" WHERE "user"."blockedStatus" = FALSE GROUP BY "user"."userId" ORDER BY "subCount" DESC LIMIT 9',
 
   );
 
@@ -283,7 +283,37 @@ const getTopCreatorsDetails = asyncHandler(async (req, res) => {
 
 
 });
-//  end get top creators details ----------------------------------------
+//  end get top creators details ---------------------------------------------
+
+
+//  get all creators details -------------------------------------------------
+const getAllCreatorsDetails = asyncHandler(async (req, res) => {
+  const name = req.headers.name
+
+  const client = new Client({
+    user: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE_DATABASE,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  await client.connect();
+
+  const serchName = "%" + name + "%";
+  const result = await client.query(
+    'SELECT "user"."userId", "name", "profilePhoto", "joinedDate", "coverPhoto" FROM "user" INNER JOIN "followerCreator" ON "user"."userId"="followerCreator"."userId" WHERE "user"."blockedStatus" = FALSE AND "user"."type" = 3 AND LOWER("user"."name") LIKE LOWER($1)',
+    [serchName]
+  );
+
+  res.json(result.rows);
+  await client.end();
+
+});
+//  end get all creators details ---------------------------------------------
 
 
 //follow Unfollow check Creator-----------------------------------------------
@@ -391,6 +421,7 @@ module.exports = {
   getFollowersDetails,
   getFollowingsDetails,
   getTopCreatorsDetails,
+  getAllCreatorsDetails,
   followUnfollowCreator,
   adFreeFeature,
 };

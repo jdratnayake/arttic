@@ -14,6 +14,10 @@
 
 .UserCard .upper img {
     width: 100%;
+    height: 100px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }

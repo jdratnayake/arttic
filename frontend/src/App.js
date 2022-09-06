@@ -41,6 +41,7 @@ import ChatCreatorPage from "./pages/ChatCreatorPage/ChatCreatorPage";
 import FollowerProfile from "./pages/FollowerProfile/FollowerProfile";
 import ViewUserProfile from "./pages/ViewUserProfile/ViewUserProfile";
 import ViewUserList from "./pages/VIewUserList/ViewUserList";
+import SearchCreatorList from "./pages/SearchCreatorList/SearchCreatorList";
 
 function App() {
   return (
@@ -70,9 +71,20 @@ function App() {
           }
         ></Route>
         <Route
+          path="/searchcreatorlist"
+          element={
+            <CreatorTemplate
+              children={<SearchCreatorList />}
+              sideNavBarIndex="1"
+            />
+          }
+        ></Route>
+        <Route
           path="/settings"
           element={
-            <CreatorTemplate children={<Settings />} sideNavBarIndex="5" />
+            <CreatorTemplate
+              children={<Settings />}
+              sideNavBarIndex="5" />
           }
         ></Route>
         <Route path="/signupoption" element={<SignUpOptionPage />}></Route>

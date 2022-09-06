@@ -54,12 +54,19 @@ function ViewUserList() {
     }, []);
 
     return (
-        <span className="subscribedCreatorsPage">
+        <span className="ViewUserList">
+            <div className="row row-cols-1 row-cols-md-1 row-cols-md-1">
+                {userDetails.length == 0
+                    ? <h3 className="mb-0">Sorry you don't have any {type}</h3>
+                    : <h3 className="mb-0">Your {type}</h3>
+                }
+            </div>
             <div class="row row-cols-1 row-cols-md-2 row-cols-md-3">
 
                 {userDetails.map((data) => (
                     <UserCard
                         userId={data.userId}
+                        coverPhoto={COVER_PIC_URL + data.coverPhoto}
                         profilePhoto={PROFILE_PIC_URL + data.profilePhoto}
                         name={data.name}
                         type={data.type} />

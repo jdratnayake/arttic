@@ -819,16 +819,82 @@ function SettingsBasicPage() {
                   comments, your reading list or chat messages. Allow your
                   username to become available to anyone.
                 </p>
-                <a href="#" class="btn btn-danger">
+                <a class="btn btn-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#AccDeleteModal"
+                >
                   Delete Account
                 </a>
                 <p class="small mb-0 mt-3">
                   Feel free to contact with any questions{" "}
-                  <a href="#">arttic@gmail.com</a>.
+                  <a href="mailto:arttic@gmail.com">arttic@gmail.com</a>.
                 </p>
               </div>
             </div>
           </div>
+
+          {/* update plan modal pay ad*/}
+          <div
+            class="modal fade"
+            id="AccDeleteModal"
+            tabindex="-1"
+            aria-labelledby="planModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header p-3">
+                  <div>
+                    <h4 class="mb-0" id="planModalLabel">
+                      Account Deletion
+                    </h4>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body p-4">
+                  <div class="card border shadow-none border-bottom p-4">
+                    <div class="row">
+
+                      <div class="col-6 mb-3">
+                        <h6 class="text-uppercase fs-6 ls-2">Username</h6>
+                        <p class="mb-1 fs-8">{userDetails.username}</p>
+                      </div>
+                      <div class="col-6 mb-3">
+                        <h6 class="text-uppercase fs-6 ls-2">email</h6>
+                        <p class="mb-1 fs-8">{userDetails.email}</p>
+                      </div>
+
+                      <div class="col-12 mb-3">
+                        <p class="mb-1 fs-8">
+                          You are about to delete your account! This will delete al of your content such as articles, comments, advertisements,
+                          chat messages. Also you can't use this username and email again to create new acount.
+                        </p>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer justify-content-start p-4 pt-2">
+                  <button type="button" class="btn btn-danger">
+                    Delete
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* update plan modal pay ad*/}
         </div>
       </div>
     </div>
