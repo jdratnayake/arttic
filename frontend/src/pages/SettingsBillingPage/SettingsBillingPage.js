@@ -181,6 +181,15 @@ function SettingsBillingPage() {
                           Learn more about our membership policy
                         </a>
 
+                        <a
+                          href="#"
+                          class="btn btn-dark d-grid mb-2"
+                          data-bs-toggle="modal"
+                          data-bs-target="#billingPayments"
+                        >
+                          Payments
+                        </a>
+
                         <StripeCheckout
                           stripeKey={PUBLIC_KEY}
                           token={makePayment}
@@ -323,17 +332,70 @@ function SettingsBillingPage() {
       {/* Billing Address Modal --> */}
       <div
         class="modal fade"
-        id="billingAddressModal"
+        id="billingPayments"
         tabindex="-1"
-        aria-labelledby="billingAddressModalLabel"
+        aria-labelledby="billingPaymentsLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header p-3">
+              <div>
+                <h4 class="mb-0" id="planModalLabel">
+                  Payments
+                </h4>
+              </div>
+              <button
+                type="button"
+                class="btn-close"
+                id="btn-close-form"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body p-4 payment">
+              <div class="card border shadow-none border-bottom p-4">
+                <div class="row">
+                  <div class="col-4 mb-3 payment-chioce">
+                    <h5 class="text-uppercase ls-2 payment-caption">Card Payment</h5>
+                    <button class="btn btn-primary">Pay with Credit/Debit Card</button>
+                  </div>
+                </div>
+              </div>
+              <div class="card border shadow-none border-bottom p-4">
+                <div class="row">
+                  <div class="col-4 mb-3 payment-chioce">
+                    <h5 class="text-uppercase  ls-2 payment-caption">Crypto Payment</h5>
+                    <button class="btn btn-primary">Connect with Meta Mask</button>
+                    <button class="btn btn-primary">Pay with Meta Mask</button>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            <div class="modal-footer justify-content-end p-4 pt-2">
+              <button type="button" class="btn btn-primary">
+                Okay
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Billing Payments */}
+      <div
+        class="modal fade"
+        id="billingPayments"
+        tabindex="-1"
+        aria-labelledby="billingPaymentsLabel"
         aria-hidden="true"
       >
         <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
             <div class="modal-header p-5">
               <div>
-                <h4 class="mb-1" id="billingAddressModalLabel">
-                  Billing Address
+                <h4 class="mb-1" id="billingPaymentsLabel">
+                  Billing Address123
                 </h4>
                 <p class="mb-0">
                   Please provide the billing address with the credit card you ve
@@ -350,87 +412,12 @@ function SettingsBillingPage() {
               ></button>
             </div>
             <div class="modal-body p-5">
-              <Formik
-                initialValues={initialBillingAddressValues}
-                validationSchema={billingAddressValidation}
-                onSubmit={registerBillingAddress}
-              >
-                {({ isSubmitting }) => (
-                  <Form>
-                    <AuthenticationField
-                      label="Country"
-                      type="text"
-                      id="country"
-                      name="country"
-                      placeholder="Enter Country"
-                    />
-
-                    <AuthenticationField
-                      label="Address Line 1"
-                      type="text"
-                      id="address1"
-                      name="address1"
-                      placeholder="Enter Address Line 1"
-                    />
-
-                    <AuthenticationField
-                      label="Address Line 2"
-                      type="text"
-                      id="address2"
-                      name="address2"
-                      placeholder="Enter Address Line 2"
-                    />
-
-                    <AuthenticationField
-                      label="City"
-                      type="text"
-                      id="city"
-                      name="city"
-                      placeholder="Enter City"
-                    />
-
-                    <AuthenticationField
-                      label="State"
-                      type="text"
-                      id="state"
-                      name="state"
-                      placeholder="Enter State"
-                    />
-
-                    <AuthenticationField
-                      label="Zip/Postal Code"
-                      type="text"
-                      id="zip"
-                      name="zip"
-                      placeholder="Enter Zip/Postal Code"
-                    />
-
-                    <div class="col-12 mb-3">
-                      <div class="form-check custom-checkbox">
-                        <Field
-                          type="checkbox"
-                          className="form-check-input"
-                          id="default"
-                          name="default"
-                        />
-                        <label class="form-check-label" for="default">
-                          Make this my default payment method.
-                        </label>
-                      </div>
-                    </div>
-
-                    <div class="col-12">
-                      <button
-                        type="submit"
-                        class="btn btn-primary d-grid"
-                        disabled={isSubmitting}
-                      >
-                        Save Address
-                      </button>
-                    </div>
-                  </Form>
-                )}
-              </Formik>
+              dddd
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary d-grid">
+                  Okay
+                </button>
+              </div>
             </div>
           </div>
         </div>
