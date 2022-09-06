@@ -220,10 +220,56 @@ const payment = asyncHandler(async (req, res) => {
   // res.json("address");
 });
 
+const cryptoPaymentSubscription = asyncHandler(async (req, res) => {
+  const { userId, premiumStatus, premiumEndDate } = req.body;
+
+  const transaction = await transactionLog.create({
+    data: {
+      userId,
+      transactionType: 2,
+      amount: 5,
+    },
+  });
+
+  //today
+  const dateValue = new Date();
+
+  if (premiumStatus) {
+    const extendDate = new Date(premiumEndDate);
+    extendDate.setDate(extendDate.getDate() + 30);
+
+    const updateUser = await user.update({
+      where: {
+        userId,
+      },
+      data: {
+        premiumPackageEndDate: extendDate,
+      },
+    });
+
+    res.json({ premiumUser: true, premiumPackageEndDate: extendDate });
+  } else {
+    dateValue.setDate(dateValue.getDate() + 30);
+
+    const updateUser = await user.update({
+      where: {
+        userId,
+      },
+      data: {
+        premiumPackageEndDate: dateValue,
+        premiumUser: true,
+      },
+    });
+
+    res.json({ premiumUser: true, premiumPackageEndDate: dateValue });
+  }
+});
+
 module.exports = {
   getPurchaseHistory,
   registerBillingAddress,
   getBillingAddresses,
   getPremiumPackageStatus,
   payment,
+  cryptoPaymentSubscription,
 };
