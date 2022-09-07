@@ -20,6 +20,31 @@ function AdvertismentTablePage() {
 
   const [advertismentTable, setAdvertismentTable] = useState([]);
 
+  const [title, settitle] = useState("");
+  const [description, setdescription] = useState("");
+  const [category, setcategory] = useState("");
+  const [date, setDate] = useState("");
+  const [stdate, setstDate] = useState("");
+  const [endate, setenDate] = useState("");
+  const [vpd, setvpd] = useState("");
+  const [price, setprice] = useState("");
+  const [adimage, setadimage] = useState("");
+
+  const handleClick = (obj) => {
+    settitle("Physics Theory 2021");
+    setdescription(
+      "You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the"
+    );
+    setcategory("Tony stark");
+    setDate("07/30/2022");
+    setstDate("08/30/2022");
+    setenDate("09/30/2022");
+    setvpd("100");
+    setprice("$ 2500");
+    setadimage("https://drive.google.com/uc?export=view&id=1KOZ9Yt9tc5qgiYjTdu9D-pnURTlRj_NU");
+  };
+
+  // get advertisments ----------------------------------------------------
   const getAdvertisments = async () => {
     const token = {
       headers: {
@@ -34,20 +59,7 @@ function AdvertismentTablePage() {
       });
 
   };
-
-  const [complain, setComplain] = useState("");
-  const [username, setUsername] = useState("");
-  const [date, setDate] = useState("");
-  const [category, setCategory] = useState("");
-
-  const handleClick = (obj) => {
-    setComplain(
-      "You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the"
-    );
-    setUsername("Tony stark");
-    setDate("07/30/2022");
-    setCategory("Violence");
-  };
+  // end get advertisments ------------------------------------------------
 
   useEffect(() => {
     getAdvertisments();
@@ -158,11 +170,13 @@ function AdvertismentTablePage() {
                         <td>Pending</td>
                         <td>
                           <a
-                            onClick={() => handleClick({ type: "Post" })}
+                            onClick={() =>
+                              handleClick({ id: 100 })
+                            }
                             href="#"
                             class="btn btn-secondary"
                             data-bs-toggle="modal"
-                            data-bs-target="#PostModal"
+                            data-bs-target="#ViewRequestAdModal"
                           >
                             View
                           </a>
@@ -211,11 +225,13 @@ function AdvertismentTablePage() {
                         <td>Accepted</td>
                         <td>
                           <a
-                            onClick={() => handleClick({ type: "Post" })}
+                            onClick={() =>
+                              handleClick({ id: 100 })
+                            }
                             href="#"
                             class="btn btn-secondary"
                             data-bs-toggle="modal"
-                            data-bs-target="#PostModal"
+                            data-bs-target="#ViewPayAdModal"
                           >
                             Pay
                           </a>
@@ -249,7 +265,7 @@ function AdvertismentTablePage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {advertismentTable.map((ad , i) => (
+                    {advertismentTable.map((ad, i) => (
                       i <= 4 &&
                       (<tr key={ad.advertisementId}>
                         <td className="idStyle">{ad.advertisementId}</td>
@@ -266,11 +282,13 @@ function AdvertismentTablePage() {
 
                         <td>
                           <a
-                            onClick={() => handleClick({ type: "Post" })}
+                            onClick={() =>
+                              handleClick({ id: 100 })
+                            }
                             href="#"
                             class="btn btn-secondary"
                             data-bs-toggle="modal"
-                            data-bs-target="#PostModal"
+                            data-bs-target="#ViewRequestAdModal"
                           >
                             View
                           </a>
@@ -286,10 +304,10 @@ function AdvertismentTablePage() {
         </div>
       </div>
 
-      {/* update plan modal */}
+      {/* update plan modal pending and old ad*/}
       <div
         class="modal fade"
-        id="PostModal"
+        id="ViewRequestAdModal"
         tabindex="-1"
         aria-labelledby="planModalLabel"
         aria-hidden="true"
@@ -299,7 +317,7 @@ function AdvertismentTablePage() {
             <div class="modal-header p-3">
               <div>
                 <h4 class="mb-0" id="planModalLabel">
-                  Advertisment
+                  Advertisment Details
                 </h4>
               </div>
               <button
@@ -310,9 +328,42 @@ function AdvertismentTablePage() {
               ></button>
             </div>
             <div class="modal-body p-4">
-              <div className="row"></div>
+              <div class="card border shadow-none border-bottom p-4">
+                <div class="row">
+                  <div class="col-12 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">{title}</h6>
+                    <p class="mb-1 fs-8">{date}</p>
+                  </div>
+                  <div class="col-12 mb-3">
+                    <img src={adimage} className="modal-image" />
+                  </div>
+                  <div class="col-12 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Description</h6>
+                    <p class="mb-1 fs-8">{description}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Duration</h6>
+                    <p class="mb-1 fs-8">{stdate} - {endate}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Category</h6>
+                    <p class="mb-1 fs-8">{category}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Views per Day</h6>
+                    <p class="mb-1 fs-8">{vpd}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Price</h6>
+                    <p class="mb-1 fs-8">{price}</p>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="modal-footer justify-content-start p-4 pt-2">
+              <button type="button" class="btn btn-danger">
+                Delete
+              </button>
               <button
                 type="button"
                 class="btn btn-secondary"
@@ -324,6 +375,81 @@ function AdvertismentTablePage() {
           </div>
         </div>
       </div>
+      {/* update plan modal pending and old ad*/}
+
+      {/* update plan modal pay ad*/}
+      <div
+        class="modal fade"
+        id="ViewPayAdModal"
+        tabindex="-1"
+        aria-labelledby="planModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header p-3">
+              <div>
+                <h4 class="mb-0" id="planModalLabel">
+                  Advertisment Details
+                </h4>
+              </div>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body p-4">
+              <div class="card border shadow-none border-bottom p-4">
+                <div class="row">
+                  <div class="col-12 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">{title}</h6>
+                    <p class="mb-1 fs-8">{date}</p>
+                  </div>
+                  <div class="col-12 mb-3">
+                    <img src={adimage} className="modal-image" />
+                  </div>
+                  <div class="col-12 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Description</h6>
+                    <p class="mb-1 fs-8">{description}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Duration</h6>
+                    <p class="mb-1 fs-8">{stdate} - {endate}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Category</h6>
+                    <p class="mb-1 fs-8">{category}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Views per Day</h6>
+                    <p class="mb-1 fs-8">{vpd}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Price</h6>
+                    <p class="mb-1 fs-8">{price}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-start p-4 pt-2">
+              <button type="button" class="btn btn-danger">
+                Pay
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* update plan modal pay ad*/}
+
     </span>
   );
 }

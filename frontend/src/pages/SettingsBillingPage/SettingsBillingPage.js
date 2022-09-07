@@ -4,15 +4,23 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import $ from "jquery";
 import StripeCheckout from "react-stripe-checkout";
+import { ethers } from "ethers";
+import { ToastContainer, toast } from "react-toastify";
 
 import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
 import {
   initialBillingAddressValues,
   billingAddressValidation,
 } from "./Validation";
-import { API_URL, PUBLIC_KEY } from "../../constants/globalConstants";
+import {
+  API_URL,
+  PUBLIC_KEY,
+  SUBSCRIPTION_PRICE,
+  ETHEREUM_ADDRESS,
+} from "../../constants/globalConstants";
 
 import "../SettingsBasicPage/settings.css";
+import "react-toastify/dist/ReactToastify.css";
 
 function SettingsBillingPage() {
   const [billingAddressList, setBillingAddressList] = useState([]);
@@ -21,6 +29,63 @@ function SettingsBillingPage() {
 
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
+
+  // Crypto payment - START
+  const startPayment = async ({ ether, addr }) => {
+    try {
+      if (!window.ethereum)
+        throw new Error("No crypto wallet found. Please install it.");
+
+      await window.ethereum.send("eth_requestAccounts");
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      ethers.utils.getAddress(addr);
+
+      const tx = await signer.sendTransaction({
+        to: addr,
+        value: ethers.utils.parseEther(ether.toString()),
+      });
+
+      makeCryptoPayment();
+
+      console.log({ ether, addr });
+      console.log("tx", tx);
+      // setTxs([tx]);
+    } catch (err) {
+      // console.log(err.message);
+      toast.error("Insufficient Funds", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      // setError(err.message);
+    }
+  };
+
+  const payByCrypto = async () => {
+    let etherAmount;
+
+    await $.getJSON(
+      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=ethereum",
+      function (data) {
+        var origAmount = parseFloat(SUBSCRIPTION_PRICE);
+        var exchangeRate = parseInt(data[0].current_price);
+
+        etherAmount = parseFloat(origAmount / exchangeRate);
+      }
+    );
+
+    await startPayment({
+      ether: etherAmount,
+      addr: ETHEREUM_ADDRESS,
+    });
+  };
+  // Crypto payment - END
 
   const getBillingAddresses = async () => {
     const config = {
@@ -119,8 +184,38 @@ function SettingsBillingPage() {
       });
   };
 
+  const makeCryptoPayment = async (token) => {
+    const inputData = { userId, premiumStatus, premiumEndDate };
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .post(API_URL + "/settings/cryptopaymentsubscription/", inputData, config)
+      .then((response) => {
+        // console.log(response.data);
+        // getPremiumPackageDetails();
+        setPremiumStatus(response.data.premiumUser);
+        setPremiumEndDate(new Date(response.data.premiumPackageEndDate));
+      });
+  };
+
   return (
     <div className="settingsPage">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       {/* row  --> */}
       <div class="row">
         <div class="col">
@@ -187,10 +282,12 @@ function SettingsBillingPage() {
                           data-bs-toggle="modal"
                           data-bs-target="#billingPayments"
                         >
-                          Payments
+                          {premiumStatus
+                            ? "Extend Subscription"
+                            : "Subscribe Now"}
                         </a>
 
-                        <StripeCheckout
+                        {/* <StripeCheckout
                           stripeKey={PUBLIC_KEY}
                           token={makePayment}
                           name="Buy React"
@@ -201,7 +298,7 @@ function SettingsBillingPage() {
                               ? "Extend Subscription"
                               : "Subscribe Now"}
                           </a>
-                        </StripeCheckout>
+                        </StripeCheckout> */}
                         {/* {premiumStatus && (
                           <a href="#" class="btn btn-outline-white d-grid">
                             Cancel Subscription
@@ -357,24 +454,42 @@ function SettingsBillingPage() {
               <div class="card border shadow-none border-bottom p-4">
                 <div class="row">
                   <div class="col-4 mb-3 payment-chioce">
-                    <h5 class="text-uppercase ls-2 payment-caption">Card Payment</h5>
-                    <button class="btn btn-primary">Pay with Credit/Debit Card</button>
+                    <h5 class="text-uppercase ls-2 payment-caption">
+                      Card Payment
+                    </h5>
+                    <StripeCheckout
+                      stripeKey={PUBLIC_KEY}
+                      token={makePayment}
+                      name="Buy React"
+                      amount={5 * 100}
+                    >
+                      <button class="btn btn-primary">
+                        Pay with Credit/Debit Card
+                      </button>
+                    </StripeCheckout>
                   </div>
                 </div>
               </div>
               <div class="card border shadow-none border-bottom p-4">
                 <div class="row">
                   <div class="col-4 mb-3 payment-chioce">
-                    <h5 class="text-uppercase  ls-2 payment-caption">Crypto Payment</h5>
-                    <button class="btn btn-primary">Connect with Meta Mask</button>
-                    <button class="btn btn-primary">Pay with Meta Mask</button>
+                    <h5 class="text-uppercase  ls-2 payment-caption">
+                      Crypto Payment
+                    </h5>
+
+                    <button class="btn btn-primary" onClick={payByCrypto}>
+                      Pay with Meta Mask
+                    </button>
                   </div>
                 </div>
               </div>
-              
             </div>
             <div class="modal-footer justify-content-end p-4 pt-2">
-              <button type="button" class="btn btn-primary">
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+              >
                 Okay
               </button>
             </div>
