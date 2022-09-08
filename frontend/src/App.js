@@ -39,6 +39,11 @@ import SubscribedCreatorsPage from "./pages/SubscribedCreatorsPage/SubscribedCre
 import ExternalSignUpPasswordPage from "./pages/ExternalSignUpPasswordPage/ExternalSignUpPasswordPage";
 import ChatCreatorPage from "./pages/ChatCreatorPage/ChatCreatorPage";
 import FollowerProfile from "./pages/FollowerProfile/FollowerProfile";
+import ViewUserProfile from "./pages/ViewUserProfile/ViewUserProfile";
+import ViewUserList from "./pages/VIewUserList/ViewUserList";
+import SearchCreatorList from "./pages/SearchCreatorList/SearchCreatorList";
+import ReportUserRecoveryPage from "./pages/ReportUserRecoveryPage/ReportUserRecoveryPage";
+import ReportAdmin0Page from "./pages/ReportAdmin0Page/ReportAdmin0Page";
 
 function App() {
   return (
@@ -59,16 +64,37 @@ function App() {
           }
         ></Route>
         <Route
+          path="/ViewUserList/:type"
+          element={
+            <CreatorTemplate
+              children={<ViewUserList />}
+              sideNavBarIndex="1"
+            />
+          }
+        ></Route>
+        <Route
+          path="/searchcreatorlist"
+          element={
+            <CreatorTemplate
+              children={<SearchCreatorList />}
+              sideNavBarIndex="1"
+            />
+          }
+        ></Route>
+        <Route
           path="/settings"
           element={
-            <CreatorTemplate children={<Settings />} sideNavBarIndex="5" />
+            <CreatorTemplate
+              children={<Settings />}
+              sideNavBarIndex="5" />
           }
         ></Route>
         <Route path="/signupoption" element={<SignUpOptionPage />}></Route>
         <Route path="/signup/:userType" element={<SignUpPage />}></Route>
         <Route path="/walletconnect" element={<WalletConnectPage />}></Route>
         <Route path="/login" element={<LogInPage />}></Route>
-        <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
+        <Route path="/creatorprofile/" element={<CreatorProfilePage />}></Route>
+        <Route path="/viewuserprofile/:id" element={<ViewUserProfile />}></Route>
         <Route
           path="/followerprofile/:followerId"
           element={<FollowerProfile />}
@@ -171,19 +197,51 @@ function App() {
         ></Route>
         <Route
           path="/admin1/reportUser/:id"
-          element={<Admin0Template children={<ReportUserPage />} />}
+          element={
+            <Admin0Template children={<ReportUserPage />} sideNavBarIndex="2" />
+          }
+        ></Route>
+        <Route
+          path="/admin1/reportUserRecovery/:id"
+          element={
+            <Admin0Template
+              children={<ReportUserRecoveryPage />}
+              sideNavBarIndex="1"
+            />
+          }
+        ></Route>
+        <Route
+          path="/admin0/admin1manage/:id"
+          element={
+            <Admin0Template
+              children={<ReportAdmin0Page />}
+              sideNavBarIndex="1"
+            />
+          }
         ></Route>
         <Route
           path="/admin1/reportPost/:id"
-          element={<Admin0Template children={<ReportPostPage />} />}
+          element={
+            <Admin0Template children={<ReportPostPage />} sideNavBarIndex="2" />
+          }
         ></Route>
         <Route
           path="/admin1/reportComment/:id"
-          element={<Admin0Template children={<ReportCommentPage />} />}
+          element={
+            <Admin0Template
+              children={<ReportCommentPage />}
+              sideNavBarIndex="2"
+            />
+          }
         ></Route>
         <Route
           path="/admin1/reportAdvertisment/:id"
-          element={<Admin0Template children={<ReportAdvertismentPage />} />}
+          element={
+            <Admin0Template
+              children={<ReportAdvertismentPage />}
+              sideNavBarIndex="2"
+            />
+          }
         ></Route>
         <Route
           path="/test"

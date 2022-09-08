@@ -1,24 +1,50 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, React } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { SearchPanel } from "react-search-panel";
 
-import { PROFILE_PIC_URL } from "../../constants/globalConstants";
+import { API_URL, PROFILE_PIC_URL } from "../../constants/globalConstants";
 import { logout } from "../../actions/userActions";
 
 import "./NavBarCreator.css";
 import logo from "../../images/logo.png";
+import axios from "axios";
 
 function NavBarCreator() {
   const [profilePic, setProfilePic] = useState("");
+  const [userId, setUserId] = useState("");
+
+  //const [searchCreators, setSearchCreators] = useState([]);
+  //const [allCreators, setAllCreators] = useState([]);
+  const [input, setInput] = useState("");
+  //const [selectedChoices, setSelectedChoices] = useState(searchCreators);
 
   const userInfo = useSelector((state) => state.userInfo);
+  const { accessToken } = userInfo.user;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  //setSearchCreators({ key: "1", description: "janitha" })
+
+  // signout ---------------------------------
   const signout = (e) => {
     e.preventDefault();
     dispatch(logout());
     navigate("/login");
+  };
+  // end signout -----------------------------
+
+  const searchCreator = (e) => {
+    e.preventDefault();
+    if (input) {
+      navigate('/searchcreatorlist', {
+        state: {
+          name: input,
+        }
+      });
+    }
+
   };
 
   useEffect(() => {
@@ -27,6 +53,7 @@ function NavBarCreator() {
     } else {
       const { userId, accessToken, profilePhoto } = userInfo.user;
       setProfilePic(PROFILE_PIC_URL + profilePhoto);
+      setUserId(userId);
     }
   }, []);
 
@@ -57,7 +84,7 @@ function NavBarCreator() {
           </button>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <form className="d-flex me-auto sebr" role="search">
+            <form className="d-flex me-auto sebr" role="search" onSubmit={searchCreator}>
               {/* <a className="btn btn-secondary" type="submit">
                                 <i className="bi bi-search"></i>
                             </a> */}
@@ -66,8 +93,22 @@ function NavBarCreator() {
                   <button class="searchButton">
                     <i class="bi bi-search"></i>
                   </button>
-                  <input type="text" class="searchTerm" placeholder="Search" />
+                  <input type="text" class="searchTerm" placeholder="Search" onChange={event => setInput(event.target.value)} />
                 </div>
+                {/* <div class="">
+                  <SearchPanel
+                    choices={searchCreators}
+                    onChange={event => setInput(event.target.value)}
+                    onSelectionChange={setSelectedChoices}
+                    onClear={() => setInput("")}
+                    placeholder="Search"
+                    selectedChoices={selectedChoices}
+                    value={input}
+                    variant={1}
+                    shadow
+                    maximumHeight={300}
+                  />
+                </div> */}
               </div>
               {/* <input type="search" className="form-control" placeholder="Search" aria-label="Search" /> */}
             </form>
