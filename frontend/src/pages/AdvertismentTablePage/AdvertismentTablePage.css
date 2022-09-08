@@ -80,3 +80,8 @@
     margin-bottom: 0.25rem !important;
     font-size: 1.2em;
 }
+
+.AdvertismentTablePage .modal-image {
+    width: 250px;
+    height: auto;
+}

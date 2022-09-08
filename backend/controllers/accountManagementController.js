@@ -29,7 +29,120 @@ const initial = asyncHandler(async (req, res) => {
     },
   });
 
-  const outputData = { admin1: admin1 };
+  const filterDate = new Date();
+  filterDate.setDate(filterDate.getDate() - 14);
+
+  const blockedUsers = await user.findMany({
+    orderBy: [
+      {
+        blockedDate: "desc",
+      },
+    ],
+    where: {
+      AND: [
+        {
+          OR: [{ type: 3 }, { type: 4 }],
+        },
+        { blockedStatus: true },
+        { blockedDate: { gt: filterDate } },
+      ],
+    },
+    select: {
+      userId: true,
+      type: true,
+      name: true,
+      email: true,
+      joinedDate: true,
+      profilePhoto: true,
+      blockedStatus: true,
+    },
+  });
+
+  const adminCount = await user.aggregate({
+    where: {
+      type: 2,
+    },
+    _count: {
+      userId: true,
+    },
+  });
+
+  const creatorCount = await user.aggregate({
+    where: {
+      type: 3,
+    },
+    _count: {
+      userId: true,
+    },
+  });
+
+  const followerCount = await user.aggregate({
+    where: {
+      type: 4,
+    },
+    _count: {
+      userId: true,
+    },
+  });
+
+  // Creator growth chart - START
+  const creatorCountList = [];
+  const followerCountList = [];
+  const timeList = [];
+
+  const chartDate = new Date();
+  chartDate.setDate(chartDate.getDate() - 7);
+
+  for (let i = 0; i < 7; i++) {
+    chartDate.setDate(chartDate.getDate() + 1);
+    timeList.push(chartDate.getMonth() + 1 + "/" + chartDate.getDate());
+
+    const creatorCount = await user.aggregate({
+      where: {
+        AND: [
+          {
+            type: 3,
+          },
+
+          { joinedDate: { lt: chartDate } },
+        ],
+      },
+      _count: {
+        userId: true,
+      },
+    });
+
+    const followerCount = await user.aggregate({
+      where: {
+        AND: [
+          {
+            type: 4,
+          },
+
+          { joinedDate: { lt: chartDate } },
+        ],
+      },
+      _count: {
+        userId: true,
+      },
+    });
+
+    creatorCountList.push(creatorCount["_count"]["userId"]);
+    followerCountList.push(followerCount["_count"]["userId"]);
+  }
+
+  // Creator growth chart - END
+
+  const outputData = {
+    adminCount: adminCount["_count"]["userId"],
+    creatorCount: creatorCount["_count"]["userId"],
+    followerCount: followerCount["_count"]["userId"],
+    blockedUsers: blockedUsers,
+    admin1: admin1,
+    creatorCountList,
+    followerCountList,
+    timeList,
+  };
   res.json(outputData);
 });
 

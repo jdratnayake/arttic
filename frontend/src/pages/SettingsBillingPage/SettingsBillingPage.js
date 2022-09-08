@@ -3,21 +3,89 @@ import { useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import $ from "jquery";
+import StripeCheckout from "react-stripe-checkout";
+import { ethers } from "ethers";
+import { ToastContainer, toast } from "react-toastify";
 
 import AuthenticationField from "../../components/AuthenticationField/AuthenticationField";
 import {
   initialBillingAddressValues,
   billingAddressValidation,
 } from "./Validation";
-import { API_URL } from "../../constants/globalConstants";
+import {
+  API_URL,
+  PUBLIC_KEY,
+  SUBSCRIPTION_PRICE,
+  ETHEREUM_ADDRESS,
+} from "../../constants/globalConstants";
 
 import "../SettingsBasicPage/settings.css";
+import "react-toastify/dist/ReactToastify.css";
 
 function SettingsBillingPage() {
   const [billingAddressList, setBillingAddressList] = useState([]);
+  const [premiumStatus, setPremiumStatus] = useState(false);
+  const [premiumEndDate, setPremiumEndDate] = useState(new Date());
 
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
+
+  // Crypto payment - START
+  const startPayment = async ({ ether, addr }) => {
+    try {
+      if (!window.ethereum)
+        throw new Error("No crypto wallet found. Please install it.");
+
+      await window.ethereum.send("eth_requestAccounts");
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      ethers.utils.getAddress(addr);
+
+      const tx = await signer.sendTransaction({
+        to: addr,
+        value: ethers.utils.parseEther(ether.toString()),
+      });
+
+      makeCryptoPayment();
+
+      console.log({ ether, addr });
+      console.log("tx", tx);
+      // setTxs([tx]);
+    } catch (err) {
+      // console.log(err.message);
+      toast.error("Insufficient Funds", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      // setError(err.message);
+    }
+  };
+
+  const payByCrypto = async () => {
+    let etherAmount;
+
+    await $.getJSON(
+      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=ethereum",
+      function (data) {
+        var origAmount = parseFloat(SUBSCRIPTION_PRICE);
+        var exchangeRate = parseInt(data[0].current_price);
+
+        etherAmount = parseFloat(origAmount / exchangeRate);
+      }
+    );
+
+    await startPayment({
+      ether: etherAmount,
+      addr: ETHEREUM_ADDRESS,
+    });
+  };
+  // Crypto payment - END
 
   const getBillingAddresses = async () => {
     const config = {
@@ -34,8 +102,26 @@ function SettingsBillingPage() {
       });
   };
 
+  const getPremiumPackageDetails = async () => {
+    const config = {
+      headers: {
+        authorization: accessToken,
+        userId: userId,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/settings/getpremiumpackagestatus/", config)
+      .then((response) => {
+        // console.log(response.data);
+        setPremiumStatus(response.data.premiumUser);
+        setPremiumEndDate(new Date(response.data.premiumPackageEndDate));
+      });
+  };
+
   useEffect(() => {
     getBillingAddresses();
+    getPremiumPackageDetails();
   }, []);
 
   const registerBillingAddress = async (data, { resetForm }) => {
@@ -79,8 +165,57 @@ function SettingsBillingPage() {
     // window.location.reload(false);
   };
 
+  const makePayment = async (token) => {
+    const inputData = { userId, premiumStatus, premiumEndDate, token };
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .post(API_URL + "/settings/payment/", inputData, config)
+      .then((response) => {
+        // console.log(response.data);
+        // getPremiumPackageDetails();
+        setPremiumStatus(response.data.premiumUser);
+        setPremiumEndDate(new Date(response.data.premiumPackageEndDate));
+      });
+  };
+
+  const makeCryptoPayment = async (token) => {
+    const inputData = { userId, premiumStatus, premiumEndDate };
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .post(API_URL + "/settings/cryptopaymentsubscription/", inputData, config)
+      .then((response) => {
+        // console.log(response.data);
+        // getPremiumPackageDetails();
+        setPremiumStatus(response.data.premiumUser);
+        setPremiumEndDate(new Date(response.data.premiumPackageEndDate));
+      });
+  };
+
   return (
     <div className="settingsPage">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       {/* row  --> */}
       <div class="row">
         <div class="col">
@@ -100,7 +235,10 @@ function SettingsBillingPage() {
                       <div class="mb-2">
                         {/* content  --> */}
                         <p class="text-muted mb-0">Current Plan</p>
-                        <h3 class="mt-2 mb-3 fw-bold">Starter - Jan 2021 </h3>
+                        {/* <h3 class="mt-2 mb-3 fw-bold">Starter - Jan 2021 </h3> */}
+                        <h3 class="mt-2 mb-3 fw-bold">
+                          {premiumStatus ? "Premium" : "Starter"}
+                        </h3>
                         <p>
                           Unlimited access to essential tools for design,
                           bootstrap themes, illustrator and icons.
@@ -111,9 +249,16 @@ function SettingsBillingPage() {
                             class="me-2 text-muted
                                 icon-xs"
                           ></i>
-                          Next Payment: on{" "}
-                          <span class="text-primary">$499.00 USD</span>
-                          <span class="text-dark fw-bold"> Jan 1, 2022</span>
+                          {premiumStatus && "Next Payment: on "}
+                          {premiumStatus && (
+                            <span class="text-primary">$5.00 USD</span>
+                          )}
+                          {premiumStatus && (
+                            <span class="text-dark fw-bold">
+                              {" "}
+                              {premiumEndDate.toLocaleDateString("en-CA")}
+                            </span>
+                          )}
                         </p>
                       </div>
                     </div>
@@ -121,8 +266,8 @@ function SettingsBillingPage() {
                     <div class="col-xl-4 col-lg-6 col-md-12 col-12">
                       {/* content  --> */}
                       <div>
-                        <small class="text-muted">Yearly Payment</small>
-                        <h1 class="fw-bold text-primary">$499 USD</h1>
+                        <small class="text-muted">Monthly Payment</small>
+                        <h1 class="fw-bold text-primary">$5 USD</h1>
                         <a
                           href="#"
                           class="mb-3 text-muted
@@ -130,17 +275,35 @@ function SettingsBillingPage() {
                         >
                           Learn more about our membership policy
                         </a>
+
                         <a
                           href="#"
                           class="btn btn-dark d-grid mb-2"
                           data-bs-toggle="modal"
-                          data-bs-target="#planModal"
+                          data-bs-target="#billingPayments"
                         >
-                          Change Plan
+                          {premiumStatus
+                            ? "Extend Subscription"
+                            : "Subscribe Now"}
                         </a>
-                        <a href="#" class="btn btn-outline-white d-grid">
-                          Cancel Subscription
-                        </a>
+
+                        {/* <StripeCheckout
+                          stripeKey={PUBLIC_KEY}
+                          token={makePayment}
+                          name="Buy React"
+                          amount={5 * 100}
+                        >
+                          <a href="#" class="btn btn-dark d-grid mb-2">
+                            {premiumStatus
+                              ? "Extend Subscription"
+                              : "Subscribe Now"}
+                          </a>
+                        </StripeCheckout> */}
+                        {/* {premiumStatus && (
+                          <a href="#" class="btn btn-outline-white d-grid">
+                            Cancel Subscription
+                          </a>
+                        )} */}
                       </div>
                     </div>
                   </div>
@@ -263,12 +426,12 @@ function SettingsBillingPage() {
         </div>
       </div>
 
-      {/* update plan modal --> */}
+      {/* Billing Address Modal --> */}
       <div
         class="modal fade"
-        id="planModal"
+        id="billingPayments"
         tabindex="-1"
-        aria-labelledby="planModalLabel"
+        aria-labelledby="billingPaymentsLabel"
         aria-hidden="true"
       >
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -276,112 +439,78 @@ function SettingsBillingPage() {
             <div class="modal-header p-3">
               <div>
                 <h4 class="mb-0" id="planModalLabel">
-                  Update Your Plan
+                  Payments
                 </h4>
               </div>
               <button
                 type="button"
                 class="btn-close"
+                id="btn-close-form"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body p-5">
-              <h4 class="mb-1">Change your plan</h4>
-              <p>You can choose from one of the available plans bellow.</p>
-              <div class="card border shadow-none">
-                <div class="card-body border-bottom">
-                  <div
-                    class="d-flex justify-content-between
-                  align-items-center"
-                  >
-                    <div>
-                      <div class="form-check ">
-                        <input
-                          type="radio"
-                          id="customRadioStandard"
-                          name="customRadio"
-                          class="form-check-input"
-                        />
-                        <label
-                          class="form-check-label form-label"
-                          for="customRadioStandard"
-                        >
-                          <span class="d-block text-dark fw-bold">
-                            Free
-                            <span class="badge bg-success">Active Plan</span>
-                          </span>
-                          <span class="mb-0 small text-muted">Single Site</span>
-                        </label>
-                      </div>
-                    </div>
-                    <div>
-                      <h4 class="fw-bold mb-0 text-dark">$0.00</h4>
-                    </div>
+            <div class="modal-body p-4 payment">
+              <div class="card border shadow-none border-bottom p-4">
+                <div class="row">
+                  <div class="col-4 mb-3 payment-chioce">
+                    <h5 class="text-uppercase ls-2 payment-caption">
+                      Card Payment
+                    </h5>
+                    <StripeCheckout
+                      stripeKey={PUBLIC_KEY}
+                      token={makePayment}
+                      name="Buy React"
+                      amount={5 * 100}
+                    >
+                      <button class="btn btn-primary">
+                        Pay with Credit/Debit Card
+                      </button>
+                    </StripeCheckout>
                   </div>
                 </div>
-                <div class="card-body border-bottom">
-                  <div
-                    class="d-flex justify-content-between
-                  align-items-center"
-                  >
-                    <div>
-                      <div class="form-check ">
-                        <input
-                          type="radio"
-                          id="customRadioMultiside"
-                          name="customRadio"
-                          class="form-check-input"
-                        />
-                        <label
-                          class="form-check-label form-label"
-                          for="customRadioMultiside"
-                        >
-                          <span class="d-block text-dark fw-bold">
-                            Premimum
-                          </span>
-                          <span class="mb-0 small text-muted">
-                            Unlimited sites
-                          </span>
-                        </label>
-                      </div>
-                    </div>
-                    <div>
-                      <h4 class="fw-bold mb-0 text-dark">$149.00</h4>
-                    </div>
+              </div>
+              <div class="card border shadow-none border-bottom p-4">
+                <div class="row">
+                  <div class="col-4 mb-3 payment-chioce">
+                    <h5 class="text-uppercase  ls-2 payment-caption">
+                      Crypto Payment
+                    </h5>
+
+                    <button class="btn btn-primary" onClick={payByCrypto}>
+                      Pay with Meta Mask
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="modal-footer justify-content-start p-5">
-              <button type="button" class="btn btn-primary">
-                Save and Continue
-              </button>
+            <div class="modal-footer justify-content-end p-4 pt-2">
               <button
                 type="button"
-                class="btn btn-secondary"
+                class="btn btn-primary"
                 data-bs-dismiss="modal"
               >
-                Close
+                Okay
               </button>
             </div>
           </div>
         </div>
       </div>
-      {/* Billing Address Modal --> */}
+
+      {/* Billing Payments */}
       <div
         class="modal fade"
-        id="billingAddressModal"
+        id="billingPayments"
         tabindex="-1"
-        aria-labelledby="billingAddressModalLabel"
+        aria-labelledby="billingPaymentsLabel"
         aria-hidden="true"
       >
         <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
             <div class="modal-header p-5">
               <div>
-                <h4 class="mb-1" id="billingAddressModalLabel">
-                  Billing Address
+                <h4 class="mb-1" id="billingPaymentsLabel">
+                  Billing Address123
                 </h4>
                 <p class="mb-0">
                   Please provide the billing address with the credit card you ve
@@ -398,87 +527,12 @@ function SettingsBillingPage() {
               ></button>
             </div>
             <div class="modal-body p-5">
-              <Formik
-                initialValues={initialBillingAddressValues}
-                validationSchema={billingAddressValidation}
-                onSubmit={registerBillingAddress}
-              >
-                {({ isSubmitting }) => (
-                  <Form>
-                    <AuthenticationField
-                      label="Country"
-                      type="text"
-                      id="country"
-                      name="country"
-                      placeholder="Enter Country"
-                    />
-
-                    <AuthenticationField
-                      label="Address Line 1"
-                      type="text"
-                      id="address1"
-                      name="address1"
-                      placeholder="Enter Address Line 1"
-                    />
-
-                    <AuthenticationField
-                      label="Address Line 2"
-                      type="text"
-                      id="address2"
-                      name="address2"
-                      placeholder="Enter Address Line 2"
-                    />
-
-                    <AuthenticationField
-                      label="City"
-                      type="text"
-                      id="city"
-                      name="city"
-                      placeholder="Enter City"
-                    />
-
-                    <AuthenticationField
-                      label="State"
-                      type="text"
-                      id="state"
-                      name="state"
-                      placeholder="Enter State"
-                    />
-
-                    <AuthenticationField
-                      label="Zip/Postal Code"
-                      type="text"
-                      id="zip"
-                      name="zip"
-                      placeholder="Enter Zip/Postal Code"
-                    />
-
-                    <div class="col-12 mb-3">
-                      <div class="form-check custom-checkbox">
-                        <Field
-                          type="checkbox"
-                          className="form-check-input"
-                          id="default"
-                          name="default"
-                        />
-                        <label class="form-check-label" for="default">
-                          Make this my default payment method.
-                        </label>
-                      </div>
-                    </div>
-
-                    <div class="col-12">
-                      <button
-                        type="submit"
-                        class="btn btn-primary d-grid"
-                        disabled={isSubmitting}
-                      >
-                        Save Address
-                      </button>
-                    </div>
-                  </Form>
-                )}
-              </Formik>
+              dddd
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary d-grid">
+                  Okay
+                </button>
+              </div>
             </div>
           </div>
         </div>

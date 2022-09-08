@@ -9,7 +9,6 @@ import "./ForgotPasswordOTP.css";
 import logo from "../../images/logo.png";
 import AuthenticationFooter from "../../components/AuthenticationFooter/AuthenticationFooter";
 
-
 function ForgotPasswordOTP() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -126,7 +125,7 @@ function ForgotPasswordOTP() {
           </div>
         </div>
       </div>
-      <AuthenticationFooter/>
+      <AuthenticationFooter />
     </span>
   );
 }

@@ -8,6 +8,15 @@ const { upload } = require("../middleware/fileUpload");
 const {
   uploadProfileOrCoverPicture,
   getUserDetails,
+  checkUserName,
+  updateUserDetails,
+  uploadUserReport,
+  getFollowersDetails,
+  getFollowingsDetails,
+  getTopCreatorsDetails,
+  getAllCreatorsDetails,
+  followUnfollowCreator,
+  adFreeFeature,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -19,5 +28,15 @@ router.post(
   uploadProfileOrCoverPicture
 );
 router.get("/getuserdetails/:id", validateToken, getUserDetails);
+router.get("/checkusername/:name", validateToken, checkUserName);
+router.post("/updateuserdetails", validateToken, updateUserDetails);
+router.post("/followunfollowcreator", validateToken, followUnfollowCreator);
+router.post("/adfreefeature", validateToken, adFreeFeature);
+
+router.post("/uploadUserReport", validateToken, uploadUserReport);
+router.get("/getfollowersdetails/:id", validateToken, getFollowersDetails);
+router.get("/getfollowingsdetails/:id", validateToken, getFollowingsDetails);
+router.get("/gettopcreatorsdetails/", validateToken, getTopCreatorsDetails);
+router.get("/getallcreatorsdetails", validateToken, getAllCreatorsDetails);
 
 module.exports = router;

@@ -5,26 +5,65 @@ import {
   useParams,
   useNavigate,
 } from "react-router-dom";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { API_URL, ADVERTISMENT_PIC_URL } from "../../constants/globalConstants";
 import "./AdvertismentTablePage.css";
 
 function AdvertismentTablePage() {
+
   const navigate = useNavigate();
 
-  const [complain, setComplain] = useState("");
-  const [username, setUsername] = useState("");
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
+
+  const [advertismentTable, setAdvertismentTable] = useState([]);
+
+  const [title, settitle] = useState("");
+  const [description, setdescription] = useState("");
+  const [category, setcategory] = useState("");
   const [date, setDate] = useState("");
-  const [category, setCategory] = useState("");
+  const [stdate, setstDate] = useState("");
+  const [endate, setenDate] = useState("");
+  const [vpd, setvpd] = useState("");
+  const [price, setprice] = useState("");
+  const [adimage, setadimage] = useState("");
 
   const handleClick = (obj) => {
-    setComplain(
+    settitle("Physics Theory 2021");
+    setdescription(
       "You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the"
     );
-    setUsername("Tony stark");
+    setcategory("Tony stark");
     setDate("07/30/2022");
-    setCategory("Violence");
+    setstDate("08/30/2022");
+    setenDate("09/30/2022");
+    setvpd("100");
+    setprice("$ 2500");
+    setadimage("https://drive.google.com/uc?export=view&id=1KOZ9Yt9tc5qgiYjTdu9D-pnURTlRj_NU");
   };
+
+  // get advertisments ----------------------------------------------------
+  const getAdvertisments = async () => {
+    const token = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/advertisment/getadvertismenttable/" + userId, token)
+      .then((res) => {
+        setAdvertismentTable(res.data);
+      });
+
+  };
+  // end get advertisments ------------------------------------------------
+
+  useEffect(() => {
+    getAdvertisments();
+  }, [])
 
   return (
     <span className="AdvertismentTablePage">
@@ -47,105 +86,228 @@ function AdvertismentTablePage() {
           </div>
         </div>
 
-        <div class="row mx-3 pt-4 pb-4">
-          <div className="tableSection">
-            <table>
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Date</th>
-                  <th>Img</th>
-                  <th>Description</th>
-                  <th>Status</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="idStyle">1</td>
-                  <td>2008/11/28</td>
-                  <td>
-                    <img src="https://cached.imagescaler.hbpl.co.uk/resize/scaleWidth/820/cached.offlinehbpl.hbpl.co.uk/news/SUC/nft-unlock.jpg" />
-                  </td>
-                  <td>
-                    <p className="userComplaintDescription">
-                      It is hidden by default, until the collapse plugin adds
-                      the appropriate classes that we use to style each element.
-                    </p>
-                  </td>
-                  <td>Pending</td>
-                  <td>
-                    <a
-                      onClick={() => handleClick({ type: "Post" })}
-                      href="#"
-                      class="btn btn-secondary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#PostModal"
-                    >
-                      View
-                    </a>
-                  </td>
-                </tr>
+        <br />
 
-                <tr>
-                  <td className="idStyle">2</td>
-                  <td>2008/11/29</td>
-                  <td>
-                    <img src="https://img.freepik.com/free-vector/set-pixelated-workers_23-2147571601.jpg?w=740&t=st=1661336484~exp=1661337084~hmac=06b141cd5609510ad5932df89cc0e356b49cbe67f24015c755822c26b2b8dab9" />
-                  </td>
-                  <td>
-                    It is hidden by default, until the collapse plugin adds the
-                    appropriate classes that we use to style
-                  </td>
-                  <td>Accepted</td>
-                  <td>
-                    <a
-                      onClick={() => handleClick({ type: "Post" })}
-                      href="#"
-                      class="btn btn-secondary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#PostModal"
-                    >
-                      View
-                    </a>
-                  </td>
-                </tr>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link settings-nav-link active"
+              id="pending-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#pending-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="pending-tab-pane"
+              aria-selected="true"
+            >
+              Pending
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link settings-nav-link "
+              id="accepted-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#accepted-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="accepted-tab-pane"
+              aria-selected="true"
+            >
+              Accepted
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link settings-nav-link"
+              id="old-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#old-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="old-tab-pane"
+              aria-selected="false"
+            >
+              Old
+            </button>
+          </li>
+        </ul>
 
-                <tr>
-                  <td className="idStyle">3</td>
-                  <td>2008/11/30</td>
-                  <td>
-                    <img src="https://drive.google.com/uc?export=view&id=1IFgWbb4Pgt3jNVIuQezHHpSl6sseO0Zk" />
-                  </td>
-                  <td>
-                    It is hidden by default, until the collapse plugin adds the
-                    appropriate classes that we use to style
-                  </td>
-                  <td>Pending</td>
-                  <td>
-                    <a
-                      onClick={() =>
-                        handleClick({ id: 7, type: "Advertisment" })
-                      }
-                      href="#"
-                      class="btn btn-secondary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#PostModal"
-                    >
-                      View
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="tab-content" id="myTabContent">
+          <div
+            class="tab-pane complain-tab fade show active"
+            id="pending-tab-pane"
+            role="tabpanel"
+            aria-labelledby="pending-tab"
+            tabindex="0"
+          >
+            <div class="row mx-3 pt-4 pb-4">
+              <div className="tableSection">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Date</th>
+                      <th>Img</th>
+                      <th>Description</th>
+                      <th>Status</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {advertismentTable.map((ad) => (
+                      <tr key={ad.advertisementId}>
+                        <td className="idStyle">{ad.advertisementId}</td>
+                        <td>{new Date(ad.createdDate).toLocaleDateString()}</td>
+                        <td>
+                          <img src={ADVERTISMENT_PIC_URL + ad.contentLink} />
+                        </td>
+                        <td>
+                          <p className="userComplaintDescription">
+                            {ad.description}
+                          </p>
+                        </td>
+                        <td>Pending</td>
+                        <td>
+                          <a
+                            onClick={() =>
+                              handleClick({ id: 100 })
+                            }
+                            href="#"
+                            class="btn btn-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#ViewRequestAdModal"
+                          >
+                            View
+                          </a>
+                        </td>
+                      </tr>
+                    ))}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div
+            class="tab-pane complain-tab fade"
+            id="accepted-tab-pane"
+            role="tabpanel"
+            aria-labelledby="accepted-tab"
+            tabindex="0"
+          >
+            <div class="row mx-3 pt-4 pb-4">
+              <div className="tableSection">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Date</th>
+                      <th>Img</th>
+                      <th>Description</th>
+                      <th>Status</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {advertismentTable.map((ad) => (
+                      <tr key={ad.advertisementId}>
+                        <td className="idStyle">{ad.advertisementId}</td>
+                        <td>{new Date(ad.createdDate).toLocaleDateString()}</td>
+                        <td>
+                          <img src={ADVERTISMENT_PIC_URL + ad.contentLink} />
+                        </td>
+                        <td>
+                          <p className="userComplaintDescription">
+                            {ad.description}
+                          </p>
+                        </td>
+                        <td>Accepted</td>
+                        <td>
+                          <a
+                            onClick={() =>
+                              handleClick({ id: 100 })
+                            }
+                            href="#"
+                            class="btn btn-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#ViewPayAdModal"
+                          >
+                            Pay
+                          </a>
+                        </td>
+                      </tr>
+                    ))}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div
+            class="tab-pane complain-tab fade"
+            id="old-tab-pane"
+            role="tabpanel"
+            aria-labelledby="old-tab"
+            tabindex="0"
+          >
+            <div class="row mx-3 pt-4 pb-4">
+              <div className="tableSection">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Date</th>
+                      <th>Img</th>
+                      <th>Description</th>
+                      <th>Status</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {advertismentTable.map((ad, i) => (
+                      i <= 4 &&
+                      (<tr key={ad.advertisementId}>
+                        <td className="idStyle">{ad.advertisementId}</td>
+                        <td>{new Date(ad.createdDate).toLocaleDateString()}</td>
+                        <td>
+                          <img src={ADVERTISMENT_PIC_URL + ad.contentLink} />
+                        </td>
+                        <td>
+                          <p className="userComplaintDescription">
+                            {ad.description}
+                          </p>
+                        </td>
+                        <td>Old</td>
+
+                        <td>
+                          <a
+                            onClick={() =>
+                              handleClick({ id: 100 })
+                            }
+                            href="#"
+                            class="btn btn-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#ViewRequestAdModal"
+                          >
+                            View
+                          </a>
+                        </td>
+                      </tr>)
+                    ))}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* update plan modal */}
+      {/* update plan modal pending and old ad*/}
       <div
         class="modal fade"
-        id="PostModal"
+        id="ViewRequestAdModal"
         tabindex="-1"
         aria-labelledby="planModalLabel"
         aria-hidden="true"
@@ -155,7 +317,7 @@ function AdvertismentTablePage() {
             <div class="modal-header p-3">
               <div>
                 <h4 class="mb-0" id="planModalLabel">
-                  Advertisment
+                  Advertisment Details
                 </h4>
               </div>
               <button
@@ -166,9 +328,42 @@ function AdvertismentTablePage() {
               ></button>
             </div>
             <div class="modal-body p-4">
-              <div className="row"></div>
+              <div class="card border shadow-none border-bottom p-4">
+                <div class="row">
+                  <div class="col-12 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">{title}</h6>
+                    <p class="mb-1 fs-8">{date}</p>
+                  </div>
+                  <div class="col-12 mb-3">
+                    <img src={adimage} className="modal-image" />
+                  </div>
+                  <div class="col-12 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Description</h6>
+                    <p class="mb-1 fs-8">{description}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Duration</h6>
+                    <p class="mb-1 fs-8">{stdate} - {endate}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Category</h6>
+                    <p class="mb-1 fs-8">{category}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Views per Day</h6>
+                    <p class="mb-1 fs-8">{vpd}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Price</h6>
+                    <p class="mb-1 fs-8">{price}</p>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="modal-footer justify-content-start p-4 pt-2">
+              <button type="button" class="btn btn-danger">
+                Delete
+              </button>
               <button
                 type="button"
                 class="btn btn-secondary"
@@ -180,6 +375,81 @@ function AdvertismentTablePage() {
           </div>
         </div>
       </div>
+      {/* update plan modal pending and old ad*/}
+
+      {/* update plan modal pay ad*/}
+      <div
+        class="modal fade"
+        id="ViewPayAdModal"
+        tabindex="-1"
+        aria-labelledby="planModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header p-3">
+              <div>
+                <h4 class="mb-0" id="planModalLabel">
+                  Advertisment Details
+                </h4>
+              </div>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body p-4">
+              <div class="card border shadow-none border-bottom p-4">
+                <div class="row">
+                  <div class="col-12 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">{title}</h6>
+                    <p class="mb-1 fs-8">{date}</p>
+                  </div>
+                  <div class="col-12 mb-3">
+                    <img src={adimage} className="modal-image" />
+                  </div>
+                  <div class="col-12 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Description</h6>
+                    <p class="mb-1 fs-8">{description}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Duration</h6>
+                    <p class="mb-1 fs-8">{stdate} - {endate}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Category</h6>
+                    <p class="mb-1 fs-8">{category}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Views per Day</h6>
+                    <p class="mb-1 fs-8">{vpd}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Price</h6>
+                    <p class="mb-1 fs-8">{price}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-start p-4 pt-2">
+              <button type="button" class="btn btn-danger">
+                Pay
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* update plan modal pay ad*/}
+
     </span>
   );
 }

@@ -18,6 +18,7 @@ import CreatorAnalyticsCom from "./components/CreatorAnalyticsCom/CreatorAnalyti
 import FrogotPasswordUsernamePage from "./pages/FrogotPasswordUsernamePage/FrogotPasswordUsernamePage";
 import FrogotPasswordResetPasswordPage from "./pages/FrogotPasswordResetPasswordPage/FrogotPasswordResetPasswordPage";
 import ForgotPasswordOTP from "./pages/ForgotPasswordOTP/ForgotPasswordOTP";
+import EmailVerificationOTP from "./pages/EmailVerificationOTP/EmailVerificationOTP";
 import ReportUserPage from "./pages/ReportUserPage/ReportUserPage";
 import ReportPostPage from "./pages/ReportPostPage/ReportPostPage";
 import ReportAdvertismentPage from "./pages/ReportAdvertismentPage/ReportAdvertismentPage";
@@ -37,6 +38,12 @@ import AdvertismentReviewAdminPage from "./pages/AdvertismentReviewAdminPage/Adv
 import SubscribedCreatorsPage from "./pages/SubscribedCreatorsPage/SubscribedCreatorsPage";
 import ExternalSignUpPasswordPage from "./pages/ExternalSignUpPasswordPage/ExternalSignUpPasswordPage";
 import ChatCreatorPage from "./pages/ChatCreatorPage/ChatCreatorPage";
+import FollowerProfile from "./pages/FollowerProfile/FollowerProfile";
+import ViewUserProfile from "./pages/ViewUserProfile/ViewUserProfile";
+import ViewUserList from "./pages/VIewUserList/ViewUserList";
+import SearchCreatorList from "./pages/SearchCreatorList/SearchCreatorList";
+import ReportUserRecoveryPage from "./pages/ReportUserRecoveryPage/ReportUserRecoveryPage";
+import ReportAdmin0Page from "./pages/ReportAdmin0Page/ReportAdmin0Page";
 
 function App() {
   return (
@@ -49,19 +56,49 @@ function App() {
         ></Route>
         <Route
           path="/subscribedcreatorspage"
-          element={<CreatorTemplate children={<SubscribedCreatorsPage />} />}
+          element={
+            <CreatorTemplate
+              children={<SubscribedCreatorsPage />}
+              sideNavBarIndex="1"
+            />
+          }
+        ></Route>
+        <Route
+          path="/ViewUserList/:type"
+          element={
+            <CreatorTemplate
+              children={<ViewUserList />}
+              sideNavBarIndex="1"
+            />
+          }
+        ></Route>
+        <Route
+          path="/searchcreatorlist"
+          element={
+            <CreatorTemplate
+              children={<SearchCreatorList />}
+              sideNavBarIndex="1"
+            />
+          }
         ></Route>
         <Route
           path="/settings"
           element={
-            <CreatorTemplate children={<Settings />} sideNavBarIndex="5" />
+            <CreatorTemplate
+              children={<Settings />}
+              sideNavBarIndex="5" />
           }
         ></Route>
         <Route path="/signupoption" element={<SignUpOptionPage />}></Route>
         <Route path="/signup/:userType" element={<SignUpPage />}></Route>
         <Route path="/walletconnect" element={<WalletConnectPage />}></Route>
         <Route path="/login" element={<LogInPage />}></Route>
-        <Route path="/creatorprofile" element={<CreatorProfilePage />}></Route>
+        <Route path="/creatorprofile/" element={<CreatorProfilePage />}></Route>
+        <Route path="/viewuserprofile/:id" element={<ViewUserProfile />}></Route>
+        <Route
+          path="/followerprofile/:followerId"
+          element={<FollowerProfile />}
+        ></Route>
         <Route
           path="/advertisment"
           element={
@@ -89,7 +126,7 @@ function App() {
           element={
             <CreatorTemplate
               children={<ChatCreatorPage />}
-              sideNavBarIndex="4"
+              sideNavBarIndex="3"
             />
           }
         ></Route>
@@ -100,6 +137,10 @@ function App() {
         <Route
           path="/frogotpassword/otp"
           element={<ForgotPasswordOTP />}
+        ></Route>
+        <Route
+          path="/emailverificationotp"
+          element={<EmailVerificationOTP />}
         ></Route>
         <Route
           path="/frogotpassword/passwordreset"
@@ -156,19 +197,51 @@ function App() {
         ></Route>
         <Route
           path="/admin1/reportUser/:id"
-          element={<Admin0Template children={<ReportUserPage />} />}
+          element={
+            <Admin0Template children={<ReportUserPage />} sideNavBarIndex="2" />
+          }
+        ></Route>
+        <Route
+          path="/admin1/reportUserRecovery/:id"
+          element={
+            <Admin0Template
+              children={<ReportUserRecoveryPage />}
+              sideNavBarIndex="1"
+            />
+          }
+        ></Route>
+        <Route
+          path="/admin0/admin1manage/:id"
+          element={
+            <Admin0Template
+              children={<ReportAdmin0Page />}
+              sideNavBarIndex="1"
+            />
+          }
         ></Route>
         <Route
           path="/admin1/reportPost/:id"
-          element={<Admin0Template children={<ReportPostPage />} />}
+          element={
+            <Admin0Template children={<ReportPostPage />} sideNavBarIndex="2" />
+          }
         ></Route>
         <Route
           path="/admin1/reportComment/:id"
-          element={<Admin0Template children={<ReportCommentPage />} />}
+          element={
+            <Admin0Template
+              children={<ReportCommentPage />}
+              sideNavBarIndex="2"
+            />
+          }
         ></Route>
         <Route
           path="/admin1/reportAdvertisment/:id"
-          element={<Admin0Template children={<ReportAdvertismentPage />} />}
+          element={
+            <Admin0Template
+              children={<ReportAdvertismentPage />}
+              sideNavBarIndex="2"
+            />
+          }
         ></Route>
         <Route
           path="/test"
