@@ -20,7 +20,7 @@
 }
  table .idStyle {
   text-decoration: none;
-  color: #624BFF;
+  color: rgba(var(--bs-primary-rgb))!important;
 }
  table .status {
   border-radius: 0.2rem;
