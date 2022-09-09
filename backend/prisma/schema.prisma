@@ -247,6 +247,7 @@ model advertisement{
   endDate DateTime
   price Decimal @db.Decimal(65, 2)
   paymentStatus Boolean @default(false)
+  verifyStatus Boolean @default(false)
   blockedStatus Boolean @default(false)
   advertisementViews advertisementView[]
   advertisementReports advertisementReport[]
