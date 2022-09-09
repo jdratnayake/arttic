@@ -180,7 +180,7 @@ function DashboardAdmin0Page() {
             <div class="col cardCol">
               <AnalyticsCard
                 cardHeading="Subscription"
-                iconName="bi bi-person-x-fill"
+                iconName="bi bi-person-check-fill"
                 count={newSubscriptionCount}
                 percentage={newSubscriptionPercentage}
               />
