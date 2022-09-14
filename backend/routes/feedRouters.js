@@ -19,9 +19,15 @@ const {
   getPosts,
   deletePost,
   deleteComment,
+  getFavourites,
+  deleteSavePost,
 } = require("../controllers/feedController");
 
 const router = express.Router();
+
+router.get("/deleteSavePost", validateToken, deleteSavePost);
+
+router.get("/getFavourites", validateToken, getFavourites);
 
 router.get("/deleteComment", validateToken, deleteComment);
 
