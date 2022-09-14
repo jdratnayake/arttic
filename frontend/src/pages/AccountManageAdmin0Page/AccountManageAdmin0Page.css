@@ -101,6 +101,8 @@
   background: var(--green-50);
   border-color: var(--green-50);
   color: var(--black);
+  margin-right: 55px;
+  margin-bottom: 10px;
 }
 
 .AccountManageAdmin0Page .date-card {

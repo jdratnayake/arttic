@@ -1,8 +1,18 @@
 const { PrismaClient } = require("@prisma/client");
+const { Client } = require("pg");
 const asyncHandler = require("express-async-handler");
 
-const { user, userReport, postReport, commentReport, advertisementReport } =
-  new PrismaClient();
+const {
+  user,
+  userReport,
+  postReport,
+  commentReport,
+  advertisementReport,
+  post,
+  creator,
+  comment,
+  advertisement,
+} = new PrismaClient();
 
 const getUserComplaints = asyncHandler(async (req, res) => {
   const solve = await userReport.aggregate({
@@ -222,15 +232,22 @@ const resolveComplaint = asyncHandler(async (req, res) => {
 
 const getReportUserDetails = asyncHandler(async (req, res) => {
   const reportId = parseInt(req.headers.reportid);
+  const type = parseInt(req.headers.type);
 
-  const report = await userReport.findUnique({
-    where: {
-      userReportedId: reportId,
-    },
-    select: { userId: true },
-  });
+  let userId;
 
-  const userId = report.userId;
+  if (type === 2) {
+    userId = reportId;
+  } else {
+    const report = await userReport.findUnique({
+      where: {
+        userReportedId: reportId,
+      },
+      select: { userId: true },
+    });
+
+    userId = report.userId;
+  }
 
   const userDetails = await user.findUnique({
     where: {
@@ -239,6 +256,7 @@ const getReportUserDetails = asyncHandler(async (req, res) => {
 
     select: {
       userId: true,
+      type: true,
       name: true,
       bio: true,
       profilePhoto: true,
@@ -246,6 +264,16 @@ const getReportUserDetails = asyncHandler(async (req, res) => {
       premiumUser: true,
       blockedStatus: true,
       followerCreator: true,
+    },
+  });
+
+  const creatorDetails = await creator.findUnique({
+    where: {
+      userId,
+    },
+
+    select: {
+      openSeaStatus: true,
     },
   });
 
@@ -257,48 +285,49 @@ const getReportUserDetails = asyncHandler(async (req, res) => {
       },
     ],
     where: {
-      userId,
+      reportedUserId: userId,
     },
   });
 
-  const postReportDetails = await postReport.findMany({
-    take: 5,
-    orderBy: [
-      {
-        postReportId: "desc",
-      },
-    ],
-    where: {
-      userId,
+  const client = new Client({
+    user: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE_DATABASE,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
+    ssl: {
+      rejectUnauthorized: false,
     },
   });
 
-  const commentReportDetails = await commentReport.findMany({
-    take: 5,
-    orderBy: [
-      {
-        commentReportId: "desc",
-      },
-    ],
-    where: {
-      userId,
-    },
-  });
+  await client.connect();
 
-  const advertisementReportDetails = await advertisementReport.findMany({
-    take: 5,
-    orderBy: [
-      {
-        advertisementReportId: "desc",
-      },
-    ],
-    where: {
-      userId,
-    },
-  });
+  let newResult = await client.query(
+    'SELECT * FROM "post" INNER JOIN "postReport" ON "reportedPostId"="postId" WHERE "creatorId"=$1 ORDER BY "postReportId" DESC LIMIT 5',
+    [userId]
+  );
+
+  const postReportDetails = newResult.rows;
+
+  newResult = await client.query(
+    'SELECT * FROM "comment" INNER JOIN "commentReport" ON "reportedCommentId"="commentId" WHERE "comment"."userId"=$1 ORDER BY "commentReportId" DESC LIMIT 5',
+    [userId]
+  );
+
+  const commentReportDetails = newResult.rows;
+
+  newResult = await client.query(
+    'SELECT * FROM "advertisement" INNER JOIN "advertisementReport" ON "advertisement"."advertisementId"="advertisementReport"."advertisementId" WHERE "advertisement"."creatorId"=$1 ORDER BY "advertisementReportId" DESC LIMIT 5',
+    [userId]
+  );
+
+  const advertisementReportDetails = newResult.rows;
+
+  await client.end();
 
   const outputData = {
     userDetails,
+    creatorDetails,
     userReportDetails,
     postReportDetails,
     commentReportDetails,
@@ -308,21 +337,67 @@ const getReportUserDetails = asyncHandler(async (req, res) => {
   res.json(outputData);
 });
 
+// 1 = user
+// 2 = post
+// 3 = comment
+// 4 = advertisement
+// 5 = unblock user
+
 const blockUser = asyncHandler(async (req, res) => {
-  const { blockUserId, blockedAdminID } = req.body;
+  const { blockUserId, blockedAdminID, blockType } = req.body;
 
-  const updateUser = await user.update({
-    where: {
-      userId: blockUserId,
-    },
-    data: {
-      blockedStatus: true,
-      blockedDate: new Date(),
-      blockedAdminID: blockedAdminID,
-    },
-  });
+  let updateEntity;
 
-  if (updateUser) {
+  if (blockType === 1) {
+    updateEntity = await user.update({
+      where: {
+        userId: blockUserId,
+      },
+      data: {
+        blockedStatus: true,
+        blockedDate: new Date(),
+        blockedAdminID: blockedAdminID,
+      },
+    });
+  } else if (blockType === 2) {
+    updateEntity = await post.update({
+      where: {
+        postId: blockUserId,
+      },
+      data: {
+        blockedStatus: true,
+      },
+    });
+  } else if (blockType === 3) {
+    updateEntity = await comment.update({
+      where: {
+        commentId: blockUserId,
+      },
+      data: {
+        blockedStatus: true,
+      },
+    });
+  } else if (blockType === 4) {
+    updateEntity = await advertisement.update({
+      where: {
+        advertisementId: blockUserId,
+      },
+      data: {
+        blockedStatus: true,
+      },
+    });
+  } else if (blockType === 5) {
+    updateEntity = await user.update({
+      where: {
+        userId: blockUserId,
+      },
+      data: {
+        blockedStatus: false,
+      },
+    });
+  }
+
+  if (updateEntity) {
     res.json({
       statusCode: 1,
       msg: "Successful",
@@ -336,15 +411,307 @@ const blockUser = asyncHandler(async (req, res) => {
 });
 
 const getReportPostDetails = asyncHandler(async (req, res) => {
-  res.json("Hi");
+  const reportId = parseInt(req.headers.reportid);
+
+  const report = await postReport.findUnique({
+    where: {
+      postReportId: reportId,
+    },
+  });
+
+  const postOwner = await post.findUnique({
+    where: {
+      postId: report.reportedPostId,
+    },
+    select: { creatorId: true },
+  });
+
+  // res.json(postOwner);
+
+  // return 0;
+  const userId = postOwner.creatorId;
+  const postId = report.reportedPostId;
+
+  const userDetails = await user.findUnique({
+    where: {
+      userId,
+    },
+
+    select: {
+      userId: true,
+      type: true,
+      name: true,
+      bio: true,
+      profilePhoto: true,
+      joinedDate: true,
+      premiumUser: true,
+      blockedStatus: true,
+      followerCreator: true,
+    },
+  });
+
+  const creatorDetails = await creator.findUnique({
+    where: {
+      userId,
+    },
+
+    select: {
+      openSeaStatus: true,
+    },
+  });
+
+  const client = new Client({
+    user: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE_DATABASE,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  await client.connect();
+
+  const result = await client.query(
+    'SELECT * FROM "user" INNER JOIN "post" ON "post"."creatorId"="user"."userId" WHERE "postId"=$1',
+    [postId]
+  );
+
+  await client.end();
+
+  const userReportDetails = await userReport.findMany({
+    take: 5,
+    orderBy: [
+      {
+        userReportedId: "desc",
+      },
+    ],
+    where: {
+      reportedUserId: userId,
+    },
+  });
+
+  const postReportDetails = await postReport.findMany({
+    take: 5,
+    orderBy: [
+      {
+        postReportId: "desc",
+      },
+    ],
+    where: {
+      reportedPostId: postId,
+    },
+  });
+
+  const outputData = {
+    userDetails,
+    creatorDetails,
+    postDetails: result.rows[0],
+    postComplaint: report,
+    userReportDetails,
+    postReportDetails,
+  };
+
+  res.json(outputData);
 });
 
 const getReportCommentDetails = asyncHandler(async (req, res) => {
-  res.json("Hi");
+  const reportId = parseInt(req.headers.reportid);
+  // console.log("Hi");
+  let report = await commentReport.findUnique({
+    where: {
+      commentReportId: reportId,
+    },
+  });
+
+  const getPostId = await comment.findUnique({
+    where: {
+      commentId: report.reportedCommentId,
+    },
+  });
+
+  report = {
+    ...report,
+    commentName: getPostId.description,
+    commentStatus: getPostId.blockedStatus,
+  };
+
+  const userId = getPostId.userId;
+  const postId = getPostId.postId;
+
+  // res.json({ userId, postId });
+
+  // return 0;
+
+  const userDetails = await user.findUnique({
+    where: {
+      userId,
+    },
+
+    select: {
+      userId: true,
+      type: true,
+      name: true,
+      bio: true,
+      profilePhoto: true,
+      joinedDate: true,
+      premiumUser: true,
+      blockedStatus: true,
+      followerCreator: true,
+    },
+  });
+
+  const creatorDetails = await creator.findUnique({
+    where: {
+      userId,
+    },
+
+    select: {
+      openSeaStatus: true,
+    },
+  });
+
+  const client = new Client({
+    user: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE_DATABASE,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  await client.connect();
+
+  const result = await client.query(
+    'SELECT * FROM "user" INNER JOIN "post" ON "post"."creatorId"="user"."userId" WHERE "postId"=$1',
+    [postId]
+  );
+
+  await client.end();
+
+  const userReportDetails = await userReport.findMany({
+    take: 5,
+    orderBy: [
+      {
+        userReportedId: "desc",
+      },
+    ],
+    where: {
+      reportedUserId: userId,
+    },
+  });
+
+  const postReportDetails = await postReport.findMany({
+    take: 5,
+    orderBy: [
+      {
+        postReportId: "desc",
+      },
+    ],
+    where: {
+      reportedPostId: postId,
+    },
+  });
+
+  const outputData = {
+    userDetails,
+    creatorDetails,
+    postDetails: result.rows[0],
+    commentComplaint: report,
+    userReportDetails,
+    postReportDetails,
+  };
+
+  res.json(outputData);
 });
 
 const getReportAdvertismentDetails = asyncHandler(async (req, res) => {
-  res.json("Hi");
+  const reportId = parseInt(req.headers.reportid);
+
+  const report = await advertisementReport.findUnique({
+    where: {
+      advertisementReportId: reportId,
+    },
+  });
+
+  const advertisementDetails = await advertisement.findUnique({
+    where: {
+      advertisementId: report.advertisementId,
+    },
+  });
+
+  // res.json(advertisementOwner);
+
+  // return 0;
+
+  const userId = advertisementDetails.creatorId;
+  const advertisementId = report.advertisementId;
+
+  const userDetails = await user.findUnique({
+    where: {
+      userId,
+    },
+
+    select: {
+      userId: true,
+      type: true,
+      name: true,
+      bio: true,
+      profilePhoto: true,
+      joinedDate: true,
+      premiumUser: true,
+      blockedStatus: true,
+      followerCreator: true,
+    },
+  });
+
+  const creatorDetails = await creator.findUnique({
+    where: {
+      userId,
+    },
+
+    select: {
+      openSeaStatus: true,
+    },
+  });
+
+  const userReportDetails = await userReport.findMany({
+    take: 5,
+    orderBy: [
+      {
+        userReportedId: "desc",
+      },
+    ],
+    where: {
+      reportedUserId: userId,
+    },
+  });
+
+  const advertisementReportDetails = await advertisementReport.findMany({
+    take: 5,
+    orderBy: [
+      {
+        advertisementReportId: "desc",
+      },
+    ],
+    where: {
+      advertisementId: advertisementId,
+    },
+  });
+
+  const outputData = {
+    userDetails,
+    creatorDetails,
+    advertisementReport: report,
+    advertisementDetails,
+    userReportDetails,
+    advertisementReportDetails,
+  };
+
+  res.json(outputData);
 });
 
 module.exports = {

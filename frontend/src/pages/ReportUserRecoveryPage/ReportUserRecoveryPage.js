@@ -4,34 +4,28 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import $ from "jquery";
 
-import {
-  API_URL,
-  POST_PIC_URL,
-  PROFILE_PIC_URL,
-  ADVERTISMENT_PIC_URL,
-} from "../../constants/globalConstants";
+import { API_URL, PROFILE_PIC_URL } from "../../constants/globalConstants";
 
-import "../ReportUserPage/ReportUserPage.css";
-import avatar from "../../images/users/avatar-1.jpg";
+import "./ReportUserRecoveryPage.css";
 import checkedMark from "../../images/svg/checked-mark.svg";
 
-function ReportAdvertismentPage() {
+function ReportUserRecoveryPage() {
   let { id } = useParams();
 
   const userInfo = useSelector((state) => state.userInfo);
-  const { userId, accessToken, profilePhoto } = userInfo.user;
+  const { userId, accessToken } = userInfo.user;
 
   const [userDetails, setUserDetails] = useState({});
   const [creatorDetails, setCreatorDetails] = useState({});
-  const [advertismentComplaint, setAdvertismentComplaint] = useState({});
-  const [advertismentDetails, setAdvertismentDetails] = useState({});
   const [userReportDetails, setUserReportDetails] = useState([]);
+  const [postReportDetails, setPostReportDetails] = useState([]);
+  const [commentReportDetails, setCommentReportDetails] = useState([]);
   const [advertisementReportDetails, setAdvertisementReportDetails] = useState(
     []
   );
-
-  const [buttonName, setButtonName] = useState("Ban Advertisement");
+  const [buttonName, setButtonName] = useState("Temporary Ban");
   const [isDisabled, setDisabled] = useState(false);
+  const [buttonStyle, setButtonStyle] = useState({});
 
   const typeList = [
     "",
@@ -40,15 +34,6 @@ function ReportAdvertismentPage() {
     "Spam",
     "False Information",
     "Something Else",
-  ];
-
-  const nftTypeList = [
-    "",
-    "anime",
-    "Artwork",
-    "Music and Media",
-    "Gaming",
-    "Memes",
   ];
 
   const numList = ["One", "Two", "Three", "Four", "Five"];
@@ -62,30 +47,30 @@ function ReportAdvertismentPage() {
       headers: {
         authorization: accessToken,
         reportid: id,
+        type: 2,
       },
     };
 
     await axios
-      .get(API_URL + "/complaintreview/getReportAdvertismentDetails/", config)
+      .get(API_URL + "/complaintreview/getReportUserDetails/", config)
       .then((response) => {
-        if (response.data.advertisementDetails.blockedStatus) {
-          setButtonName("Advertisement Banned");
+        if (!response.data.userDetails.blockedStatus) {
+          setButtonName("Active");
+          setButtonStyle({
+            background: "#33ff94",
+            border: "#33ff94",
+            color: "black",
+          });
           setDisabled(true);
         }
-
         setUserDetails(response.data.userDetails);
         setCreatorDetails(response.data.creatorDetails);
-        setAdvertismentComplaint(response.data.advertisementReport);
-        setAdvertismentDetails(response.data.advertisementDetails);
         setUserReportDetails(response.data.userReportDetails);
+        setPostReportDetails(response.data.postReportDetails);
+        setCommentReportDetails(response.data.commentReportDetails);
         setAdvertisementReportDetails(response.data.advertisementReportDetails);
-        // console.log(response);
       });
   };
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const banUser = async () => {
     const token = {
@@ -95,9 +80,9 @@ function ReportAdvertismentPage() {
     };
 
     const inputData = {
-      blockUserId: advertismentDetails.advertisementId,
+      blockUserId: userDetails.userId,
       blockedAdminID: userId,
-      blockType: 4,
+      blockType: 5,
     };
 
     await axios
@@ -105,9 +90,18 @@ function ReportAdvertismentPage() {
       .then((res) => {});
 
     $("#btn-close-form").click();
-    setButtonName("Post Banned");
+    setButtonName("Active");
+    setButtonStyle({
+      background: "#33ff94",
+      border: "#33ff94",
+      color: "black",
+    });
     setDisabled(true);
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <span className="ReportUserPage">
@@ -143,6 +137,62 @@ function ReportAdvertismentPage() {
                 <div class="lh-1">
                   <h2 class="mb-0">{userDetails.name}</h2>
                 </div>
+                <div>
+                  <button
+                    type="button"
+                    class="btn btn-danger banButton"
+                    disabled={isDisabled}
+                    data-bs-toggle="modal"
+                    data-bs-target="#upgradeAccount"
+                    style={buttonStyle}
+                  >
+                    {buttonName}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="modal fade"
+            id="upgradeAccount"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Confirm Activation
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  This procedure is irreversible. Do you want to Active?
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    id="btn-close-form"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger "
+                    onClick={banUser}
+                  >
+                    Confirm
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -176,124 +226,6 @@ function ReportAdvertismentPage() {
           </div>
         </div>
       </div>
-      <div class="pt-5">
-        {/* row */}
-        <div class="row justify-content-center">
-          <div class="col-xl-6 col-lg-6 col-md-12 col-12 mb-5 ">
-            <div class="card mt-2">
-              {/* type here */}
-
-              <div class="modal-body p-4">
-                <div class="card border shadow-none border-bottom p-4">
-                  <div class="row">
-                    <div class="col-12 mb-3"></div>
-                    <div class="col-12 mb-3">
-                      <img
-                        src={
-                          ADVERTISMENT_PIC_URL + advertismentDetails.contentLink
-                        }
-                        className="modal-image"
-                        style={{ width: "350px" }}
-                      />
-                    </div>
-                    <div class="col-12 mb-3">
-                      <h6 class="text-uppercase fs-6 ls-2">Description</h6>
-                      <p class="mb-1 fs-8">{advertismentDetails.description}</p>
-                    </div>
-                    <div class="col-6 mb-3">
-                      <h6 class="text-uppercase fs-6 ls-2">Created</h6>
-                      <p class="mb-1 fs-8">
-                        {new Date(
-                          advertismentDetails.createdDate
-                        ).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div class="col-6 mb-3">
-                      <h6 class="text-uppercase fs-6 ls-2">Duration</h6>
-                      <p class="mb-1 fs-8">
-                        {new Date(
-                          advertismentDetails.startDate
-                        ).toLocaleDateString()}{" "}
-                        -{" "}
-                        {new Date(
-                          advertismentDetails.endDate
-                        ).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div class="col-6 mb-3">
-                      <h6 class="text-uppercase fs-6 ls-2">Category</h6>
-                      <p class="mb-1 fs-8">
-                        {nftTypeList[advertismentDetails.category]}
-                      </p>
-                    </div>
-
-                    <div class="col-6 mb-3">
-                      <h6 class="text-uppercase fs-6 ls-2">Price</h6>
-                      <p class="mb-1 fs-8">$ {advertismentDetails.price}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card-body">
-                <h5 class="card-title">
-                  {typeList[advertismentComplaint.reportCategory]}
-                </h5>
-                <p class="card-text">{advertismentComplaint.description}</p>
-                <button
-                  class="btn btn-danger mx-2"
-                  disabled={isDisabled}
-                  data-bs-toggle="modal"
-                  data-bs-target="#upgradeAccount"
-                >
-                  {buttonName}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="modal fade"
-        id="upgradeAccount"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
-                Confirm Ban
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              This procedure is irreversible. Do you want to Ban?
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-                id="btn-close-form"
-              >
-                Close
-              </button>
-              <button type="button" class="btn btn-danger " onClick={banUser}>
-                Confirm
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* content */}
       <div class="py-5">
         {/* row */}
@@ -308,9 +240,8 @@ function ReportAdvertismentPage() {
                 <span class="text-uppercase fw-medium text-dark fs-5 ls-2">
                   User report
                 </span>
-                <div class="row mt-2 p-1 complain-body">
+                <div class="row mt-2  p-1 complain-body">
                   {/* Accordion */}
-
                   <div class="accordion" id="accordionUser">
                     {userReportDetails.map((data, i) =>
                       i === 0 ? (
@@ -382,7 +313,174 @@ function ReportAdvertismentPage() {
               </div>
             </div>
           </div>
+          <div class="col-xl-6 col-lg-12 col-md-12 col-12 mb-5 ">
+            {/*card */}
+            <div class="card">
+              {/* card body */}
+              <div class="card-body">
+                {/* card title */}
+                {/*<h4 class="card-title mb-4">About Me</h4>*/}
+                <span class="text-uppercase fw-medium text-dark fs-5 ls-2">
+                  Post report
+                </span>
+                <div class="row mt-2 p-1 complain-body">
+                  {/* Accordion */}
+                  <div class="accordion" id="accordionPost">
+                    {postReportDetails.map((data, i) =>
+                      i === 0 ? (
+                        <div class="accordion-item" key={data.postReportId}>
+                          <h2
+                            class="accordion-header"
+                            id={"heading" + numList[i]}
+                          >
+                            <button
+                              class="accordion-button"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={"#collapse" + (i + 1 + 5)}
+                              aria-expanded="true"
+                              aria-controls={"collapse" + (i + 1 + 5)}
+                            >
+                              {truncate(data.description)}
+                            </button>
+                          </h2>
+                          <div
+                            id={"collapse" + (i + 1 + 5)}
+                            class="accordion-collapse collapse show"
+                            aria-labelledby={"heading" + numList[i]}
+                            data-bs-parent="#accordionPost"
+                          >
+                            <div class="accordion-body">
+                              <p>
+                                <b>{typeList[data.reportCategory]}</b>
+                              </p>
 
+                              {data.description}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div class="accordion-item" key={data.postReportId}>
+                          <h2
+                            class="accordion-header"
+                            id={"heading" + numList[i]}
+                          >
+                            <button
+                              class="accordion-button collapsed"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={"#collapse" + (i + 1 + 5)}
+                              aria-expanded="false"
+                              aria-controls={"collapse" + (i + 1 + 5)}
+                            >
+                              {truncate(data.description)}
+                            </button>
+                          </h2>
+                          <div
+                            id={"collapse" + (i + 1 + 5)}
+                            class="accordion-collapse collapse"
+                            aria-labelledby={"heading" + numList[i]}
+                            data-bs-parent="#accordionPost"
+                          >
+                            <div class="accordion-body">
+                              <p>
+                                <b>{typeList[data.reportCategory]}</b>
+                              </p>
+                              {data.description}
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-12 col-md-12 col-12 mb-5 ">
+            {/*card */}
+            <div class="card">
+              {/* card body */}
+              <div class="card-body">
+                {/* card title */}
+                {/*<h4 class="card-title mb-4">About Me</h4>*/}
+                <span class="text-uppercase fw-medium text-dark fs-5 ls-2">
+                  Comment report
+                </span>
+                <div class="row mt-2 p-1 complain-body">
+                  {/* Accordion */}
+                  <div class="accordion" id="accordionComment">
+                    {commentReportDetails.map((data, i) =>
+                      i === 0 ? (
+                        <div class="accordion-item" key={data.commentReportId}>
+                          <h2
+                            class="accordion-header"
+                            id={"heading" + numList[i]}
+                          >
+                            <button
+                              class="accordion-button"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={"#collapse" + 11 + i}
+                              aria-expanded="true"
+                              aria-controls={"collapse" + 11 + i}
+                            >
+                              {truncate(data.description)}
+                            </button>
+                          </h2>
+                          <div
+                            id={"collapse" + 11 + i}
+                            class="accordion-collapse collapse show"
+                            aria-labelledby={"heading" + numList[i]}
+                            data-bs-parent="#accordionComment"
+                          >
+                            <div class="accordion-body">
+                              <p>
+                                <b>{typeList[data.reportCategory]}</b>
+                              </p>
+
+                              {data.description}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div class="accordion-item" key={data.commentReportId}>
+                          <h2
+                            class="accordion-header"
+                            id={"heading" + numList[i]}
+                          >
+                            <button
+                              class="accordion-button collapsed"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={"#collapse" + 11 + i}
+                              aria-expanded="false"
+                              aria-controls={"collapse" + 11 + i}
+                            >
+                              {truncate(data.description)}
+                            </button>
+                          </h2>
+                          <div
+                            id={"collapse" + 11 + i}
+                            class="accordion-collapse collapse"
+                            aria-labelledby={"heading" + numList[i]}
+                            data-bs-parent="#accordionComment"
+                          >
+                            <div class="accordion-body">
+                              <p>
+                                <b>{typeList[data.reportCategory]}</b>
+                              </p>
+                              {data.description}
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="col-xl-6 col-lg-12 col-md-12 col-12 mb-5 ">
             {/*card */}
             <div class="card">
@@ -478,4 +576,4 @@ function ReportAdvertismentPage() {
   );
 }
 
-export default ReportAdvertismentPage;
+export default ReportUserRecoveryPage;

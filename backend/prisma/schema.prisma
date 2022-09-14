@@ -227,6 +227,10 @@ model commentReaction{
 
 // category
 //   1 = anime
+//   2 = Artwork
+//   3 = Music and Media
+//   4 = Gaming
+//   5 = Memes
 
 // payment status
 //   false = not paid
@@ -243,6 +247,7 @@ model advertisement{
   endDate DateTime
   price Decimal @db.Decimal(65, 2)
   paymentStatus Boolean @default(false)
+  verifyStatus Boolean @default(false)
   blockedStatus Boolean @default(false)
   advertisementViews advertisementView[]
   advertisementReports advertisementReport[]
