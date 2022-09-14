@@ -278,9 +278,9 @@ function SettingsBillingPage() {
 
                         <a
                           href="#"
-                          class="btn btn-dark d-grid mb-2"
+                          class="btn btn-next d-grid mb-2"
                           data-bs-toggle="modal"
-                          data-bs-target="#billingPayments"
+                          data-bs-target="#billingPayments" style={{ background: "#33ff94", border: "#33ff94", color: "black" }}
                         >
                           {premiumStatus
                             ? "Extend Subscription"

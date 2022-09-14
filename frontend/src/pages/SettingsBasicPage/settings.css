@@ -552,7 +552,7 @@
 }
 
 .settingsPage .purchase-p {
-  color: rgba(0, 0, 0, 0.5);
+  color: rgb(0 0 0 / 76%);
   font-weight: 400;
 }
 
@@ -4454,7 +4454,7 @@
 }
 
 .settingsPage .form-check-input:checked {
-  background-color: #624BFF;
+  background-color: rgba(var(--bs-primary-rgb))!important;
   border-color: #624BFF;
 }
 
@@ -13870,7 +13870,7 @@
 }
 
 .settingsPage .text-primary {
-  color: #624BFF !important;
+  color: rgba(var(--bs-primary-rgb),var(--bs-text-opacity))!important;
 }
 
 .settingsPage .text-secondary {
