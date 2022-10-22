@@ -1,626 +1,589 @@
-import "./AdvertismentReviewAdminPage.css";
-
-import { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  useParams,
+  useNavigate,
+} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import $ from "jquery";
 
 import SummaryCard from "../../components/SummaryCard/SummaryCard";
+import { API_URL, ADVERTISMENT_PIC_URL } from "../../constants/globalConstants";
+
+import "./AdvertismentReviewAdminPage.css";
 
 function AdvertismentReviewAdminPage() {
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, accessToken } = userInfo.user;
 
-    const [title, settitle] = useState("");
-    const [description, setdescription] = useState("");
-    const [category, setcategory] = useState("");
-    const [date, setDate] = useState("");
-    const [stdate, setstDate] = useState("");
-    const [endate, setenDate] = useState("");
-    const [vpd, setvpd] = useState("");
-    const [price, setprice] = useState("");
-    const [adimage, setadimage] = useState("");
+  const [advertismentTable, setAdvertismentTable] = useState([]);
+  const [request, setRequest] = useState(0);
+  const [active, setActive] = useState(0);
+  const [old, setOld] = useState(0);
 
-    const handleClick = (obj) => {
-        settitle("Physics Theory 2021");
-        setdescription(
-            "You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the"
-        );
-        setcategory("Tony stark");
-        setDate("07/30/2022");
-        setstDate("08/30/2022");
-        setenDate("09/30/2022");
-        setvpd("100");
-        setprice("$ 2500");
-        setadimage("https://drive.google.com/uc?export=view&id=1KOZ9Yt9tc5qgiYjTdu9D-pnURTlRj_NU");
+  const [advertismentId, setAdvertismentId] = useState(0);
+  const [description, setdescription] = useState("");
+  const [category, setcategory] = useState("");
+  const [date, setDate] = useState("");
+  const [stdate, setstDate] = useState("");
+  const [endate, setenDate] = useState("");
+  const [price, setprice] = useState(0);
+  const [adimage, setadimage] = useState("");
+
+  const nftTypeList = [
+    "",
+    "Anime",
+    "Artwork",
+    "Music and Media",
+    "Gaming",
+    "Memes",
+  ];
+
+  const handleClick = (id, imageLink, des, cDate, sDate, edate, cate, pri) => {
+    setAdvertismentId(id);
+    setadimage(ADVERTISMENT_PIC_URL + imageLink);
+    setdescription(des);
+    setDate(new Date(cDate).toLocaleDateString());
+    setstDate(new Date(sDate).toLocaleDateString());
+    setenDate(new Date(edate).toLocaleDateString());
+    setcategory(nftTypeList[cate]);
+    setprice(parseInt(pri));
+  };
+
+  const getData = async () => {
+    const token = {
+      headers: {
+        authorization: accessToken,
+      },
     };
 
-    return (
-        <span className="AdvertismentReviewAdminPage">
-            <div class="card-body admin-page-title date-card">
-                <div class="row">
-                    <h4>Advertisments</h4>
-                </div>
-            </div>
+    await axios
+      .get(API_URL + "/advertismentreview/getadvertisments/", token)
+      .then((res) => {
+        setAdvertismentTable(res.data.advertisementList);
+        setRequest(res.data.requestAdvertisementCount);
+        setActive(res.data.activeAdvertisementCount);
+        setOld(res.data.oldAdvertisementCount);
+      });
+  };
 
-            <div class="card-body date-card">
-                <div class="row">
-                    <div class="col">
-                        <SummaryCard cardHeading="Requests" numberValue="100" />
-                    </div>
-                    <div class="col">
-                        <SummaryCard cardHeading="Active" numberValue="1, 500" />
-                    </div>
-                    <div class="col">
-                        <SummaryCard cardHeading="Old" numberValue="1, 000" />
-                    </div>
-                </div>
-            </div>
+  useEffect(() => {
+    getData();
+  }, []);
 
-            <div class="card-body">
-                <div class="row">
-                    <div className="tableSection">
+  const verifyAdvertisement = async () => {
+    console.log(advertismentId);
 
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button
-                                    class="nav-link settings-nav-link active"
-                                    id="user-tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#user-tab-pane"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="user-tab-pane"
-                                    aria-selected="true"
+    const token = {
+      headers: {
+        authorization: accessToken,
+        advertismentid: advertismentId,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/advertismentreview/verifyadvertisement/", token)
+      .then((res) => {
+        console.log(res.data);
+        const newList = advertismentTable.map((data) => {
+          // 👇️ if id equals 2, update country property
+          if (data.advertisementId === advertismentId) {
+            return { ...data, verifyStatus: true };
+          }
+
+          // 👇️ otherwise return object as is
+          return data;
+        });
+        setAdvertismentTable(newList);
+        setRequest(request - 1);
+      });
+
+    $("#btn-close-form").click();
+  };
+
+  return (
+    <span className="AdvertismentReviewAdminPage">
+      <div class="card-body admin-page-title date-card">
+        <div class="row">
+          <h4>Advertisments</h4>
+        </div>
+      </div>
+
+      <div class="card-body date-card">
+        <div class="row">
+          <div class="col">
+            <SummaryCard
+              cardHeading="Requests"
+              numberValue={request.toLocaleString()}
+            />
+          </div>
+          <div class="col">
+            <SummaryCard
+              cardHeading="Active"
+              numberValue={active.toLocaleString()}
+            />
+          </div>
+          <div class="col">
+            <SummaryCard cardHeading="Old" numberValue={old.toLocaleString()} />
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="row">
+          <div className="tableSection">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link settings-nav-link active"
+                  id="user-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#user-tab-pane"
+                  type="button"
+                  role="tab"
+                  aria-controls="user-tab-pane"
+                  aria-selected="true"
+                >
+                  Requests
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link settings-nav-link"
+                  id="post-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#post-tab-pane"
+                  type="button"
+                  role="tab"
+                  aria-controls="post-tab-pane"
+                  aria-selected="false"
+                >
+                  Active
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link settings-nav-link"
+                  id="comment-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#comment-tab-pane"
+                  type="button"
+                  role="tab"
+                  aria-controls="comment-tab-pane"
+                  aria-selected="false"
+                >
+                  Old
+                </button>
+              </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+              <div
+                class="tab-pane complain-tab fade show active"
+                id="user-tab-pane"
+                role="tabpanel"
+                aria-labelledby="user-tab"
+                tabindex="0"
+              >
+                <div class="row mx-3 pt-4 pb-4">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Img</th>
+                        <th>Description</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {advertismentTable.map(
+                        (ad) =>
+                          ad.verifyStatus == false &&
+                          new Date(ad.endDate) >= new Date() && (
+                            <tr key={ad.advertisementId}>
+                              <td className="idStyle">{ad.advertisementId}</td>
+                              <td>
+                                {new Date(ad.createdDate).toLocaleDateString()}
+                              </td>
+                              <td>
+                                <img
+                                  src={ADVERTISMENT_PIC_URL + ad.contentLink}
+                                />
+                              </td>
+                              <td>
+                                <p className="userComplaintDescription">
+                                  {ad.description}
+                                </p>
+                              </td>
+
+                              <td>
+                                <a
+                                  onClick={() =>
+                                    handleClick(
+                                      ad.advertisementId,
+                                      ad.contentLink,
+                                      ad.description,
+                                      ad.createdDate,
+                                      ad.startDate,
+                                      ad.endDate,
+                                      ad.category,
+                                      ad.price
+                                    )
+                                  }
+                                  href="#"
+                                  class="btn btn-secondary"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#ViewRequestAdModal"
                                 >
-                                    Requests
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button
-                                    class="nav-link settings-nav-link"
-                                    id="post-tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#post-tab-pane"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="post-tab-pane"
-                                    aria-selected="false"
+                                  View
+                                </a>
+                              </td>
+                            </tr>
+                          )
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div
+                class="tab-pane complain-tab fade"
+                id="post-tab-pane"
+                role="tabpanel"
+                aria-labelledby="post-tab"
+                tabindex="0"
+              >
+                <div class="row mx-3 pt-4 pb-4">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Img</th>
+                        <th>Description</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {advertismentTable.map(
+                        (ad) =>
+                          ad.verifyStatus == true &&
+                          ad.paymentStatus == true &&
+                          new Date(ad.endDate) >= new Date() && (
+                            <tr key={ad.advertisementId}>
+                              <td className="idStyle">{ad.advertisementId}</td>
+                              <td>
+                                {new Date(ad.createdDate).toLocaleDateString()}
+                              </td>
+                              <td>
+                                <img
+                                  src={ADVERTISMENT_PIC_URL + ad.contentLink}
+                                />
+                              </td>
+                              <td>
+                                <p className="userComplaintDescription">
+                                  {ad.description}
+                                </p>
+                              </td>
+
+                              <td>
+                                <a
+                                  onClick={() =>
+                                    handleClick(
+                                      ad.advertisementId,
+                                      ad.contentLink,
+                                      ad.description,
+                                      ad.createdDate,
+                                      ad.startDate,
+                                      ad.endDate,
+                                      ad.category,
+                                      ad.price
+                                    )
+                                  }
+                                  href="#"
+                                  class="btn btn-secondary"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#ViewActiveAdModal"
                                 >
-                                    Active
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button
-                                    class="nav-link settings-nav-link"
-                                    id="comment-tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#comment-tab-pane"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="comment-tab-pane"
-                                    aria-selected="false"
+                                  View
+                                </a>
+                              </td>
+                            </tr>
+                          )
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div
+                class="tab-pane complain-tab fade"
+                id="comment-tab-pane"
+                role="tabpanel"
+                aria-labelledby="comment-tab"
+                tabindex="0"
+              >
+                <div class="row mx-3 pt-4 pb-4">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Img</th>
+                        <th>Description</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {advertismentTable.map(
+                        (ad, i) =>
+                          new Date(ad.endDate) < new Date() && (
+                            <tr key={ad.advertisementId}>
+                              <td className="idStyle">{ad.advertisementId}</td>
+                              <td>
+                                {new Date(ad.createdDate).toLocaleDateString()}
+                              </td>
+                              <td>
+                                <img
+                                  src={ADVERTISMENT_PIC_URL + ad.contentLink}
+                                />
+                              </td>
+                              <td>
+                                <p className="userComplaintDescription">
+                                  {ad.description}
+                                </p>
+                              </td>
+
+                              <td>
+                                <a
+                                  onClick={() =>
+                                    handleClick(
+                                      ad.advertisementId,
+                                      ad.contentLink,
+                                      ad.description,
+                                      ad.createdDate,
+                                      ad.startDate,
+                                      ad.endDate,
+                                      ad.category,
+                                      ad.price
+                                    )
+                                  }
+                                  href="#"
+                                  class="btn btn-secondary"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#ViewActiveAdModal"
                                 >
-                                    Old
-                                </button>
-                            </li>
-
-                        </ul>
-
-                        <div class="tab-content" id="myTabContent">
-                            <div
-                                class="tab-pane complain-tab fade show active"
-                                id="user-tab-pane"
-                                role="tabpanel"
-                                aria-labelledby="user-tab"
-                                tabindex="0"
-                            >
-                                <div class="row mx-3 pt-4 pb-4">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Image</th>
-                                                <th>Email</th>
-                                                <th>Type</th>
-                                                <th>Status</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td className="idStyle">1</td>
-                                                <td>
-                                                    <img src="https://drive.google.com/uc?export=view&id=1IFgWbb4Pgt3jNVIuQezHHpSl6sseO0Zk" />
-                                                </td>
-                                                <td>janitharatnayake@gmail.com</td>
-                                                <td>Creator</td>
-                                                <td>
-                                                    <span class="status status-pending">Pending</span>
-                                                </td>
-                                                <td class="amount">
-                                                    <a
-                                                        onClick={() =>
-                                                            handleClick({ id: 100 })
-                                                        }
-                                                        href="#"
-                                                        class="btn btn-secondary openComplaintDialog"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#ViewRequestAdModal"
-                                                    >
-                                                        View
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td className="idStyle">2</td>
-                                                <td>
-                                                    <img src="https://drive.google.com/uc?export=view&id=1f4xC0G0UeGqQxrjbKt12C0gP3RGkA8y3" />
-                                                </td>
-                                                <td>pradeepratnayake@gmail.com</td>
-                                                <td>Admin</td>
-                                                <td>
-                                                    <span class="status status-pending">Pending</span>
-                                                </td>
-                                                <td class="amount">
-                                                    <a
-                                                        onClick={() =>
-                                                            handleClick({ id: 100 })
-                                                        }
-                                                        href="#"
-                                                        class="btn btn-secondary openComplaintDialog"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#ViewRequestAdModal"
-                                                    >
-                                                        View
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td className="idStyle">3</td>
-                                                <td>
-                                                    <img src="https://drive.google.com/uc?export=view&id=1KOZ9Yt9tc5qgiYjTdu9D-pnURTlRj_NU" />
-                                                </td>
-                                                <td>dulitharatnayake@gmail.com</td>
-                                                <td>Follower</td>
-                                                <td>
-                                                    <span class="status status-pending">Pending</span>
-                                                </td>
-                                                <td class="amount">
-                                                    <a
-                                                        onClick={() =>
-                                                            handleClick({ id: 100 })
-                                                        }
-                                                        href="#"
-                                                        class="btn btn-secondary openComplaintDialog"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#ViewRequestAdModal"
-                                                    >
-                                                        View
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div
-                                class="tab-pane complain-tab fade"
-                                id="post-tab-pane"
-                                role="tabpanel"
-                                aria-labelledby="post-tab"
-                                tabindex="0"
-                            >
-                                <div class="row mx-3 pt-4 pb-4">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Image</th>
-                                                <th>Email</th>
-                                                <th>Type</th>
-                                                <th>Status</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td className="idStyle">1</td>
-                                                <td>
-                                                    <img src="https://drive.google.com/uc?export=view&id=1IFgWbb4Pgt3jNVIuQezHHpSl6sseO0Zk" />
-                                                </td>
-                                                <td>janitharatnayake@gmail.com</td>
-                                                <td>Creator</td>
-                                                <td>
-                                                    <span class="status status-paid">Active</span>
-                                                </td>
-                                                <td class="amount">
-                                                    <a
-                                                        onClick={() =>
-                                                            handleClick({ id: 100 })
-                                                        }
-                                                        href="#"
-                                                        class="btn btn-secondary openComplaintDialog"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#ViewActiveAdModal"
-                                                    >
-                                                        View
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td className="idStyle">2</td>
-                                                <td>
-                                                    <img src="https://drive.google.com/uc?export=view&id=1f4xC0G0UeGqQxrjbKt12C0gP3RGkA8y3" />
-                                                </td>
-                                                <td>pradeepratnayake@gmail.com</td>
-                                                <td>Admin</td>
-                                                <td>
-                                                    <span class="status status-paid">Active</span>
-                                                </td>
-                                                <td class="amount">
-                                                    <a
-                                                        onClick={() =>
-                                                            handleClick({ id: 100 })
-                                                        }
-                                                        href="#"
-                                                        class="btn btn-secondary openComplaintDialog"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#ViewActiveAdModal"
-                                                    >
-                                                        View
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td className="idStyle">3</td>
-                                                <td>
-                                                    <img src="https://drive.google.com/uc?export=view&id=1KOZ9Yt9tc5qgiYjTdu9D-pnURTlRj_NU" />
-                                                </td>
-                                                <td>dulitharatnayake@gmail.com</td>
-                                                <td>Follower</td>
-                                                <td>
-                                                    <span class="status status-paid">Active</span>
-                                                </td>
-                                                <td class="amount">
-                                                    <a
-                                                        onClick={() =>
-                                                            handleClick({ id: 100 })
-                                                        }
-                                                        href="#"
-                                                        class="btn btn-secondary openComplaintDialog"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#ViewActiveAdModal"
-                                                    >
-                                                        View
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div
-                                class="tab-pane complain-tab fade"
-                                id="comment-tab-pane"
-                                role="tabpanel"
-                                aria-labelledby="comment-tab"
-                                tabindex="0"
-                            >
-                                <div class="row mx-3 pt-4 pb-4">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Image</th>
-                                                <th>Email</th>
-                                                <th>Type</th>
-                                                <th>Status</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td className="idStyle">1</td>
-                                                <td>
-                                                    <img src="https://drive.google.com/uc?export=view&id=1IFgWbb4Pgt3jNVIuQezHHpSl6sseO0Zk" />
-                                                </td>
-                                                <td>janitharatnayake@gmail.com</td>
-                                                <td>Creator</td>
-                                                <td>
-                                                    <span class="status status-unpaid">Old</span>
-                                                </td>
-                                                <td class="amount">
-                                                    <a
-                                                        onClick={() =>
-                                                            handleClick({ id: 100 })
-                                                        }
-                                                        href="#"
-                                                        class="btn btn-secondary openComplaintDialog"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#ViewOldAdnModal"
-                                                    >
-                                                        View
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td className="idStyle">2</td>
-                                                <td>
-                                                    <img src="https://drive.google.com/uc?export=view&id=1f4xC0G0UeGqQxrjbKt12C0gP3RGkA8y3" />
-                                                </td>
-                                                <td>pradeepratnayake@gmail.com</td>
-                                                <td>Admin</td>
-                                                <td>
-                                                    <span class="status status-unpaid">Old</span>
-                                                </td>
-                                                <td class="amount">
-                                                    <a
-                                                        onClick={() =>
-                                                            handleClick({ id: 100 })
-                                                        }
-                                                        href="#"
-                                                        class="btn btn-secondary openComplaintDialog"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#ViewOldAdnModal"
-                                                    >
-                                                        View
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td className="idStyle">3</td>
-                                                <td>
-                                                    <img src="https://drive.google.com/uc?export=view&id=1KOZ9Yt9tc5qgiYjTdu9D-pnURTlRj_NU" />
-                                                </td>
-                                                <td>dulitharatnayake@gmail.com</td>
-                                                <td>Follower</td>
-                                                <td>
-                                                    <span class="status status-unpaid">Old</span>
-                                                </td>
-                                                <td class="amount">
-                                                    <a
-                                                        onClick={() =>
-                                                            handleClick({ id: 100 })
-                                                        }
-                                                        href="#"
-                                                        class="btn btn-secondary openComplaintDialog"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#ViewOldAdnModal"
-                                                    >
-                                                        View
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+                                  View
+                                </a>
+                              </td>
+                            </tr>
+                          )
+                      )}
+                    </tbody>
+                  </table>
                 </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
 
-            {/* update plan modal request ad*/}
-            <div
-                class="modal fade"
-                id="ViewRequestAdModal"
-                tabindex="-1"
-                aria-labelledby="planModalLabel"
-                aria-hidden="true"
-            >
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header p-3">
-                            <div>
-                                <h4 class="mb-0" id="planModalLabel">
-                                    Advertisment Request
-                                </h4>
-                            </div>
-                            <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                            ></button>
-                        </div>
-                        <div class="modal-body p-4">
-                            <div class="card border shadow-none border-bottom p-4">
-                                <div class="row">
-                                    <div class="col-12 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">{title}</h6>
-                                        <p class="mb-1 fs-8">{date}</p>
-                                    </div>
-                                    <div class="col-12 mb-3">
-                                        <img src={adimage} className="modal-image" />
-                                    </div>
-                                    <div class="col-12 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">Description</h6>
-                                        <p class="mb-1 fs-8">{description}</p>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">Duration</h6>
-                                        <p class="mb-1 fs-8">{stdate} - {endate}</p>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">Category</h6>
-                                        <p class="mb-1 fs-8">{category}</p>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">Views per Day</h6>
-                                        <p class="mb-1 fs-8">{vpd}</p>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">Price</h6>
-                                        <p class="mb-1 fs-8">{price}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer justify-content-start p-4 pt-2">
-                            <button type="button" class="btn btn-danger">
-                                Publish
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-secondary"
-                                data-bs-dismiss="modal"
-                            >
-                                Close
-                            </button>
-                        </div>
-                    </div>
+      {/* update plan modal request ad*/}
+      <div
+        class="modal fade"
+        id="ViewRequestAdModal"
+        tabindex="-1"
+        aria-labelledby="planModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header p-3">
+              <div>
+                <h4 class="mb-0" id="planModalLabel">
+                  Advertisment Request
+                </h4>
+              </div>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body p-4">
+              <div class="card border shadow-none border-bottom p-4">
+                <div class="row">
+                  <div class="col-12 mb-3">
+                    <img src={adimage} className="modal-image" />
+                  </div>
+                  <div class="col-12 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Description</h6>
+                    <p class="mb-1 fs-8">{description}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Created Date</h6>
+                    <p class="mb-1 fs-8">{date}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Duration</h6>
+                    <p class="mb-1 fs-8">
+                      {stdate} - {endate}
+                    </p>
+                  </div>{" "}
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Category</h6>
+                    <p class="mb-1 fs-8">{category}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Price</h6>
+                    <p class="mb-1 fs-8">$ {price}</p>
+                  </div>
                 </div>
+              </div>
             </div>
+            <div class="modal-footer justify-content-start p-4 pt-2">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#upgradeAccount"
+              >
+                Verify
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            {/* update plan modal active ad*/}
-            <div
-                class="modal fade"
-                id="ViewActiveAdModal"
-                tabindex="-1"
-                aria-labelledby="planModalLabel"
-                aria-hidden="true"
-            >
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header p-3">
-                            <div>
-                                <h4 class="mb-0" id="planModalLabel">
-                                    Advertisment Details
-                                </h4>
-                            </div>
-                            <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                            ></button>
-                        </div>
-                        <div class="modal-body p-4">
-                            <div class="card border shadow-none border-bottom p-4">
-                                <div class="row">
-                                    <div class="col-12 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">{title}</h6>
-                                        <p class="mb-1 fs-8">{date}</p>
-                                    </div>
-                                    <div class="col-12 mb-3">
-                                        <img src={adimage} className="modal-image" />
-                                    </div>
-                                    <div class="col-12 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">Description</h6>
-                                        <p class="mb-1 fs-8">{description}</p>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">Duration</h6>
-                                        <p class="mb-1 fs-8">{stdate} - {endate}</p>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">Category</h6>
-                                        <p class="mb-1 fs-8">{category}</p>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">Views per Day</h6>
-                                        <p class="mb-1 fs-8">{vpd}</p>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">Price</h6>
-                                        <p class="mb-1 fs-8">{price}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer justify-content-start p-4 pt-2">
-                            <button type="button" class="btn btn-danger">
-                                Unpublish
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-secondary"
-                                data-bs-dismiss="modal"
-                            >
-                                Close
-                            </button>
-                        </div>
-                    </div>
+      <div
+        class="modal fade"
+        id="upgradeAccount"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Verify Advertisement
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              This procedure is irreversible. Do you want to Verify?
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+                id="btn-close-form"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger "
+                onClick={verifyAdvertisement}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* update plan modal active ad*/}
+      <div
+        class="modal fade"
+        id="ViewActiveAdModal"
+        tabindex="-1"
+        aria-labelledby="planModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header p-3">
+              <div>
+                <h4 class="mb-0" id="planModalLabel">
+                  Advertisment Details
+                </h4>
+              </div>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body p-4">
+              <div class="card border shadow-none border-bottom p-4">
+                <div class="row">
+                  <div class="col-12 mb-3">
+                    <img src={adimage} className="modal-image" />
+                  </div>
+                  <div class="col-12 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Description</h6>
+                    <p class="mb-1 fs-8">{description}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Created Date</h6>
+                    <p class="mb-1 fs-8">{date}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Duration</h6>
+                    <p class="mb-1 fs-8">
+                      {stdate} - {endate}
+                    </p>
+                  </div>{" "}
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Category</h6>
+                    <p class="mb-1 fs-8">{category}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6 class="text-uppercase fs-6 ls-2">Price</h6>
+                    <p class="mb-1 fs-8">$ {price}</p>
+                  </div>
                 </div>
+              </div>
             </div>
-
-            {/* update plan modal old ad */}
-            <div
-                class="modal fade"
-                id="ViewOldAdnModal"
-                tabindex="-1"
-                aria-labelledby="planModalLabel"
-                aria-hidden="true"
-            >
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header p-3">
-                            <div>
-                                <h4 class="mb-0" id="planModalLabel">
-                                    Old Advertisments
-                                </h4>
-                            </div>
-                            <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                            ></button>
-                        </div>
-                        <div class="modal-body p-4">
-                            <div class="card border shadow-none border-bottom p-4">
-                                <div class="row">
-                                    <div class="col-12 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">{title}</h6>
-                                        <p class="mb-1 fs-8">{date}</p>
-                                    </div>
-                                    <div class="col-12 mb-3">
-                                        <img src={adimage} className="modal-image" />
-                                    </div>
-                                    <div class="col-12 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">Description</h6>
-                                        <p class="mb-1 fs-8">{description}</p>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">Duration</h6>
-                                        <p class="mb-1 fs-8">{stdate} - {endate}</p>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">Category</h6>
-                                        <p class="mb-1 fs-8">{category}</p>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">Views per Day</h6>
-                                        <p class="mb-1 fs-8">{vpd}</p>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <h6 class="text-uppercase fs-6 ls-2">Price</h6>
-                                        <p class="mb-1 fs-8">{price}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer justify-content-start p-4 pt-2">
-                            <button type="button" class="btn btn-danger">
-                                Delete
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-secondary"
-                                data-bs-dismiss="modal"
-                            >
-                                Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div class="modal-footer justify-content-start p-4 pt-2">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
             </div>
-
-        </span>
-    );
+          </div>
+        </div>
+      </div>
+    </span>
+  );
 }
 
 export default AdvertismentReviewAdminPage;

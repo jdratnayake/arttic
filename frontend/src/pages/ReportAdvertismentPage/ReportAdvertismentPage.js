@@ -44,7 +44,7 @@ function ReportAdvertismentPage() {
 
   const nftTypeList = [
     "",
-    "anime",
+    "Anime",
     "Artwork",
     "Music and Media",
     "Gaming",

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { ToastContainer, toast } from "react-toastify";
 
 import {
   ADVERTISMENT_DAY_PRICE,
@@ -20,8 +21,15 @@ import {
 
 import "./AdvertisementPage.css";
 import "react-datepicker/dist/react-datepicker.css";
+import "react-toastify/dist/ReactToastify.css";
 
 function AdvertismentPage() {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  const tomorrowPlus = new Date();
+  tomorrowPlus.setDate(tomorrowPlus.getDate() + 2);
+
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
 
@@ -29,13 +37,14 @@ function AdvertismentPage() {
 
   const [picture, setPicture] = useState("");
   const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState(removeTime(new Date()));
-  const [endDate, setEndDate] = useState(removeTime(new Date()));
+  const [startDate, setStartDate] = useState(removeTime(tomorrow));
+  const [endDate, setEndDate] = useState(removeTime(tomorrowPlus));
   const [price, setPrice] = useState((0).toFixed(2));
 
   const [errorPicture, setErrorPicture] = useState("");
   const [errorDescription, setErrorDescription] = useState("");
   const [startDateError, setStartDateError] = useState("");
+  const [rangeDateError, setRangeDateError] = useState("");
   const [endDateError, setEndDateError] = useState("");
   const [firstRender, setFirstRender] = useState(true);
   const [firstRenderForPicture, setFirstRenderForPicture] = useState(true);
@@ -58,13 +67,15 @@ function AdvertismentPage() {
     // console.log(date2.getTime());
     dateValidation2(startDate, endDate);
 
-    if (date1.getTime() >= date2.getTime()) {
+    if (date1.getTime() > date2.getTime()) {
+      console.log("True");
       if (type == 1) {
         setStartDateError("");
       } else if (type === 2) {
         setEndDateError("");
       }
     } else {
+      console.log("False");
       setPrice((0).toFixed(2));
       if (type == 1) {
         setStartDateError("Invalid Start Date");
@@ -81,10 +92,12 @@ function AdvertismentPage() {
 
     if (duration <= 0) {
       setPrice((0).toFixed(2));
-      setStartDateError("Invalid date range");
+      setRangeDateError("Invalid date range");
+      setStartDateError("");
+      setEndDateError("");
       return false;
     } else {
-      setStartDateError("");
+      setRangeDateError("");
     }
     return true;
   };
@@ -147,7 +160,9 @@ function AdvertismentPage() {
       setPrice(priceNew);
     } else {
       setPrice((0).toFixed(2));
-      setStartDateError("Invalid date range");
+      setRangeDateError("Invalid date range");
+      setStartDateError("");
+      setEndDateError("");
     }
   }, [startDate, endDate]);
 
@@ -172,9 +187,9 @@ function AdvertismentPage() {
   const registerAdvertisment = async (data) => {
     if (pictureValidation()) {
       if (descriptionValidation()) {
-        if (dateValidation1(startDate, 1)) {
-          if (dateValidation1(endDate, 2)) {
-            if (dateValidation2()) {
+        if (dateValidation2()) {
+          if (dateValidation1(startDate, 1)) {
+            if (dateValidation1(endDate, 2)) {
               // console.log("janitha123");
               // console.log(data.category);
               // console.log(picture);
@@ -207,7 +222,22 @@ function AdvertismentPage() {
                   config
                 )
                 .then((response) => {
-                  console.log(response);
+                  // console.log(response);
+                  toast.success("Advertisment Created Successfully", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  });
+
+                  const delayInMilliseconds = 3000;
+
+                  setTimeout(function () {
+                    navigate("/advertisment");
+                  }, delayInMilliseconds);
                 });
             }
           }
@@ -218,6 +248,17 @@ function AdvertismentPage() {
 
   return (
     <span className="AdvertismentPage">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="col-md-12 col-xs-12">
         <div className="settingsPage">
           <div class="row mb-8">
@@ -253,9 +294,11 @@ function AdvertismentPage() {
                                 class="form-select"
                               >
                                 <option value="0">Select Category</option>
-                                <option value="1">India</option>
-                                <option value="2">UK</option>
-                                <option value="3">USA</option>
+                                <option value="1">Anime</option>
+                                <option value="2">Artwork</option>
+                                <option value="3">Music and Media</option>
+                                <option value="4">Gaming</option>
+                                <option value="5">Memes</option>
                               </Field>
                               <ErrorMessage
                                 name="category"
@@ -332,6 +375,9 @@ function AdvertismentPage() {
                                 <div className="error-msg">
                                   {startDateError}
                                 </div>
+                                <div className="error-msg">
+                                  {rangeDateError}
+                                </div>
                               </div>
                             </div>
                             <div class="col-sm-4">
@@ -384,11 +430,11 @@ function AdvertismentPage() {
                                 type="submit"
                                 class="btn btn-primary"
                                 onClick={() => {
-                                  // console.log("Hi");
                                   descriptionValidation();
-                                  dateValidation1(startDate, 1);
                                   dateValidation1(endDate, 2);
+                                  dateValidation1(startDate, 1);
                                   dateValidation2();
+                                  console.log("Hi Now");
                                   pictureValidation();
                                 }}
                               >
