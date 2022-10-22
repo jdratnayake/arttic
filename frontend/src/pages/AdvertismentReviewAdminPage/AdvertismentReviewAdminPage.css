@@ -1,103 +1,102 @@
 .AdvertismentReviewAdminPage .btn-group-style .btn-primary {
-    width: 100px;
-    margin-right: 10px;
+  width: 100px;
+  margin-right: 10px;
 }
 
 .AdvertismentReviewAdminPage .wrapper {
-    width: 100%;
+  width: 100%;
 }
 
 .AdvertismentReviewAdminPage table {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 5px 10px #e1e5ee;
-    background-color: white;
-    text-align: left;
-    overflow: hidden;
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 5px 10px #e1e5ee;
+  background-color: white;
+  text-align: left;
+  overflow: hidden;
 }
 
 .AdvertismentReviewAdminPage table thead {
-    box-shadow: 0 5px 10px #e1e5ee;
+  box-shadow: 0 5px 10px #e1e5ee;
 }
 
 .AdvertismentReviewAdminPage table th {
-    padding: 1rem 2rem;
-    letter-spacing: 0.1rem;
-    font-size: 1rem;
-    font-weight: 600;
+  padding: 1rem 2rem;
+  letter-spacing: 0.1rem;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .AdvertismentReviewAdminPage table td {
-    padding: 1rem 2rem;
+  padding: 1rem 2rem;
 }
 
 .AdvertismentReviewAdminPage table td img {
-    height: 60px;
-    width: 60px;
-    border-radius: 100%;
-    border: 5px solid #e6e7e8;
+  height: 100px;
+  width: 100px;
+  border: 5px solid #e6e7e8;
 }
 
 .AdvertismentReviewAdminPage table .idStyle {
-    text-decoration: none;
-    color: #2962ff;
+  text-decoration: none;
+  color: #2962ff;
 }
 
 .AdvertismentReviewAdminPage table .status {
-    display: inline-block;
-    width: 90px;
-    border-radius: 0.2rem;
-    padding: 0.2rem 1rem;
-    text-align: center;
+  display: inline-block;
+  width: 90px;
+  border-radius: 0.2rem;
+  padding: 0.2rem 1rem;
+  text-align: center;
 }
 
 .AdvertismentReviewAdminPage table .status-pending {
-    background-color: #f14668;
-    color: #fff;
+  background-color: #f14668;
+  color: #fff;
 }
 
 .AdvertismentReviewAdminPage table .status-paid {
-    background-color: #48c78e;
-    color: #fff;
+  background-color: #48c78e;
+  color: #fff;
 }
 
 .AdvertismentReviewAdminPage table .status-unpaid {
-    background-color: #ffcdd2;
-    color: #c62828;
+  background-color: #ffcdd2;
+  color: #c62828;
 }
 
 .AdvertismentReviewAdminPage table .amount {
-    text-align: right;
+  text-align: right;
 }
 
 .AdvertismentReviewAdminPage table tr:nth-child(even) {
-    background-color: #f4f6fb;
+  background-color: #f4f6fb;
 }
 
 .AdvertismentReviewAdminPage table tr:hover td {
-    color: #000000;
-    cursor: pointer;
-    background-color: #eeebf1;
+  color: #000000;
+  cursor: pointer;
+  background-color: #eeebf1;
 }
 
 .AdvertismentReviewAdminPage .row .col .btn-primary {
-    background: var(--green-50);
-    border-color: var(--green-50);
-    color: var(--black);
+  background: var(--green-50);
+  border-color: var(--green-50);
+  color: var(--black);
 }
 
 .AdvertismentReviewAdminPage .date-card {
-    margin-bottom: 36px;
+  margin-bottom: 36px;
 }
 
 .AdvertismentReviewAdminPage .tab-pane {
-    background-color: white;
-    border-bottom: 1px solid #dee2e6;
-    border-left: 1px solid #dee2e6;
-    border-right: 1px solid #dee2e6;
+  background-color: white;
+  border-bottom: 1px solid #dee2e6;
+  border-left: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
 }
 
 .AdvertismentReviewAdminPage .modal-image {
-    width: 250px;
-    height: auto;
+  width: 250px;
+  height: auto;
 }
