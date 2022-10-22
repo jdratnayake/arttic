@@ -22,6 +22,7 @@ const accountManagementRouter = require("./routes/accountManagementRoutes");
 const adminDashboardRouter = require("./routes/adminDashboardRoutes");
 const creatorAnalyticsRouter = require("./routes/creatorAnalyticsRoutes");
 const complaintReviewRouter = require("./routes/complaintReviewRoutes");
+const advertismentReviewRouter = require("./routes/advertismentReviewRoutes");
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use("/api/v1/accountmanagement", accountManagementRouter);
 app.use("/api/v1/admindashboard", adminDashboardRouter);
 app.use("/api/v1/creatoranalytics", creatorAnalyticsRouter);
 app.use("/api/v1/complaintreview", complaintReviewRouter);
+app.use("/api/v1/advertismentreview", advertismentReviewRouter);
 
 // serve static files
 app.use(express.static("assets"));

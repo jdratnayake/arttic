@@ -88,7 +88,7 @@ function CreatorAnalyticsBasic() {
             <div class="col-4 mb-6">
               <AnalyticsCard
                 cardHeading="No of Followers"
-                iconName="bi bi-postcard-fill"
+                iconName="bi bi-people-fill"
                 count={newAccountsCount}
                 percentage={newAccountsPercentage}
               />

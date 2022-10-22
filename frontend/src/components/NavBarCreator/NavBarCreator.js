@@ -134,7 +134,6 @@ function NavBarCreator() {
                   >
                     <header>
                       <strong>Notifications</strong>
-                      <a href="">Archive all</a>
                     </header>
                     <div role="menu" tabindex="-1" class="dropdown-body clearfix" aria-hidden="false">
                       <div class="notification-list">
@@ -174,9 +173,6 @@ function NavBarCreator() {
                           </li>
                         </ul>
                       </div>
-                      <footer class="final show-all">
-                        <a class="btn " href="" data-analytics="NavBarNotificationsShowAll">Show All</a>
-                      </footer>
                     </div>
                   </div>
                 </div>

@@ -1,87 +1,104 @@
+.payment {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.payment .payment-caption {
+  text-align: center;
+}
+.AdvertismentTablePage .payment-chioce {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.AdvertismentTablePage .payment-chioce .btn {
+  margin-bottom: 6px;
+}
+
 .AdvertismentTablePage table {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 5px 10px #e1e5ee;
-    background-color: white;
-    text-align: left;
-    overflow: hidden;
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 5px 10px #e1e5ee;
+  background-color: white;
+  text-align: left;
+  overflow: hidden;
 }
 
 .AdvertismentTablePage table thead {
-    box-shadow: 0 5px 10px #e1e5ee;
+  box-shadow: 0 5px 10px #e1e5ee;
 }
 
 .AdvertismentTablePage table th {
-    padding: 1rem 2rem;
-    letter-spacing: 0.1rem;
-    font-size: 1rem;
-    font-weight: 600;
+  padding: 1rem 2rem;
+  letter-spacing: 0.1rem;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .AdvertismentTablePage table td {
-    padding: 1rem 2rem;
+  padding: 1rem 2rem;
 }
 
 .AdvertismentTablePage table td img {
-    height: 100px;
-    width: 100px;
-    border: 5px solid #e6e7e8;
+  height: 100px;
+  width: 100px;
+  border: 5px solid #e6e7e8;
 }
 
 .AdvertismentTablePage table .idStyle {
-    text-decoration: none;
-    color: #2962ff;
+  text-decoration: none;
+  color: #2962ff;
 }
 
 .AdvertismentTablePage table .status {
-    display: inline-block;
-    width: 90px;
-    border-radius: 0.2rem;
-    padding: 0.2rem 1rem;
-    text-align: center;
+  display: inline-block;
+  width: 90px;
+  border-radius: 0.2rem;
+  padding: 0.2rem 1rem;
+  text-align: center;
 }
 
 .AdvertismentTablePage table .status-pending {
-    background-color: #f14668;
-    color: #fff;
+  background-color: #f14668;
+  color: #fff;
 }
 
 .AdvertismentTablePage table .status-paid {
-    background-color: #48c78e;
-    color: #fff;
+  background-color: #48c78e;
+  color: #fff;
 }
 
 .AdvertismentTablePage table .status-unpaid {
-    background-color: #ffcdd2;
-    color: #c62828;
+  background-color: #ffcdd2;
+  color: #c62828;
 }
 
 .AdvertismentTablePage table .amount {
-    text-align: right;
+  text-align: right;
 }
 
 .AdvertismentTablePage table tr:nth-child(even) {
-    background-color: #f4f6fb;
+  background-color: #f4f6fb;
 }
 
 .AdvertismentTablePage table tr:hover td {
-    color: #000000;
-    cursor: pointer;
-    background-color: #eeebf1;
+  color: #000000;
+  cursor: pointer;
+  background-color: #eeebf1;
 }
 
 .AdvertismentTablePage .mb-6 {
-    margin-bottom: 1rem !important;
-    padding-left: 25px;
-    padding-top: 20px;
+  margin-bottom: 1rem !important;
+  padding-left: 25px;
+  padding-top: 20px;
 }
 
 .AdvertismentTablePage .mb-1 {
-    margin-bottom: 0.25rem !important;
-    font-size: 1.2em;
+  margin-bottom: 0.25rem !important;
+  font-size: 1.2em;
 }
 
 .AdvertismentTablePage .modal-image {
-    width: 250px;
-    height: auto;
+  width: 250px;
+  height: auto;
 }

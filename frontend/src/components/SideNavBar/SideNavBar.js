@@ -62,7 +62,11 @@ function SideNavBar({ sideNavBarIndex }) {
                 <i className="bi bi-people-fill icon-theme"></i>Find Creators
               </a>
             </li>
-            <li className="sideNavBarSectionHighlight">
+            <li className="sideNavBarSectionHighlight"
+            onClick={() => {
+                navigate("/favourite");
+              }}>
+
               <a>
                 <i className="bi bi-star-fill icon-theme"></i>Favourits
               </a>

@@ -39,6 +39,7 @@ import SubscribedCreatorsPage from "./pages/SubscribedCreatorsPage/SubscribedCre
 import ExternalSignUpPasswordPage from "./pages/ExternalSignUpPasswordPage/ExternalSignUpPasswordPage";
 import ChatCreatorPage from "./pages/ChatCreatorPage/ChatCreatorPage";
 import FollowerProfile from "./pages/FollowerProfile/FollowerProfile";
+import Favourite from "./components/Favourite/Favourite";
 import ViewUserProfile from "./pages/ViewUserProfile/ViewUserProfile";
 import ViewUserList from "./pages/VIewUserList/ViewUserList";
 import SearchCreatorList from "./pages/SearchCreatorList/SearchCreatorList";
@@ -53,6 +54,10 @@ function App() {
         <Route
           path="/feed"
           element={<CreatorTemplate children={<Feed />} sideNavBarIndex="0" />}
+        ></Route>
+        <Route
+          path="/favourite"
+          element={<CreatorTemplate children={<Favourite />} sideNavBarIndex="0" />}
         ></Route>
         <Route
           path="/subscribedcreatorspage"
