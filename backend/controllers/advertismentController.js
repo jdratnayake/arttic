@@ -1,7 +1,9 @@
 const { PrismaClient } = require("@prisma/client");
 const asyncHandler = require("express-async-handler");
+const stripe = require("stripe")(process.env.SECRET_KEY);
+const { v4: uuidv4 } = require("uuid");
 
-const { user, advertisement } = new PrismaClient();
+const { user, advertisement, transactionLog } = new PrismaClient();
 
 const getAdvertismentTable = asyncHandler(async (req, res) => {
   const userId = parseInt(req.params.id);
@@ -10,7 +12,7 @@ const getAdvertismentTable = asyncHandler(async (req, res) => {
     where: {
       creatorId: userId,
     },
-    orderBy:{
+    orderBy: {
       createdDate: "desc",
     },
   });
@@ -48,7 +50,136 @@ const newAdvertisment = asyncHandler(async (req, res) => {
   res.json(newAdvertisement);
 });
 
+const deleteAdvertisment = asyncHandler(async (req, res) => {
+  const advertismentId = parseInt(req.headers.advertismentid);
+
+  const deleteAdvertisment = await advertisement.delete({
+    where: {
+      advertisementId: advertismentId,
+    },
+  });
+
+  if (deleteAdvertisment) {
+    res.json({
+      statusCode: 1,
+      msg: "Successful",
+    });
+  } else {
+    res.json({
+      statusCode: 2,
+      msg: "Unsuccessful",
+    });
+  }
+});
+
+const payment = asyncHandler(async (req, res) => {
+  const writeLog = async (userId, stripeId, advertisementId, price) => {
+    const transaction = await transactionLog.create({
+      data: {
+        userId,
+        transactionType: 1,
+        stripeId,
+        amount: price,
+      },
+    });
+
+    const updateAdvertisement = await advertisement.update({
+      where: {
+        advertisementId,
+      },
+      data: {
+        paymentStatus: true,
+      },
+    });
+
+    if (updateAdvertisement) {
+      res.json({
+        statusCode: 1,
+        msg: "Successful",
+      });
+    } else {
+      res.json({
+        statusCode: 2,
+        msg: "Unsuccessful",
+      });
+    }
+  };
+
+  const { userId, advertisementId, price, token } = req.body;
+  const idempontencyKey = uuidv4();
+  // console.log("Hi");
+
+  // console.log(userId);
+  // console.log(token);
+  // console.log(premiumStatus);
+  // console.log(typeof premiumStatus);
+
+  await stripe.customers
+    .create({
+      email: token.email,
+      source: token.id,
+    })
+    .then((customer) => {
+      return stripe.charges.create(
+        {
+          amount: price * 100,
+          currency: "usd",
+          customer: customer.id,
+          receipt_email: token.email,
+          description: "Premium package subscribed.",
+        },
+        { idempotencyKey: idempontencyKey }
+      );
+      // console.log(temp);
+      // console.log(customer.id);
+    })
+    .then((result) => {
+      // console.log(result);
+
+      writeLog(userId, result.id, advertisementId, price);
+    })
+    .catch((error) => console.error(error));
+
+  // res.json("address");
+});
+
+const cryptoPaymentSubscription = asyncHandler(async (req, res) => {
+  const { userId, advertisementId, price } = req.body;
+
+  const transaction = await transactionLog.create({
+    data: {
+      userId,
+      transactionType: 1,
+      amount: price,
+    },
+  });
+
+  const updateAdvertisement = await advertisement.update({
+    where: {
+      advertisementId,
+    },
+    data: {
+      paymentStatus: true,
+    },
+  });
+
+  if (updateAdvertisement) {
+    res.json({
+      statusCode: 1,
+      msg: "Successful",
+    });
+  } else {
+    res.json({
+      statusCode: 2,
+      msg: "Unsuccessful",
+    });
+  }
+});
+
 module.exports = {
   getAdvertismentTable,
   newAdvertisment,
+  deleteAdvertisment,
+  payment,
+  cryptoPaymentSubscription,
 };
