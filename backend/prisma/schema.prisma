@@ -368,3 +368,15 @@ model advertisementGlobalVariables{
   advertisementGlobalVariableId Int @id @default(autoincrement())
   nextAdvertisementToDisplay Int
 }
+
+// notificationType
+//   1 = posts
+//   2 = advertisements
+//   3 = banned
+model notification{
+  notificationId Int @id @default(autoincrement())
+  userId Int
+  notificationType Int
+  message String @db.VarChar(1024)
+  readStatus Boolean @default(false)
+}

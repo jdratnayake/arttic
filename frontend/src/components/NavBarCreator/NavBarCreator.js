@@ -38,13 +38,12 @@ function NavBarCreator() {
   const searchCreator = (e) => {
     e.preventDefault();
     if (input) {
-      navigate('/searchcreatorlist', {
+      navigate("/searchcreatorlist", {
         state: {
           name: input,
-        }
+        },
       });
     }
-
   };
 
   useEffect(() => {
@@ -84,7 +83,11 @@ function NavBarCreator() {
           </button>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <form className="d-flex me-auto sebr" role="search" onSubmit={searchCreator}>
+            <form
+              className="d-flex me-auto sebr"
+              role="search"
+              onSubmit={searchCreator}
+            >
               {/* <a className="btn btn-secondary" type="submit">
                                 <i className="bi bi-search"></i>
                             </a> */}
@@ -93,7 +96,12 @@ function NavBarCreator() {
                   <button class="searchButton">
                     <i class="bi bi-search"></i>
                   </button>
-                  <input type="text" class="searchTerm" placeholder="Search" onChange={event => setInput(event.target.value)} />
+                  <input
+                    type="text"
+                    class="searchTerm"
+                    placeholder="Search"
+                    onChange={(event) => setInput(event.target.value)}
+                  />
                 </div>
                 {/* <div class="">
                   <SearchPanel
@@ -127,7 +135,7 @@ function NavBarCreator() {
                     <i class="bi bi-bell-fill icon-theme-nav"></i>
                     <span class="notification-bell-btn">3</span>
                   </button>
-                  
+
                   <div
                     class="dropdown-menu dropdown-menu-lg dropdown-menu-end"
                     aria-labelledby="page-header-notifications-dropdown"
@@ -135,7 +143,12 @@ function NavBarCreator() {
                     <header>
                       <strong>Notifications</strong>
                     </header>
-                    <div role="menu" tabindex="-1" class="dropdown-body clearfix" aria-hidden="false">
+                    <div
+                      role="menu"
+                      tabindex="-1"
+                      class="dropdown-body clearfix"
+                      aria-hidden="false"
+                    >
                       <div class="notification-list">
                         <ul>
                           <li>
@@ -143,9 +156,19 @@ function NavBarCreator() {
                               <i class="bi bi-postcard-fill"></i>
                             </div>
                             <div class="notification-subject">
-                              <div class="notification-text">You have 2 likes on your recent posts from Mahesh and Lavinka</div>
+                              <div class="notification-text">
+                                You have 2 likes on your recent posts from
+                                Mahesh and Lavinka
+                              </div>
                               <small>
-                                <time class="time-text" datetime="2020-03-15T07:08:20.000Z" title="2020-03-15 07:08"> 2 months ago</time>
+                                <time
+                                  class="time-text"
+                                  datetime="2020-03-15T07:08:20.000Z"
+                                  title="2020-03-15 07:08"
+                                >
+                                  {" "}
+                                  2 months ago
+                                </time>
                               </small>
                             </div>
                           </li>
@@ -154,20 +177,40 @@ function NavBarCreator() {
                               <i class="bi bi-badge-ad-fill"></i>
                             </div>
                             <div class="notification-subject">
-                              <div class="notification-text">You have 2 likes on your recent posts from Mahesh and Lavinka</div>
+                              <div class="notification-text">
+                                You have 2 likes on your recent posts from
+                                Mahesh and Lavinka
+                              </div>
                               <small>
-                                <time class="time-text" datetime="2020-03-15T07:08:20.000Z" title="2020-03-15 07:08"> 2 months ago</time>
+                                <time
+                                  class="time-text"
+                                  datetime="2020-03-15T07:08:20.000Z"
+                                  title="2020-03-15 07:08"
+                                >
+                                  {" "}
+                                  2 months ago
+                                </time>
                               </small>
                             </div>
                           </li>
                           <li>
                             <div class="notification-icon">
-                              <i class="bi bi-flag-fill"></i>
+                              <i class="bi bi-x-octagon-fill"></i>
                             </div>
                             <div class="notification-subject">
-                              <div class="notification-text">You have 2 likes on your recent posts from Mahesh and Lavinka</div>
+                              <div class="notification-text">
+                                You have 2 likes on your recent posts from
+                                Mahesh and Lavinka
+                              </div>
                               <small>
-                                <time class="time-text" datetime="2020-03-15T07:08:20.000Z" title="2020-03-15 07:08"> 2 months ago</time>
+                                <time
+                                  class="time-text"
+                                  datetime="2020-03-15T07:08:20.000Z"
+                                  title="2020-03-15 07:08"
+                                >
+                                  {" "}
+                                  2 months ago
+                                </time>
                               </small>
                             </div>
                           </li>
@@ -178,7 +221,7 @@ function NavBarCreator() {
                 </div>
 
                 {/* Chat */}
-                <div class="dropdown d-inline-block drop-list-upper">
+                {/* <div class="dropdown d-inline-block drop-list-upper">
                   <button
                     className="dr-btn"
                     id="page-header-notifications-dropdown"
@@ -203,7 +246,7 @@ function NavBarCreator() {
                       <span class="align-middle">C 3</span>
                     </a>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Profile */}
                 <div class="dropdown d-inline-block drop-list-upper">
