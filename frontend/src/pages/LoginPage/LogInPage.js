@@ -56,105 +56,103 @@ function LogInPage() {
   };
 
   return (
-    <>
-      <span class="LogInPage">
-        <div class="d-flex justify-content-center">
-          <div class="col-4">
-            <div class="card card-update">
-              <div class="card-body">
-                <div class="d-grid gap-2 col-12 mx-auto text-center arttic-logo">
-                  <Link to="/">
-                    <img src={logo} width="200" height="45" />
-                  </Link>
-                </div>
+    <span class="LogInPage">
+      <div class="d-flex justify-content-center">
+        <div class="col-4">
+          <div class="card card-update">
+            <div class="card-body">
+              <div class="d-grid gap-2 col-12 mx-auto text-center arttic-logo">
+                <Link to="/">
+                  <img src={logo} width="200" height="45" />
+                </Link>
+              </div>
 
-                <Formik
-                  initialValues={initialLoginValues}
-                  validationSchema={loginValidation}
-                  onSubmit={loginUser}
-                >
-                  {({ isSubmitting }) => (
-                    <Form>
-                      <span className="authenticationField">
-                        <div className="col-12">
-                          <label htmlFor="username" className="form-label">
-                            Email or Username
-                          </label>
-                          <Field
-                            type="text"
-                            className="form-control form-control-update fcup"
-                            id="username"
-                            name="username"
-                            placeholder="Enter Email or Username"
-                          />
+              <Formik
+                initialValues={initialLoginValues}
+                validationSchema={loginValidation}
+                onSubmit={loginUser}
+              >
+                {({ isSubmitting }) => (
+                  <Form>
+                    <span className="authenticationField">
+                      <div className="col-12">
+                        <label htmlFor="username" className="form-label">
+                          Email or Username
+                        </label>
+                        <Field
+                          type="text"
+                          className="form-control form-control-update fcup"
+                          id="username"
+                          name="username"
+                          placeholder="Enter Email or Username"
+                        />
 
-                          <ErrorMessage
-                            name="username"
-                            component="div"
-                            className="error-msg"
-                          />
-                          <p class="error-msg">{usernameError}</p>
-                        </div>
-                      </span>
+                        <ErrorMessage
+                          name="username"
+                          component="div"
+                          className="error-msg"
+                        />
+                        <p class="error-msg">{usernameError}</p>
+                      </div>
+                    </span>
 
-                      <span className="authenticationField">
-                        <div className="col-12">
-                          <label htmlFor="password" className="form-label">
-                            Password
-                          </label>
-                          <Field
-                            type="password"
-                            className="form-control form-control-update fcup"
-                            id="password"
-                            name="password"
-                            placeholder="Enter Password"
-                          />
+                    <span className="authenticationField">
+                      <div className="col-12">
+                        <label htmlFor="password" className="form-label">
+                          Password
+                        </label>
+                        <Field
+                          type="password"
+                          className="form-control form-control-update fcup"
+                          id="password"
+                          name="password"
+                          placeholder="Enter Password"
+                        />
 
-                          <ErrorMessage
-                            name="password"
-                            component="div"
-                            className="error-msg"
-                          />
-                          <p class="error-msg">{passwordError}</p>
-                        </div>
-                      </span>
+                        <ErrorMessage
+                          name="password"
+                          component="div"
+                          className="error-msg"
+                        />
+                        <p class="error-msg">{passwordError}</p>
+                      </div>
+                    </span>
 
-                      <div class="col-12 Froget-password">
-                        <p class="text-end">
-                          <Link to="/frogotpassword/username" className="theme">
-                            <small>Forgot Password</small>
+                    <div class="col-12 Froget-password">
+                      <p class="text-end">
+                        <Link to="/frogotpassword/username" className="theme">
+                          <small>Forgot Password</small>
+                        </Link>
+                      </p>
+                    </div>
+
+                    <div class="text-center">
+                      <div class="col-12">
+                        <button
+                          type="submit"
+                          class="btn btn-primary col-12 btnlog"
+                        >
+                          Sign In
+                        </button>
+                      </div>
+                      <div class="col-12">
+                        <p class="signup">
+                          Don’t have an account?{" "}
+                          <Link class="theme" to="/signupoption">
+                            Sign Up
                           </Link>
                         </p>
                       </div>
-
-                      <div class="text-center">
-                        <div class="col-12">
-                          <button
-                            type="submit"
-                            class="btn btn-primary col-12 btnlog"
-                          >
-                            Sign In
-                          </button>
-                        </div>
-                        <div class="col-12">
-                          <p class="signup">
-                            Don’t have an account?{" "}
-                            <Link class="theme" to="/signupoption">
-                              Sign Up
-                            </Link>
-                          </p>
-                        </div>
-                      </div>
-                    </Form>
-                  )}
-                </Formik>
-              </div>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
             </div>
           </div>
         </div>
-        {/* <AuthenticationFooter /> */}
-      </span>
-    </>
+      </div>
+      {/* <AuthenticationFooter /> */}
+    </span>
   );
 }
 
