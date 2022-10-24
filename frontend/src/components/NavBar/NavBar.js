@@ -1,4 +1,5 @@
 import { useNavigate, Link } from "react-router-dom";
+import { useEffect, useState, React } from "react";
 
 import "./NavBar.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -7,6 +8,19 @@ import logo from "../../images/logo.png";
 
 function NavBar() {
   const navigate = useNavigate();
+  const [input, setInput] = useState("");
+
+  const searchCreator = (e) => {
+    e.preventDefault();
+    if (input) {
+      navigate('/searchcreators', {
+        state: {
+          name: input,
+        }
+      });
+    }
+
+  };
 
   return (
     <nav className="navbar navbar-expand-lg bg-light">
@@ -52,15 +66,15 @@ function NavBar() {
               </a>
             </li>
           </ul>
-          <form className="d-flex me-auto sebr" role="search">
+          <form className="d-flex me-auto sebr" role="search" onSubmit={searchCreator}>
             <div class="wrap-sb">
-                <div class="search">
-                    <button class="searchButton">
-                        <i class="bi bi-search"></i>
-                    </button>
-                    <input type="text" class="searchTerm" placeholder="Search" />
+              <div class="search">
+                <button class="searchButton">
+                  <i class="bi bi-search"></i>
+                </button>
+                <input type="text" class="searchTerm" placeholder="Search" onChange={event => setInput(event.target.value)} />
 
-                </div>
+              </div>
             </div>
           </form>
           <div className="navbar-end">
