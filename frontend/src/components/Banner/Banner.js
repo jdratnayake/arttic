@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 // Direct React component imports
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -25,10 +26,10 @@ function Banner() {
         navigation
         loop={true}
         pagination={{ dynamicBullets: true }}
-      // autoplay={{
-      //   delay: 5000,
-      //   disableOnInteraction: false,
-      // }}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+        }}
       >
         <SwiperSlide>
           <div className="container">
@@ -41,7 +42,9 @@ function Banner() {
                   monthly membership.
                 </h4>
                 <div className="bannerButtons align-self-center ">
-                  <a className="btn btn-main-primary">Get Started</a>
+                  <Link className="btn btn-main-primary" to="/signupoption">
+                    Get Started
+                  </Link>
                 </div>
               </div>
               <div className="col-sm-7 col-xs-12 bannerImage ">
@@ -57,7 +60,6 @@ function Banner() {
         <SwiperSlide>
           <div className="container">
             <div className="row align-items-center bannerRow">
-
               <div className="col-5 align-self-center temp">
                 <h2>Change the Way</h2>
                 <h2> NFT is Marketed</h2>
@@ -67,7 +69,9 @@ function Banner() {
                   creators and followers
                 </h4>
                 <div className="bannerButtons">
-                  <a className="btn btn-main-primary">Get Started</a>
+                  <Link className="btn btn-main-primary" to="/signupoption">
+                    Get Started
+                  </Link>
                 </div>
               </div>
               <div className="col-sm-7 col-xs-12 bannerImage ">

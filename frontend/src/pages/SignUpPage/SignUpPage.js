@@ -150,7 +150,7 @@ function SignUpPage() {
             </div>
           </div>
         </div>
-        <AuthenticationFooter />
+        {/* <AuthenticationFooter /> */}
       </span>
     </>
   );

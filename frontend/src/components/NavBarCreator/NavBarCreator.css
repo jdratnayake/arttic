@@ -8,7 +8,7 @@
   color: white;
   font-size: 12px;
 }
-.NavBarCreator .dropdown-menu-lg{
+.NavBarCreator .dropdown-menu-lg {
   position: absolute;
   top: 40px;
   right: 0;
@@ -18,50 +18,58 @@
   width: 450px;
   padding: 10px;
 }
-.NavBarCreator .dropdown-menu-lg header{
+.NavBarCreator .dropdown-menu-lg header {
   display: flex;
   justify-content: space-between;
   margin: 5px 0 5px 0;
 }
-.NavBarCreator strong{
+.NavBarCreator strong {
   font-weight: bold;
 }
-.NavBarCreator .dropdown-menu-lg header a{
+.NavBarCreator .dropdown-menu-lg header a {
   text-decoration: none;
   color: black;
   cursor: pointer;
 }
-.NavBarCreator .dropdown-menu-lg .notification-list ul{
+
+.NavBarCreator .dropdown-menu-lg .notification-list {
+  height: 307px;
+  width: 428px;
+  overflow-x: auto;
+  overflow-y: none;
+}
+
+.NavBarCreator .dropdown-menu-lg .notification-list ul {
   list-style: none;
   padding-left: 0;
   margin-top: 20px;
   margin-bottom: 2px;
 }
-.NavBarCreator .dropdown-menu-lg .notification-list ul li{
+.NavBarCreator .dropdown-menu-lg .notification-list ul li {
   display: flex;
   margin-bottom: 5px;
   border-bottom: 1px solid var(--primary-50);
 }
-.NavBarCreator .dropdown-menu-lg .notification-list .notification-icon{
+.NavBarCreator .dropdown-menu-lg .notification-list .notification-icon {
   font-size: 25px;
   margin-right: 10px;
   color: var(--primary-50);
 }
-.time-text{
+.time-text {
   font-weight: 100;
   font-size: 12px;
 }
-.NavBarCreator .dropdown-menu-lg footer{
+.NavBarCreator .dropdown-menu-lg footer {
   text-align: center;
 }
-.NavBarCreator .dropdown-menu-lg footer .btn{
+.NavBarCreator .dropdown-menu-lg footer .btn {
   outline: none;
 }
-.NavBarCreator .dropdown-menu-lg footer .btn:hover{
+.NavBarCreator .dropdown-menu-lg footer .btn:hover {
   outline: none;
   border-color: white;
 }
-  .NavBarCreator .dropdown-item {
+.NavBarCreator .dropdown-item {
   display: flex;
   align-items: flex-start;
   cursor: pointer;
@@ -69,11 +77,11 @@
   padding: 10px 20px;
   border-bottom: 1px solid var(--primary-50);
 }
-.NavBarCreator .dropdown-item .icon{
+.NavBarCreator .dropdown-item .icon {
   font-size: 20px;
   margin-right: 10px;
 }
-  .NavBarCreator .navbar-end {
+.NavBarCreator .navbar-end {
   margin: 10px 10px 10px 20px;
 }
 

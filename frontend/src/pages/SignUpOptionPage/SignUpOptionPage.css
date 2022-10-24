@@ -1,19 +1,20 @@
-.SignUpOptionPage{
-    overflow: hidden;
+/* .SignUpOptionPage {
+  overflow: hidden;
+} */
+.SignUpOptionPage .ptop {
+  padding-top: 13px;
 }
-.SignUpOptionPage .ptop{
-    padding-top: 13px;
+.SignUpOptionPage .row-1 {
+  display: flex;
+  flex-direction: column;
+  padding: 2% 3% 3% 3%;
 }
-.SignUpOptionPage .row-1{
-    display: flex;
-    flex-direction: column;
+.SignUpOptionPage .def {
+  font-weight: 500;
 }
-.SignUpOptionPage .def{
-    font-weight: 500;
-}
-.SignUpOptionPage .authenticationfooter{
-    position: relative;
-    /* margin-top: 20px; */
+.SignUpOptionPage .authenticationfooter {
+  position: relative;
+  /* margin-top: 20px; */
 }
 /* .SignUpOptionPage .authenticationfooter .company-details{
     margin-right: 70px;
@@ -21,31 +22,31 @@
 /* .SignUpOptionPage .authenticationfooter .help-privacy-terms{
     margin-right: 23%;
 } */
-@media only screen and (max-width:768px){
-    .SignUpOptionPage .col-3{
-        flex: 1 0 auto;
-        width: 50%;
-    }
-    .SignUpOptionPage .row-1{
-        max-width: 88%;
-        margin: 10px 35px 10px 35px;
-        justify-content: center;
-    }
-    
+@media only screen and (max-width: 768px) {
+  .SignUpOptionPage .col-3 {
+    flex: 1 0 auto;
+    width: 50%;
+  }
+  .SignUpOptionPage .row-1 {
+    max-width: 88%;
+    margin: 10px 35px 10px 35px;
+    justify-content: center;
+  }
 }
-@media only screen and (max-width:514px){
-    .SignUpOptionPage .listcd, .SignUpOptionPage .def{
-        font-size: 14px;
-    }
-    .SignUpOptionPage .col-3{
-        flex: 1 1 auto;
-        width: auto;
-    }
-    .SignUpOptionPage .col-4{
-        width: 100%;
-        margin-bottom: 20px;
-    }
-    .SignUpOptionPage .authenticationfooter .help-privacy-terms{
-        margin-right: -8%;
-    }
+@media only screen and (max-width: 514px) {
+  .SignUpOptionPage .listcd,
+  .SignUpOptionPage .def {
+    font-size: 14px;
+  }
+  .SignUpOptionPage .col-3 {
+    flex: 1 1 auto;
+    width: auto;
+  }
+  .SignUpOptionPage .col-4 {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .SignUpOptionPage .authenticationfooter .help-privacy-terms {
+    margin-right: -8%;
+  }
 }
