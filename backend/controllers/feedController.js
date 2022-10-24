@@ -46,7 +46,7 @@ const uploadPostSave = asyncHandler(async (req, res) => {
     'SELECT "showAd" FROM public."premiumPackageSubscribe" WHERE "userId" = $1 AND "endDate" > Date(NOW());',
     [userId]
   );
-
+  // console.log(isShowAd.rows[0]);
   const isPostExist = await client.query(
     'SELECT "postSaveId" FROM public."postSave" WHERE ( "postId" =$1 and "userId" = $2);',
     [Data.postId, userId]
@@ -55,17 +55,10 @@ const uploadPostSave = asyncHandler(async (req, res) => {
   await client.end();
   // console.log(isPostExist.rowCount);
   if (isPostExist.rowCount !== 0) {
-    res.json("post exits");
+    res.status(StatusCodes.OK).json({ exists: true });
   }
 
-  if (isShowAd.rows[0].showAd) {
-    createPostSave = await postSave.create({
-      data: {
-        userId: userId,
-        postId: Data.postId,
-      },
-    });
-  } else {
+  if (isShowAd.rows[0] === undefined) {
     const savePostCount = await postSave.count({
       where: {
         userId: userId,
@@ -79,6 +72,13 @@ const uploadPostSave = asyncHandler(async (req, res) => {
         },
       });
     }
+  } else {
+    createPostSave = await postSave.create({
+      data: {
+        userId: userId,
+        postId: Data.postId,
+      },
+    });
   }
 
   res.status(StatusCodes.CREATED).json(createPostSave);
@@ -154,7 +154,8 @@ const getAds = asyncHandler(async (req, res) => {
   }
 
   // console.log(adCount);
-  // console.log(adIds);
+  console.log(adIds);
+  console.log(isShowAd.rows[0])
   // console.log(adIdArray);
   // console.log(adIdsTodisplay);
 
@@ -169,6 +170,7 @@ const getAds = asyncHandler(async (req, res) => {
         advertisementId: true,
         creatorId: true,
         contentLink: true,
+        endDate:true
       },
       where: {
         advertisementId: {
@@ -266,26 +268,67 @@ const uploadPostReport = asyncHandler(async (req, res) => {
 const uploadCommentReaction = asyncHandler(async (req, res) => {
   const Data = req.body;
   // console.log(Data);
-  const CreatecommentReaction = await commentReaction.create({
-    data: {
+  const isReacted = await commentReaction.findMany({
+    select: {
+      commentReactionId: true,
+    },
+    where: {
       userId: Data.reactorId,
-      commentId: Data.commentId,
+      postId: Data.postId,
     },
   });
-  res.status(StatusCodes.CREATED).json(CreatecommentReaction);
+
+  if (isReacted[0] === undefined) {
+    const CreatecommentReaction = await commentReaction.create({
+      data: {
+        userId: Data.reactorId,
+        commentId: Data.commentId,
+      },
+    });
+    res.status(StatusCodes.CREATED).json(CreatecommentReaction);
+  } else {
+    const DeleteCommentReaction = await postReaction.delete({
+      where: {
+        commentReactionId: isReacted[0].commentReactionId,
+      },
+    });
+    console.log(DeleteCommentReaction);
+    res.status(StatusCodes.OK).json({ deleted: true });
+  }
 });
 
 //  upload a postReaction ***************
 const uploadpostReaction = asyncHandler(async (req, res) => {
   const Data = req.body;
   // console.log(Data);
-  const CreatepostReaction = await postReaction.create({
-    data: {
+  const isReacted = await postReaction.findMany({
+    select: {
+      postReactionId: true,
+    },
+    where: {
       userId: Data.reactorId,
       postId: Data.postId,
     },
   });
-  res.status(StatusCodes.CREATED).json(CreatepostReaction);
+  // console.log(isReacted[0], "post reaction exits");
+
+  if (isReacted[0] === undefined) {
+    const CreatepostReaction = await postReaction.create({
+      data: {
+        userId: Data.reactorId,
+        postId: Data.postId,
+      },
+    });
+    res.status(StatusCodes.CREATED).json(CreatepostReaction);
+  } else {
+    const DeletePostReaction = await postReaction.delete({
+      where: {
+        postReactionId: isReacted[0].postReactionId,
+      },
+    });
+    console.log(DeletePostReaction);
+    res.status(StatusCodes.OK).json({ deleted: true });
+  }
 });
 
 //  upload a comment ***************
@@ -390,7 +433,31 @@ const getPosts = asyncHandler(async (req, res) => {
 
   await client.end();
 
-  res.json(posts.rows);
+  const postReacted = await postReaction.findMany({
+    select: {
+      postId: true,
+    },
+    where: {
+      userId,
+    },
+  });
+
+  const savedPost = await postSave.findMany({
+    select: {
+      postId: true,
+    },
+    where: {
+      userId,
+    },
+  });
+
+  // console.log(postReacted);
+
+  res.json({
+    posts: posts.rows,
+    postReacted: postReacted,
+    savedPost: savedPost,
+  });
 });
 
 const deletePost = asyncHandler(async (req, res) => {
@@ -446,14 +513,14 @@ const getFavourites = asyncHandler(async (req, res) => {
       post: {
         include: {
           creator: {
-            include:{
-              followerCreator:{
-                include:{
-                  user:true
-                }
-              }
-            }
-          }
+            include: {
+              followerCreator: {
+                include: {
+                  user: true,
+                },
+              },
+            },
+          },
         },
       },
     },
@@ -463,7 +530,9 @@ const getFavourites = asyncHandler(async (req, res) => {
   // Array.from(postSaved).map(item => console.log(item.post.blockedStatus));
   // Array.from(postSaved).filter((item) => item.post.blockedStatus !== false);
   // console.log("filterd", Array.from(postSaved).filter((item) => item.post.blockedStatus !== true));
-  res.json(Array.from(postSaved).filter((item) => item.post.blockedStatus !== true));
+  res.json(
+    Array.from(postSaved).filter((item) => item.post.blockedStatus !== true)
+  );
 });
 
 const deleteSavePost = asyncHandler(async (req, res) => {
@@ -471,13 +540,12 @@ const deleteSavePost = asyncHandler(async (req, res) => {
   const postSaveId = parseInt(req.headers.postid);
   const deletedPost = await postSave.delete({
     where: {
-      postId:postSaveId,
+      postId: postSaveId,
     },
   });
 
   res.json(deletedPost);
 });
-
 
 module.exports = {
   uploadPostSave,
@@ -494,5 +562,5 @@ module.exports = {
   deletePost,
   deleteComment,
   getFavourites,
-  deleteSavePost
+  deleteSavePost,
 };
