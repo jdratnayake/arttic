@@ -27,7 +27,7 @@ function Post(props) {
   const [iscommentBoxOpen, setCommentBoxOpen] = useState(false);
   const [commentCount, setCommentCount] = useState(props.commentCount);
   const [reactCount, setReactCount] = useState(props.likes);
-  const [reportPost , setReportPost] = useState(props.postid);
+  const [reportPost, setReportPost] = useState(props.postid);
   const commentRef = useRef(null);
 
   const deleteComment = async (cid, commenterId) => {
@@ -48,7 +48,7 @@ function Post(props) {
             // console.log(response.data)
             $(`#comment${response.data.commentId}`).hide();
             setComments(comments.filter(comment => comment.commentId !== response.data.commentId))
-          
+
             setCommentCount(commentCount - 1);
           });
       } else {
@@ -61,7 +61,7 @@ function Post(props) {
     if (pid === userId) {
       navigate("/creatorprofile");
     } else {
-      navigate("/followerprofile/" + pid);
+      navigate("/viewuserprofile/" + pid);
     }
   };
 
@@ -83,21 +83,21 @@ function Post(props) {
     };
 
     // console.log("post reported");
-      await axios
+    await axios
       .post(API_URL + "/feed/uploadPostReport/", inputData, config)
       .then((response) => {
         // console.log(response);
         $(`#btn-close-form${props.postid}`).click();
         if (response.status === 201) {
           toast.success("You have successfully reported the post", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
       });
     resetForm();
@@ -258,7 +258,7 @@ function Post(props) {
                 {props.profilerId === props.creatorId ? (
                   <a
                     class="dropdown-item dinv"
-                    onClick={() => {props.deletePost(props.postid,props.creatorId)}}
+                    onClick={() => { props.deletePost(props.postid, props.creatorId) }}
                   >
                     <i class="bi bi-trash-fill dinvit icon-theme"></i>{" "}
                     <span class="align-middle">Delete</span>
@@ -327,7 +327,7 @@ function Post(props) {
 
               {/* new comment end*/}
               {/* comments start*/}
-              
+
               {comments &&
                 comments.map((comment) => {
                   return (
@@ -358,7 +358,7 @@ function Post(props) {
                   className="inputBox-input text-muted"
                   type="text"
                   placeholder={`comment here`}
-                  style={{textAlign: "left !important"}}
+                  style={{ textAlign: "left !important" }}
                 />
                 <button
                   className="btn btn-primary"
@@ -405,9 +405,9 @@ function Post(props) {
                     {/* border */}
                     <Formik
                       initialValues={{
-                        newDescription : "",
-                        reportCategory : '1',
-                        reportpostId : JSON.stringify(props.postid),
+                        newDescription: "",
+                        reportCategory: '1',
+                        reportpostId: JSON.stringify(props.postid),
                       }}
                       validationSchema={reportDescriptionValidation}
                       onSubmit={submitReport}
@@ -472,15 +472,15 @@ function Post(props) {
                               />
                             </div>
                             <Field
-                                type="text"
-                                className="form-control form-control-update"
-                                id="reportpostId"
-                                name="reportpostId"
-                                placeholder="Enter your report description"
-                                class="form-control form-control-sm"
-                                hidden
-                              />
-                            
+                              type="text"
+                              className="form-control form-control-update"
+                              id="reportpostId"
+                              name="reportpostId"
+                              placeholder="Enter your report description"
+                              class="form-control form-control-sm"
+                              hidden
+                            />
+
                           </div>
                           {/* row ends*/}
                           <div class="col-md-8 col-12 mt-3">
