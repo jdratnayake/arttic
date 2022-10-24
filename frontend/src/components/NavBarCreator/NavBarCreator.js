@@ -2,6 +2,8 @@ import { useEffect, useState, React } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { SearchPanel } from "react-search-panel";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
 
 import { API_URL, PROFILE_PIC_URL } from "../../constants/globalConstants";
 import { logout } from "../../actions/userActions";
@@ -13,17 +15,17 @@ import axios from "axios";
 function NavBarCreator() {
   const [profilePic, setProfilePic] = useState("");
   const [userId, setUserId] = useState("");
-
-  //const [searchCreators, setSearchCreators] = useState([]);
-  //const [allCreators, setAllCreators] = useState([]);
   const [input, setInput] = useState("");
-  //const [selectedChoices, setSelectedChoices] = useState(searchCreators);
+  const [notificationList, setNotificationList] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const userInfo = useSelector((state) => state.userInfo);
   const { accessToken } = userInfo.user;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  TimeAgo.addDefaultLocale(en);
+  const timeAgo = new TimeAgo("en-US");
 
   //setSearchCreators({ key: "1", description: "janitha" })
 
@@ -53,8 +55,48 @@ function NavBarCreator() {
       const { userId, accessToken, profilePhoto } = userInfo.user;
       setProfilePic(PROFILE_PIC_URL + profilePhoto);
       setUserId(userId);
+      updateUnreadNotificationCount();
     }
   }, []);
+
+  const updateUnreadNotificationCount = async () => {
+    const { userId, accessToken } = userInfo.user;
+
+    const token = {
+      headers: {
+        authorization: accessToken,
+        userid: userId,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/notification/getunreadnotificationcount/", token)
+      .then((res) => {
+        setUnreadCount(res.data);
+      });
+  };
+
+  const readNotification = async () => {
+    // console.log("devin");
+    // updateUnreadNotificationCount();
+
+    const { userId, accessToken } = userInfo.user;
+
+    const token = {
+      headers: {
+        authorization: accessToken,
+        userid: userId,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/notification/getnotifications/", token)
+      .then((res) => {
+        updateUnreadNotificationCount();
+        // console.log(res.data);
+        setNotificationList(res.data);
+      });
+  };
 
   return (
     <span className="NavBarCreator">
@@ -131,9 +173,10 @@ function NavBarCreator() {
                     data-bs-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false"
+                    onClick={readNotification}
                   >
                     <i class="bi bi-bell-fill icon-theme-nav"></i>
-                    <span class="notification-bell-btn">3</span>
+                    <span class="notification-bell-btn">{unreadCount}</span>
                   </button>
 
                   <div
@@ -150,70 +193,54 @@ function NavBarCreator() {
                       aria-hidden="false"
                     >
                       <div class="notification-list">
+                        {/* 
+
+                       notificationType
+                         1 = posts
+                         bi bi-postcard-fill
+
+                         2 = advertisements
+                         bi bi-badge-ad-fill
+
+                         3 = banned 
+                         bi bi-x-octagon-fill
+
+                      */}
+
                         <ul>
-                          <li>
-                            <div class="notification-icon">
-                              <i class="bi bi-postcard-fill"></i>
-                            </div>
-                            <div class="notification-subject">
-                              <div class="notification-text">
-                                You have 2 likes on your recent posts from
-                                Mahesh and Lavinka
+                          {notificationList.map((item) => (
+                            <li key={item.notificationId}>
+                              <div class="notification-icon">
+                                {item.notificationType === 1 && (
+                                  <i class="bi bi-postcard-fill"></i>
+                                )}
+                                {item.notificationType === 2 && (
+                                  <i class="bi bi-badge-ad-fill"></i>
+                                )}
+                                {item.notificationType === 3 && (
+                                  <i class="bi bi-x-octagon-fill"></i>
+                                )}
                               </div>
-                              <small>
-                                <time
-                                  class="time-text"
-                                  datetime="2020-03-15T07:08:20.000Z"
-                                  title="2020-03-15 07:08"
-                                >
-                                  {" "}
-                                  2 months ago
-                                </time>
-                              </small>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="notification-icon">
-                              <i class="bi bi-badge-ad-fill"></i>
-                            </div>
-                            <div class="notification-subject">
-                              <div class="notification-text">
-                                You have 2 likes on your recent posts from
-                                Mahesh and Lavinka
+                              <div class="notification-subject">
+                                <div class="notification-text">
+                                  {item.message}
+                                </div>
+                                <small>
+                                  <time
+                                    class="time-text"
+                                    datetime="2020-03-15T07:08:20.000Z"
+                                    title="2020-03-15 07:08"
+                                  >
+                                    {" "}
+                                    {/* 2 months ago */}
+                                    {timeAgo.format(
+                                      new Date(item.notificationDate)
+                                    )}
+                                  </time>
+                                </small>
                               </div>
-                              <small>
-                                <time
-                                  class="time-text"
-                                  datetime="2020-03-15T07:08:20.000Z"
-                                  title="2020-03-15 07:08"
-                                >
-                                  {" "}
-                                  2 months ago
-                                </time>
-                              </small>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="notification-icon">
-                              <i class="bi bi-x-octagon-fill"></i>
-                            </div>
-                            <div class="notification-subject">
-                              <div class="notification-text">
-                                You have 2 likes on your recent posts from
-                                Mahesh and Lavinka
-                              </div>
-                              <small>
-                                <time
-                                  class="time-text"
-                                  datetime="2020-03-15T07:08:20.000Z"
-                                  title="2020-03-15 07:08"
-                                >
-                                  {" "}
-                                  2 months ago
-                                </time>
-                              </small>
-                            </div>
-                          </li>
+                            </li>
+                          ))}
                         </ul>
                       </div>
                     </div>

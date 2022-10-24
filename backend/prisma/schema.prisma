@@ -379,4 +379,5 @@ model notification{
   notificationType Int
   message String @db.VarChar(1024)
   readStatus Boolean @default(false)
+  notificationDate DateTime @default(now())
 }
