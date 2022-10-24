@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const asyncHandler = require("express-async-handler");
 const { Client } = require("pg");
+const { StatusCodes } = require("http-status-codes");
 
 const { user, followerCreator, userSubscribe } = new PrismaClient();
 
@@ -135,15 +136,6 @@ const updateUserDetails = asyncHandler(async (req, res) => {
 const uploadUserReport = asyncHandler(async (req, res) => {
   const Data = req.body;
   console.log(Data);
-  // const CreateAdReport = await userReport.create({
-  //   data: {
-  //     userId: Data.userId,
-  //     reportedUserId: Data.reportedUserId,
-  //     reportCategory: parseInt(Data.category),
-  //     description: Data.description,
-  //   },
-  // });
-  // res.status(StatusCodes.CREATED).json(CreateAdReport);
   const client = new Client({
     user: process.env.DATABASE_USER,
     host: process.env.DATABASE_HOST,
@@ -156,7 +148,7 @@ const uploadUserReport = asyncHandler(async (req, res) => {
   });
 
   await client.connect();
-  const comments = await client.query({
+  const reportUser = await client.query({
     text: `INSERT INTO public."userReport"
     ("userId", "reportedUserId","reportCategory", description)
     VALUES ($1,$2,$3,$4);`,
@@ -169,7 +161,7 @@ const uploadUserReport = asyncHandler(async (req, res) => {
   });
   await client.end();
 
-  res.status(StatusCodes.CREATED)
+  res.status(StatusCodes.CREATED).json(reportUser);
 });
 //  end  upload a user report ---------------------------------------------
 
