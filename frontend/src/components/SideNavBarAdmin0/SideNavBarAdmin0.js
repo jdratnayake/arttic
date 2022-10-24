@@ -104,7 +104,13 @@ function SideNavBarAdmin0({ sideNavBarIndex }) {
                 <i class="bi bi-wallet-fill icon-theme"></i>Transactions
               </a>
             </li>
-            <li className="sideNavBarSectionHighlight">
+
+            <li
+              className="sideNavBarSectionHighlight"
+              onClick={() => {
+                navigate("/settings");
+              }}
+            >
               <a>
                 <i class="bi bi-gear-fill icon-theme"></i>Settings
               </a>

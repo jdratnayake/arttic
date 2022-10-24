@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import "./Settings.css";
 import Basic from "../../pages/SettingsBasicPage/SettingsBasicPage";
@@ -10,6 +11,9 @@ import Page from "../../pages/PageSettings/PageSettings";
 import BlockedFollower from "../../pages/SettingsBlockedFollowerPage/SettingsBlockedFollowerPage";
 
 function Settings() {
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, type, accessToken, openSeaStatus } = userInfo.user;
+
   return (
     <div>
       <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -27,48 +31,54 @@ function Settings() {
             Basic
           </button>
         </li>
-        <li class="nav-item" role="presentation">
-          <button
-            class="nav-link settings-nav-link"
-            id="sub-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#sub-tab-pane"
-            type="button"
-            role="tab"
-            aria-controls="sub-tab-pane"
-            aria-selected="false"
-          >
-            Subscription & Loyalty
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button
-            class="nav-link settings-nav-link"
-            id="bill-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#bill-tab-pane"
-            type="button"
-            role="tab"
-            aria-controls="bill-tab-pane"
-            aria-selected="false"
-          >
-            Billing Info
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button
-            class="nav-link settings-nav-link"
-            id="purchase-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#purchase-tab-pane"
-            type="button"
-            role="tab"
-            aria-controls="purchase-tab-pane"
-            aria-selected="false"
-          >
-            Purchase History
-          </button>
-        </li>
+        {type > 2 && (
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link settings-nav-link"
+              id="sub-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#sub-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="sub-tab-pane"
+              aria-selected="false"
+            >
+              Subscription & Loyalty
+            </button>
+          </li>
+        )}
+        {type > 2 && (
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link settings-nav-link"
+              id="bill-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#bill-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="bill-tab-pane"
+              aria-selected="false"
+            >
+              Billing Info
+            </button>
+          </li>
+        )}
+        {type > 2 && (
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link settings-nav-link"
+              id="purchase-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#purchase-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="purchase-tab-pane"
+              aria-selected="false"
+            >
+              Purchase History
+            </button>
+          </li>
+        )}
         {/* <li class="nav-item" role="presentation">
           <button
             class="nav-link settings-nav-link"
