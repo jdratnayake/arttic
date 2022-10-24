@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import $ from "jquery";
+import $, { queue } from "jquery";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -27,7 +27,9 @@ function Post(props) {
   const [iscommentBoxOpen, setCommentBoxOpen] = useState(false);
   const [commentCount, setCommentCount] = useState(props.commentCount);
   const [reactCount, setReactCount] = useState(props.likes);
-  const [reportPost , setReportPost] = useState(props.postid);
+  const [reportPost, setReportPost] = useState(props.postid);
+  const [reactedPosts, setReactedPosts] = useState(props.reactedPosts);
+  const [savedPosts, setsavedPosts] = useState(props.savedPosts);
   const commentRef = useRef(null);
 
   const deleteComment = async (cid, commenterId) => {
@@ -47,8 +49,12 @@ function Post(props) {
           .then((response) => {
             // console.log(response.data)
             $(`#comment${response.data.commentId}`).hide();
-            setComments(comments.filter(comment => comment.commentId !== response.data.commentId))
-          
+            setComments(
+              comments.filter(
+                (comment) => comment.commentId !== response.data.commentId
+              )
+            );
+
             setCommentCount(commentCount - 1);
           });
       } else {
@@ -83,21 +89,21 @@ function Post(props) {
     };
 
     // console.log("post reported");
-      await axios
+    await axios
       .post(API_URL + "/feed/uploadPostReport/", inputData, config)
       .then((response) => {
         // console.log(response);
         $(`#btn-close-form${props.postid}`).click();
         if (response.status === 201) {
           toast.success("You have successfully reported the post", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
       });
     resetForm();
@@ -138,7 +144,7 @@ function Post(props) {
     axios
       .post(API_URL + "/feed/uploadComment/", data, config)
       .then((response) => {
-        console.log(response.data)
+        console.log(response.data);
         setComments((current) => [response.data, ...current]);
         setCommentCount(commentCount + 1);
       });
@@ -146,7 +152,7 @@ function Post(props) {
 
   // ******** upload post save ***********
   const uploadPostSave = async (PID) => {
-    // console.log("PID :" + PID + "saved !");
+    console.log("PID :" + PID + "saved !");
     var data = JSON.stringify({
       postId: PID,
     });
@@ -162,7 +168,13 @@ function Post(props) {
     axios
       .post(API_URL + "/feed/uploadPostSave/", data, config)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
+        if (response.data.postSaveId !== undefined) {
+          const savedPostId = response.data.postId;
+          setsavedPosts((current) => [{"postId":savedPostId},...current]);
+        } else {
+          setReactedPosts(savedPosts.filter((_post) => _post.postId !== PID));
+        }
       });
   };
 
@@ -185,7 +197,16 @@ function Post(props) {
       .post(API_URL + "/feed/uploadpostReaction/", data, config)
       .then((response) => {
         // console.log(response.data);
-        setReactCount(reactCount + 1);
+        if (response.data.deleted !== undefined) {
+          setReactCount(reactCount + 1);
+          setReactedPosts((current) => [{"postId":PID}, ...current]);
+        } else {
+          setReactCount(reactCount - 1);
+          // change color unlike
+          // console.log("before",reactedPosts,"after",reactedPosts.filter((_post) => _post.postId !== PID),"id:",PID);
+          setReactedPosts(reactedPosts.filter((_post) => _post.postId !== PID));
+          // console.log("helo",reactedPosts,"afterrrrrrrrrrrr")
+        }
       });
   };
 
@@ -258,7 +279,9 @@ function Post(props) {
                 {props.profilerId === props.creatorId ? (
                   <a
                     class="dropdown-item dinv"
-                    onClick={() => {props.deletePost(props.postid,props.creatorId)}}
+                    onClick={() => {
+                      props.deletePost(props.postid, props.creatorId);
+                    }}
                   >
                     <i class="bi bi-trash-fill dinvit icon-theme"></i>{" "}
                     <span class="align-middle">Delete</span>
@@ -288,7 +311,11 @@ function Post(props) {
             className="d-flex align-items-center gap-1 flex-grow justify-content-center p-1 px-4 post-inputIcon"
             onClick={() => uploadPostReact(props.postid)}
           >
-            <i className="bi bi-hand-thumbs-up-fill"></i>
+            {console.log(reactedPosts.find((_post) => {if(_post.postId === props.postid){ return true}}),"in post")}
+            <i
+                className="bi bi-hand-thumbs-up-fill"
+                style={{color: reactedPosts.find((_post) => {if(_post.postId === props.postid){ return true}}) === undefined ? null : 'blue'}}
+              ></i>
             <p className="m-0 post-react">Like</p>
           </div>
           <div
@@ -301,8 +328,11 @@ function Post(props) {
           <div
             className="d-flex align-items-center gap-1 flex-grow justify-content-center p-1 px-4 post-inputIcon"
             onClick={() => uploadPostSave(props.postid)}
-          >
-            <i className="bi bi-star-fill"></i>
+          > 
+            {/*console.log(savedPosts.find((_post) => {if(_post.postId === props.postid){ return true}}),"in post")*/}
+            <i className="bi bi-star-fill"
+              style={{color: savedPosts.find((_post) => {if(_post.postId === props.postid){ return true}}) === undefined ? null : 'blue'}}
+              ></i>
             <p className="m-0 post-react">Favourite</p>
           </div>
         </div>
@@ -311,7 +341,6 @@ function Post(props) {
           <div className="mt-6 p-2 inputBox">
             <div className="commentSetion">
               {/* new comment start*/}
-
               {/* {newComment && (
                 <Comment
                   key={newComment.commentId}
@@ -327,7 +356,7 @@ function Post(props) {
 
               {/* new comment end*/}
               {/* comments start*/}
-              
+
               {comments &&
                 comments.map((comment) => {
                   return (
@@ -337,7 +366,7 @@ function Post(props) {
                       commentorImage={PROFILE_PIC_URL + comment.profilePhoto}
                       commentId={comment.commentId}
                       profilerId={props.profilerId}
-                      userId={userId}
+                      userId={comment.userId}
                       deleteComment={deleteComment}
                       description={comment.description}
                     />
@@ -358,7 +387,7 @@ function Post(props) {
                   className="inputBox-input text-muted"
                   type="text"
                   placeholder={`comment here`}
-                  style={{textAlign: "left !important"}}
+                  style={{ textAlign: "left !important" }}
                 />
                 <button
                   className="btn btn-primary"
@@ -377,7 +406,7 @@ function Post(props) {
 
       <div
         class="modal fade"
-        id={'complainModal' + props.postid}
+        id={"complainModal" + props.postid}
         tabindex="-1"
         aria-labelledby="planModalLabel"
         aria-hidden="true"
@@ -405,9 +434,9 @@ function Post(props) {
                     {/* border */}
                     <Formik
                       initialValues={{
-                        newDescription : "",
-                        reportCategory : '1',
-                        reportpostId : JSON.stringify(props.postid),
+                        newDescription: "",
+                        reportCategory: "1",
+                        reportpostId: JSON.stringify(props.postid),
                       }}
                       validationSchema={reportDescriptionValidation}
                       onSubmit={submitReport}
@@ -472,15 +501,14 @@ function Post(props) {
                               />
                             </div>
                             <Field
-                                type="text"
-                                className="form-control form-control-update"
-                                id="reportpostId"
-                                name="reportpostId"
-                                placeholder="Enter your report description"
-                                class="form-control form-control-sm"
-                                hidden
-                              />
-                            
+                              type="text"
+                              className="form-control form-control-update"
+                              id="reportpostId"
+                              name="reportpostId"
+                              placeholder="Enter your report description"
+                              class="form-control form-control-sm"
+                              hidden
+                            />
                           </div>
                           {/* row ends*/}
                           <div class="col-md-8 col-12 mt-3">
