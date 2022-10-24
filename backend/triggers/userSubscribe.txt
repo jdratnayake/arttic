@@ -1,0 +1,24 @@
+CREATE OR REPLACE FUNCTION increaseFollowerCount() 
+RETURNS TRIGGER AS $increaseFollowerCount_trigger$
+BEGIN 
+UPDATE creator SET "followerCount" = "followerCount" + 1 WHERE creator."userId" = NEW."creatorId";
+RETURN NEW;
+END;
+$increaseFollowerCount_trigger$ LANGUAGE plpgsql;
+
+CREATE TRIGGER increaseFollowerCount_trigger AFTER INSERT ON "userSubscribe"
+FOR EACH ROW EXECUTE PROCEDURE increaseFollowerCount();
+
+-----------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION decreaseFollowerCount() 
+RETURNS TRIGGER AS $decreaseFollowerCount_trigger$
+BEGIN 
+UPDATE creator SET "followerCount" = "followerCount" - 1 WHERE creator."userId" = OLD."creatorId";
+RETURN NEW;
+END;
+$decreaseFollowerCount_trigger$ LANGUAGE plpgsql;
+
+CREATE TRIGGER decreaseFollowerCount_trigger AFTER DELETE ON "userSubscribe"
+FOR EACH ROW EXECUTE PROCEDURE decreaseFollowerCount();
+
