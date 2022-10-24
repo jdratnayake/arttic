@@ -1,11 +1,15 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
+import { useSelector } from "react-redux";
 
 import "./SideNavBarAdmin0.css";
 
 function SideNavBarAdmin0({ sideNavBarIndex }) {
   const navigate = useNavigate();
+
+  const userInfo = useSelector((state) => state.userInfo);
+  const { type } = userInfo.user;
 
   useEffect(() => {
     $(".sideNavBarSectionHighlight").each(function (i) {
@@ -42,16 +46,34 @@ function SideNavBarAdmin0({ sideNavBarIndex }) {
                 <i class="bi bi-speedometer icon-theme"></i>Dashboard
               </a>
             </li>
-            <li
-              className="sideNavBarSectionHighlight"
-              onClick={() => {
-                navigate("/admin0/accountmanage");
-              }}
-            >
-              <a>
-                <i class="bi bi-people-fill icon-theme"></i>Users
-              </a>
-            </li>
+
+            {type === 1 && (
+              <li
+                className="sideNavBarSectionHighlight"
+                onClick={() => {
+                  navigate("/admin0/accountmanage");
+                }}
+              >
+                <a>
+                  <i class="bi bi-people-fill icon-theme"></i>Users
+                </a>
+              </li>
+            )}
+
+            {type === 2 && (
+              <li
+                className="sideNavBarSectionHighlight"
+                onClick={() => {
+                  navigate("/admin0/accountmanage");
+                }}
+                style={{ display: "none" }}
+              >
+                <a>
+                  <i class="bi bi-people-fill icon-theme"></i>Users
+                </a>
+              </li>
+            )}
+
             <li
               className="sideNavBarSectionHighlight"
               onClick={() => {
