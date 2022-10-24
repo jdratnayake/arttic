@@ -18,19 +18,19 @@ const getNotifications = asyncHandler(async (req, res) => {
     },
   });
 
-  // const updateNotificationList = await notification.updateMany({
-  //   where: {
-  //     AND: [
-  //       {
-  //         userId,
-  //       },
-  //       { readStatus: false },
-  //     ],
-  //   },
-  //   data: {
-  //     readStatus: true,
-  //   },
-  // });
+  const updateNotificationList = await notification.updateMany({
+    where: {
+      AND: [
+        {
+          userId,
+        },
+        { readStatus: false },
+      ],
+    },
+    data: {
+      readStatus: true,
+    },
+  });
 
   //   const unreadNotificationCount = notificationList.length;
 
