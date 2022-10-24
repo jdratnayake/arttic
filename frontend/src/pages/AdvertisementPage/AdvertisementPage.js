@@ -39,7 +39,8 @@ function AdvertismentPage() {
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(removeTime(tomorrow));
   const [endDate, setEndDate] = useState(removeTime(tomorrowPlus));
-  const [price, setPrice] = useState((0).toFixed(2));
+  const [discountRate, setDiscountRate] = useState(1);
+  const [price, setPrice] = useState((10).toFixed(2));
 
   const [errorPicture, setErrorPicture] = useState("");
   const [errorDescription, setErrorDescription] = useState("");
@@ -150,13 +151,38 @@ function AdvertismentPage() {
     };
   };
 
+  const getData = async () => {
+    const token = {
+      headers: {
+        authorization: accessToken,
+        userid: userId,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/advertisment/getadvertismentdiscountrate/", token)
+      .then((res) => {
+        console.log(res.data);
+        setDiscountRate(res.data.discountRate);
+        setPrice((10 * res.data.discountRate).toFixed(2));
+        // const newList = advertismentTable.filter((data) => {
+        //   return data.advertisementId !== advertismentId;
+        // });
+        // setAdvertismentTable(newList);
+      });
+  };
+
   useEffect(() => {
     dateValidation1(endDate, 2);
 
     const duration = getDifferenceInDays(startDate, endDate);
 
     if (duration > 0) {
-      const priceNew = (duration * ADVERTISMENT_DAY_PRICE).toFixed(2);
+      const priceNew = (
+        duration *
+        ADVERTISMENT_DAY_PRICE *
+        discountRate
+      ).toFixed(2);
       setPrice(priceNew);
     } else {
       setPrice((0).toFixed(2));
@@ -183,6 +209,10 @@ function AdvertismentPage() {
     }
     setFirstRenderForPicture(false);
   }, [picture]);
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const registerAdvertisment = async (data) => {
     if (pictureValidation()) {
@@ -223,15 +253,18 @@ function AdvertismentPage() {
                 )
                 .then((response) => {
                   // console.log(response);
-                  toast.success("Advertisment Created Successfully", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                  });
+                  toast.success(
+                    "You Have Successfully Created the Advertisement",
+                    {
+                      position: "top-right",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                    }
+                  );
 
                   const delayInMilliseconds = 3000;
 
