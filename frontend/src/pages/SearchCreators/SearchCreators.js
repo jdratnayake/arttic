@@ -10,7 +10,6 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import NavBar from "../../components/NavBar/NavBar";
-import Banner from "../../components/Banner/Banner";
 import Footer from "../../components/Footer/Footer";
 
 function SearchCreators() {
@@ -19,15 +18,13 @@ function SearchCreators() {
   //window.location.reload(false);
   const [creatorDetails, setCreatorDetails] = useState([]);
 
-  const userInfo = useSelector((state) => state.userInfo);
-  const { userId, accessToken } = userInfo.user;
 
   //getCreatorDetails();
   // get creator details -------------------------------------------------
   const getCreatorDetails = async () => {
     const head = {
       headers: {
-        authorization: accessToken,
+        authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imphbml0aGFkZXZpbkBnbWFpbC5jb20iLCJ1c2VySWQiOjEsImlhdCI6MTY2MjcwMzA2MH0.yHLq-MmrXeO_XJsEZK3sB0wFNb0jVNbQKNBj4I1F6B8',
         name: name,
       },
     };
