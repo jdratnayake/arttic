@@ -55,12 +55,8 @@ function Post(props) {
                 (comment) => comment.commentId !== response.data.commentId
               )
             );
-
-
             setCommentCount(commentCount - 1);
           });
-      } else {
-        console.log("cannot delete");
       }
     }
   };
@@ -146,7 +142,7 @@ function Post(props) {
     axios
       .post(API_URL + "/feed/uploadComment/", data, config)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         Object.assign(response.data, { profilePhoto: props.tempProfilePIc });
         setComments((current) => [response.data, ...current]);
         setCommentCount(commentCount + 1);
@@ -155,7 +151,7 @@ function Post(props) {
 
   // ******** upload post save ***********
   const uploadPostSave = async (PID) => {
-    console.log("PID :" + PID + "saved !");
+    // console.log("PID :" + PID + "saved !");
     var data = JSON.stringify({
       postId: PID,
     });
@@ -171,7 +167,7 @@ function Post(props) {
     axios
       .post(API_URL + "/feed/uploadPostSave/", data, config)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data.postSaveId !== undefined) {
           const savedPostId = response.data.postId;
           setsavedPosts((current) => [{ postId: savedPostId }, ...current]);
@@ -199,7 +195,7 @@ function Post(props) {
     axios
       .post(API_URL + "/feed/uploadpostReaction/", data, config)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data.deleted === undefined) {
           setReactCount(reactCount + 1);
           setReactedPosts((current) => [{ postId: PID }, ...current]);
@@ -282,11 +278,9 @@ function Post(props) {
                 {props.profilerId === props.creatorId ? (
                   <a
                     class="dropdown-item dinv"
-
                     onClick={() => {
                       props.deletePost(props.postid, props.creatorId);
                     }}
-
                   >
                     <i class="bi bi-trash-fill dinvit icon-theme"></i>{" "}
                     <span class="align-middle">Delete</span>
@@ -528,7 +522,6 @@ function Post(props) {
                               class="form-control form-control-sm"
                               hidden
                             />
-
                           </div>
                           {/* row ends*/}
                           <div class="col-md-8 col-12 mt-3">
