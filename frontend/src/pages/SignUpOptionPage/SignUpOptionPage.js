@@ -29,7 +29,7 @@ function SignUpOptionPage() {
           </div>
           <div class="col-4">
             <SignUpOptionCard
-              title="Share your NFT stories with the global "
+              title="Share NFT stories with the global "
               btn="Sign Up as Creator"
               av="creator"
               def1="If you would like to share your NFT stories with the NFT community, sign up as a creator on Arttic."
