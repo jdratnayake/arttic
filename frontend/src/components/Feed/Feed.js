@@ -74,7 +74,7 @@ function Feed() {
         postDescription.current.value = "";
         if (response.status === 201) {
           // setNewPost(response.data);
-          Object.assign(response.data, { profilePhoto: tempProfilePIc });
+          Object.assign(response.data, { profilePhoto: tempProfilePIc , name: userDetails.name});
           setPost((current) => [response.data, ...current]);
           // console.log(response.data);
           toast.success("You have successfully published the post", {
@@ -263,8 +263,8 @@ function Feed() {
                       data-bs-toggle="modal"
                       data-bs-target="#inputBox"
                     >
-                      <i class="bi bi-camera-reels-fill text-danger"></i>
-                      <p className="m-0 inputBox-icon">Video</p>
+                      <i class="bi bi-newspaper text-danger"></i>
+                      <p className="m-0 inputBox-icon">News</p>
                     </a>
                   </div>
                   <div className="d-flex align-items-center gap-1 flex-grow justify-content-center p-1 px-4 inputBox-inputIcon">
@@ -417,16 +417,17 @@ function Feed() {
         </div>
       </div>
       <div class="col-sm-4 col-xs-4 col-advertisment">
-        {ads.map((ad) => {
-          return (
-            <Ad
-              key={ad.advertisementId}
-              adId={ad.advertisementId}
-              image={ADVERTISMENT_PIC_URL + ad.contentLink}
-              creatorId={ad.creatorId}
-            />
-          );
-        })}
+        {ads.length &&
+          ads.map((ad) => {
+            return (
+              <Ad
+                key={ad.advertisementId}
+                adId={ad.advertisementId}
+                image={ADVERTISMENT_PIC_URL + ad.contentLink}
+                creatorId={ad.creatorId}
+              />
+            );
+          })}
       </div>
     </div>
   );
