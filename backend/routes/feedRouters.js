@@ -6,6 +6,7 @@ const { upload } = require("../middleware/fileUpload");
 
 // import controllers
 const {
+  oneTimeNotification,
   uploadPostSave,
   getAds,
   uploadCommentReport,
@@ -32,6 +33,8 @@ router.get("/getFavourites", validateToken, getFavourites);
 router.get("/deleteComment", validateToken, deleteComment);
 
 router.get("/deletePost", validateToken, deletePost);
+
+router.post("/oneTimeNotification", validateToken, oneTimeNotification);
 
 router.post("/uploadPostSave", validateToken, uploadPostSave);
 

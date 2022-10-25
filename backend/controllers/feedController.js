@@ -20,7 +20,23 @@ const {
   postView,
   advertisementView,
   creator,
+  notification,
 } = new PrismaClient();
+
+// send a notification **************
+const oneTimeNotification = asyncHandler(async (req, res) => {
+  const { userId, notificationType, message } = req.body;
+
+  const newNotification = await notification.create({
+    data: {
+      userId,
+      notificationType,
+      message,
+    },
+  });
+
+  res.json(newNotification);
+});
 
 //  upload a favorite post ***************
 const uploadPostSave = asyncHandler(async (req, res) => {
@@ -56,10 +72,10 @@ const uploadPostSave = asyncHandler(async (req, res) => {
   console.log(isPostExist.rows[0].postSaveId);
   if (isPostExist.rowCount !== 0) {
     const deletePostSave = await postSave.delete({
-      where:{
-        postSaveId:isPostExist.rows[0].postSaveId
-      }
-    })
+      where: {
+        postSaveId: isPostExist.rows[0].postSaveId,
+      },
+    });
     res.status(StatusCodes.OK).json(deletePostSave);
   }
 
@@ -159,8 +175,8 @@ const getAds = asyncHandler(async (req, res) => {
   }
 
   // console.log(adCount);
-  console.log(adIds);
-  console.log(isShowAd.rows[0]);
+  // console.log(adIds);
+  // console.log(isShowAd.rows[0])
   // console.log(adIdArray);
   // console.log(adIdsTodisplay);
 
@@ -509,7 +525,7 @@ const getFavourites = asyncHandler(async (req, res) => {
   //     posts:true
   //   }
   // })
-   const client = new Client({
+  const client = new Client({
     user: process.env.DATABASE_USER,
     host: process.env.DATABASE_HOST,
     database: process.env.DATABASE_DATABASE,
@@ -533,11 +549,33 @@ const getFavourites = asyncHandler(async (req, res) => {
               RIGHT JOIN "postSave" ON ("postSave"."postId" = posts."postId" AND "postSave"."userId" = posts."creatorId" )) as posts2,
             "user" WHERE ("user"."userId" = posts2."creatorId" and "user"."blockedStatus"= false) 
             ORDER BY posts2."postId" DESC`,
-            values: [userId]
+    values: [userId],
+  });
+
+  const postReacted = await postReaction.findMany({
+    select: {
+      postId: true,
+    },
+    where: {
+      userId,
+    },
+  });
+
+  const savedPost = await postSave.findMany({
+    select: {
+      postId: true,
+    },
+    where: {
+      userId,
+    },
   });
 
   await client.end();
-  res.json(postSaved.rows);
+  res.json({
+    postSaved: postSaved.rows,
+    savedPost: savedPost,
+    postReacted: postReacted,
+  });
   // const postSaved = await postSave.findMany({
   //   where: {
   //     userId: userId,
@@ -571,20 +609,20 @@ const getFavourites = asyncHandler(async (req, res) => {
 const deleteSavePost = asyncHandler(async (req, res) => {
   const userId = parseInt(req.headers.userid);
   const postId = parseInt(req.headers.postid);
-  
+
   const postSaveId = await postSave.findMany({
-    select:{
-      postSaveId:true
+    select: {
+      postSaveId: true,
     },
     where: {
       postId: postId,
-      userId:userId
+      userId: userId,
     },
   });
   // console.log(userId,postId,postSaveId[0].postSaveId)
   const deletedPost = await postSave.delete({
     where: {
-     postSaveId:postSaveId[0].postSaveId
+      postSaveId: postSaveId[0].postSaveId,
     },
   });
 
@@ -592,6 +630,7 @@ const deleteSavePost = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
+  oneTimeNotification,
   uploadPostSave,
   getAds,
   uploadCommentReport,

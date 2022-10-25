@@ -15,10 +15,10 @@ import Post from "../../components/Post/Post";
 function Favourite() {
   const [userDetails, setUserDetails] = useState({});
   const [profilePic, setProfilePicDisplay] = useState("");
-
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
-
+  const [reactedPosts, setReactedPosts] = useState([]);
+  const [savedPosts, setSavedPosts] = useState([]);
   const [favorites, setFavourites] = useState([]);
 
   const getFavourites = async () => {
@@ -32,7 +32,12 @@ function Favourite() {
     await axios
       .get(API_URL + "/feed/getFavourites/", config)
       .then((response) => {
-        setFavourites(response.data);
+        setFavourites(response.data.postSaved);
+        setReactedPosts(response.data.postReacted);
+        setSavedPosts(response.data.savedPost);
+        // console.log(response.data)
+        // console.log(favorites)
+        // console.log(response.data.postSaved)
       });
   };
 
@@ -92,21 +97,24 @@ function Favourite() {
                 favorites.map((item) => {
                   return (
                     <Post
-                      key={item.postSaveId}
+                      key={item.postId}
                       id={"post" + item.postId}
                       postid={item.postId}
                       userName={userDetails.name}
                       profilePic={profilePic}
                       profilerId={userId}
-                      name={item.post.creator.followerCreator.user.name}
-                      message={item.post.description}
-                      timestamp={item.post.publishedDate}
-                      image={POST_PIC_URL + item.post.imagevideo}
-                      userImage={PROFILE_PIC_URL + item.post.creator.followerCreator.user.profilePhoto}
-                      commentCount={item.post.commentCount}
-                      likes={item.post.reactCount}
-                      creatorId={item.post.creator.userId}
+                      name={item.name}
+                      message={item.description}
+                      timestamp={item.publishedDate}
+                      image={POST_PIC_URL + item.imagevideo}
+                      userImage={PROFILE_PIC_URL + item.profilePhoto}
+                      commentCount={item.commentCount}
+                      likes={item.reactCount}
+                      creatorId={item.creatorId}
                       deletePost={deleteSavePost}
+                      reactedPosts={reactedPosts}
+                      savedPosts={savedPosts}
+                      tempProfilePIc={userDetails.profilePhoto}
                     />
                   );
                 })}
