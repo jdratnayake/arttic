@@ -159,8 +159,8 @@ const getAds = asyncHandler(async (req, res) => {
   }
 
   // console.log(adCount);
-  console.log(adIds);
-  console.log(isShowAd.rows[0])
+  // console.log(adIds);
+  // console.log(isShowAd.rows[0])
   // console.log(adIdArray);
   // console.log(adIdsTodisplay);
 
@@ -536,8 +536,30 @@ const getFavourites = asyncHandler(async (req, res) => {
             values: [userId]
   });
 
+  const postReacted = await postReaction.findMany({
+    select: {
+      postId: true,
+    },
+    where: {
+      userId,
+    },
+  });
+
+  const savedPost = await postSave.findMany({
+    select: {
+      postId: true,
+    },
+    where: {
+      userId,
+    },
+  });
+
   await client.end();
-  res.json(postSaved.rows);
+  res.json({
+    postSaved:postSaved.rows,
+    savedPost:savedPost,
+    postReacted:postReacted
+  });
   // const postSaved = await postSave.findMany({
   //   where: {
   //     userId: userId,
