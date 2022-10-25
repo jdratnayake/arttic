@@ -176,7 +176,7 @@ function Post(props) {
           const savedPostId = response.data.postId;
           setsavedPosts((current) => [{ postId: savedPostId }, ...current]);
         } else {
-          setReactedPosts(savedPosts.filter((_post) => _post.postId !== PID));
+          setsavedPosts(savedPosts.filter((_post) => _post.postId !== PID));
         }
       });
   };

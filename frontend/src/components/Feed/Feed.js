@@ -74,7 +74,7 @@ function Feed() {
         postDescription.current.value = "";
         if (response.status === 201) {
           // setNewPost(response.data);
-          Object.assign(response.data, { profilePhoto: tempProfilePIc });
+          Object.assign(response.data, { profilePhoto: tempProfilePIc , name: userDetails.name});
           setPost((current) => [response.data, ...current]);
           // console.log(response.data);
           toast.success("You have successfully published the post", {
