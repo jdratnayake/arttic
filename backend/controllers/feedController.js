@@ -59,7 +59,7 @@ const uploadPostSave = asyncHandler(async (req, res) => {
   await client.connect();
 
   const isShowAd = await client.query(
-    'SELECT "showAd" FROM public."premiumPackageSubscribe" WHERE "userId" = $1 AND "endDate" > Date(NOW());',
+    'SELECT * FROM "user" WHERE "userId"=$1 AND "advertisementVisibility"=false;',
     [userId]
   );
   // console.log(isShowAd.rows[0]);
@@ -126,7 +126,7 @@ const getAds = asyncHandler(async (req, res) => {
   await client.connect();
 
   const isShowAd = await client.query(
-    'SELECT "showAd" FROM public."premiumPackageSubscribe" WHERE "userId" = $1 AND "endDate" > Date(NOW());',
+    'SELECT * FROM "user" WHERE "userId"=$1 AND "advertisementVisibility"=false;',
     [userId]
   );
 
