@@ -86,7 +86,7 @@ function AccountManageAdmin0Page() {
         setDisplayAdmin0List((current) => [response.data, ...current]);
         setAdmin0List((current) => [response.data, ...current]);
 
-        toast.success("Admin Created Successfully", {
+        toast.success("You Have Successfully Created the Account", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,

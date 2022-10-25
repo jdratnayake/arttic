@@ -45,12 +45,14 @@ import ViewUserList from "./pages/VIewUserList/ViewUserList";
 import SearchCreatorList from "./pages/SearchCreatorList/SearchCreatorList";
 import ReportUserRecoveryPage from "./pages/ReportUserRecoveryPage/ReportUserRecoveryPage";
 import ReportAdmin0Page from "./pages/ReportAdmin0Page/ReportAdmin0Page";
+import SearchCreators from "./pages/SearchCreators/SearchCreators";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />}></Route>
+        <Route path="/searchcreators" element={<SearchCreators />}></Route>
         <Route
           path="/feed"
           element={<CreatorTemplate children={<Feed />} sideNavBarIndex="0" />}

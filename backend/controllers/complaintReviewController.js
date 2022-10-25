@@ -243,10 +243,9 @@ const getReportUserDetails = asyncHandler(async (req, res) => {
       where: {
         userReportedId: reportId,
       },
-      select: { userId: true },
     });
 
-    userId = report.userId;
+    userId = report.reportedUserId;
   }
 
   const userDetails = await user.findUnique({

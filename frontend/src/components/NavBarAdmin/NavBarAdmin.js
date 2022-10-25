@@ -8,11 +8,11 @@ import en from "javascript-time-ago/locale/en";
 import { API_URL, PROFILE_PIC_URL } from "../../constants/globalConstants";
 import { logout } from "../../actions/userActions";
 
-import "./NavBarCreator.css";
+import "./NavBarAdmin.css";
 import logo from "../../images/logo.png";
 import axios from "axios";
 
-function NavBarCreator() {
+function NavBarAdmin() {
   const [profilePic, setProfilePic] = useState("");
   const [userId, setUserId] = useState("");
   const [input, setInput] = useState("");
@@ -134,17 +134,6 @@ function NavBarCreator() {
                                 <i className="bi bi-search"></i>
                             </a> */}
               <div class="wrap-sb">
-                <div class="search">
-                  <button class="searchButton">
-                    <i class="bi bi-search"></i>
-                  </button>
-                  <input
-                    type="text"
-                    class="searchTerm"
-                    placeholder="Search"
-                    onChange={(event) => setInput(event.target.value)}
-                  />
-                </div>
                 {/* <div class="">
                   <SearchPanel
                     choices={searchCreators}
@@ -167,18 +156,6 @@ function NavBarCreator() {
               <div className="navbar-item">
                 {/* Notification */}
                 <div class="dropdown d-inline-block drop-list-upper">
-                  <button
-                    className="dr-btn"
-                    id="page-header-notifications-dropdown"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    onClick={readNotification}
-                  >
-                    <i class="bi bi-bell-fill icon-theme-nav"></i>
-                    <span class="notification-bell-btn">{unreadCount}</span>
-                  </button>
-
                   <div
                     class="dropdown-menu dropdown-menu-lg dropdown-menu-end"
                     aria-labelledby="page-header-notifications-dropdown"
@@ -330,4 +307,4 @@ function NavBarCreator() {
   );
 }
 
-export default NavBarCreator;
+export default NavBarAdmin;
