@@ -18,9 +18,12 @@ import Ad from "../../components/Ad/Ad";
 function Feed() {
   const [userDetails, setUserDetails] = useState({});
   const [profilePic, setProfilePicDisplay] = useState("");
+  const [tempProfilePIc, setTempProfilePic] = useState("");
   const [postImage, setPostImage] = useState("");
   const [postImageStore, setPostImageStore] = useState("");
   const [newPost, setNewPost] = useState(null);
+  const [reactedPosts, setReactedPosts] = useState([]);
+  const [savedPosts, setSavedPosts] = useState([]);
   const [posts, setPost] = useState([]);
   const [ads, setAds] = useState([]);
   const [stopScroller, setStopScroller] = useState(0);
@@ -71,17 +74,18 @@ function Feed() {
         postDescription.current.value = "";
         if (response.status === 201) {
           // setNewPost(response.data);
+          Object.assign(response.data, { profilePhoto: tempProfilePIc });
           setPost((current) => [response.data, ...current]);
           // console.log(response.data);
           toast.success("You have successfully published the post", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
       });
   };
@@ -99,16 +103,22 @@ function Feed() {
     };
 
     await axios.get(API_URL + "/feed/getPosts/", config).then((response) => {
-      const newPosts = response.data;
+      const newPosts = response.data.posts;
+      setReactedPosts(response.data.postReacted);
+      setSavedPosts(response.data.savedPost);
       if (newPosts.length === 0) {
         setStopScroller(1);
         // console.log("scroller work",stopScroller,newPosts.length)
       }
 
       // console.log(response.data)
-      // response.data.map(newpost => posts.find(oldPost => oldPost.postId === newpost.postId)? null:setPost((oldposts) => [...oldposts, newpost]));
+      newPosts.map((newpost) =>
+        posts.find((oldPost) => oldPost.postId === newpost.postId)
+          ? null
+          : setPost((oldposts) => [...oldposts, newpost])
+      );
 
-      setPost((oldposts) => [...oldposts, ...newPosts]);
+      // setPost((oldposts) => [...oldposts, ...newPosts]);
     });
     skip = skip + 2;
   };
@@ -146,6 +156,7 @@ function Feed() {
       .get(API_URL + "/user/getuserdetails/" + userId, config)
       .then((response) => {
         setUserDetails(response.data);
+        setTempProfilePic(response.data.profilePhoto);
         setProfilePicDisplay(PROFILE_PIC_URL + response.data.profilePhoto);
       });
   };
@@ -166,7 +177,7 @@ function Feed() {
     // exit = exit + 1
   };
 
-  const deletePost = async (pid,creatorId) => {
+  const deletePost = async (pid, creatorId) => {
     if (window.confirm("Do you want to delete the post !")) {
       if (userId === creatorId) {
         // console.log("delete clicked")
@@ -183,7 +194,9 @@ function Feed() {
           .then((response) => {
             // console.log(response.data)
             // $(`#post${response.data.postId}`).hide();
-            setPost(posts.filter(post => post.postId !== response.data.postId))
+            setPost(
+              posts.filter((post) => post.postId !== response.data.postId)
+            );
           });
       } else {
         console.log("cannot delete");
@@ -200,7 +213,7 @@ function Feed() {
 
   return (
     <div className="row p-0 m-0">
-    <ToastContainer
+      <ToastContainer
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}
@@ -372,6 +385,7 @@ function Feed() {
             {/* <Posts profilePic={profilePic} name={userDetails.name} /> */}
             {/* Post section  start */}
             <div className="pb-3">
+              {/*console.log(savedPosts,"saved posts")*/}
               {posts &&
                 posts.map((post) => {
                   return (
@@ -391,6 +405,9 @@ function Feed() {
                       likes={post.reactCount}
                       creatorId={post.creatorId}
                       deletePost={deletePost}
+                      reactedPosts={reactedPosts}
+                      savedPosts={savedPosts}
+                      tempProfilePIc={tempProfilePIc}
                     />
                   );
                 })}

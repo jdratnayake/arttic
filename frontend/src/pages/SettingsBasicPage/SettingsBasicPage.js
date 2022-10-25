@@ -35,7 +35,7 @@ function SettingsBasicPage() {
 
   const [premiumUser, SetPremiumUser] = useState(false);
   const [adVisiChecked, setAdVisiChecked] = useState(false);
-  const handleChange = nextChecked => {
+  const handleChange = (nextChecked) => {
     setAdVisiChecked(nextChecked);
   };
 
@@ -153,7 +153,6 @@ function SettingsBasicPage() {
         );
         SetPremiumUser(response.data.premiumUser);
         setAdVisiChecked(response.data.advertisementVisibility);
-
       });
   };
   //end user details ------------------------------------------------------
@@ -283,7 +282,6 @@ function SettingsBasicPage() {
   };
   //end change password----------------------------------------------
 
-
   //change Ad free ---------------------------------------------------
   const changeAdFree = async (event) => {
     event.preventDefault();
@@ -297,8 +295,8 @@ function SettingsBasicPage() {
     const formData = {
       data: {
         userId: userId,
-        state: adVisiChecked
-      }
+        state: adVisiChecked,
+      },
     };
 
     await axios
@@ -316,8 +314,6 @@ function SettingsBasicPage() {
           progress: undefined,
         });
       });
-
-
   };
   //end ad free------------------------------------------------------
 
@@ -406,7 +402,15 @@ function SettingsBasicPage() {
                         >
                           Change
                         </button>
-                        <button type="submit" class="btn btn-outline-white" style={{ background: "#33ff94", border: "#33ff94", color: "black" }}>
+                        <button
+                          type="submit"
+                          class="btn btn-outline-white"
+                          style={{
+                            background: "#33ff94",
+                            border: "#33ff94",
+                            color: "black",
+                          }}
+                        >
                           Save
                         </button>
                       </form>
@@ -415,47 +419,59 @@ function SettingsBasicPage() {
                 </div>
               </div>
               {/* col */}
-              <div class="row mb-6">
-                <div class="col-md-3 mb-3 mb-md-0">
-                  {/* heading */}
-                  <h5 class="mb-0">Cover photo</h5>
-                </div>
-                <div class="col-md-9">
-                  {/* dropzone input */}
-                  <div>
-                    <form
-                      onSubmit={uploadCoverPicture}
-                      class=" mb-3  dz-clickable"
-                    >
-                      <img
-                        src={coverPicDisplay}
-                        style={{ width: "41rem", height: "12rem" }}
-                        alt=""
-                      />
-
-                      <input
-                        type="file"
-                        ref={coverPicInput}
-                        onChange={handleCoverPicChange}
-                        style={{ display: "none" }}
-                      />
-
-                      <br /><br />
-
-                      <button
-                        type="button"
-                        class="btn btn-outline-white me-1"
-                        onClick={handleCoverPicClick}
+              {type > 2 && (
+                <div class="row mb-6">
+                  <div class="col-md-3 mb-3 mb-md-0">
+                    {/* heading */}
+                    <h5 class="mb-0">Cover photo</h5>
+                  </div>
+                  <div class="col-md-9">
+                    {/* dropzone input */}
+                    <div>
+                      <form
+                        onSubmit={uploadCoverPicture}
+                        class=" mb-3  dz-clickable"
                       >
-                        Change
-                      </button>
-                      <button type="submit" class="btn btn-outline-white" style={{ background: "#33ff94", border: "#33ff94", color: "black" }}>
-                        Save
-                      </button>
-                    </form>
+                        <img
+                          src={coverPicDisplay}
+                          style={{ width: "41rem", height: "12rem" }}
+                          alt=""
+                        />
+
+                        <input
+                          type="file"
+                          ref={coverPicInput}
+                          onChange={handleCoverPicChange}
+                          style={{ display: "none" }}
+                        />
+
+                        <br />
+                        <br />
+
+                        <button
+                          type="button"
+                          class="btn btn-outline-white me-1"
+                          onClick={handleCoverPicClick}
+                        >
+                          Change
+                        </button>
+                        <button
+                          type="submit"
+                          class="btn btn-outline-white"
+                          style={{
+                            background: "#33ff94",
+                            border: "#33ff94",
+                            color: "black",
+                          }}
+                        >
+                          Save
+                        </button>
+                      </form>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
+
               <div>
                 {/* border */}
                 <div class="mb-6">
@@ -549,8 +565,10 @@ function SettingsBasicPage() {
                       >
                         Save Changes
                       </button>
-                      <div className="error-msg" style={{ color: "blue" }}>
-                      </div>
+                      <div
+                        className="error-msg"
+                        style={{ color: "blue" }}
+                      ></div>
                     </div>
                   </div>
                 </form>
@@ -599,8 +617,6 @@ function SettingsBasicPage() {
                   </form>
                 </div>
               )}
-
-
             </div>
           </div>
         </div>
@@ -712,7 +728,11 @@ function SettingsBasicPage() {
                           type="submit"
                           class="btn btn-primary"
                           disabled={isSubmitting}
-                          style={{ background: "#33ff94", border: "#33ff94", color: "black" }}
+                          style={{
+                            background: "#33ff94",
+                            border: "#33ff94",
+                            color: "black",
+                          }}
                         >
                           Save Changes
                         </button>
@@ -806,32 +826,35 @@ function SettingsBasicPage() {
             </div>
           </div>
 
-          <div class="card">
-            {/*  card body  */}
-            <div class="card-body">
-              <div class="mb-6">
-                <h4 class="mb-1">Danger Zone </h4>
-              </div>
-              <div>
-                {/*  text  */}
-                <p>
-                  Delete any and all content you have, such as articles,
-                  comments, your reading list or chat messages. Allow your
-                  username to become available to anyone.
-                </p>
-                <a class="btn btn-danger"
-                  data-bs-toggle="modal"
-                  data-bs-target="#AccDeleteModal"
-                >
-                  Delete Account
-                </a>
-                <p class="small mb-0 mt-3">
-                  Feel free to contact with any questions{" "}
-                  <a href="mailto:arttic@gmail.com">arttic@gmail.com</a>.
-                </p>
+          {type > 2 && (
+            <div class="card">
+              {/*  card body  */}
+              <div class="card-body">
+                <div class="mb-6">
+                  <h4 class="mb-1">Danger Zone </h4>
+                </div>
+                <div>
+                  {/*  text  */}
+                  <p>
+                    Delete any and all content you have, such as articles,
+                    comments, your reading list or chat messages. Allow your
+                    username to become available to anyone.
+                  </p>
+                  <a
+                    class="btn btn-danger"
+                    data-bs-toggle="modal"
+                    data-bs-target="#AccDeleteModal"
+                  >
+                    Delete Account
+                  </a>
+                  <p class="small mb-0 mt-3">
+                    Feel free to contact with any questions{" "}
+                    <a href="mailto:arttic@gmail.com">arttic@gmail.com</a>.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* update plan modal pay ad*/}
           <div
@@ -859,7 +882,6 @@ function SettingsBasicPage() {
                 <div class="modal-body p-4">
                   <div class="card border shadow-none border-bottom p-4">
                     <div class="row">
-
                       <div class="col-6 mb-3">
                         <h6 class="text-uppercase fs-6 ls-2">Username</h6>
                         <p class="mb-1 fs-8">{userDetails.username}</p>
@@ -871,11 +893,12 @@ function SettingsBasicPage() {
 
                       <div class="col-12 mb-3">
                         <p class="mb-1 fs-8">
-                          You are about to delete your account! This will delete al of your content such as articles, comments, advertisements,
-                          chat messages. Also you can't use this username and email again to create new acount.
+                          You are about to delete your account! This will delete
+                          al of your content such as articles, comments,
+                          advertisements, chat messages. Also you can't use this
+                          username and email again to create new acount.
                         </p>
                       </div>
-
                     </div>
                   </div>
                 </div>
