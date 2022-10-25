@@ -43,7 +43,7 @@ const uploadPostSave = asyncHandler(async (req, res) => {
   await client.connect();
 
   const isShowAd = await client.query(
-    'SELECT "showAd" FROM public."premiumPackageSubscribe" WHERE "userId" = $1 AND "endDate" > Date(NOW());',
+    'SELECT * FROM "user" WHERE "userId"=$1 AND "advertisementVisibility"=false;',
     [userId]
   );
   // console.log(isShowAd.rows[0]);
@@ -53,9 +53,14 @@ const uploadPostSave = asyncHandler(async (req, res) => {
   );
 
   await client.end();
-  // console.log(isPostExist.rowCount);
+  console.log(isPostExist.rows[0].postSaveId);
   if (isPostExist.rowCount !== 0) {
-    res.status(StatusCodes.OK).json({ exists: true });
+    const deletePostSave = await postSave.delete({
+      where:{
+        postSaveId:isPostExist.rows[0].postSaveId
+      }
+    })
+    res.status(StatusCodes.OK).json(deletePostSave);
   }
 
   if (isShowAd.rows[0] === undefined) {
@@ -105,7 +110,7 @@ const getAds = asyncHandler(async (req, res) => {
   await client.connect();
 
   const isShowAd = await client.query(
-    'SELECT "showAd" FROM public."premiumPackageSubscribe" WHERE "userId" = $1 AND "endDate" > Date(NOW());',
+    'SELECT * FROM "user" WHERE "userId"=$1 AND "advertisementVisibility"=false;',
     [userId]
   );
 
@@ -155,7 +160,7 @@ const getAds = asyncHandler(async (req, res) => {
 
   // console.log(adCount);
   console.log(adIds);
-  console.log(isShowAd.rows[0])
+  console.log(isShowAd.rows[0]);
   // console.log(adIdArray);
   // console.log(adIdsTodisplay);
 
@@ -170,7 +175,7 @@ const getAds = asyncHandler(async (req, res) => {
         advertisementId: true,
         creatorId: true,
         contentLink: true,
-        endDate:true
+        endDate: true,
       },
       where: {
         advertisementId: {
@@ -504,43 +509,82 @@ const getFavourites = asyncHandler(async (req, res) => {
   //     posts:true
   //   }
   // })
-
-  const postSaved = await postSave.findMany({
-    where: {
-      userId: userId,
-    },
-    include: {
-      post: {
-        include: {
-          creator: {
-            include: {
-              followerCreator: {
-                include: {
-                  user: true,
-                },
-              },
-            },
-          },
-        },
-      },
+   const client = new Client({
+    user: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE_DATABASE,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
+    ssl: {
+      rejectUnauthorized: false,
     },
   });
+  await client.connect();
+
+  const postSaved = await client.query({
+    // text: 'SELECT * FROM post WHERE "creatorId" IN (SELECT "creatorId" FROM "userSubscribe" WHERE "followerId"=$1 UNION SELECT $1 AS "creatorId") ORDER BY "postId" DESC LIMIT $2 OFFSET $3',
+    text: `SELECT posts2.*,"user"."name","user"."profilePhoto" FROM 
+            (SELECT posts.* FROM (
+              SELECT * FROM post 
+                WHERE 
+                  ("creatorId" IN (SELECT "creatorId" FROM "userSubscribe" WHERE "followerId"=$1 UNION SELECT $1 AS "creatorId")
+                AND 
+                  post."blockedStatus" = false)) as posts
+              RIGHT JOIN "postSave" ON ("postSave"."postId" = posts."postId" AND "postSave"."userId" = posts."creatorId" )) as posts2,
+            "user" WHERE ("user"."userId" = posts2."creatorId" and "user"."blockedStatus"= false) 
+            ORDER BY posts2."postId" DESC`,
+            values: [userId]
+  });
+
+  await client.end();
+  res.json(postSaved.rows);
+  // const postSaved = await postSave.findMany({
+  //   where: {
+  //     userId: userId,
+  //   },
+  //   include: {
+  //     post: {
+  //       include: {
+  //         creator: {
+  //           include: {
+  //             followerCreator: {
+  //               include: {
+  //                 user: true,
+  //               },
+  //             },
+  //           },
+  //         },
+  //       },
+  //     },
+  //   },
+  // });
   // console.log(postSaved);
   // console.log("                     ");
   // Array.from(postSaved).map(item => console.log(item.post.blockedStatus));
   // Array.from(postSaved).filter((item) => item.post.blockedStatus !== false);
   // console.log("filterd", Array.from(postSaved).filter((item) => item.post.blockedStatus !== true));
-  res.json(
-    Array.from(postSaved).filter((item) => item.post.blockedStatus !== true)
-  );
+  // res.json(
+  //   Array.from(postSaved).filter((item) => item.post.blockedStatus !== true)
+  // );
 });
 
 const deleteSavePost = asyncHandler(async (req, res) => {
   const userId = parseInt(req.headers.userid);
-  const postSaveId = parseInt(req.headers.postid);
+  const postId = parseInt(req.headers.postid);
+  
+  const postSaveId = await postSave.findMany({
+    select:{
+      postSaveId:true
+    },
+    where: {
+      postId: postId,
+      userId:userId
+    },
+  });
+  // console.log(userId,postId,postSaveId[0].postSaveId)
   const deletedPost = await postSave.delete({
     where: {
-      postId: postSaveId,
+     postSaveId:postSaveId[0].postSaveId
     },
   });
 

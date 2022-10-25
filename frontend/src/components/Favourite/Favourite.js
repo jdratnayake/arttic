@@ -64,7 +64,7 @@ function Favourite() {
         };
 
         await axios
-          .get(API_URL + "/feed/deleteSavePost/", config)
+          .get(API_URL + "/feed/deleteSavePost", config)
           .then((response) => {
             // console.log(response.data)
             // $(`#post${response.data.postId}`).hide();
