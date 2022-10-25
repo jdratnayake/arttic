@@ -145,6 +145,7 @@ function Post(props) {
       .post(API_URL + "/feed/uploadComment/", data, config)
       .then((response) => {
         console.log(response.data);
+        Object.assign(response.data,{profilePhoto:props.tempProfilePIc})
         setComments((current) => [response.data, ...current]);
         setCommentCount(commentCount + 1);
       });
@@ -196,8 +197,8 @@ function Post(props) {
     axios
       .post(API_URL + "/feed/uploadpostReaction/", data, config)
       .then((response) => {
-        // console.log(response.data);
-        if (response.data.deleted !== undefined) {
+        console.log(response.data);
+        if (response.data.deleted === undefined) {
           setReactCount(reactCount + 1);
           setReactedPosts((current) => [{"postId":PID}, ...current]);
         } else {
@@ -311,8 +312,9 @@ function Post(props) {
             className="d-flex align-items-center gap-1 flex-grow justify-content-center p-1 px-4 post-inputIcon"
             onClick={() => uploadPostReact(props.postid)}
           >
-            {console.log(reactedPosts.find((_post) => {if(_post.postId === props.postid){ return true}}),"in post")}
-            <i
+            {/*console.log(reactedPosts.find((_post) => {if(_post.postId === props.postid){ return true}}),"in post initialValues")*/}
+            {reactedPosts !== undefined ? (
+              <i
                 className="bi bi-hand-thumbs-up-fill"
                 style={{color: reactedPosts.find((_post) => {if(_post.postId === props.postid){ return true}}) === undefined ? null : 'blue'}}
               ></i>
@@ -330,9 +332,15 @@ function Post(props) {
             onClick={() => uploadPostSave(props.postid)}
           > 
             {/*console.log(savedPosts.find((_post) => {if(_post.postId === props.postid){ return true}}),"in post")*/}
-            <i className="bi bi-star-fill"
-              style={{color: savedPosts.find((_post) => {if(_post.postId === props.postid){ return true}}) === undefined ? null : 'blue'}}
+            {(savedPosts !== undefined) ? (
+              <i 
+                className="bi bi-star-fill"
+                style={{color: savedPosts.find((_post) => {if(_post.postId === props.postid){ return true}}) === undefined ? null : 'blue'}}
               ></i>
+            ):(
+                <i className="bi bi-star-fill"></i>
+              )
+            }
             <p className="m-0 post-react">Favourite</p>
           </div>
         </div>
@@ -340,21 +348,7 @@ function Post(props) {
         {iscommentBoxOpen && (
           <div className="mt-6 p-2 inputBox">
             <div className="commentSetion">
-              {/* new comment start*/}
-              {/* {newComment && (
-                <Comment
-                  key={newComment.commentId}
-                  id={"comment" + newComment.commentId}
-                  commentorImage={props.profilePic}
-                  commentId={newComment.commentId}
-                  profilerId={props.profilerId}
-                  userId={userId}
-                  deleteComment={deleteComment}
-                  description={newComment.description}
-                />
-              )} */}
-
-              {/* new comment end*/}
+              
               {/* comments start*/}
 
               {comments &&
