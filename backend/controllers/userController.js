@@ -42,7 +42,6 @@ const uploadProfileOrCoverPicture = asyncHandler(async (req, res) => {
 });
 //end upload profile photos ----------------------------------
 
-
 //get user details --------------------------------------------
 const getUserDetails = asyncHandler(async (req, res) => {
   const userId = parseInt(req.params.id);
@@ -60,8 +59,6 @@ const getUserDetails = asyncHandler(async (req, res) => {
 });
 //end get user details ----------------------------------------
 
-
-
 //check username-----------------------------------------------
 const checkUserName = asyncHandler(async (req, res) => {
   const userName = req.params.name;
@@ -69,10 +66,7 @@ const checkUserName = asyncHandler(async (req, res) => {
 
   const existUser = await user.findMany({
     where: {
-      AND: [
-        { username: userName },
-        { NOT: { userId: userId, } }
-      ],
+      AND: [{ username: userName }, { NOT: { userId: userId } }],
     },
 
     include: {
@@ -84,17 +78,15 @@ const checkUserName = asyncHandler(async (req, res) => {
 
   if (existUser.length !== 0) {
     res.json({
-      status: "NO"
+      status: "NO",
     });
   } else {
     res.json({
-      status: "YES"
+      status: "YES",
     });
   }
 });
 //end check username--------------------------------------------------------
-
-
 
 //update user details ------------------------------------------------------
 const updateUserDetails = asyncHandler(async (req, res) => {
@@ -122,15 +114,13 @@ const updateUserDetails = asyncHandler(async (req, res) => {
     res.json({
       msg: "Profile details updated",
     });
-  }
-  else {
+  } else {
     res.json({
       msg: "Error!",
     });
   }
 });
 //  end update user details --------------------------------------------
-
 
 //  upload a user report ---------------------------------------------
 const uploadUserReport = asyncHandler(async (req, res) => {
@@ -165,11 +155,9 @@ const uploadUserReport = asyncHandler(async (req, res) => {
 });
 //  end  upload a user report ---------------------------------------------
 
-
 //  get followers details --------------------------------------------
 const getFollowersDetails = asyncHandler(async (req, res) => {
   const userId = parseInt(req.params.id);
-
 
   const client = new Client({
     user: process.env.DATABASE_USER,
@@ -192,7 +180,6 @@ const getFollowersDetails = asyncHandler(async (req, res) => {
   res.json(result.rows);
   await client.end();
 
-
   // const followers = await userSubscribe.findMany({
   //   where: {
   //     creatorId: userId,
@@ -206,11 +193,9 @@ const getFollowersDetails = asyncHandler(async (req, res) => {
 });
 //  end get followers details ----------------------------------------
 
-
 //  get followings details --------------------------------------------
 const getFollowingsDetails = asyncHandler(async (req, res) => {
   const userId = parseInt(req.params.id);
-
 
   const client = new Client({
     user: process.env.DATABASE_USER,
@@ -246,11 +231,9 @@ const getFollowingsDetails = asyncHandler(async (req, res) => {
 });
 //  end get followings details ----------------------------------------
 
-
 //  get top creators details --------------------------------------------
 const getTopCreatorsDetails = asyncHandler(async (req, res) => {
   const userId = parseInt(req.params.id);
-
 
   const client = new Client({
     user: process.env.DATABASE_USER,
@@ -266,21 +249,17 @@ const getTopCreatorsDetails = asyncHandler(async (req, res) => {
   await client.connect();
 
   const result = await client.query(
-    'SELECT "user"."userId", "name", "profilePhoto", "joinedDate", COUNT("creatorId") AS "subCount" FROM "userSubscribe" INNER JOIN "user" ON "user"."userId"="userSubscribe"."creatorId" INNER JOIN "followerCreator" ON "followerCreator"."userId" = "user"."userId" WHERE "user"."blockedStatus" = FALSE GROUP BY "user"."userId" ORDER BY "subCount" DESC LIMIT 9',
-
+    'SELECT "user"."userId", "name", "profilePhoto", "joinedDate" FROM "user" INNER JOIN "creator" ON "user"."userId"="creator"."userId" ORDER BY "followerCount" DESC LIMIT 9'
   );
 
   res.json(result.rows);
   await client.end();
-
-
 });
 //  end get top creators details ---------------------------------------------
 
-
 //  get all creators details -------------------------------------------------
 const getAllCreatorsDetails = asyncHandler(async (req, res) => {
-  const name = req.headers.name
+  const name = req.headers.name;
 
   const client = new Client({
     user: process.env.DATABASE_USER,
@@ -303,49 +282,40 @@ const getAllCreatorsDetails = asyncHandler(async (req, res) => {
 
   res.json(result.rows);
   await client.end();
-
 });
 //  end get all creators details ---------------------------------------------
 
-
 //follow Unfollow check Creator-----------------------------------------------
 const followUnfollowCreator = asyncHandler(async (req, res) => {
-
   const follower = parseInt(req.body.follower);
   const creator = parseInt(req.body.creator);
   const status = req.body.status;
-  // status = 1 do 
+  // status = 1 do
   // status = 0 check
 
   const existUser = await userSubscribe.findFirst({
     where: {
-      AND: [
-        { creatorId: creator },
-        { followerId: follower }
-      ],
+      AND: [{ creatorId: creator }, { followerId: follower }],
     },
   });
 
   if (existUser) {
-    if (status == "1") { //do unfollow
+    if (status == "1") {
+      //do unfollow
       const unfolow = await userSubscribe.deleteMany({
         where: {
-          AND: [
-            { creatorId: creator },
-            { followerId: follower }
-          ],
+          AND: [{ creatorId: creator }, { followerId: follower }],
         },
-      })
+      });
       res.json({
         status: "delete",
         data: "Unfollowed!",
-        msg: "Follow"
+        msg: "Follow",
       });
-    }
-    else {
+    } else {
       res.json({
         status: "check",
-        data: "Unfollow"
+        data: "Unfollow",
       });
     }
   } else {
@@ -355,27 +325,24 @@ const followUnfollowCreator = asyncHandler(async (req, res) => {
           followerId: follower,
           creatorId: creator,
         },
-      })
+      });
       res.json({
         status: "create",
         data: "Followed!",
-        msg: "Unfollow"
+        msg: "Unfollow",
       });
-    }
-    else {
+    } else {
       res.json({
         status: "check",
-        data: "Follow"
+        data: "Follow",
       });
     }
   }
 });
 //end follow Unfollow check Creator--------------------------------------------------------
 
-
 //Ad Free Feature-------------------------------------------------------------------------
 const adFreeFeature = asyncHandler(async (req, res) => {
-
   const state = req.body.data.state;
   const userId = parseInt(req.body.data.userId);
 
@@ -390,19 +357,15 @@ const adFreeFeature = asyncHandler(async (req, res) => {
 
   if (state) {
     res.json({
-      msg: "Advertisments enabled"
+      msg: "Advertisments enabled",
     });
-  }
-  else {
+  } else {
     res.json({
-      msg: "Advertisments disabled"
+      msg: "Advertisments disabled",
     });
   }
-
 });
 //End Ad Free Feature------------------------------------------------------------------------
-
-
 
 module.exports = {
   uploadProfileOrCoverPicture,

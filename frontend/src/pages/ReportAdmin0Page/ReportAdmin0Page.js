@@ -111,11 +111,13 @@ function ReportAdmin0Page() {
         border: "#33ff94",
         color: "black",
       });
+      setAccountStatus("Ban");
     } else {
       actionType = 5;
 
       setButtonName("Ban");
       setButtonStyle();
+      setAccountStatus("Active");
     }
 
     $("#btn-close-form").click();
@@ -212,6 +214,7 @@ function ReportAdmin0Page() {
                     type="button"
                     class="btn btn-danger "
                     onClick={banUser}
+                    style={buttonStyle}
                   >
                     Confirm
                   </button>

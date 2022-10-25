@@ -11,6 +11,7 @@ const {
   deleteAdvertisment,
   payment,
   cryptoPaymentSubscription,
+  getAdvertismentDiscountRate,
 } = require("../controllers/advertismentController");
 
 const router = express.Router();
@@ -26,5 +27,10 @@ router.post(
 router.get("/deleteadvertisment", validateToken, deleteAdvertisment);
 router.post("/payment", validateToken, payment);
 router.post("/cryptopayment", validateToken, cryptoPaymentSubscription);
+router.get(
+  "/getadvertismentdiscountrate",
+  validateToken,
+  getAdvertismentDiscountRate
+);
 
 module.exports = router;

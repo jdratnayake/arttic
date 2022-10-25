@@ -296,9 +296,14 @@ model userReport{
 
 // 1 = Nudity
 // 2 = Violence
-// 3 = Spam
-// 4 = False Information
-// 5 = Something Else
+// 3 = Harassment
+// 4 = Suicide or self-injury
+// 5 = False information
+// 6 = Spam
+// 7 = Unauthorized sales
+// 8 = Hate speech
+// 9 = Terrorism
+// 10 = Something else
 
 model postReport{
   postReportId Int @id @default(autoincrement())
@@ -367,4 +372,17 @@ model chatHistory{
 model advertisementGlobalVariables{
   advertisementGlobalVariableId Int @id @default(autoincrement())
   nextAdvertisementToDisplay Int
+}
+
+// notificationType
+//   1 = posts
+//   2 = advertisements
+//   3 = banned
+model notification{
+  notificationId Int @id @default(autoincrement())
+  userId Int
+  notificationType Int
+  message String @db.VarChar(1024)
+  readStatus Boolean @default(false)
+  notificationDate DateTime @default(now())
 }

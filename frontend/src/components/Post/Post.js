@@ -49,11 +49,13 @@ function Post(props) {
           .then((response) => {
             // console.log(response.data)
             $(`#comment${response.data.commentId}`).hide();
+
             setComments(
               comments.filter(
                 (comment) => comment.commentId !== response.data.commentId
               )
             );
+
 
             setCommentCount(commentCount - 1);
           });
@@ -67,7 +69,7 @@ function Post(props) {
     if (pid === userId) {
       navigate("/creatorprofile");
     } else {
-      navigate("/followerprofile/" + pid);
+      navigate("/viewuserprofile/" + pid);
     }
   };
 
@@ -280,9 +282,11 @@ function Post(props) {
                 {props.profilerId === props.creatorId ? (
                   <a
                     class="dropdown-item dinv"
+
                     onClick={() => {
                       props.deletePost(props.postid, props.creatorId);
                     }}
+
                   >
                     <i class="bi bi-trash-fill dinvit icon-theme"></i>{" "}
                     <span class="align-middle">Delete</span>
@@ -448,7 +452,9 @@ function Post(props) {
                     <Formik
                       initialValues={{
                         newDescription: "",
+
                         reportCategory: "1",
+
                         reportpostId: JSON.stringify(props.postid),
                       }}
                       validationSchema={reportDescriptionValidation}
@@ -522,6 +528,7 @@ function Post(props) {
                               class="form-control form-control-sm"
                               hidden
                             />
+
                           </div>
                           {/* row ends*/}
                           <div class="col-md-8 col-12 mt-3">

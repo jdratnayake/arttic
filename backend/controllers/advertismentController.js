@@ -3,7 +3,7 @@ const asyncHandler = require("express-async-handler");
 const stripe = require("stripe")(process.env.SECRET_KEY);
 const { v4: uuidv4 } = require("uuid");
 
-const { user, advertisement, transactionLog } = new PrismaClient();
+const { user, advertisement, transactionLog, creator } = new PrismaClient();
 
 const getAdvertismentTable = asyncHandler(async (req, res) => {
   const userId = parseInt(req.params.id);
@@ -176,10 +176,36 @@ const cryptoPaymentSubscription = asyncHandler(async (req, res) => {
   }
 });
 
+const getAdvertismentDiscountRate = asyncHandler(async (req, res) => {
+  const userId = parseInt(req.headers.userid);
+  const user = await creator.findUnique({
+    where: {
+      userId,
+    },
+  });
+
+  const followerCount = user.followerCount;
+
+  let discountRate = 1;
+
+  if (followerCount > 10000) {
+    discountRate = 0.5;
+  } else if (followerCount > 5000) {
+    discountRate = 0.75;
+  } else if (followerCount > 1000) {
+    discountRate = 0.875;
+  }
+
+  res.json({
+    discountRate,
+  });
+});
+
 module.exports = {
   getAdvertismentTable,
   newAdvertisment,
   deleteAdvertisment,
   payment,
   cryptoPaymentSubscription,
+  getAdvertismentDiscountRate,
 };
