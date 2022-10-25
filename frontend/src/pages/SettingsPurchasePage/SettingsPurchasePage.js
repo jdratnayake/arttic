@@ -68,7 +68,9 @@ function SettingsPurchasePage() {
                                   : "Premium Package Subscription"}
                               </td>
 
-                              <td class="amount">{data.amount}</td>
+                              <td class="amount">
+                                {"$" + data.amount + ".00"}
+                              </td>
                             </tr>
                           ))}
                         </tbody>

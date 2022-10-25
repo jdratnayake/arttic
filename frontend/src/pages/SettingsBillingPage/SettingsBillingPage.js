@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import $ from "jquery";
@@ -18,6 +18,7 @@ import {
   SUBSCRIPTION_PRICE,
   ETHEREUM_ADDRESS,
 } from "../../constants/globalConstants";
+import { updateUserState } from "../../actions/userActions";
 
 import "../SettingsBasicPage/settings.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -29,6 +30,8 @@ function SettingsBillingPage() {
 
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
+
+  const dispatch = useDispatch();
 
   // Crypto payment - START
   const startPayment = async ({ ether, addr }) => {
@@ -179,6 +182,7 @@ function SettingsBillingPage() {
       .then((response) => {
         // console.log(response.data);
         // getPremiumPackageDetails();
+        dispatch(updateUserState(userId));
         setPremiumStatus(response.data.premiumUser);
         setPremiumEndDate(new Date(response.data.premiumPackageEndDate));
       });
@@ -198,6 +202,7 @@ function SettingsBillingPage() {
       .then((response) => {
         // console.log(response.data);
         // getPremiumPackageDetails();
+        dispatch(updateUserState(userId));
         setPremiumStatus(response.data.premiumUser);
         setPremiumEndDate(new Date(response.data.premiumPackageEndDate));
       });
@@ -280,7 +285,12 @@ function SettingsBillingPage() {
                           href="#"
                           class="btn btn-next d-grid mb-2"
                           data-bs-toggle="modal"
-                          data-bs-target="#billingPayments" style={{ background: "#33ff94", border: "#33ff94", color: "black" }}
+                          data-bs-target="#billingPayments"
+                          style={{
+                            background: "#33ff94",
+                            border: "#33ff94",
+                            color: "black",
+                          }}
                         >
                           {premiumStatus
                             ? "Extend Subscription"
