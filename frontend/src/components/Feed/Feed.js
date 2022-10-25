@@ -18,6 +18,7 @@ import Ad from "../../components/Ad/Ad";
 function Feed() {
   const [userDetails, setUserDetails] = useState({});
   const [profilePic, setProfilePicDisplay] = useState("");
+  const [tempProfilePIc, setTempProfilePic] = useState("");
   const [postImage, setPostImage] = useState("");
   const [postImageStore, setPostImageStore] = useState("");
   const [newPost, setNewPost] = useState(null);
@@ -73,6 +74,7 @@ function Feed() {
         postDescription.current.value = "";
         if (response.status === 201) {
           // setNewPost(response.data);
+          Object.assign(response.data, { profilePhoto: tempProfilePIc });
           setPost((current) => [response.data, ...current]);
           // console.log(response.data);
           toast.success("You have successfully published the post", {
@@ -110,9 +112,13 @@ function Feed() {
       }
 
       // console.log(response.data)
-      // response.data.map(newpost => posts.find(oldPost => oldPost.postId === newpost.postId)? null:setPost((oldposts) => [...oldposts, newpost]));
+      newPosts.map((newpost) =>
+        posts.find((oldPost) => oldPost.postId === newpost.postId)
+          ? null
+          : setPost((oldposts) => [...oldposts, newpost])
+      );
 
-      setPost((oldposts) => [...oldposts, ...newPosts]);
+      // setPost((oldposts) => [...oldposts, ...newPosts]);
     });
     skip = skip + 2;
   };
@@ -150,6 +156,7 @@ function Feed() {
       .get(API_URL + "/user/getuserdetails/" + userId, config)
       .then((response) => {
         setUserDetails(response.data);
+        setTempProfilePic(response.data.profilePhoto);
         setProfilePicDisplay(PROFILE_PIC_URL + response.data.profilePhoto);
       });
   };
@@ -400,6 +407,7 @@ function Feed() {
                       deletePost={deletePost}
                       reactedPosts={reactedPosts}
                       savedPosts={savedPosts}
+                      tempProfilePIc={tempProfilePIc}
                     />
                   );
                 })}
