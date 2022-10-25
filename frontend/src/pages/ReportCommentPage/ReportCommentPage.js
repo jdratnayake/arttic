@@ -35,9 +35,14 @@ function ReportCommentPage() {
     "",
     "Nudity",
     "Violence",
+    "Harassment",
+    "Suicide or self-injury",
+    "False information",
     "Spam",
-    "False Information",
-    "Something Else",
+    "Unauthorized sales",
+    "Hate speech",
+    "Terrorism",
+    "Something else",
   ];
 
   const numList = ["One", "Two", "Three", "Four", "Five"];
@@ -76,6 +81,22 @@ function ReportCommentPage() {
     getData();
   }, []);
 
+  const sendNotification = async (userId, notificationType, message) => {
+    const inputData = { userId, notificationType, message };
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .post(API_URL + "/user/oneTimeNotification", inputData, config)
+      .then((response) => {
+        console.log(response.data);
+      });
+  };
+
   const banUser = async () => {
     const token = {
       headers: {
@@ -92,6 +113,12 @@ function ReportCommentPage() {
     await axios
       .post(API_URL + "/complaintreview/blockuser/", inputData, token)
       .then((res) => {});
+
+    sendNotification(
+      userDetails.userId,
+      3,
+      "We Have Banned Your Comment Due to the Violation of Rules and Regulations of Post Sharing"
+    );
 
     $("#btn-close-form").click();
     setButtonName("Comment Banned");

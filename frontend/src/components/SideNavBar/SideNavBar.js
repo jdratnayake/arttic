@@ -101,7 +101,7 @@ function SideNavBar({ sideNavBarIndex }) {
               }}
             >
               <a>
-                <i className="bi bi-star-fill icon-theme"></i>Favourits
+                <i className="bi bi-star-fill icon-theme"></i>Favourites
               </a>
             </li>
             <li

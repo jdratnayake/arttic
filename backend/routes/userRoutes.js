@@ -17,6 +17,7 @@ const {
   getAllCreatorsDetails,
   followUnfollowCreator,
   adFreeFeature,
+  oneTimeNotification,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -38,5 +39,6 @@ router.get("/getfollowersdetails/:id", validateToken, getFollowersDetails);
 router.get("/getfollowingsdetails/:id", validateToken, getFollowingsDetails);
 router.get("/gettopcreatorsdetails/", validateToken, getTopCreatorsDetails);
 router.get("/getallcreatorsdetails", validateToken, getAllCreatorsDetails);
+router.post("/onetimenotification", validateToken, oneTimeNotification);
 
 module.exports = router;
