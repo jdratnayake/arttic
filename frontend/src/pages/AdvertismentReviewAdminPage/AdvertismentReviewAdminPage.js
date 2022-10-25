@@ -25,6 +25,7 @@ function AdvertismentReviewAdminPage() {
   const [old, setOld] = useState(0);
 
   const [advertismentId, setAdvertismentId] = useState(0);
+  const [advertismentOwnerId, setAdvertismentOwnerId] = useState(0);
   const [description, setdescription] = useState("");
   const [category, setcategory] = useState("");
   const [date, setDate] = useState("");
@@ -42,7 +43,17 @@ function AdvertismentReviewAdminPage() {
     "Memes",
   ];
 
-  const handleClick = (id, imageLink, des, cDate, sDate, edate, cate, pri) => {
+  const handleClick = (
+    id,
+    imageLink,
+    des,
+    cDate,
+    sDate,
+    edate,
+    cate,
+    pri,
+    oId
+  ) => {
     setAdvertismentId(id);
     setadimage(ADVERTISMENT_PIC_URL + imageLink);
     setdescription(des);
@@ -51,6 +62,7 @@ function AdvertismentReviewAdminPage() {
     setenDate(new Date(edate).toLocaleDateString());
     setcategory(nftTypeList[cate]);
     setprice(parseInt(pri));
+    setAdvertismentOwnerId(oId);
   };
 
   const getData = async () => {
@@ -73,6 +85,22 @@ function AdvertismentReviewAdminPage() {
   useEffect(() => {
     getData();
   }, []);
+
+  const sendNotification = async (userId, notificationType, message) => {
+    const inputData = { userId, notificationType, message };
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .post(API_URL + "/user/oneTimeNotification", inputData, config)
+      .then((response) => {
+        console.log(response.data);
+      });
+  };
 
   const verifyAdvertisement = async () => {
     console.log(advertismentId);
@@ -99,6 +127,11 @@ function AdvertismentReviewAdminPage() {
         });
         setAdvertismentTable(newList);
         setRequest(request - 1);
+        sendNotification(
+          advertismentOwnerId,
+          2,
+          "Successfully Accepted Your New Advertisment"
+        );
       });
 
     $("#btn-close-form").click();
@@ -231,7 +264,8 @@ function AdvertismentReviewAdminPage() {
                                       ad.startDate,
                                       ad.endDate,
                                       ad.category,
-                                      ad.price
+                                      ad.price,
+                                      ad.creatorId
                                     )
                                   }
                                   href="#"
@@ -300,7 +334,8 @@ function AdvertismentReviewAdminPage() {
                                       ad.startDate,
                                       ad.endDate,
                                       ad.category,
-                                      ad.price
+                                      ad.price,
+                                      ad.creatorId
                                     )
                                   }
                                   href="#"
@@ -367,7 +402,8 @@ function AdvertismentReviewAdminPage() {
                                       ad.startDate,
                                       ad.endDate,
                                       ad.category,
-                                      ad.price
+                                      ad.price,
+                                      ad.creatorId
                                     )
                                   }
                                   href="#"

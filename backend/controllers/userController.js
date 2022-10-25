@@ -3,7 +3,8 @@ const asyncHandler = require("express-async-handler");
 const { Client } = require("pg");
 const { StatusCodes } = require("http-status-codes");
 
-const { user, followerCreator, userSubscribe } = new PrismaClient();
+const { user, followerCreator, userSubscribe, notification } =
+  new PrismaClient();
 
 //upload profile photos --------------------------------------------------
 const uploadProfileOrCoverPicture = asyncHandler(async (req, res) => {
@@ -367,6 +368,22 @@ const adFreeFeature = asyncHandler(async (req, res) => {
 });
 //End Ad Free Feature------------------------------------------------------------------------
 
+const oneTimeNotification = asyncHandler(async (req, res) => {
+  const { userId, notificationType, message } = req.body;
+  // console.log(req.body);
+  // console.log("Hi");
+  // // addNotification(1, 1, "Hi");
+  const newNotification = await notification.create({
+    data: {
+      userId,
+      notificationType,
+      message,
+    },
+  });
+
+  res.json(newNotification);
+});
+
 module.exports = {
   uploadProfileOrCoverPicture,
   getUserDetails,
@@ -379,4 +396,5 @@ module.exports = {
   getAllCreatorsDetails,
   followUnfollowCreator,
   adFreeFeature,
+  oneTimeNotification,
 };
