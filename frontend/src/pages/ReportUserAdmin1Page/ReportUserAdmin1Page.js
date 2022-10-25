@@ -8,11 +8,13 @@ import {
 import { useSelector } from "react-redux";
 import axios from "axios";
 import $ from "jquery";
+import { ToastContainer, toast } from "react-toastify";
 
 import SummaryCard from "../../components/SummaryCard/SummaryCard";
 import { API_URL } from "../../constants/globalConstants";
 
 import "./ReportUserAdmin1Page.css";
+import "react-toastify/dist/ReactToastify.css";
 
 function ReportUserAdmin1Page() {
   const userInfo = useSelector((state) => state.userInfo);
@@ -39,9 +41,14 @@ function ReportUserAdmin1Page() {
     "",
     "Nudity",
     "Violence",
+    "Harassment",
+    "Suicide or self-injury",
+    "False information",
     "Spam",
-    "False Information",
-    "Something Else",
+    "Unauthorized sales",
+    "Hate speech",
+    "Terrorism",
+    "Something else",
   ];
 
   const setResolveComplaint = async () => {
@@ -59,6 +66,16 @@ function ReportUserAdmin1Page() {
     await axios
       .post(API_URL + "/complaintreview/resolvecomplaint/", inputData, config)
       .then((response) => {
+        toast.success("You Have Successfully Resolved the Complaint", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
         if (complaintType === 1) {
           setUserComplaintList(
             userComplaintList.filter((data) => {
@@ -218,6 +235,18 @@ function ReportUserAdmin1Page() {
 
   return (
     <span className="reportUserAdmin1Page">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+
       <div class="card-body admin-page-title date-card">
         <div class="row">
           <h4>Complaints</h4>

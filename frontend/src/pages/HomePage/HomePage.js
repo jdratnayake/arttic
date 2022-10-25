@@ -1,27 +1,45 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Slide from "react-reveal/Slide";
-import "./HomePage.css";
+import axios from "axios";
 
 import NavBar from "../../components/NavBar/NavBar";
 import Banner from "../../components/Banner/Banner";
 import InfoCardLeft from "../../components/InfoCard/InfoCardLeft";
 import InfoCardRight from "../../components/InfoCard/InfoCardRight";
 import Footer from "../../components/Footer/Footer";
-
 import Card from "../../components/Cards/Card";
+import { API_URL, PROFILE_PIC_URL } from "../../constants/globalConstants";
 
-import user_1 from "../../images/users/pic1.png";
-import user_2 from "../../images/users/pic2.png";
-import user_3 from "../../images/users/pic3.png";
-import user_4 from "../../images/users/pic4.png";
-import user_5 from "../../images/users/pic5.png";
-import user_6 from "../../images/users/pic6.png";
-import user_7 from "../../images/users/pic7.png";
-import user_8 from "../../images/users/pic8.png";
+import "./HomePage.css";
 
 import home_asset_1 from "../../images/home-assets.png";
 
 function HomePage() {
+  const [creatorDetails, setCreatorDetails] = useState([]);
+
+  const getCreatorData = async () => {
+    const accessToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imphbml0aGFkZXZpbkBnbWFpbC5jb20iLCJ1c2VySWQiOjEsImlhdCI6MTY2MDIwOTU5M30.ZCIsrhW3RLbMWzkpj59Csf-p-K7Q8SuLZKWFRyAK9IE";
+
+    const head = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .get(API_URL + "/user/gettopcreatorsdetails/", head)
+      .then((res) => {
+        setCreatorDetails(res.data);
+        console.log(res.data);
+      });
+  };
+
+  useEffect(() => {
+    getCreatorData();
+  }, []);
+
   return (
     <>
       <div class="homepage">
@@ -67,30 +85,17 @@ function HomePage() {
             <div class="col align-self-center trending-section">
               <h1>Trending Creators</h1>
               <div class="row row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-8 card-container">
-                <Slide bottom>
-                  <Card img={user_1} name="Alex Newton" />
-                </Slide>
-                <Slide bottom>
-                  <Card img={user_2} name="Alex Newton" />
-                </Slide>
-                <Slide bottom>
-                  <Card img={user_3} name="Alex Newton" />
-                </Slide>
-                <Slide bottom>
-                  <Card img={user_4} name="Alex Newton" />
-                </Slide>
-                <Slide bottom>
-                  <Card img={user_5} name="Alex Newton" />
-                </Slide>
-                <Slide bottom>
-                  <Card img={user_6} name="Alex Newton" />
-                </Slide>
-                <Slide bottom>
-                  <Card img={user_7} name="Alex Newton" />
-                </Slide>
-                <Slide bottom>
-                  <Card img={user_8} name="Alex Newton" />
-                </Slide>
+                {creatorDetails.map(
+                  (item, i) =>
+                    i < 8 && (
+                      <Slide bottom key={item.userId}>
+                        <Card
+                          img={PROFILE_PIC_URL + item.profilePhoto}
+                          name={item.name}
+                        />
+                      </Slide>
+                    )
+                )}
               </div>
             </div>
           </div>
