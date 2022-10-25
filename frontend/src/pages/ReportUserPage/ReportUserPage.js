@@ -30,9 +30,14 @@ function ReportUserPage() {
     "",
     "Nudity",
     "Violence",
+    "Harassment",
+    "Suicide or self-injury",
+    "False information",
     "Spam",
-    "False Information",
-    "Something Else",
+    "Unauthorized sales",
+    "Hate speech",
+    "Terrorism",
+    "Something else",
   ];
 
   const numList = ["One", "Two", "Three", "Four", "Five"];
