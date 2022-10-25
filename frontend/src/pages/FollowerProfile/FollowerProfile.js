@@ -49,20 +49,20 @@ function FollowerProfile() {
       await axios
         .post(API_URL + "/user/uploadUserReport/", inputData, config)
         .then((response) => {
-          // console.log(response.data);
-          // forceUpdate();
-          $("#btn-close-form-ad-report").click();
-          if (response.status === 201) {
-          toast.success("You have successfully reported the follower", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        }
+            console.log(response.status);
+            // forceUpdate();
+            $(`#btn-close-form-user-report${userId}`).click();
+            if (response.status === 201) {
+                toast.success("You have successfully reported the follower", {
+                   position: "top-right",
+                   autoClose: 5000,
+                   hideProgressBar: false,
+                   closeOnClick: true,
+                   pauseOnHover: true,
+                   draggable: true,
+                   progress: undefined,
+                });
+            }
         });
     }
     resetForm();
@@ -215,15 +215,7 @@ function FollowerProfile() {
                         <div class="col-xl-8 col-lg-12 col-md-12 col-12 mb-8">
 
                             {/* Posts */}
-                            <Post
-                                image={t}
-                                name={"Peter Pan"}
-                                date={"2022-07-13"}
-                                title={"Happy Holiday"}
-                                desc={
-                                    "When the bass drops, so do my problems.When the bass drops, so do my problems."
-                                }
-                            />
+                            
 
                             <br />
 
@@ -355,7 +347,7 @@ function FollowerProfile() {
                 class="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-                id="btn-close-form-ad-report"
+                id={`btn-close-form-user-report${userId}`}
               ></button>
             </div>
             <div class="modal-body p-4">
