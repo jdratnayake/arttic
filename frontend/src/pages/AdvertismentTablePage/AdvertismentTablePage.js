@@ -879,7 +879,7 @@ function AdvertismentTablePage() {
                 class="btn btn-primary"
                 data-bs-dismiss="modal"
               >
-                Okay
+                Done
               </button>
             </div>
           </div>
