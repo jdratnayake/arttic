@@ -483,7 +483,7 @@ function AdvertismentReviewAdminPage() {
             <div class="modal-footer justify-content-start p-4 pt-2">
               <button
                 type="button"
-                class="btn btn-danger"
+                className="btn btn-primary"
                 data-bs-toggle="modal"
                 data-bs-target="#upgradeAccount"
               >
@@ -491,7 +491,7 @@ function AdvertismentReviewAdminPage() {
               </button>
               <button
                 type="button"
-                class="btn btn-secondary"
+                class="btn btn-danger"
                 data-bs-dismiss="modal"
               >
                 Close

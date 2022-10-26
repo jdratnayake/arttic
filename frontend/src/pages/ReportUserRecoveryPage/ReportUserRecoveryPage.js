@@ -23,9 +23,18 @@ function ReportUserRecoveryPage() {
   const [advertisementReportDetails, setAdvertisementReportDetails] = useState(
     []
   );
-  const [buttonName, setButtonName] = useState("Temporary Ban");
+  const [buttonName, setButtonName] = useState("Active");
   const [isDisabled, setDisabled] = useState(false);
-  const [buttonStyle, setButtonStyle] = useState({});
+  // const [buttonStyle, setButtonStyle] = useState({
+  // background: "#dc3545",
+  // border: "#dc3545",
+  // color: "#fff",
+  // });
+  const [buttonStyle, setButtonStyle] = useState({
+    background: "#33ff94",
+    border: "#33ff94",
+    color: "black",
+  });
 
   const typeList = [
     "",
@@ -55,11 +64,11 @@ function ReportUserRecoveryPage() {
       .get(API_URL + "/complaintreview/getReportUserDetails/", config)
       .then((response) => {
         if (!response.data.userDetails.blockedStatus) {
-          setButtonName("Active");
+          setButtonName("Temporary Ban");
           setButtonStyle({
-            background: "#33ff94",
-            border: "#33ff94",
-            color: "black",
+            background: "#dc3545",
+            border: "#dc3545",
+            color: "#fff",
           });
           setDisabled(true);
         }
@@ -90,11 +99,11 @@ function ReportUserRecoveryPage() {
       .then((res) => {});
 
     $("#btn-close-form").click();
-    setButtonName("Active");
+    setButtonName("Temporary Ban");
     setButtonStyle({
-      background: "#33ff94",
-      border: "#33ff94",
-      color: "black",
+      background: "#dc3545",
+      border: "#dc3545",
+      color: "#fff",
     });
     setDisabled(true);
   };
