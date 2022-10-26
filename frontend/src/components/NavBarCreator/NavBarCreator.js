@@ -20,7 +20,7 @@ function NavBarCreator() {
   const [unreadCount, setUnreadCount] = useState(0);
 
   const userInfo = useSelector((state) => state.userInfo);
-  const { accessToken } = userInfo.user;
+  const { type, accessToken } = userInfo.user;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -47,6 +47,19 @@ function NavBarCreator() {
       });
     }
   };
+
+  //-------------------------------------------------
+  const viewProfile = (e) => {
+    e.preventDefault();
+    console.log(type);
+    if (type == 3) {
+      navigate("/creatorprofile");
+    }
+    else if (type == 4) {
+      navigate("/followerprofile");
+    }
+  };
+  //-------------------------------------------------
 
   useEffect(() => {
     if (!userInfo.user) {
@@ -299,9 +312,9 @@ function NavBarCreator() {
                   >
                     <a
                       class="dropdown-item dinv"
-                      onClick={() => {
-                        navigate("/creatorprofile");
-                      }}
+                      onClick={
+                        viewProfile
+                      }
                     >
                       <i class="bi bi-person-circle dinvit"></i>{" "}
                       <span class="align-middle">View Profile</span>
