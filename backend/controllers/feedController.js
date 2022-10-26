@@ -21,21 +21,50 @@ const {
   advertisementView,
   creator,
   notification,
+  userSubscribe,
 } = new PrismaClient();
 
 // send a notification **************
 const oneTimeNotification = asyncHandler(async (req, res) => {
   const { userId, notificationType, message } = req.body;
-
-  const newNotification = await notification.create({
-    data: {
-      userId,
-      notificationType,
-      message,
+  const followerIds = await userSubscribe.findMany({
+    select: {
+      followerId: true,
+    },
+    where: {
+      creatorId: userId,
     },
   });
 
-  res.json(newNotification);
+  // console.log(followerIds);
+  const Notifications = [];
+  // followerIds.map(async (followerId) => {
+  //   console.log(followerId);
+  //   const newNotification = await notification.create({
+  //     data: {
+  //       userId,
+  //       notificationType,
+  //       message,
+  //     },
+  //   });
+
+  //   Notifications.push(newNotification);
+  // });
+
+  //
+  followerIds.map(async (followerId) => {
+    await notification.create({
+      data: {
+        message,
+        notificationType,
+        userId: followerId.followerId,
+      },
+    });
+  });
+
+  // console.log(Notifications);
+
+  res.status(StatusCodes.CREATED).json({ send: true });
 });
 
 //  upload a favorite post ***************
@@ -69,7 +98,7 @@ const uploadPostSave = asyncHandler(async (req, res) => {
   );
 
   await client.end();
-  console.log(isPostExist.rows[0].postSaveId);
+  // console.log(isPostExist.rows[0].postSaveId);
   if (isPostExist.rowCount !== 0) {
     const deletePostSave = await postSave.delete({
       where: {
@@ -313,7 +342,7 @@ const uploadCommentReaction = asyncHandler(async (req, res) => {
         commentReactionId: isReacted[0].commentReactionId,
       },
     });
-    console.log(DeleteCommentReaction);
+    // console.log(DeleteCommentReaction);
     res.status(StatusCodes.OK).json({ deleted: true });
   }
 });
@@ -347,7 +376,7 @@ const uploadpostReaction = asyncHandler(async (req, res) => {
         postReactionId: isReacted[0].postReactionId,
       },
     });
-    console.log(DeletePostReaction);
+    // console.log(DeletePostReaction);
     res.status(StatusCodes.OK).json({ deleted: true });
   }
 });
