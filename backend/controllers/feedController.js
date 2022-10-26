@@ -21,21 +21,50 @@ const {
   advertisementView,
   creator,
   notification,
+  userSubscribe,
 } = new PrismaClient();
 
 // send a notification **************
 const oneTimeNotification = asyncHandler(async (req, res) => {
   const { userId, notificationType, message } = req.body;
-
-  const newNotification = await notification.create({
-    data: {
-      userId,
-      notificationType,
-      message,
+  const followerIds = await userSubscribe.findMany({
+    select: {
+      followerId: true,
+    },
+    where: {
+      creatorId: userId,
     },
   });
 
-  res.json(newNotification);
+  // console.log(followerIds);
+  const Notifications = [];
+  // followerIds.map(async (followerId) => {
+  //   console.log(followerId);
+  //   const newNotification = await notification.create({
+  //     data: {
+  //       userId,
+  //       notificationType,
+  //       message,
+  //     },
+  //   });
+
+  //   Notifications.push(newNotification);
+  // });
+
+  //
+  followerIds.map(async (followerId) => {
+    await notification.create({
+      data: {
+        message,
+        notificationType,
+        userId: followerId.followerId,
+      },
+    });
+  });
+
+  // console.log(Notifications);
+
+  res.status(StatusCodes.CREATED).json({ send: true });
 });
 
 //  upload a favorite post ***************
@@ -69,40 +98,46 @@ const uploadPostSave = asyncHandler(async (req, res) => {
   );
 
   await client.end();
-  console.log(isPostExist.rows[0].postSaveId);
+  // console.log(isPostExist.rows[0], Data.postId, isShowAd.rows[0]);
   if (isPostExist.rowCount !== 0) {
     const deletePostSave = await postSave.delete({
       where: {
         postSaveId: isPostExist.rows[0].postSaveId,
       },
     });
-    res.status(StatusCodes.OK).json(deletePostSave);
-  }
-
-  if (isShowAd.rows[0] === undefined) {
-    const savePostCount = await postSave.count({
-      where: {
-        userId: userId,
-      },
-    });
-    if (savePostCount < SAVEPOSTLIMIT) {
+    console.log("deleted", deletePostSave);
+    res.status(StatusCodes.OK).json({ deleted: true });
+  } else {
+    if (isShowAd.rows[0] === undefined) {
+      const savePostCount = await postSave.count({
+        where: {
+          userId: userId,
+        },
+      });
+      if (savePostCount < SAVEPOSTLIMIT) {
+        createPostSave = await postSave.create({
+          data: {
+            userId: userId,
+            postId: Data.postId,
+          },
+        });
+        console.log("created with limit");
+        res.status(StatusCodes.CREATED).json(createPostSave);
+      } else {
+        console.log("cannot create");
+        res.status(StatusCodes.OK).json({ created: null });
+      }
+    } else {
       createPostSave = await postSave.create({
         data: {
           userId: userId,
           postId: Data.postId,
         },
       });
+      console.log("created with no limit");
+      res.status(StatusCodes.CREATED).json(createPostSave);
     }
-  } else {
-    createPostSave = await postSave.create({
-      data: {
-        userId: userId,
-        postId: Data.postId,
-      },
-    });
   }
-
-  res.status(StatusCodes.CREATED).json(createPostSave);
 });
 
 //  retrive  ad ************************************
@@ -313,7 +348,7 @@ const uploadCommentReaction = asyncHandler(async (req, res) => {
         commentReactionId: isReacted[0].commentReactionId,
       },
     });
-    console.log(DeleteCommentReaction);
+    // console.log(DeleteCommentReaction);
     res.status(StatusCodes.OK).json({ deleted: true });
   }
 });
@@ -347,7 +382,7 @@ const uploadpostReaction = asyncHandler(async (req, res) => {
         postReactionId: isReacted[0].postReactionId,
       },
     });
-    console.log(DeletePostReaction);
+    // console.log(DeletePostReaction);
     res.status(StatusCodes.OK).json({ deleted: true });
   }
 });
@@ -538,17 +573,17 @@ const getFavourites = asyncHandler(async (req, res) => {
   await client.connect();
 
   const postSaved = await client.query({
-    // text: 'SELECT * FROM post WHERE "creatorId" IN (SELECT "creatorId" FROM "userSubscribe" WHERE "followerId"=$1 UNION SELECT $1 AS "creatorId") ORDER BY "postId" DESC LIMIT $2 OFFSET $3',
-    text: `SELECT posts2.*,"user"."name","user"."profilePhoto" FROM 
-            (SELECT posts.* FROM (
-              SELECT * FROM post 
-                WHERE 
-                  ("creatorId" IN (SELECT "creatorId" FROM "userSubscribe" WHERE "followerId"=$1 UNION SELECT $1 AS "creatorId")
-                AND 
-                  post."blockedStatus" = false)) as posts
-              RIGHT JOIN "postSave" ON ("postSave"."postId" = posts."postId" AND "postSave"."userId" = posts."creatorId" )) as posts2,
-            "user" WHERE ("user"."userId" = posts2."creatorId" and "user"."blockedStatus"= false) 
-            ORDER BY posts2."postId" DESC`,
+    // text: `SELECT posts2.*,"user"."name","user"."profilePhoto" FROM
+    //         (SELECT posts.* FROM (
+    //           SELECT * FROM post
+    //             WHERE
+    //               ("creatorId" IN (SELECT "creatorId" FROM "userSubscribe" WHERE "followerId"=$1 AS "creatorId")
+    //             AND
+    //               post."blockedStatus" = false)) as posts
+    //           RIGHT JOIN "postSave" ON ("postSave"."postId" = posts."postId" AND "postSave"."userId" = posts."creatorId" )) as posts2,
+    //         "user" WHERE ("user"."userId" = posts2."creatorId" and "user"."blockedStatus"= false)
+    //         ORDER BY posts2."postId" DESC`,
+    text: `SELECT * FROM "postSave" INNER JOIN "post" ON "postSave"."postId" = "post"."postId" INNER JOIN "user" ON "post"."creatorId"="user"."userId" WHERE "postSave"."userId" = $1 ORDER BY "postSaveId" DESC`,
     values: [userId],
   });
 

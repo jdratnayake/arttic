@@ -279,11 +279,11 @@ function CreatorProfilePage() {
                           userName={profileData.name}
                           profilePic={PROFILE_PIC_URL + profileData.profilePhoto}
                           profilerId={userId}
-                          name={item.name}
+                          name={profileData.name}
                           message={item.description}
                           timestamp={item.publishedDate}
                           image={POST_PIC_URL + item.imagevideo}
-                          userImage={PROFILE_PIC_URL + item.profilePhoto}
+                          userImage={PROFILE_PIC_URL + profileData.profilePhoto}
                           commentCount={item.commentCount}
                           likes={item.reactCount}
                           creatorId={item.creatorId}
