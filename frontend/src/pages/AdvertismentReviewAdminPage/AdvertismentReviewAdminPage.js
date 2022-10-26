@@ -527,15 +527,7 @@ function AdvertismentReviewAdminPage() {
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-                id="btn-close-form"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn btn-danger "
+                class="btn btn-primary "
                 onClick={verifyAdvertisement}
               >
                 Confirm
