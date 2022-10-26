@@ -42,7 +42,7 @@ function SubscribedCreatorsPage() {
   return (
     <span className="subscribedCreatorsPage">
       <div className="row row-cols-1 row-cols-md-2 row-cols-md-3">
-        <h3 className="mb-0">Top Creators</h3>
+        <h3 className="mb-0">Trending Creators</h3>
       </div>
       <div class="row row-cols-1 row-cols-md-2 row-cols-md-3">
 
