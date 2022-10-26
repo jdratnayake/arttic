@@ -98,23 +98,32 @@ const uploadPostSave = asyncHandler(async (req, res) => {
   );
 
   await client.end();
-  // console.log(isPostExist.rows[0].postSaveId);
+  // console.log(isPostExist.rows[0], Data.postId, isShowAd.rows[0]);
   if (isPostExist.rowCount !== 0) {
     const deletePostSave = await postSave.delete({
       where: {
         postSaveId: isPostExist.rows[0].postSaveId,
       },
     });
+    // console.log("deleted", deletePostSave);
     res.status(StatusCodes.OK).json(deletePostSave);
-  }
-
-  if (isShowAd.rows[0] === undefined) {
-    const savePostCount = await postSave.count({
-      where: {
-        userId: userId,
-      },
-    });
-    if (savePostCount < SAVEPOSTLIMIT) {
+  } else {
+    if (isShowAd.rows[0] === undefined) {
+      const savePostCount = await postSave.count({
+        where: {
+          userId: userId,
+        },
+      });
+      if (savePostCount < SAVEPOSTLIMIT) {
+        createPostSave = await postSave.create({
+          data: {
+            userId: userId,
+            postId: Data.postId,
+          },
+        });
+      }
+      // console.log("created");
+    } else {
       createPostSave = await postSave.create({
         data: {
           userId: userId,
@@ -122,13 +131,6 @@ const uploadPostSave = asyncHandler(async (req, res) => {
         },
       });
     }
-  } else {
-    createPostSave = await postSave.create({
-      data: {
-        userId: userId,
-        postId: Data.postId,
-      },
-    });
   }
 
   res.status(StatusCodes.CREATED).json(createPostSave);
