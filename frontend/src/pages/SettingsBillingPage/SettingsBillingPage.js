@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import $ from "jquery";
@@ -18,6 +18,7 @@ import {
   SUBSCRIPTION_PRICE,
   ETHEREUM_ADDRESS,
 } from "../../constants/globalConstants";
+import { updateUserState } from "../../actions/userActions";
 
 import "../SettingsBasicPage/settings.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -29,6 +30,8 @@ function SettingsBillingPage() {
 
   const userInfo = useSelector((state) => state.userInfo);
   const { userId, accessToken } = userInfo.user;
+
+  const dispatch = useDispatch();
 
   // Crypto payment - START
   const startPayment = async ({ ether, addr }) => {
@@ -179,6 +182,7 @@ function SettingsBillingPage() {
       .then((response) => {
         // console.log(response.data);
         // getPremiumPackageDetails();
+        dispatch(updateUserState(userId));
         setPremiumStatus(response.data.premiumUser);
         setPremiumEndDate(new Date(response.data.premiumPackageEndDate));
       });
@@ -198,6 +202,7 @@ function SettingsBillingPage() {
       .then((response) => {
         // console.log(response.data);
         // getPremiumPackageDetails();
+        dispatch(updateUserState(userId));
         setPremiumStatus(response.data.premiumUser);
         setPremiumEndDate(new Date(response.data.premiumPackageEndDate));
       });
@@ -239,10 +244,19 @@ function SettingsBillingPage() {
                         <h3 class="mt-2 mb-3 fw-bold">
                           {premiumStatus ? "Premium" : "Starter"}
                         </h3>
-                        <p>
-                          Unlimited access to essential tools for design,
-                          bootstrap themes, illustrator and icons.
-                        </p>
+                        {premiumStatus && (
+                          <p>
+                            From Pemium Package You Will Get Unlimited Access to
+                            The System Features
+                          </p>
+                        )}
+                        {!premiumStatus && (
+                          <p>
+                            From This Starter Package You Get Access for the
+                            Common Functionalities of Our System
+                          </p>
+                        )}
+
                         <p>
                           <i
                             data-feather="info"
@@ -268,19 +282,23 @@ function SettingsBillingPage() {
                       <div>
                         <small class="text-muted">Monthly Payment</small>
                         <h1 class="fw-bold text-primary">$5 USD</h1>
-                        <a
-                          href="#"
+                        <p
                           class="mb-3 text-muted
-                              text-primary-hover d-block"
+                               d-block"
                         >
-                          Learn more about our membership policy
-                        </a>
+                          Pay and Upgrade Your Membership from Here
+                        </p>
 
                         <a
                           href="#"
                           class="btn btn-next d-grid mb-2"
                           data-bs-toggle="modal"
-                          data-bs-target="#billingPayments" style={{ background: "#33ff94", border: "#33ff94", color: "black" }}
+                          data-bs-target="#billingPayments"
+                          style={{
+                            background: "#33ff94",
+                            border: "#33ff94",
+                            color: "black",
+                          }}
                         >
                           {premiumStatus
                             ? "Extend Subscription"
@@ -490,7 +508,7 @@ function SettingsBillingPage() {
                 class="btn btn-primary"
                 data-bs-dismiss="modal"
               >
-                Okay
+                Done
               </button>
             </div>
           </div>

@@ -1,13 +1,41 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
+import { useSelector } from "react-redux";
 
 import "./SideNavBar.css";
 
 function SideNavBar({ sideNavBarIndex }) {
   const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.userInfo);
+  const { userId, type, accessToken, openSeaStatus, premiumUser } =
+    userInfo.user;
+
+  const [heightVal, setHeightVal] = useState("360px");
+  const [clientNormal, setClientNormal] = useState({});
+  const [clientPremium, setClientPremium] = useState({});
+
+  const initialFunc = () => {
+    if (type === 3) {
+      setHeightVal("360px");
+      setClientNormal({});
+      setClientPremium({});
+    } else if (type === 4) {
+      setClientNormal({ display: "none" });
+
+      if (premiumUser) {
+        setClientPremium({});
+        setHeightVal("270px");
+      } else {
+        setClientPremium({ display: "none" });
+        setHeightVal("225px");
+      }
+    }
+  };
 
   useEffect(() => {
+    initialFunc();
+
     $(".sideNavBarSectionHighlight").each(function (i) {
       const index = parseInt(sideNavBarIndex);
 
@@ -37,9 +65,13 @@ function SideNavBar({ sideNavBarIndex }) {
     });
   }, []);
 
+  useEffect(() => {
+    initialFunc();
+  }, [userInfo.user]);
+
   return (
     <span className="sideNavBar">
-      <nav id="sidebar">
+      <nav id="sidebar" style={{ height: heightVal }}>
         <div className="content-top">
           <ul className="list-unstyled">
             <li
@@ -62,13 +94,14 @@ function SideNavBar({ sideNavBarIndex }) {
                 <i className="bi bi-people-fill icon-theme"></i>Find Creators
               </a>
             </li>
-            <li className="sideNavBarSectionHighlight"
-            onClick={() => {
+            <li
+              className="sideNavBarSectionHighlight"
+              onClick={() => {
                 navigate("/favourite");
-              }}>
-
+              }}
+            >
               <a>
-                <i className="bi bi-star-fill icon-theme"></i>Favourits
+                <i className="bi bi-star-fill icon-theme"></i>Favourites
               </a>
             </li>
             <li
@@ -76,22 +109,26 @@ function SideNavBar({ sideNavBarIndex }) {
               onClick={() => {
                 navigate("/creator/chat");
               }}
+              style={clientPremium}
             >
               <a>
                 <i className="bi bi-chat-left-dots-fill icon-theme"></i>
                 Chat
               </a>
             </li>
+
             <li
               className="sideNavBarSectionHighlight"
               onClick={() => {
                 navigate("/creator/analytics");
               }}
+              style={clientNormal}
             >
               <a>
                 <i className="bi bi-bar-chart-fill icon-theme"></i>Analytics
               </a>
             </li>
+
             <li
               className="sideNavBarSectionHighlight"
               id="settingsSection"
@@ -108,6 +145,7 @@ function SideNavBar({ sideNavBarIndex }) {
               onClick={() => {
                 navigate("/Advertisment");
               }}
+              style={clientNormal}
             >
               <a>
                 <i className="bi bi-badge-ad-fill icon-theme"></i>Advertisment
@@ -115,24 +153,25 @@ function SideNavBar({ sideNavBarIndex }) {
             </li>
           </ul>
           <br />
-
-          <div
-            className="premium"
-            onClick={() => {
-              navigate("/settings");
-            }}
-          >
-            <div className="content-pre">
-              <p className="para">
-                <a>
-                  Upgrade to premimum <i className="bi bi-gem icon-pre"></i>
-                </a>
-              </p>
-              <p className="para">
-                small description on to have interest on premium package
-              </p>
+          {!premiumUser && (
+            <div
+              className="premium"
+              onClick={() => {
+                navigate("/settings");
+              }}
+            >
+              <div className="content-pre">
+                <p className="para">
+                  <a>
+                    Upgrade to premimum <i className="bi bi-gem icon-pre"></i>
+                  </a>
+                </p>
+                <p className="para">
+                  Subscribe premium package to have more benefits
+                </p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </nav>
     </span>

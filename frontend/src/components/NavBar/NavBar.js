@@ -13,13 +13,12 @@ function NavBar() {
   const searchCreator = (e) => {
     e.preventDefault();
     if (input) {
-      navigate('/searchcreators', {
+      navigate("/searchcreators", {
         state: {
           name: input,
-        }
+        },
       });
     }
-
   };
 
   return (
@@ -41,7 +40,7 @@ function NavBar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a
                 className="nav-link nav-link-active"
                 aria-current="page"
@@ -64,16 +63,24 @@ function NavBar() {
               <a className="nav-link" href="#">
                 Pricing
               </a>
-            </li>
+            </li> */}
           </ul>
-          <form className="d-flex me-auto sebr" role="search" onSubmit={searchCreator}>
+          <form
+            className="d-flex me-auto sebr"
+            role="search"
+            onSubmit={searchCreator}
+          >
             <div class="wrap-sb">
               <div class="search">
                 <button class="searchButton">
                   <i class="bi bi-search"></i>
                 </button>
-                <input type="text" class="searchTerm" placeholder="Search" onChange={event => setInput(event.target.value)} />
-
+                <input
+                  type="text"
+                  class="searchTerm"
+                  placeholder="Search"
+                  onChange={(event) => setInput(event.target.value)}
+                />
               </div>
             </div>
           </form>

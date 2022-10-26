@@ -37,9 +37,14 @@ function ReportAdvertismentPage() {
     "",
     "Nudity",
     "Violence",
+    "Harassment",
+    "Suicide or self-injury",
+    "False information",
     "Spam",
-    "False Information",
-    "Something Else",
+    "Unauthorized sales",
+    "Hate speech",
+    "Terrorism",
+    "Something else",
   ];
 
   const nftTypeList = [
@@ -87,6 +92,22 @@ function ReportAdvertismentPage() {
     getData();
   }, []);
 
+  const sendNotification = async (userId, notificationType, message) => {
+    const inputData = { userId, notificationType, message };
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .post(API_URL + "/user/oneTimeNotification", inputData, config)
+      .then((response) => {
+        console.log(response.data);
+      });
+  };
+
   const banUser = async () => {
     const token = {
       headers: {
@@ -103,6 +124,12 @@ function ReportAdvertismentPage() {
     await axios
       .post(API_URL + "/complaintreview/blockuser/", inputData, token)
       .then((res) => {});
+
+    sendNotification(
+      userDetails.userId,
+      3,
+      "We Have Banned Your Advertisement Due to the Violation of Rules and Regulations of Post Sharing"
+    );
 
     $("#btn-close-form").click();
     setButtonName("Post Banned");

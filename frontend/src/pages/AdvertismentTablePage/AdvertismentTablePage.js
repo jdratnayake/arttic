@@ -796,7 +796,7 @@ function AdvertismentTablePage() {
             <div class="modal-footer justify-content-start p-4 pt-2">
               <button
                 type="button"
-                class="btn btn-danger"
+                class="btn btn-primary"
                 data-bs-toggle="modal"
                 data-bs-target="#billingPayments"
               >
@@ -804,7 +804,7 @@ function AdvertismentTablePage() {
               </button>
               <button
                 type="button"
-                class="btn btn-secondary"
+                class="btn btn-danger"
                 data-bs-dismiss="modal"
               >
                 Close
@@ -879,7 +879,7 @@ function AdvertismentTablePage() {
                 class="btn btn-primary"
                 data-bs-dismiss="modal"
               >
-                Okay
+                Done
               </button>
             </div>
           </div>
