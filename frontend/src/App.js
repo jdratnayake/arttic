@@ -103,7 +103,7 @@ function App() {
         <Route path="/creatorprofile/" element={<CreatorProfilePage />}></Route>
         <Route path="/viewuserprofile/:id" element={<ViewUserProfile />}></Route>
         <Route
-          path="/followerprofile/:followerId"
+          path="/followerprofile/"
           element={<FollowerProfile />}
         ></Route>
         <Route
