@@ -244,10 +244,19 @@ function SettingsBillingPage() {
                         <h3 class="mt-2 mb-3 fw-bold">
                           {premiumStatus ? "Premium" : "Starter"}
                         </h3>
-                        <p>
-                          Unlimited access to essential tools for design,
-                          bootstrap themes, illustrator and icons.
-                        </p>
+                        {premiumStatus && (
+                          <p>
+                            From Pemium Package You Will Get Unlimited Access to
+                            The System Features
+                          </p>
+                        )}
+                        {!premiumStatus && (
+                          <p>
+                            From This Starter Package You Get Access for the
+                            Common Functionalities of Our System
+                          </p>
+                        )}
+
                         <p>
                           <i
                             data-feather="info"
@@ -273,13 +282,12 @@ function SettingsBillingPage() {
                       <div>
                         <small class="text-muted">Monthly Payment</small>
                         <h1 class="fw-bold text-primary">$5 USD</h1>
-                        <a
-                          href="#"
+                        <p
                           class="mb-3 text-muted
-                              text-primary-hover d-block"
+                               d-block"
                         >
-                          Learn more about our membership policy
-                        </a>
+                          Pay and Upgrade Your Membership from Here
+                        </p>
 
                         <a
                           href="#"
@@ -500,7 +508,7 @@ function SettingsBillingPage() {
                 class="btn btn-primary"
                 data-bs-dismiss="modal"
               >
-                Okay
+                Done
               </button>
             </div>
           </div>

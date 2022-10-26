@@ -74,7 +74,10 @@ function Feed() {
         postDescription.current.value = "";
         if (response.status === 201) {
           // setNewPost(response.data);
-          Object.assign(response.data, { profilePhoto: tempProfilePIc , name: userDetails.name});
+          Object.assign(response.data, {
+            profilePhoto: tempProfilePIc,
+            name: userDetails.name,
+          });
           setPost((current) => [response.data, ...current]);
           // console.log(response.data);
           toast.success("You have successfully published the post", {
@@ -86,7 +89,26 @@ function Feed() {
             draggable: true,
             progress: undefined,
           });
+
+          sendNotification(userId, 2, `${userDetails.name} shared a post`);
         }
+      });
+  };
+
+  // send notification ***********************
+  const sendNotification = async (userId, notificationType, message) => {
+    const inputData = { userId, notificationType, message };
+
+    const config = {
+      headers: {
+        authorization: accessToken,
+      },
+    };
+
+    await axios
+      .post(API_URL + "/feed/oneTimeNotification", inputData, config)
+      .then((response) => {
+        console.log(response.data);
       });
   };
 
