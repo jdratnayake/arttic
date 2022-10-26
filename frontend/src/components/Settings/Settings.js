@@ -31,7 +31,7 @@ function Settings() {
             Basic
           </button>
         </li>
-        {type > 2 && (
+        {type === 3 && (
           <li class="nav-item" role="presentation">
             <button
               class="nav-link settings-nav-link"

@@ -59,7 +59,9 @@ function App() {
         ></Route>
         <Route
           path="/favourite"
-          element={<CreatorTemplate children={<Favourite />} sideNavBarIndex="0" />}
+          element={
+            <CreatorTemplate children={<Favourite />} sideNavBarIndex="0" />
+          }
         ></Route>
         <Route
           path="/subscribedcreatorspage"
@@ -73,10 +75,7 @@ function App() {
         <Route
           path="/ViewUserList/:type"
           element={
-            <CreatorTemplate
-              children={<ViewUserList />}
-              sideNavBarIndex="1"
-            />
+            <CreatorTemplate children={<ViewUserList />} sideNavBarIndex="1" />
           }
         ></Route>
         <Route
@@ -91,9 +90,7 @@ function App() {
         <Route
           path="/settings"
           element={
-            <CreatorTemplate
-              children={<Settings />}
-              sideNavBarIndex="5" />
+            <CreatorTemplate children={<Settings />} sideNavBarIndex="5" />
           }
         ></Route>
         <Route path="/signupoption" element={<SignUpOptionPage />}></Route>
@@ -101,7 +98,10 @@ function App() {
         <Route path="/walletconnect" element={<WalletConnectPage />}></Route>
         <Route path="/login" element={<LogInPage />}></Route>
         <Route path="/creatorprofile/" element={<CreatorProfilePage />}></Route>
-        <Route path="/viewuserprofile/:id" element={<ViewUserProfile />}></Route>
+        <Route
+          path="/viewuserprofile/:id"
+          element={<ViewUserProfile />}
+        ></Route>
         <Route
           path="/followerprofile/:followerId"
           element={<FollowerProfile />}
@@ -189,7 +189,10 @@ function App() {
         <Route
           path="/admin0/accountmanage"
           element={
-            <Admin0Template children={<AccountManagementAdmin0Page />} />
+            <Admin0Template
+              children={<AccountManagementAdmin0Page />}
+              sideNavBarIndex="1"
+            />
           }
         ></Route>
         <Route path="*" element={<ErrorPage />}></Route>
