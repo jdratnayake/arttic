@@ -35,9 +35,9 @@ function Favourite() {
         setFavourites(response.data.postSaved);
         setReactedPosts(response.data.postReacted);
         setSavedPosts(response.data.savedPost);
-        // console.log(response.data)
+        console.log(response.data);
         // console.log(favorites)
-        // console.log(response.data.postSaved)
+        // console.log(response.data.postSaved);
       });
   };
 

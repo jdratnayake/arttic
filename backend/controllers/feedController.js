@@ -105,8 +105,8 @@ const uploadPostSave = asyncHandler(async (req, res) => {
         postSaveId: isPostExist.rows[0].postSaveId,
       },
     });
-    // console.log("deleted", deletePostSave);
-    res.status(StatusCodes.OK).json(deletePostSave);
+    console.log("deleted", deletePostSave);
+    res.status(StatusCodes.OK).json({ deleted: true });
   } else {
     if (isShowAd.rows[0] === undefined) {
       const savePostCount = await postSave.count({
@@ -121,8 +121,12 @@ const uploadPostSave = asyncHandler(async (req, res) => {
             postId: Data.postId,
           },
         });
+        console.log("created with limit");
+        res.status(StatusCodes.CREATED).json(createPostSave);
+      } else {
+        console.log("cannot create");
+        res.status(StatusCodes.OK).json({ created: null });
       }
-      // console.log("created");
     } else {
       createPostSave = await postSave.create({
         data: {
@@ -130,10 +134,10 @@ const uploadPostSave = asyncHandler(async (req, res) => {
           postId: Data.postId,
         },
       });
+      console.log("created with no limit");
+      res.status(StatusCodes.CREATED).json(createPostSave);
     }
   }
-
-  res.status(StatusCodes.CREATED).json(createPostSave);
 });
 
 //  retrive  ad ************************************
@@ -569,17 +573,17 @@ const getFavourites = asyncHandler(async (req, res) => {
   await client.connect();
 
   const postSaved = await client.query({
-    // text: 'SELECT * FROM post WHERE "creatorId" IN (SELECT "creatorId" FROM "userSubscribe" WHERE "followerId"=$1 UNION SELECT $1 AS "creatorId") ORDER BY "postId" DESC LIMIT $2 OFFSET $3',
-    text: `SELECT posts2.*,"user"."name","user"."profilePhoto" FROM 
-            (SELECT posts.* FROM (
-              SELECT * FROM post 
-                WHERE 
-                  ("creatorId" IN (SELECT "creatorId" FROM "userSubscribe" WHERE "followerId"=$1 UNION SELECT $1 AS "creatorId")
-                AND 
-                  post."blockedStatus" = false)) as posts
-              RIGHT JOIN "postSave" ON ("postSave"."postId" = posts."postId" AND "postSave"."userId" = posts."creatorId" )) as posts2,
-            "user" WHERE ("user"."userId" = posts2."creatorId" and "user"."blockedStatus"= false) 
-            ORDER BY posts2."postId" DESC`,
+    // text: `SELECT posts2.*,"user"."name","user"."profilePhoto" FROM
+    //         (SELECT posts.* FROM (
+    //           SELECT * FROM post
+    //             WHERE
+    //               ("creatorId" IN (SELECT "creatorId" FROM "userSubscribe" WHERE "followerId"=$1 AS "creatorId")
+    //             AND
+    //               post."blockedStatus" = false)) as posts
+    //           RIGHT JOIN "postSave" ON ("postSave"."postId" = posts."postId" AND "postSave"."userId" = posts."creatorId" )) as posts2,
+    //         "user" WHERE ("user"."userId" = posts2."creatorId" and "user"."blockedStatus"= false)
+    //         ORDER BY posts2."postId" DESC`,
+    text: `SELECT * FROM "postSave" INNER JOIN "post" ON "postSave"."postId" = "post"."postId" INNER JOIN "user" ON "post"."creatorId"="user"."userId" WHERE "postSave"."userId" = $1`,
     values: [userId],
   });
 
