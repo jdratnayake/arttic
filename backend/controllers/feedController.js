@@ -583,7 +583,7 @@ const getFavourites = asyncHandler(async (req, res) => {
     //           RIGHT JOIN "postSave" ON ("postSave"."postId" = posts."postId" AND "postSave"."userId" = posts."creatorId" )) as posts2,
     //         "user" WHERE ("user"."userId" = posts2."creatorId" and "user"."blockedStatus"= false)
     //         ORDER BY posts2."postId" DESC`,
-    text: `SELECT * FROM "postSave" INNER JOIN "post" ON "postSave"."postId" = "post"."postId" INNER JOIN "user" ON "post"."creatorId"="user"."userId" WHERE "postSave"."userId" = $1`,
+    text: `SELECT * FROM "postSave" INNER JOIN "post" ON "postSave"."postId" = "post"."postId" INNER JOIN "user" ON "post"."creatorId"="user"."userId" WHERE "postSave"."userId" = $1 ORDER BY "postSaveId" DESC`,
     values: [userId],
   });
 
