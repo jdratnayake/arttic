@@ -600,6 +600,10 @@ function ReportUserAdmin1Page() {
               </div>
             </div>
             <div class="modal-footer justify-content-start p-4 pt-2">
+              <Link className="btn btn-primary" to={path} target="_blank">
+                {" "}
+                View{" "}
+              </Link>
               <button
                 type="button"
                 class="btn btn-danger"
@@ -607,10 +611,6 @@ function ReportUserAdmin1Page() {
               >
                 Resolve
               </button>
-              <Link className="btn btn-primary" to={path} target="_blank">
-                {" "}
-                View{" "}
-              </Link>
             </div>
           </div>
         </div>

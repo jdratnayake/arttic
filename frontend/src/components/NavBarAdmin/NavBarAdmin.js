@@ -20,7 +20,7 @@ function NavBarAdmin() {
   const [unreadCount, setUnreadCount] = useState(0);
 
   const userInfo = useSelector((state) => state.userInfo);
-  const { accessToken } = userInfo.user;
+  const { type, accessToken } = userInfo.user;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -106,7 +106,7 @@ function NavBarAdmin() {
             className="navbar-brand"
             href="#"
             onClick={() => {
-              navigate("/feed");
+              navigate("/admin0/dashboard");
             }}
           >
             <img src={logo} width="200" height="45" />
@@ -274,7 +274,7 @@ function NavBarAdmin() {
                     class="dropdown-menu dropdown-menu-end "
                     aria-labelledby="page-header-user-dropdown"
                   >
-                    <a
+                    {/* <a
                       class="dropdown-item dinv"
                       onClick={() => {
                         navigate("/creatorprofile");
@@ -282,7 +282,7 @@ function NavBarAdmin() {
                     >
                       <i class="bi bi-person-circle dinvit"></i>{" "}
                       <span class="align-middle">View Profile</span>
-                    </a>
+                    </a> */}
                     <a
                       class="dropdown-item dinv"
                       onClick={() => {
