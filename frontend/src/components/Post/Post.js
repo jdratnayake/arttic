@@ -143,6 +143,7 @@ function Post(props) {
       .post(API_URL + "/feed/uploadComment/", data, config)
       .then((response) => {
         // console.log(response.data);
+        commentRef.current.value = "";
         Object.assign(response.data, { profilePhoto: props.tempProfilePIc });
         setComments((current) => [response.data, ...current]);
         setCommentCount(commentCount + 1);
@@ -276,6 +277,16 @@ function Post(props) {
                   <span class="align-middle">Report</span>
                 </a>
                 {props.profilerId === props.creatorId ? (
+                  <a
+                    class="dropdown-item dinv"
+                    onClick={() => {
+                      props.deletePost(props.postid, props.creatorId);
+                    }}
+                  >
+                    <i class="bi bi-trash-fill dinvit icon-theme"></i>{" "}
+                    <span class="align-middle">Delete</span>
+                  </a>
+                ) : props.inFavourite !== undefined ? (
                   <a
                     class="dropdown-item dinv"
                     onClick={() => {

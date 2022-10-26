@@ -35,9 +35,9 @@ function Favourite() {
         setFavourites(response.data.postSaved);
         setReactedPosts(response.data.postReacted);
         setSavedPosts(response.data.savedPost);
-        // console.log(response.data)
+        console.log(response.data);
         // console.log(favorites)
-        // console.log(response.data.postSaved)
+        // console.log(response.data.postSaved);
       });
   };
 
@@ -56,28 +56,25 @@ function Favourite() {
       });
   };
 
-  const deleteSavePost = async (pid,creatorId) => {
+  const deleteSavePost = async (pid, creatorId) => {
     if (window.confirm("Do you want to delete the post !")) {
-      if (userId === creatorId) {
-        // console.log("delete clicked")
-        const config = {
-          headers: {
-            authorization: accessToken,
-            userid: userId,
-            postid: pid,
-          },
-        };
+      // console.log("delete clicked")
+      const config = {
+        headers: {
+          authorization: accessToken,
+          userid: userId,
+          postid: pid,
+        },
+      };
 
-        await axios
-          .get(API_URL + "/feed/deleteSavePost", config)
-          .then((response) => {
-            // console.log(response.data)
-            // $(`#post${response.data.postId}`).hide();
-            setFavourites(favorites.filter(item => item.postId !== response.data.postId))
-          });
-      } else {
-        console.log("cannot delete");
-      }
+      await axios
+        .get(API_URL + "/feed/deleteSavePost", config)
+        .then((response) => {
+          // $(`#post${response.data.postId}`).hide();
+          setFavourites(
+            favorites.filter((item) => item.postId !== response.data.postId)
+          );
+        });
     }
   };
 
@@ -115,6 +112,7 @@ function Favourite() {
                       reactedPosts={reactedPosts}
                       savedPosts={savedPosts}
                       tempProfilePIc={userDetails.profilePhoto}
+                      inFavourite={true}
                     />
                   );
                 })}
@@ -123,8 +121,7 @@ function Favourite() {
           </div>
         </div>
       </div>
-      <div class="col-sm-4 col-xs-4 col-advertisment">
-      </div>
+      <div class="col-sm-4 col-xs-4 col-advertisment"></div>
     </div>
   );
 }
