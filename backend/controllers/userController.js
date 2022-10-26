@@ -3,7 +3,7 @@ const asyncHandler = require("express-async-handler");
 const { Client } = require("pg");
 const { StatusCodes } = require("http-status-codes");
 
-const { user, followerCreator, userSubscribe, notification } =
+const { user, followerCreator, userSubscribe, notification, postReaction, postSave } =
   new PrismaClient();
 
 //upload profile photos --------------------------------------------------
@@ -368,6 +368,75 @@ const adFreeFeature = asyncHandler(async (req, res) => {
 });
 //End Ad Free Feature------------------------------------------------------------------------
 
+
+
+//Get User Post -----------------------------------------------------------------------------
+const getPosts = asyncHandler(async (req, res) => {
+  const client = new Client({
+    user: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE_DATABASE,
+    password: process.env.DATABASE_PASSWORD,
+    port: process.env.DATABASE_PORT,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  const userId = parseInt(req.headers.userid);
+
+  await client.connect();
+
+  const posts = await client.query({
+    text: `SELECT * FROM post 
+            WHERE "creatorId" = $1 AND post."blockedStatus" = false  
+            ORDER BY "postId" DESC`,
+    values: [userId],
+  });
+
+  // posts.rows.map(async (post) => {
+  //   // console.log(post.postId)
+  //   await postView.create({
+  //     data: {
+  //       postId: post.postId,
+  //       followerCreatorId: userId,
+  //     },
+  //   });
+  // });
+
+  await client.end();
+
+  const postReacted = await postReaction.findMany({
+    select: {
+      postId: true,
+    },
+    where: {
+      userId,
+    },
+  });
+
+  const savedPost = await postSave.findMany({
+    select: {
+      postId: true,
+    },
+    where: {
+      userId,
+    },
+  });
+
+  // console.log(postReacted);
+
+  res.json({
+    posts: posts.rows,
+    postReacted: postReacted,
+    savedPost: savedPost,
+  });
+});
+//End get user post -------------------------------------------------------------------------
+
+
+
+
 const oneTimeNotification = asyncHandler(async (req, res) => {
   const { userId, notificationType, message } = req.body;
   // console.log(req.body);
@@ -396,5 +465,6 @@ module.exports = {
   getAllCreatorsDetails,
   followUnfollowCreator,
   adFreeFeature,
+  getPosts,
   oneTimeNotification,
 };
