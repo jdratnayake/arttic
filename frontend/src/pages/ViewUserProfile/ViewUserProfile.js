@@ -40,6 +40,10 @@ function ViewUserProfile() {
     const [followingData, setFollowingsData] = useState([]);
     const [followersData, setFollowersData] = useState([]);
 
+    const [reactedPosts, setReactedPosts] = useState([]);
+    const [savedPosts, setSavedPosts] = useState([]);
+    const [posts, setPost] = useState([]);
+
     const userInfo = useSelector((state) => state.userInfo);
     const { userId, accessToken } = userInfo.user;
 
@@ -204,11 +208,62 @@ function ViewUserProfile() {
     };
     //  end followings data ----------------------------------------------------
 
+
+    // get user post -------------------------------------------------------------
+    const getPosts = async () => {
+        const config = {
+            headers: {
+                authorization: accessToken,
+                userid: id,
+            },
+        };
+
+        await axios.get(API_URL + "/user/getposts/", config)
+            .then((response) => {
+                setPost(response.data.posts);
+                setReactedPosts(response.data.postReacted);
+                setSavedPosts(response.data.savedPost);
+            });
+    };
+    // end get user post ---------------------------------------------------------
+
+
+    // delete post ---------------------------------------------------------------
+    const deletePost = async (pid, creatorId) => {
+        if (window.confirm("Do you want to delete the post !")) {
+            if (userId === creatorId) {
+                // console.log("delete clicked")
+                const config = {
+                    headers: {
+                        authorization: accessToken,
+                        userid: userId,
+                        postid: pid,
+                    },
+                };
+
+                await axios
+                    .get(API_URL + "/feed/deletePost/", config)
+                    .then((response) => {
+                        // console.log(response.data)
+                        // $(`#post${response.data.postId}`).hide();
+                        setPost(
+                            posts.filter((post) => post.postId !== response.data.postId)
+                        );
+                    });
+            } else {
+                console.log("cannot delete");
+            }
+        }
+    };
+    // end delete post -----------------------------------------------------------
+
+
     useEffect(() => {
         getUserData();
         getFollowersData();
         getFollowingsData();
         getFollowState();
+        getPosts();
     }, []);
 
     return (
@@ -338,17 +393,36 @@ function ViewUserProfile() {
                         <div class="col-xl-8 col-lg-12 col-md-12 col-12 mb-8">
 
                             {/* Posts */}
-                            <Post
-                                image={t}
-                                name={"Peter Pan"}
-                                date={"2022-07-13"}
-                                title={"Happy Holiday"}
-                                desc={
-                                    "When the bass drops, so do my problems.When the bass drops, so do my problems."
-                                }
-                            />
-
-                            <br />
+                            <div className="pb-3">
+                                {posts &&
+                                    posts.map((item) => {
+                                        return (
+                                            <>
+                                                <Post
+                                                    key={item.postId}
+                                                    id={"post" + item.postId}
+                                                    postid={item.postId}
+                                                    userName={profileData.name}
+                                                    profilePic={PROFILE_PIC_URL + profileData.profilePhoto}
+                                                    profilerId={userId}
+                                                    name={item.name}
+                                                    message={item.description}
+                                                    timestamp={item.publishedDate}
+                                                    image={POST_PIC_URL + item.imagevideo}
+                                                    userImage={PROFILE_PIC_URL + item.profilePhoto}
+                                                    commentCount={item.commentCount}
+                                                    likes={item.reactCount}
+                                                    creatorId={item.creatorId}
+                                                    deletePost={deletePost}
+                                                    reactedPosts={reactedPosts}
+                                                    savedPosts={savedPosts}
+                                                    tempProfilePIc={PROFILE_PIC_URL + profileData.profilePhoto}
+                                                />
+                                                <br />
+                                            </>
+                                        );
+                                    })}
+                            </div>
 
                         </div>
 
