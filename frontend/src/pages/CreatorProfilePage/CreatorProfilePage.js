@@ -321,7 +321,7 @@ function CreatorProfilePage() {
                     <h4 class="card-title mb-4">Your Followers</h4>
 
                     {followersData.map((folodata, i) => (
-                      i <= 5
+                      i < 5
                         ?
                         (<div class="d-flex justify-content-between align-items-center mb-4">
                           <div class="d-flex align-items-center">
@@ -360,7 +360,7 @@ function CreatorProfilePage() {
 
 
                     {followingData.map((folodata, i) => (
-                      i <= 5
+                      i < 5
                         ?
                         (<div class="d-flex justify-content-between align-items-center mb-4">
                           <div class="d-flex align-items-center">
